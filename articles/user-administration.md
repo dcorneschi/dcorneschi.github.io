@@ -362,10 +362,6 @@ even_deny_root = no
 root_unlock_time = 60
 ```
 
-### Links
-
-* [What is pam_faillock and how to use it in RHEL 8, 9, 10](https://access.redhat.com/solutions/7063280)
-
 ## Changes Across RHEL Versions (6 → 10)
 
 ### UID Ranges
