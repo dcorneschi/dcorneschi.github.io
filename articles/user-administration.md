@@ -13,7 +13,7 @@ Prior to Red Hat Enterprise Linux 7, the convention was that UID 1-499 was used 
 
 Given the automatic creation of user private groups (GID 1000+), it is generally recommended to set aside a range of GID numbers to be used for supplementary groups. A higher range will avoid a collision with a system group (GID 0-999).
 
-The **-r** option will create a system group using a GID from the range of valid system GID numbers listed in the `/etc/login.defs file`.
+The **-r** option will create a system group using a GID from the range of valid system GID numbers listed in the `/etc/login.defs` file.
 
 ## /etc/login.defs
 
