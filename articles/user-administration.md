@@ -30,24 +30,6 @@ The **-r** option will create a system group using a GID from the range of valid
 
 > **Note:** On RHEL 8+, password length and complexity are enforced through `pam_pwquality` (`/etc/security/pwquality.conf`), not `PASS_MIN_LEN`.
 
-These settings only apply to accounts created **after** the change. Use `chage` for existing accounts:
-
-```sh
-# Apply new aging to existing user
-chage -M 90 -m 1 -W 14 <username>
-
-# Force password change on next login
-chage -d 0 <username>
-
-# Verify
-chage -l <username>
-
-# Bulk update all regular users
-for user in $(awk -F: '$3 >= 1000 && $3 < 60000 {print $1}' /etc/passwd); do
-    chage -M 90 -m 1 -W 14 "$user"
-done
-```
-
 ### UID/GID Ranges
 
 ```
@@ -276,6 +258,8 @@ Typically if the password is expired, users are forced to change it during their
 
 Once an account is locked due to inactivity, only system administrators will be able to unlock it.
 
+> **Note:** Password aging settings in `/etc/login.defs` only apply to accounts created **after** the change. Use `chage` to update existing accounts.
+
 * Operate in interactive mode: `chage <username>`
 * Show account aging information: `chage -l <username>`
 * Force password change on next login: `chage -d 0 <username>` or `passwd -e <username>`
@@ -283,7 +267,16 @@ Once an account is locked due to inactivity, only system administrators will be 
 * Lock account after X days of inactivity: `chage -I 30 <username>`
 * Disable password aging: `chage -m 0 -M 99999 -I -1 -E -1 <username>`
 * Set password max age (days between password change): `chage -M 90 <username>`
+* Apply hardened aging to an existing user: `chage -M 90 -m 1 -W 14 <username>`
 * Increase account expiry by 90 days: `chage -E $(date -d "+90 days" +%Y-%m-%d) <username>`
+
+Bulk update all regular users:
+
+```sh
+for user in $(awk -F: '$3 >= 1000 && $3 < 60000 {print $1}' /etc/passwd); do
+    chage -M 90 -m 1 -W 14 "$user"
+done
+```
 
 ## /bin/false vs /sbin/nologin
 
