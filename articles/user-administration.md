@@ -1,8 +1,8 @@
 # User Administration on RHEL
 
-## UID ranges
+<img src="articles/images/rhel-logo.svg" alt="Red Hat Logo" width="200">
 
-<img src="articles/images/rhel-logo.svg" alt="Red Hat Logo" width="80" align="left" style="margin-right: 15px;">
+## UID ranges
 
 Specific UID numbers and ranges of numbers are used for specific purposes by Red Hat Enterprise Linux.
 
