@@ -500,16 +500,6 @@ update-crypto-policies --set FUTURE
 # RHEL 10 stricter defaults — weaker algorithms disabled out of the box
 ```
 
-### LUKS2 Encrypted Home (RHEL 10)
-
-RHEL 10 defaults to LUKS2 for new encrypted storage. When using encrypted home directories:
-
-```sh
-# RHEL 10 uses LUKS2 by default for all new encrypted volumes
-# No changes required for useradd, but relevant for homectl usage
-homectl create <username> --storage=luks
-```
-
 ### Summary Table
 
 | Feature | RHEL 6 | RHEL 7 | RHEL 8 | RHEL 9 | RHEL 10 |
