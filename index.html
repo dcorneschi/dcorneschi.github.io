@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daniel Corneschi Wiki</title>
+
+<link
+  rel="stylesheet"
+  href="https://docsify.catppuccin.com/<flavor>/<accent>.css"
+/>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1/themes/prism-gruvbox-light.css">
+  <style>
+    .markdown-section {
+      font-size: 18px;
+    }
+    .markdown-section h1,
+    .markdown-section h2,
+    .markdown-section h3,
+    .markdown-section h4,
+    .markdown-section h5,
+    .markdown-section h6 {
+      margin-top: 0.6em;
+      margin-bottom: 0.4em;
+    }
+    .markdown-section pre {
+      margin-bottom: 0.5em;
+      padding: 10px 15px;
+    }
+    .markdown-section pre > code {
+      padding: 0;
+      line-height: 1.4;
+    }
+    .markdown-section table td:nth-child(2) {
+      font-size: 16px;
+    }
+    .markdown-section code {
+      color: #d6336c;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'Daniel Corneschi Wiki',
+      loadSidebar: true,
+      subMaxLevel: 0,
+      auto2top: true,
+      search: {
+        placeholder: 'Search',
+        noData: 'No results',
+        depth: 4
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-hcl.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-yaml.min.js"></script>
+</body>
+</html>
