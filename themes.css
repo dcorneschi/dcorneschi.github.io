@@ -20,6 +20,15 @@
 
 [data-theme] .sidebar ul li a {
   color: var(--theme-sidebar-text);
+  line-height: 1.4;
+  padding: 4px 0;
+  margin: 0;
+  font-size: 15px;
+}
+
+[data-theme] .sidebar ul li {
+  margin: 0;
+  padding: 0;
 }
 
 [data-theme] .sidebar ul li a:hover,
@@ -68,6 +77,16 @@
 [data-theme] .markdown-section h5,
 [data-theme] .markdown-section h6 {
   color: var(--theme-heading);
+}
+
+[data-theme] .markdown-section h1 a,
+[data-theme] .markdown-section h2 a,
+[data-theme] .markdown-section h3 a,
+[data-theme] .markdown-section h4 a,
+[data-theme] .markdown-section h5 a,
+[data-theme] .markdown-section h6 a {
+  text-decoration: none !important;
+  border-bottom: none !important;
 }
 
 [data-theme] .markdown-section h2 {
@@ -126,6 +145,15 @@
 [data-theme] .sidebar,
 [data-theme] .sidebar:after {
   border-color: var(--theme-border);
+}
+
+[data-theme] .sidebar-toggle {
+  background: var(--theme-sidebar-bg);
+  border-color: var(--theme-border);
+}
+
+[data-theme] .sidebar-toggle span {
+  background-color: var(--theme-sidebar-text);
 }
 
 [data-theme] .app-name-link {

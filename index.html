@@ -29,7 +29,10 @@
       line-height: 1.4;
     }
     .markdown-section table td:nth-child(2) {
-      font-size: 16px;
+      font-size: 15px;
+    }
+    .markdown-section table td:nth-child(1) {
+      font-size: 15px;
     }
 
     /* Theme switcher — trigger button in sidebar */
@@ -70,28 +73,28 @@
       display: flex;
     }
 
-    /* Theme modal panel — always dark, slightly transparent */
+    /* Theme modal panel — light frosted glass */
     .theme-modal {
-      background: rgba(22, 22, 30, 0.92);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(0, 0, 0, 0.08);
       border-radius: 14px;
       width: 360px;
       max-height: 80vh;
       display: flex;
       flex-direction: column;
-      font-family: monospace;
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255,255,255,0.1) inset;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.12), 0 0 1px rgba(0,0,0,0.05) inset;
+      backdrop-filter: blur(32px) saturate(1.4);
+      -webkit-backdrop-filter: blur(32px) saturate(1.4);
     }
 
     .theme-modal-header {
       padding: 20px 24px 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
     .theme-modal-header h3 {
       margin: 0 0 10px;
-      color: #e0def4;
+      color: #1a1a2e;
       font-size: 15px;
       font-weight: 600;
       letter-spacing: 0.3px;
@@ -99,8 +102,8 @@
     .theme-modal-header .tab-active {
       display: inline-block;
       padding: 4px 12px;
-      background: rgba(126, 156, 216, 0.85);
-      color: #16161e;
+      background: #4a6cf7;
+      color: #fff;
       border-radius: 5px;
       font-size: 11px;
       font-weight: 600;
@@ -115,17 +118,17 @@
     .theme-modal-group {
       padding: 10px 24px 4px;
       font-size: 10px;
-      color: rgba(255, 255, 255, 0.35);
+      color: rgba(0, 0, 0, 0.4);
       text-transform: lowercase;
       letter-spacing: 1px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
       margin-bottom: 2px;
     }
 
     .theme-modal-item {
       padding: 9px 24px;
       cursor: pointer;
-      color: rgba(220, 215, 186, 0.85);
+      color: #2a2a3e;
       font-size: 13px;
       display: flex;
       align-items: center;
@@ -134,11 +137,11 @@
       border-radius: 0;
     }
     .theme-modal-item:hover {
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(0, 0, 0, 0.04);
     }
     .theme-modal-item.selected {
-      background: rgba(126, 156, 216, 0.8);
-      color: #16161e;
+      background: #4a6cf7;
+      color: #fff;
     }
     .theme-modal-item.selected .checkmark {
       display: inline;
@@ -157,20 +160,20 @@
 
     .theme-modal-footer {
       padding: 12px 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-size: 11px;
-      color: rgba(255, 255, 255, 0.3);
+      color: rgba(0, 0, 0, 0.4);
     }
     .theme-modal-footer kbd {
       display: inline-block;
       padding: 2px 7px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.12);
       border-radius: 4px;
-      background: rgba(255, 255, 255, 0.05);
-      color: rgba(220, 215, 186, 0.7);
+      background: rgba(0, 0, 0, 0.04);
+      color: #2a2a3e;
       font-size: 10px;
       margin-left: 4px;
     }
