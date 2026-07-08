@@ -54,8 +54,8 @@
 }
 
 [data-theme] .markdown-section code {
-  color: var(--theme-code-inline);
-  background: var(--theme-code-bg);
+  color: var(--theme-code-inline) !important;
+  background: var(--theme-code-bg) !important;
   border-radius: 3px;
   padding: 2px 5px;
 }
@@ -334,6 +334,23 @@
   --theme-code-inline: #ffc799;
 }
 
+/* --- Batman --- */
+[data-theme="batman"] {
+  --theme-bg: #0a0a0a;
+  --theme-text: #c8c8c8;
+  --theme-heading: #f5d623;
+  --theme-muted: #5a5a5a;
+  --theme-accent: #f5d623;
+  --theme-accent-hover: #ffe566;
+  --theme-sidebar-bg: #050505;
+  --theme-sidebar-text: #b0b0b0;
+  --theme-border: #1c1c1c;
+  --theme-code-bg: #141414;
+  --theme-code-block-bg: #050505;
+  --theme-code-text: #c8c8c8;
+  --theme-code-inline: #f5d623;
+}
+
 /* ============================================================
    LIGHT THEMES
    ============================================================ */
@@ -455,4 +472,21 @@
   --theme-code-block-bg: #fffaf3;
   --theme-code-text: #575279;
   --theme-code-inline: #b4637a;
+}
+
+/* --- Docsify Default --- */
+[data-theme="default"] {
+  --theme-bg: #ffffff;
+  --theme-text: #34495e;
+  --theme-heading: #2c3e50;
+  --theme-muted: #7f8c8d;
+  --theme-accent: #42b983;
+  --theme-accent-hover: #33a06f;
+  --theme-sidebar-bg: #fff;
+  --theme-sidebar-text: #364149;
+  --theme-border: #e8e8e8;
+  --theme-code-bg: #f8f8f8;
+  --theme-code-block-bg: #f8f8f8;
+  --theme-code-text: #525252;
+  --theme-code-inline: #e96900;
 }
