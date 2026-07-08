@@ -1,17 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="catppuccin">
 <head>
   <meta charset="UTF-8">
   <title>Daniel Corneschi Wiki</title>
-
-<link
-  rel="stylesheet"
-  href="https://docsify.catppuccin.com/<flavor>/<accent>.css"
-/>
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1/themes/prism-gruvbox-light.css">
+  <link rel="stylesheet" href="themes.css">
   <style>
     .markdown-section {
       font-size: 18px;
@@ -36,13 +31,34 @@
     .markdown-section table td:nth-child(2) {
       font-size: 16px;
     }
-    .markdown-section code {
-      color: #d6336c;
+
+    /* Theme switcher styles — bottom of the sidebar */
+    .sidebar .theme-switcher {
+      padding: 10px 15px;
+      border-top: 1px solid var(--theme-border, #e8e8e8);
+      margin-top: 20px;
+    }
+    .sidebar .theme-switcher select {
+      width: 100%;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--theme-border, #ccc);
+      background: var(--theme-code-bg, #f8f8f8);
+      color: var(--theme-text, #333);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .sidebar .theme-switcher select:focus {
+      outline: none;
+      border-color: var(--theme-accent, #42b983);
     }
   </style>
 </head>
 <body>
   <div id="app"></div>
+
+
+
   <script>
     window.$docsify = {
       name: 'Daniel Corneschi Wiki',
@@ -55,6 +71,57 @@
         depth: 4
       }
     };
+
+    // Theme switcher logic
+    function switchTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('docsify-theme', theme);
+    }
+
+    // Load saved theme on startup
+    (function() {
+      var saved = localStorage.getItem('docsify-theme') || 'catppuccin';
+      document.documentElement.setAttribute('data-theme', saved);
+    })();
+
+    // Plugin to inject theme switcher at the bottom of the sidebar
+    function themeSwitcherPlugin(hook) {
+      hook.doneEach(function() {
+        if (document.getElementById('theme-select')) return;
+        var sidebar = document.querySelector('.sidebar-nav');
+        if (!sidebar) return;
+        var div = document.createElement('div');
+        div.className = 'theme-switcher';
+        div.innerHTML = '<select id="theme-select" onchange="switchTheme(this.value)">' +
+          '<optgroup label="Dark Themes">' +
+          '<option value="catppuccin">Catppuccin (Mocha)</option>' +
+          '<option value="tokyo-night">Tokyo Night</option>' +
+          '<option value="dracula">Dracula</option>' +
+          '<option value="nord">Nord</option>' +
+          '<option value="gruvbox">Gruvbox Dark</option>' +
+          '<option value="one-dark">One Dark</option>' +
+          '<option value="solarized">Solarized Dark</option>' +
+          '<option value="kanagawa">Kanagawa</option>' +
+          '<option value="rose-pine">Rosé Pine</option>' +
+          '<option value="vesper">Vesper</option>' +
+          '</optgroup>' +
+          '<optgroup label="Light Themes">' +
+          '<option value="catppuccin-latte">Catppuccin (Latte)</option>' +
+          '<option value="tokyo-night-day">Tokyo Night Day</option>' +
+          '<option value="gruvbox-light">Gruvbox Light</option>' +
+          '<option value="one-light">One Light</option>' +
+          '<option value="solarized-light">Solarized Light</option>' +
+          '<option value="kanagawa-lotus">Kanagawa Lotus</option>' +
+          '<option value="rose-pine-dawn">Rosé Pine Dawn</option>' +
+          '</optgroup>' +
+          '</select>';
+        sidebar.appendChild(div);
+        var saved = localStorage.getItem('docsify-theme') || 'catppuccin';
+        document.getElementById('theme-select').value = saved;
+      });
+    }
+
+    window.$docsify.plugins = [themeSwitcherPlugin];
   </script>
   <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>

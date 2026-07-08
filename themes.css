@@ -1,0 +1,414 @@
+/* ============================================================
+   Docsify Theme Switcher — inspired by herdr.dev built-in themes
+   ============================================================ */
+
+/* CSS variables mapped to Docsify's internal structure */
+[data-theme] {
+  --theme-color: var(--theme-accent);
+}
+
+[data-theme] body {
+  background: var(--theme-bg);
+  color: var(--theme-text);
+}
+
+[data-theme] .sidebar {
+  background: var(--theme-sidebar-bg);
+  color: var(--theme-sidebar-text);
+  border-right: 1px solid var(--theme-border);
+}
+
+[data-theme] .sidebar ul li a {
+  color: var(--theme-sidebar-text);
+}
+
+[data-theme] .sidebar ul li a:hover,
+[data-theme] .sidebar ul li.active > a {
+  color: var(--theme-accent);
+}
+
+[data-theme] .sidebar .sidebar-nav > ul > li > a {
+  color: var(--theme-sidebar-text);
+  font-weight: 600;
+}
+
+[data-theme] .markdown-section {
+  color: var(--theme-text);
+}
+
+[data-theme] .markdown-section a {
+  color: var(--theme-accent);
+}
+
+[data-theme] .markdown-section a:hover {
+  color: var(--theme-accent-hover);
+}
+
+[data-theme] .markdown-section code {
+  color: var(--theme-code-inline);
+  background: var(--theme-code-bg);
+  border-radius: 3px;
+  padding: 2px 5px;
+}
+
+[data-theme] .markdown-section pre {
+  background: var(--theme-code-block-bg) !important;
+  border-radius: 6px;
+}
+
+[data-theme] .markdown-section pre > code {
+  color: var(--theme-code-text);
+  background: transparent !important;
+}
+
+[data-theme] .markdown-section h1,
+[data-theme] .markdown-section h2,
+[data-theme] .markdown-section h3,
+[data-theme] .markdown-section h4,
+[data-theme] .markdown-section h5,
+[data-theme] .markdown-section h6 {
+  color: var(--theme-heading);
+}
+
+[data-theme] .markdown-section h2 {
+  border-bottom: 1px solid var(--theme-border);
+}
+
+[data-theme] .markdown-section blockquote {
+  border-left: 4px solid var(--theme-accent);
+  color: var(--theme-muted);
+  background: var(--theme-code-bg);
+}
+
+[data-theme] .markdown-section table th {
+  background: var(--theme-code-bg);
+  color: var(--theme-heading);
+}
+
+[data-theme] .markdown-section table td,
+[data-theme] .markdown-section table th {
+  border-color: var(--theme-border);
+}
+
+[data-theme] .markdown-section table td {
+  background: var(--theme-bg);
+}
+
+[data-theme] .markdown-section table tr:nth-child(2n) td {
+  background: var(--theme-code-bg);
+}
+
+[data-theme] .markdown-section hr {
+  border-color: var(--theme-border);
+}
+
+[data-theme] .search input {
+  background: var(--theme-code-bg);
+  color: var(--theme-text);
+  border-color: var(--theme-border);
+}
+
+[data-theme] .search .matching-post {
+  border-bottom-color: var(--theme-border);
+}
+
+[data-theme] .app-name-link {
+  color: var(--theme-accent) !important;
+}
+
+/* ============================================================
+   DARK THEMES
+   ============================================================ */
+
+/* --- Catppuccin Mocha --- */
+[data-theme="catppuccin"] {
+  --theme-bg: #1e1e2e;
+  --theme-text: #cdd6f4;
+  --theme-heading: #cdd6f4;
+  --theme-muted: #a6adc8;
+  --theme-accent: #89b4fa;
+  --theme-accent-hover: #b4d0fb;
+  --theme-sidebar-bg: #181825;
+  --theme-sidebar-text: #bac2de;
+  --theme-border: #313244;
+  --theme-code-bg: #313244;
+  --theme-code-block-bg: #181825;
+  --theme-code-text: #cdd6f4;
+  --theme-code-inline: #f38ba8;
+}
+
+/* --- Tokyo Night --- */
+[data-theme="tokyo-night"] {
+  --theme-bg: #1a1b26;
+  --theme-text: #a9b1d6;
+  --theme-heading: #c0caf5;
+  --theme-muted: #565f89;
+  --theme-accent: #7aa2f7;
+  --theme-accent-hover: #89ddff;
+  --theme-sidebar-bg: #16161e;
+  --theme-sidebar-text: #a9b1d6;
+  --theme-border: #292e42;
+  --theme-code-bg: #292e42;
+  --theme-code-block-bg: #16161e;
+  --theme-code-text: #a9b1d6;
+  --theme-code-inline: #ff9e64;
+}
+
+/* --- Dracula --- */
+[data-theme="dracula"] {
+  --theme-bg: #282a36;
+  --theme-text: #f8f8f2;
+  --theme-heading: #f8f8f2;
+  --theme-muted: #6272a4;
+  --theme-accent: #bd93f9;
+  --theme-accent-hover: #ff79c6;
+  --theme-sidebar-bg: #21222c;
+  --theme-sidebar-text: #f8f8f2;
+  --theme-border: #44475a;
+  --theme-code-bg: #44475a;
+  --theme-code-block-bg: #21222c;
+  --theme-code-text: #f8f8f2;
+  --theme-code-inline: #ff79c6;
+}
+
+/* --- Nord --- */
+[data-theme="nord"] {
+  --theme-bg: #2e3440;
+  --theme-text: #d8dee9;
+  --theme-heading: #eceff4;
+  --theme-muted: #4c566a;
+  --theme-accent: #88c0d0;
+  --theme-accent-hover: #8fbcbb;
+  --theme-sidebar-bg: #272c36;
+  --theme-sidebar-text: #d8dee9;
+  --theme-border: #3b4252;
+  --theme-code-bg: #3b4252;
+  --theme-code-block-bg: #272c36;
+  --theme-code-text: #d8dee9;
+  --theme-code-inline: #bf616a;
+}
+
+/* --- Gruvbox Dark --- */
+[data-theme="gruvbox"] {
+  --theme-bg: #282828;
+  --theme-text: #ebdbb2;
+  --theme-heading: #fbf1c7;
+  --theme-muted: #928374;
+  --theme-accent: #b8bb26;
+  --theme-accent-hover: #fabd2f;
+  --theme-sidebar-bg: #1d2021;
+  --theme-sidebar-text: #ebdbb2;
+  --theme-border: #3c3836;
+  --theme-code-bg: #3c3836;
+  --theme-code-block-bg: #1d2021;
+  --theme-code-text: #ebdbb2;
+  --theme-code-inline: #fe8019;
+}
+
+/* --- One Dark --- */
+[data-theme="one-dark"] {
+  --theme-bg: #282c34;
+  --theme-text: #abb2bf;
+  --theme-heading: #e5c07b;
+  --theme-muted: #5c6370;
+  --theme-accent: #61afef;
+  --theme-accent-hover: #56b6c2;
+  --theme-sidebar-bg: #21252b;
+  --theme-sidebar-text: #abb2bf;
+  --theme-border: #3e4451;
+  --theme-code-bg: #3e4451;
+  --theme-code-block-bg: #21252b;
+  --theme-code-text: #abb2bf;
+  --theme-code-inline: #e06c75;
+}
+
+/* --- Solarized Dark --- */
+[data-theme="solarized"] {
+  --theme-bg: #002b36;
+  --theme-text: #839496;
+  --theme-heading: #93a1a1;
+  --theme-muted: #586e75;
+  --theme-accent: #268bd2;
+  --theme-accent-hover: #2aa198;
+  --theme-sidebar-bg: #001e26;
+  --theme-sidebar-text: #839496;
+  --theme-border: #073642;
+  --theme-code-bg: #073642;
+  --theme-code-block-bg: #001e26;
+  --theme-code-text: #839496;
+  --theme-code-inline: #cb4b16;
+}
+
+/* --- Kanagawa --- */
+[data-theme="kanagawa"] {
+  --theme-bg: #1f1f28;
+  --theme-text: #dcd7ba;
+  --theme-heading: #dcd7ba;
+  --theme-muted: #727169;
+  --theme-accent: #7e9cd8;
+  --theme-accent-hover: #7fb4ca;
+  --theme-sidebar-bg: #16161d;
+  --theme-sidebar-text: #c8c093;
+  --theme-border: #2a2a37;
+  --theme-code-bg: #2a2a37;
+  --theme-code-block-bg: #16161d;
+  --theme-code-text: #dcd7ba;
+  --theme-code-inline: #e46876;
+}
+
+/* --- Rosé Pine --- */
+[data-theme="rose-pine"] {
+  --theme-bg: #191724;
+  --theme-text: #e0def4;
+  --theme-heading: #e0def4;
+  --theme-muted: #6e6a86;
+  --theme-accent: #c4a7e7;
+  --theme-accent-hover: #ebbcba;
+  --theme-sidebar-bg: #1f1d2e;
+  --theme-sidebar-text: #e0def4;
+  --theme-border: #26233a;
+  --theme-code-bg: #26233a;
+  --theme-code-block-bg: #1f1d2e;
+  --theme-code-text: #e0def4;
+  --theme-code-inline: #eb6f92;
+}
+
+/* --- Vesper --- */
+[data-theme="vesper"] {
+  --theme-bg: #101010;
+  --theme-text: #d4d4d4;
+  --theme-heading: #ffffff;
+  --theme-muted: #7a7a7a;
+  --theme-accent: #ffc799;
+  --theme-accent-hover: #ffdfbf;
+  --theme-sidebar-bg: #0a0a0a;
+  --theme-sidebar-text: #d4d4d4;
+  --theme-border: #2a2a2a;
+  --theme-code-bg: #1a1a1a;
+  --theme-code-block-bg: #0a0a0a;
+  --theme-code-text: #d4d4d4;
+  --theme-code-inline: #ffc799;
+}
+
+/* ============================================================
+   LIGHT THEMES
+   ============================================================ */
+
+/* --- Catppuccin Latte --- */
+[data-theme="catppuccin-latte"] {
+  --theme-bg: #eff1f5;
+  --theme-text: #4c4f69;
+  --theme-heading: #4c4f69;
+  --theme-muted: #8c8fa1;
+  --theme-accent: #1e66f5;
+  --theme-accent-hover: #7287fd;
+  --theme-sidebar-bg: #e6e9ef;
+  --theme-sidebar-text: #4c4f69;
+  --theme-border: #ccd0da;
+  --theme-code-bg: #e6e9ef;
+  --theme-code-block-bg: #dce0e8;
+  --theme-code-text: #4c4f69;
+  --theme-code-inline: #d20f39;
+}
+
+/* --- Tokyo Night Day --- */
+[data-theme="tokyo-night-day"] {
+  --theme-bg: #e1e2e7;
+  --theme-text: #3760bf;
+  --theme-heading: #343b58;
+  --theme-muted: #6172b0;
+  --theme-accent: #2e7de9;
+  --theme-accent-hover: #166775;
+  --theme-sidebar-bg: #d5d6db;
+  --theme-sidebar-text: #3760bf;
+  --theme-border: #c4c8da;
+  --theme-code-bg: #d5d6db;
+  --theme-code-block-bg: #c9cad4;
+  --theme-code-text: #3760bf;
+  --theme-code-inline: #b15c00;
+}
+
+/* --- Gruvbox Light --- */
+[data-theme="gruvbox-light"] {
+  --theme-bg: #fbf1c7;
+  --theme-text: #3c3836;
+  --theme-heading: #282828;
+  --theme-muted: #7c6f64;
+  --theme-accent: #79740e;
+  --theme-accent-hover: #b57614;
+  --theme-sidebar-bg: #f2e5bc;
+  --theme-sidebar-text: #3c3836;
+  --theme-border: #d5c4a1;
+  --theme-code-bg: #f2e5bc;
+  --theme-code-block-bg: #ebdbb2;
+  --theme-code-text: #3c3836;
+  --theme-code-inline: #9d0006;
+}
+
+/* --- One Light --- */
+[data-theme="one-light"] {
+  --theme-bg: #fafafa;
+  --theme-text: #383a42;
+  --theme-heading: #383a42;
+  --theme-muted: #a0a1a7;
+  --theme-accent: #4078f2;
+  --theme-accent-hover: #0184bc;
+  --theme-sidebar-bg: #f0f0f0;
+  --theme-sidebar-text: #383a42;
+  --theme-border: #d3d3d3;
+  --theme-code-bg: #f0f0f0;
+  --theme-code-block-bg: #e8e8e8;
+  --theme-code-text: #383a42;
+  --theme-code-inline: #e45649;
+}
+
+/* --- Solarized Light --- */
+[data-theme="solarized-light"] {
+  --theme-bg: #fdf6e3;
+  --theme-text: #657b83;
+  --theme-heading: #586e75;
+  --theme-muted: #93a1a1;
+  --theme-accent: #268bd2;
+  --theme-accent-hover: #2aa198;
+  --theme-sidebar-bg: #eee8d5;
+  --theme-sidebar-text: #657b83;
+  --theme-border: #eee8d5;
+  --theme-code-bg: #eee8d5;
+  --theme-code-block-bg: #eee8d5;
+  --theme-code-text: #657b83;
+  --theme-code-inline: #cb4b16;
+}
+
+/* --- Kanagawa Lotus --- */
+[data-theme="kanagawa-lotus"] {
+  --theme-bg: #f2ecbc;
+  --theme-text: #545464;
+  --theme-heading: #43436c;
+  --theme-muted: #8a8980;
+  --theme-accent: #4d699b;
+  --theme-accent-hover: #597b75;
+  --theme-sidebar-bg: #e7dba0;
+  --theme-sidebar-text: #545464;
+  --theme-border: #d7c87e;
+  --theme-code-bg: #e7dba0;
+  --theme-code-block-bg: #dcd5ac;
+  --theme-code-text: #545464;
+  --theme-code-inline: #c84053;
+}
+
+/* --- Rosé Pine Dawn --- */
+[data-theme="rose-pine-dawn"] {
+  --theme-bg: #faf4ed;
+  --theme-text: #575279;
+  --theme-heading: #575279;
+  --theme-muted: #9893a5;
+  --theme-accent: #907aa9;
+  --theme-accent-hover: #d7827e;
+  --theme-sidebar-bg: #fffaf3;
+  --theme-sidebar-text: #575279;
+  --theme-border: #dfdad9;
+  --theme-code-bg: #f2e9e1;
+  --theme-code-block-bg: #fffaf3;
+  --theme-code-text: #575279;
+  --theme-code-inline: #b4637a;
+}
