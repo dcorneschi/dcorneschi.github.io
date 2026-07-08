@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="catppuccin">
+<html lang="en" data-theme="default">
 <head>
   <meta charset="UTF-8">
   <title>Daniel Corneschi Wiki</title>
@@ -225,7 +225,7 @@
 
     // Load saved theme on startup
     (function() {
-      var saved = localStorage.getItem('docsify-theme') || 'catppuccin';
+      var saved = localStorage.getItem('docsify-theme') || 'default';
       document.documentElement.setAttribute('data-theme', saved);
     })();
 
@@ -287,7 +287,7 @@
 
         // Add modal if not exists
         if (document.querySelector('.theme-modal-overlay')) return;
-        var saved = localStorage.getItem('docsify-theme') || 'catppuccin';
+        var saved = localStorage.getItem('docsify-theme') || 'default';
 
         var html = '<div class="theme-modal">';
         html += '<div class="theme-modal-header"><h3>settings</h3><span class="tab-active">theme</span></div>';
