@@ -114,7 +114,7 @@
 }
 
 [data-theme] .markdown-section table tr:nth-child(2n) td {
-  background: var(--theme-code-bg);
+  background: var(--theme-bg);
 }
 
 [data-theme] .markdown-section hr {
