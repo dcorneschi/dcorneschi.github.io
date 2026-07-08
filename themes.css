@@ -4,7 +4,10 @@
 
 /* CSS variables mapped to Docsify's internal structure */
 [data-theme] {
-  --theme-color: var(--theme-accent);
+  --theme-color: var(--theme-heading);
+  --base-color: var(--theme-text);
+  --base-background-color: var(--theme-bg);
+  --sidebar-background: var(--theme-sidebar-bg);
 }
 
 [data-theme] body {
@@ -46,11 +49,11 @@
 }
 
 [data-theme] .markdown-section a {
-  color: var(--theme-accent);
+  color: var(--theme-accent) !important;
 }
 
 [data-theme] .markdown-section a:hover {
-  color: var(--theme-accent-hover);
+  color: var(--theme-accent-hover) !important;
 }
 
 [data-theme] .markdown-section code {
@@ -76,7 +79,7 @@
 [data-theme] .markdown-section h4,
 [data-theme] .markdown-section h5,
 [data-theme] .markdown-section h6 {
-  color: var(--theme-heading);
+  color: var(--theme-heading) !important;
 }
 
 [data-theme] .markdown-section h1 a,
@@ -87,6 +90,11 @@
 [data-theme] .markdown-section h6 a {
   text-decoration: none !important;
   border-bottom: none !important;
+  color: var(--theme-heading) !important;
+}
+
+[data-theme] .markdown-section strong {
+  color: var(--theme-heading) !important;
 }
 
 [data-theme] .markdown-section h2 {
@@ -174,7 +182,7 @@
 [data-theme="catppuccin"] {
   --theme-bg: #1e1e2e;
   --theme-text: #cdd6f4;
-  --theme-heading: #cdd6f4;
+  --theme-heading: #b4befe;
   --theme-muted: #a6adc8;
   --theme-accent: #89b4fa;
   --theme-accent-hover: #b4d0fb;
@@ -191,7 +199,7 @@
 [data-theme="tokyo-night"] {
   --theme-bg: #1a1b26;
   --theme-text: #a9b1d6;
-  --theme-heading: #c0caf5;
+  --theme-heading: #7aa2f7;
   --theme-muted: #565f89;
   --theme-accent: #7aa2f7;
   --theme-accent-hover: #89ddff;
@@ -208,7 +216,7 @@
 [data-theme="dracula"] {
   --theme-bg: #282a36;
   --theme-text: #f8f8f2;
-  --theme-heading: #f8f8f2;
+  --theme-heading: #bd93f9;
   --theme-muted: #6272a4;
   --theme-accent: #bd93f9;
   --theme-accent-hover: #ff79c6;
@@ -225,7 +233,7 @@
 [data-theme="nord"] {
   --theme-bg: #2e3440;
   --theme-text: #d8dee9;
-  --theme-heading: #eceff4;
+  --theme-heading: #88c0d0;
   --theme-muted: #4c566a;
   --theme-accent: #88c0d0;
   --theme-accent-hover: #8fbcbb;
@@ -242,7 +250,7 @@
 [data-theme="gruvbox"] {
   --theme-bg: #282828;
   --theme-text: #ebdbb2;
-  --theme-heading: #fbf1c7;
+  --theme-heading: #fabd2f;
   --theme-muted: #928374;
   --theme-accent: #b8bb26;
   --theme-accent-hover: #fabd2f;
@@ -276,7 +284,7 @@
 [data-theme="solarized"] {
   --theme-bg: #002b36;
   --theme-text: #839496;
-  --theme-heading: #93a1a1;
+  --theme-heading: #2aa198;
   --theme-muted: #586e75;
   --theme-accent: #268bd2;
   --theme-accent-hover: #2aa198;
@@ -293,7 +301,7 @@
 [data-theme="kanagawa"] {
   --theme-bg: #1f1f28;
   --theme-text: #dcd7ba;
-  --theme-heading: #dcd7ba;
+  --theme-heading: #7e9cd8;
   --theme-muted: #727169;
   --theme-accent: #7e9cd8;
   --theme-accent-hover: #7fb4ca;
@@ -310,7 +318,7 @@
 [data-theme="rose-pine"] {
   --theme-bg: #191724;
   --theme-text: #e0def4;
-  --theme-heading: #e0def4;
+  --theme-heading: #c4a7e7;
   --theme-muted: #6e6a86;
   --theme-accent: #c4a7e7;
   --theme-accent-hover: #ebbcba;
@@ -327,7 +335,7 @@
 [data-theme="vesper"] {
   --theme-bg: #101010;
   --theme-text: #d4d4d4;
-  --theme-heading: #ffffff;
+  --theme-heading: #ffc799;
   --theme-muted: #7a7a7a;
   --theme-accent: #ffc799;
   --theme-accent-hover: #ffdfbf;
@@ -355,6 +363,23 @@
   --theme-code-block-bg: #050505;
   --theme-code-text: #c8c8c8;
   --theme-code-inline: #f5d623;
+}
+
+/* --- Everforest Dark --- */
+[data-theme="everforest"] {
+  --theme-bg: #2d353b;
+  --theme-text: #d3c6aa;
+  --theme-heading: #a7c080;
+  --theme-muted: #859289;
+  --theme-accent: #a7c080;
+  --theme-accent-hover: #83c092;
+  --theme-sidebar-bg: #272e33;
+  --theme-sidebar-text: #d3c6aa;
+  --theme-border: #3d484d;
+  --theme-code-bg: #343f44;
+  --theme-code-block-bg: #272e33;
+  --theme-code-text: #d3c6aa;
+  --theme-code-inline: #e69875;
 }
 
 /* ============================================================

@@ -10,6 +10,28 @@
     .markdown-section {
       font-size: 15px;
     }
+    /* Force heading and bold colors on all themes */
+    [data-theme] .markdown-section h1,
+    [data-theme] .markdown-section h2,
+    [data-theme] .markdown-section h3,
+    [data-theme] .markdown-section h4,
+    [data-theme] .markdown-section h5,
+    [data-theme] .markdown-section h6,
+    [data-theme] .markdown-section h1 a,
+    [data-theme] .markdown-section h2 a,
+    [data-theme] .markdown-section h3 a,
+    [data-theme] .markdown-section h4 a,
+    [data-theme] .markdown-section h5 a,
+    [data-theme] .markdown-section h6 a,
+    [data-theme] .anchor span,
+    [data-theme] .markdown-section .anchor span {
+      color: var(--theme-heading) !important;
+      text-decoration: none !important;
+    }
+    [data-theme] .markdown-section strong,
+    [data-theme] .markdown-section b {
+      color: var(--theme-heading) !important;
+    }
     .markdown-section h1,
     .markdown-section h2,
     .markdown-section h3,
