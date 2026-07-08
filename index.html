@@ -32,25 +32,147 @@
       font-size: 16px;
     }
 
-    /* Theme switcher styles — bottom of the sidebar */
+    /* Theme switcher — trigger button in sidebar */
     .sidebar .theme-switcher {
       padding: 10px 15px;
       border-top: 1px solid var(--theme-border, #e8e8e8);
       margin-top: 20px;
     }
-    .sidebar .theme-switcher select {
+    .sidebar .theme-switcher button {
       width: 100%;
-      padding: 6px 10px;
+      padding: 8px 12px;
       border-radius: 4px;
       border: 1px solid var(--theme-border, #ccc);
       background: var(--theme-code-bg, #f8f8f8);
       color: var(--theme-text, #333);
       font-size: 13px;
+      font-family: monospace;
       cursor: pointer;
+      text-align: left;
     }
-    .sidebar .theme-switcher select:focus {
-      outline: none;
+    .sidebar .theme-switcher button:hover {
       border-color: var(--theme-accent, #42b983);
+    }
+
+    /* Theme modal overlay */
+    .theme-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+    }
+    .theme-modal-overlay.active {
+      display: flex;
+    }
+
+    /* Theme modal panel — always dark, slightly transparent */
+    .theme-modal {
+      background: rgba(22, 22, 30, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      width: 360px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      font-family: monospace;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255,255,255,0.1) inset;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .theme-modal-header {
+      padding: 20px 24px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .theme-modal-header h3 {
+      margin: 0 0 10px;
+      color: #e0def4;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .theme-modal-header .tab-active {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(126, 156, 216, 0.85);
+      color: #16161e;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .theme-modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 0;
+    }
+
+    .theme-modal-group {
+      padding: 10px 24px 4px;
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.35);
+      text-transform: lowercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 2px;
+    }
+
+    .theme-modal-item {
+      padding: 9px 24px;
+      cursor: pointer;
+      color: rgba(220, 215, 186, 0.85);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.15s ease;
+      border-radius: 0;
+    }
+    .theme-modal-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .theme-modal-item.selected {
+      background: rgba(126, 156, 216, 0.8);
+      color: #16161e;
+    }
+    .theme-modal-item.selected .checkmark {
+      display: inline;
+    }
+    .theme-modal-item .checkmark {
+      display: none;
+      font-size: 12px;
+    }
+    .theme-modal-item .arrow {
+      display: none;
+    }
+    .theme-modal-item.selected .arrow {
+      display: inline;
+      margin-right: 4px;
+    }
+
+    .theme-modal-footer {
+      padding: 12px 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+    .theme-modal-footer kbd {
+      display: inline-block;
+      padding: 2px 7px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(220, 215, 186, 0.7);
+      font-size: 10px;
+      margin-left: 4px;
     }
   </style>
 </head>
@@ -76,6 +198,26 @@
     function switchTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('docsify-theme', theme);
+      updateModalSelection(theme);
+    }
+
+    function updateModalSelection(theme) {
+      var items = document.querySelectorAll('.theme-modal-item');
+      items.forEach(function(item) {
+        if (item.dataset.theme === theme) {
+          item.classList.add('selected');
+        } else {
+          item.classList.remove('selected');
+        }
+      });
+    }
+
+    function openThemeModal() {
+      document.querySelector('.theme-modal-overlay').classList.add('active');
+    }
+
+    function closeThemeModal() {
+      document.querySelector('.theme-modal-overlay').classList.remove('active');
     }
 
     // Load saved theme on startup
@@ -84,40 +226,97 @@
       document.documentElement.setAttribute('data-theme', saved);
     })();
 
-    // Plugin to inject theme switcher at the bottom of the sidebar
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      var overlay = document.querySelector('.theme-modal-overlay');
+      if (!overlay) return;
+      if (e.key === 'Escape' && overlay.classList.contains('active')) {
+        closeThemeModal();
+      }
+    });
+
+    // Close on overlay click
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('theme-modal-overlay')) {
+        closeThemeModal();
+      }
+    });
+
+    // Theme data
+    var themes = {
+      dark: [
+        { id: 'catppuccin', name: 'catppuccin' },
+        { id: 'tokyo-night', name: 'tokyo night' },
+        { id: 'dracula', name: 'dracula' },
+        { id: 'nord', name: 'nord' },
+        { id: 'gruvbox', name: 'gruvbox' },
+        { id: 'one-dark', name: 'one dark' },
+        { id: 'solarized', name: 'solarized' },
+        { id: 'kanagawa', name: 'kanagawa' },
+        { id: 'rose-pine', name: 'rose pine' },
+        { id: 'vesper', name: 'vesper' }
+      ],
+      light: [
+        { id: 'catppuccin-latte', name: 'catppuccin latte' },
+        { id: 'tokyo-night-day', name: 'tokyo day' },
+        { id: 'gruvbox-light', name: 'gruvbox light' },
+        { id: 'one-light', name: 'one light' },
+        { id: 'solarized-light', name: 'solarized light' },
+        { id: 'kanagawa-lotus', name: 'kanagawa lotus' },
+        { id: 'rose-pine-dawn', name: 'rose pine dawn' }
+      ]
+    };
+
+    // Plugin to inject theme switcher button and modal
     function themeSwitcherPlugin(hook) {
       hook.doneEach(function() {
-        if (document.getElementById('theme-select')) return;
-        var sidebar = document.querySelector('.sidebar-nav');
-        if (!sidebar) return;
-        var div = document.createElement('div');
-        div.className = 'theme-switcher';
-        div.innerHTML = '<select id="theme-select" onchange="switchTheme(this.value)">' +
-          '<optgroup label="Dark Themes">' +
-          '<option value="catppuccin">Catppuccin (Mocha)</option>' +
-          '<option value="tokyo-night">Tokyo Night</option>' +
-          '<option value="dracula">Dracula</option>' +
-          '<option value="nord">Nord</option>' +
-          '<option value="gruvbox">Gruvbox Dark</option>' +
-          '<option value="one-dark">One Dark</option>' +
-          '<option value="solarized">Solarized Dark</option>' +
-          '<option value="kanagawa">Kanagawa</option>' +
-          '<option value="rose-pine">Rosé Pine</option>' +
-          '<option value="vesper">Vesper</option>' +
-          '</optgroup>' +
-          '<optgroup label="Light Themes">' +
-          '<option value="catppuccin-latte">Catppuccin (Latte)</option>' +
-          '<option value="tokyo-night-day">Tokyo Night Day</option>' +
-          '<option value="gruvbox-light">Gruvbox Light</option>' +
-          '<option value="one-light">One Light</option>' +
-          '<option value="solarized-light">Solarized Light</option>' +
-          '<option value="kanagawa-lotus">Kanagawa Lotus</option>' +
-          '<option value="rose-pine-dawn">Rosé Pine Dawn</option>' +
-          '</optgroup>' +
-          '</select>';
-        sidebar.appendChild(div);
+        // Add sidebar button
+        if (!document.getElementById('theme-btn')) {
+          var sidebar = document.querySelector('.sidebar-nav');
+          if (!sidebar) return;
+          var div = document.createElement('div');
+          div.className = 'theme-switcher';
+          div.innerHTML = '<button id="theme-btn" onclick="openThemeModal()">⚙ theme</button>';
+          sidebar.appendChild(div);
+        }
+
+        // Add modal if not exists
+        if (document.querySelector('.theme-modal-overlay')) return;
         var saved = localStorage.getItem('docsify-theme') || 'catppuccin';
-        document.getElementById('theme-select').value = saved;
+
+        var html = '<div class="theme-modal">';
+        html += '<div class="theme-modal-header"><h3>settings</h3><span class="tab-active">theme</span></div>';
+        html += '<div class="theme-modal-body">';
+
+        html += '<div class="theme-modal-group">dark</div>';
+        themes.dark.forEach(function(t) {
+          var sel = t.id === saved ? ' selected' : '';
+          html += '<div class="theme-modal-item' + sel + '" data-theme="' + t.id + '" onclick="switchTheme(\'' + t.id + '\');closeThemeModal()">';
+          html += '<span><span class="arrow">▸ </span>' + t.name + '</span>';
+          html += '<span class="checkmark">✓</span>';
+          html += '</div>';
+        });
+
+        html += '<div class="theme-modal-group">light</div>';
+        themes.light.forEach(function(t) {
+          var sel = t.id === saved ? ' selected' : '';
+          html += '<div class="theme-modal-item' + sel + '" data-theme="' + t.id + '" onclick="switchTheme(\'' + t.id + '\');closeThemeModal()">';
+          html += '<span><span class="arrow">▸ </span>' + t.name + '</span>';
+          html += '<span class="checkmark">✓</span>';
+          html += '</div>';
+        });
+
+        html += '</div>';
+        html += '<div class="theme-modal-footer">';
+        html += '<span>↑↓ select</span>';
+        html += '<span><kbd>↵</kbd> apply  <kbd>esc</kbd> close</span>';
+        html += '</div>';
+        html += '</div>';
+
+        var overlay = document.createElement('div');
+        overlay.className = 'theme-modal-overlay';
+        overlay.innerHTML = html;
+        document.body.appendChild(overlay);
       });
     }
 

@@ -106,10 +106,26 @@
   background: var(--theme-code-bg);
   color: var(--theme-text);
   border-color: var(--theme-border);
+  border-width: 1px;
+  border-style: solid;
+}
+
+[data-theme] .search input:focus {
+  border-color: var(--theme-accent);
+  box-shadow: none;
 }
 
 [data-theme] .search .matching-post {
   border-bottom-color: var(--theme-border);
+}
+
+[data-theme] .search {
+  border-bottom: 1px solid var(--theme-border) !important;
+}
+
+[data-theme] .sidebar,
+[data-theme] .sidebar:after {
+  border-color: var(--theme-border);
 }
 
 [data-theme] .app-name-link {
