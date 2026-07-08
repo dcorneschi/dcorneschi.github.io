@@ -158,6 +158,12 @@
 
 [data-theme] .app-name-link {
   color: var(--theme-accent) !important;
+  text-decoration: none !important;
+}
+
+[data-theme] .sidebar .app-name {
+  padding: 20px 15px 10px;
+  text-align: left;
 }
 
 /* ============================================================
