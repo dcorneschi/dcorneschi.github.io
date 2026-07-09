@@ -331,6 +331,23 @@
   --theme-code-inline: #eb6f92;
 }
 
+/* --- Cursor --- */
+[data-theme="cursor"] {
+  --theme-bg: #f7f7f4;
+  --theme-text: #14120b;
+  --theme-heading: #14120b;
+  --theme-muted: #6b6b5e;
+  --theme-accent: #c14924;
+  --theme-accent-hover: #a03d1e;
+  --theme-sidebar-bg: #f7f7f4;
+  --theme-sidebar-text: #14120b;
+  --theme-border: #e5e5e0;
+  --theme-code-bg: #eeeee9;
+  --theme-code-block-bg: #eeeee9;
+  --theme-code-text: #14120b;
+  --theme-code-inline: #c14924;
+}
+
 /* --- Vesper --- */
 [data-theme="vesper"] {
   --theme-bg: #101010;
