@@ -4,7 +4,7 @@
   - [crictl Cheatsheet](cheatsheets/crictl/README.md)
   - [Helm Cheatsheet](cheatsheets/helm/README.md)
   - [k9s Cheatsheet](cheatsheets/k9s/README.md)
-  - [kitty Cheatsheet](cheatsheets/kitty/README.md)
+  - [Kitty Cheatsheet](cheatsheets/kitty/README.md)
   - [ss Cheatsheet](cheatsheets/ss/README.md)
   - [Terraform Cheatsheet](cheatsheets/terraform/README.md)
   - [tmux Cheatsheet](cheatsheets/tmux/README.md)
