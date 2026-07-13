@@ -524,14 +524,374 @@ tf_base64_decode() {
 }
 ```
 
-### Best Practices & tips
+### Best Practices
 
-1. Always commit lock files to version control alongside your Terraform configuration files.
-2. Never add `.terraform.lock.hcl to` `.gitignore` - ignoring lock files defeats their purpose.
-3. Never commit .tfvars files with secrets.
-3. Store state files remotely and securely.
-5. Use workspaces for environment separation.
-6. Use modules for reusable components.
-7. Pin provider versions in production.
-8. Always run `terraform plan` before `apply`.
-9. Review and understand the execution plan before applying.
+#### Project Structure
+
+```
+terraform-project/
+├── environments/
+│   ├── dev/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   │   ├── terraform.tfvars
+│   │   └── versions.tf
+│   ├── staging/
+│   └── prod/
+├── modules/
+│   ├── vpc/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   │   └── versions.tf
+│   ├── ec2/
+│   └── rds/
+├── .gitignore
+├── README.md
+└── Makefile
+```
+
+#### File Organization
+
+| File | Purpose |
+|------|---------|
+| `main.tf` | Primary resource definitions and backend config |
+| `variables.tf` | Input variable declarations |
+| `outputs.tf` | Output value definitions |
+| `versions.tf` | Provider version constraints |
+| `locals.tf` | Local values and computed expressions |
+| `terraform.tfvars` | Environment-specific variable values |
+| `*.auto.tfvars` | Auto-loaded variable values |
+
+#### Naming Conventions
+
+```hcl
+# Resources: snake_case
+resource "aws_instance" "web_server" { }
+
+# Resource tags: kebab-case pattern <project>-<environment>-<resource>-<purpose>
+tags = {
+  Name = "${var.project_name}-${var.environment}-web-server"
+}
+
+# Variables: snake_case with descriptive names
+variable "database_instance_class" { }
+
+# Modules: snake_case
+module "vpc_network" { }
+```
+
+#### Tagging Strategy
+
+```hcl
+locals {
+  mandatory_tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    ManagedBy   = "Terraform"
+    Owner       = var.team_name
+    CostCenter  = var.cost_center
+  }
+
+  common_tags = merge(local.mandatory_tags, {
+    Application = var.application_name
+  })
+}
+
+# Apply to resources
+resource "aws_instance" "web" {
+  # ...
+  tags = merge(local.common_tags, {
+    Name = "${var.project_name}-${var.environment}-web-server"
+    Role = "web-server"
+  })
+}
+```
+
+#### Input Validation
+
+```hcl
+variable "environment" {
+  description = "Environment name"
+  type        = string
+
+  validation {
+    condition     = can(regex("^(dev|staging|prod)$", var.environment))
+    error_message = "Environment must be dev, staging, or prod."
+  }
+}
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+  default     = "t3.micro"
+
+  validation {
+    condition = contains([
+      "t3.micro", "t3.small", "t3.medium", "t3.large",
+      "t3.xlarge", "t3.2xlarge"
+    ], var.instance_type)
+    error_message = "Instance type must be a valid t3 instance type."
+  }
+}
+
+variable "cidr_block" {
+  description = "VPC CIDR block"
+  type        = string
+
+  validation {
+    condition     = can(cidrhost(var.cidr_block, 0))
+    error_message = "CIDR block must be a valid IPv4 CIDR."
+  }
+}
+```
+
+#### Sensitive Data Management
+
+```hcl
+# Mark variables as sensitive
+variable "database_password" {
+  description = "Database master password"
+  type        = string
+  sensitive   = true
+}
+
+# Use AWS Secrets Manager
+data "aws_secretsmanager_secret_version" "db_password" {
+  secret_id = "prod/database/password"
+}
+
+locals {
+  db_password = jsondecode(
+    data.aws_secretsmanager_secret_version.db_password.secret_string
+  )["password"]
+}
+
+# Mark outputs as sensitive
+output "database_endpoint" {
+  description = "Database endpoint"
+  value       = aws_db_instance.main.endpoint
+  sensitive   = true
+}
+```
+
+#### Remote State with Encryption and Locking
+
+```hcl
+terraform {
+  backend "s3" {
+    bucket         = "company-terraform-state"
+    key            = "environments/prod/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+    kms_key_id     = "arn:aws:kms:us-east-1:123456789012:key/..."
+    dynamodb_table = "terraform-state-locks"
+    role_arn       = "arn:aws:iam::123456789012:role/TerraformStateRole"
+  }
+}
+```
+
+State file path convention:
+
+```
+company-terraform-state/
+├── environments/
+│   ├── dev/terraform.tfstate
+│   ├── staging/terraform.tfstate
+│   └── prod/terraform.tfstate
+└── global/
+    ├── iam.tfstate
+    └── route53.tfstate
+```
+
+#### Lifecycle Rules
+
+```hcl
+resource "aws_instance" "web" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
+
+  lifecycle {
+    create_before_destroy = true       # Zero-downtime replacements
+    prevent_destroy       = true       # Protect production resources
+    ignore_changes = [
+      ami,                             # Ignore AMI drift
+      tags["LastUpdated"],
+    ]
+  }
+}
+
+# Controlled replacements with replace_triggered_by
+resource "aws_instance" "web" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
+
+  lifecycle {
+    replace_triggered_by = [
+      aws_launch_template.web.latest_version
+    ]
+  }
+}
+```
+
+#### for_each vs count
+
+```hcl
+# Use for_each when resources are identified by name/key (safer for additions/removals)
+resource "aws_instance" "web" {
+  for_each = toset(var.availability_zones)
+
+  ami               = data.aws_ami.ubuntu.id
+  instance_type     = var.instance_type
+  availability_zone = each.value
+
+  tags = merge(local.common_tags, {
+    Name = "${var.project_name}-web-${each.value}"
+  })
+}
+
+# Use count only for conditional creation
+resource "aws_eip" "web" {
+  count    = var.create_eip ? 1 : 0
+  instance = aws_instance.web.id
+  domain   = "vpc"
+}
+```
+
+#### Error Handling
+
+```hcl
+# Conditional resources with count
+resource "aws_eip" "web" {
+  count    = var.create_eip ? 1 : 0
+  instance = aws_instance.web.id
+  domain   = "vpc"
+}
+
+# Safe references to conditional resources
+output "eip_public_ip" {
+  value = var.create_eip ? aws_eip.web[0].public_ip : aws_instance.web.public_ip
+}
+
+# Fallback values with try()
+locals {
+  ami_id = try(data.aws_ami.app.id, var.default_ami_id)
+}
+```
+
+#### Network Security
+
+```hcl
+# Reference security groups instead of CIDR blocks where possible
+resource "aws_security_group" "web" {
+  name_prefix = "${var.project_name}-${var.environment}-web-"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description     = "HTTPS from ALB"
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb.id]
+  }
+
+  egress {
+    description = "HTTPS to internet"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = local.common_tags
+}
+```
+
+#### CI/CD — GitHub Actions
+
+```yaml
+name: Terraform
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.0
+    - run: terraform init
+    - run: terraform validate
+    - run: terraform fmt -check
+    - run: terraform plan -var-file="dev.tfvars"
+    - name: Apply (main only)
+      if: github.ref == 'refs/heads/main'
+      run: terraform apply -auto-approve -var-file="prod.tfvars"
+```
+
+#### CI/CD — GitLab CI
+
+```yaml
+stages: [validate, plan, apply]
+
+variables:
+  TF_ROOT: ${CI_PROJECT_DIR}/environments/prod
+
+before_script:
+  - cd ${TF_ROOT}
+  - terraform init
+
+validate:
+  stage: validate
+  script:
+    - terraform validate
+    - terraform fmt -check
+
+plan:
+  stage: plan
+  script:
+    - terraform plan -var-file="prod.tfvars" -out=tfplan
+  artifacts:
+    paths: [${TF_ROOT}/tfplan]
+  only: [main]
+
+apply:
+  stage: apply
+  script:
+    - terraform apply tfplan
+  dependencies: [plan]
+  when: manual
+  only: [main]
+```
+
+#### Pre-commit Checklist
+
+```bash
+terraform fmt -recursive
+terraform validate
+tfsec .
+terraform plan -var-file="dev.tfvars"
+terraform plan -refresh-only        # Check for drift
+```
+
+#### General Rules
+
+1. Always commit `.terraform.lock.hcl` to version control.
+2. Never commit `.tfvars` files with secrets.
+3. Store state files remotely with encryption and locking.
+4. Use workspaces or separate directories for environment isolation.
+5. Use modules for reusable components.
+6. Pin provider versions in production.
+7. Always run `terraform plan` before `apply`.
+8. Review and understand the execution plan before applying.
+9. Use `for_each` over `count` for named resources.
+10. Add `validation` blocks to all input variables.
+11. Mark sensitive outputs and variables with `sensitive = true`.
+12. Use `create_before_destroy` for zero-downtime replacements.
+13. Use `prevent_destroy` on critical production resources.
