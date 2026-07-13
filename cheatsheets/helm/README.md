@@ -346,24 +346,29 @@ dependencies:
 | `helm get values myrelease` | Show **actual values used** for an installed release |
 | `helm get values myrelease --all` | Show all values including defaults for an installed release |
 
-### The `--reuse-values` Flag
-
-When upgrading, `--reuse-values` reuses the last release's values and merges any overrides from `--set` and `-f`.
-
-```bash
-helm upgrade my-release my-chart --reuse-values --set newEnv=production
-```
-
-**Important caveats:**
-- Disregards any changes in the new chart version's default values
-- If you run `helm upgrade` **without** `--set`/`-f`, `--reuse-values` is used by default
-- If you run `helm upgrade` **with** `--set`/`-f`, `--reset-values` is used by default
+### Upgrade Values Flags
 
 | Flag | Details |
 |------|---------|
 | `--reuse-values` | Reuse last release values, merge new overrides |
-| `--reset-values` | Reset values to chart defaults |
+| `--reset-values` | Reset values to chart defaults, ignore previous values |
 | `--reset-then-reuse-values` | Reset to chart defaults, then merge old values back (Helm 3.14.0+) |
+
+```bash
+# Reuse previous values, add a tweak
+helm upgrade my-release my-chart --reuse-values --set newEnv=production
+
+# Override entirely — no old values retained
+helm upgrade my-release my-chart --reset-values --set newKey=newValue
+
+# Reset to defaults then merge old values back
+helm upgrade my-release my-chart --reset-then-reuse-values --set version=2.0
+```
+
+**Important caveats:**
+- `--reuse-values` disregards any changes in the new chart version's default values
+- If you run `helm upgrade` **without** `--set`/`-f`, `--reuse-values` is used by default
+- If you run `helm upgrade` **with** `--set`/`-f`, `--reset-values` is used by default
 
 ### Multiple Values Files
 
