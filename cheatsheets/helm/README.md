@@ -21,6 +21,13 @@ Comprehensive Helm reference guide featuring installation instructions, reposito
 helm version
 ```
 
+### Shell Completion
+
+| Shell | Command |
+|-------|---------|
+| Bash | `helm completion bash > /etc/bash_completion.d/helm` |
+| Zsh | `helm completion zsh > ~/.zsh/completions/_helm` |
+
 ## Chart Structure
 
 ### Directory Layout
@@ -61,6 +68,8 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | `helm repo list` | List configured repositories |
 | `helm repo list -o yaml` | List repositories in YAML format |
 | `helm repo remove <repo-name>` | Remove a repository |
+| `helm repo index <DIR>` | Generate an index file from charts found in a directory |
+| `helm repo index <DIR> --merge` | Merge generated index with an existing index file |
 
 ### Search Commands
 
@@ -91,10 +100,13 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | `helm install metrics-server metrics-server/metrics-server --namespace kube-system` | Install in specific namespace |
 | `helm install traefik traefik/traefik -n traefik --create-namespace` | Install and create the namespace |
 | `helm install traefik traefik/traefik -n traefik --create-namespace --set service.type=LoadBalancer` | Install with inline values |
+| `helm install traefik traefik/traefik --set-string replicas=3` | Override value as string type |
 | `helm install traefik traefik/traefik -f values.yaml` | Install with values file |
 | `helm install traefik ./traefik` | Install from local chart |
 | `helm install traefik ./traefik-37.3.0.tgz` | Install from packaged chart |
 | `helm install metrics-server metrics-server/metrics-server --version 3.12.2` | Install with specific version |
+| `helm install traefik traefik/traefik --verify` | Verify package signature before installing |
+| `helm install traefik traefik/traefik --dependency-update` | Update missing dependencies before installing |
 
 ### Advanced Installation
 
@@ -124,6 +136,7 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | `helm upgrade metrics-server metrics-server/metrics-server -n kube-system --dry-run` | Dry run upgrade |
 | `helm upgrade metrics-server metrics-server/metrics-server -n kube-system --force` | Force update (recreate pods) |
 | `helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system` | Upgrade and install if not exists |
+| `helm upgrade metrics-server metrics-server/metrics-server -n kube-system --dependency-update` | Update missing dependencies before upgrading |
 
 ## Rollback
 
@@ -149,6 +162,7 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | Command | Details |
 |---------|---------|
 | `helm pull traefik/traefik` | Download chart package (tgz) to current directory |
+| `helm pull traefik/traefik --verify` | Download and verify package signature |
 | `helm pull traefik/traefik --untar` | Download and extract |
 | `helm pull traefik/traefik --destination ~/helm-charts` | Download to specific location |
 | `helm pull traefik/traefik --destination ~/helm-charts --untar` | Download and extract to specific location |
@@ -171,6 +185,7 @@ helm pull bitnami/postgresql --destination ~/helm-charts/postgres --untar
 |---------|---------|
 | `helm create my-chart` | Create a new chart |
 | `helm package my-chart` | Package chart into tarball |
+| `helm package my-chart --version 1.2.0` | Package with a specific version |
 | `helm lint my-chart` | Validate chart syntax |
 | `helm lint my-chart --values values.yaml` | Validate chart values |
 
@@ -193,24 +208,34 @@ Release information is stored in Kubernetes, not on your local machine.
 | Command | Details |
 |---------|---------|
 | `helm list -n argo` | List releases in specific namespace |
+| `helm list --all` | Show all releases without any filter |
 | `helm list -A` | List all releases across all namespaces (table format) |
 | `helm list -A --output yaml` | List all releases in YAML format |
 | `helm list -A --output json` | List all releases in JSON format |
 | `helm list -A --output json \| jq '.[] \| .name'` | Get specific field |
+| `helm list -l key1=value1,key2=value2` | Filter releases by label selector |
+| `helm list --date` | Sort releases by date |
+| `helm list --deployed` | Show only deployed releases |
+| `helm list --pending` | Show pending releases |
+| `helm list --uninstalled` | Show uninstalled releases (requires `--keep-history` on uninstall) |
+| `helm list --superseded` | Show superseded releases |
 
 ### Release Information
 
 | Command | Details |
 |---------|---------|
 | `helm status argo -n argo` | Show release details |
+| `helm status argo -n argo --revision 2` | Show release status at a specific revision |
 | `helm get values argo -n argo` | Get user-supplied values |
 | `helm get values argo -n argo --all` | Get all values used by release (including defaults) |
 | `helm get manifest argo -n argo` | Get release manifest (rendered YAML) |
 | `helm get manifest metrics-server -n kube-system --revision 2` | Get manifest at specific revision |
 | `helm get notes argo -n argo` | Get release notes |
+| `helm get hooks argo -n argo` | Download hooks for a release |
 | `helm get all argo -n argo` | Get all information about a named release |
 | `helm history argo -n argo` | Show release history |
 | `helm history argo -n argo --output json` | Show release history in JSON format |
+| `helm history argo -n argo --show-rollback-revision` | Show which revision each rollback targeted |
 
 ### Kubernetes Storage
 
@@ -388,6 +413,7 @@ helm upgrade myapp ./chart --set-file db.password=./secrets/db_password.txt
 | Command | Details |
 |---------|---------|
 | `helm registry login ghcr.io -u $USER --password-stdin` | Login to OCI registry |
+| `helm registry logout ghcr.io` | Logout from OCI registry |
 | `helm push dist/app-0.1.0.tgz oci://ghcr.io/acme/charts` | Push chart to OCI registry |
 | `helm install myapp oci://ghcr.io/acme/charts/app --version 0.1.0` | Install from OCI registry |
 
