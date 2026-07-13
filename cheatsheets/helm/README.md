@@ -63,6 +63,8 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | Command | Details |
 |---------|---------|
 | `helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/` | Add a repository |
+| `helm repo add myrepo https://charts.example.com --username user --password pass` | Add private repo with credentials |
+| `helm repo add secure https://charts.secure.com --ca-file ./ca.crt --cert-file ./client.crt --key-file ./client.key` | Add repo with certificate auth |
 | `helm repo update` | Update repository indexes |
 | `helm repo update --fail-on-repo-update-fail` | Force update all repositories |
 | `helm repo list` | List configured repositories |
@@ -75,19 +77,19 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 
 | Command | Details |
 |---------|---------|
-| `helm search repo traefik` | Search for charts in repositories |
-| `helm search repo traefik/traefik --versions` | List all versions with default column width |
-| `helm search repo traefik/traefik --versions --max-col-width 0` | List all versions with full width output (recommended) |
+| `helm search repo metrics-server` | Search for charts in repositories |
+| `helm search repo metrics-server/metrics-server --versions` | List all versions with default column width |
+| `helm search repo metrics-server/metrics-server --versions --max-col-width 0` | List all versions with full width output (recommended) |
 | `helm search hub metrics-server` | Search Helm Hub |
 
 ### Chart Information
 
 | Command | Details |
 |---------|---------|
-| `helm show chart traefik/traefik` | Show chart metadata |
-| `helm show values traefik/traefik` | Show default values |
-| `helm show readme traefik/traefik` | Show README |
-| `helm show all traefik/traefik` | Show all info |
+| `helm show chart metrics-server/metrics-server` | Show chart metadata |
+| `helm show values metrics-server/metrics-server` | Show default values |
+| `helm show readme metrics-server/metrics-server` | Show README |
+| `helm show all metrics-server/metrics-server` | Show all info |
 
 ## Install Charts
 
@@ -98,23 +100,24 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | `helm install metrics-server metrics-server/metrics-server` | Basic installation (default namespace) |
 | `helm install metrics-server metrics-server/metrics-server --set args={--kubelet-insecure-tls}` | Install without certificate validation |
 | `helm install metrics-server metrics-server/metrics-server --namespace kube-system` | Install in specific namespace |
-| `helm install traefik traefik/traefik -n traefik --create-namespace` | Install and create the namespace |
-| `helm install traefik traefik/traefik -n traefik --create-namespace --set service.type=LoadBalancer` | Install with inline values |
-| `helm install traefik traefik/traefik --set-string replicas=3` | Override value as string type |
-| `helm install traefik traefik/traefik -f values.yaml` | Install with values file |
-| `helm install traefik ./traefik` | Install from local chart |
-| `helm install traefik ./traefik-37.3.0.tgz` | Install from packaged chart |
+| `helm install metrics-server metrics-server/metrics-server -n kube-system --create-namespace` | Install and create the namespace |
+| `helm install metrics-server metrics-server/metrics-server -n kube-system --create-namespace --set service.type=LoadBalancer` | Install with inline values |
+| `helm install metrics-server metrics-server/metrics-server --set-string replicas=3` | Override value as string type |
+| `helm install metrics-server metrics-server/metrics-server -f values.yaml` | Install with values file |
+| `helm install metrics-server ./metrics-server` | Install from local chart |
+| `helm install metrics-server ./metrics-server-3.12.2.tgz` | Install from packaged chart |
 | `helm install metrics-server metrics-server/metrics-server --version 3.12.2` | Install with specific version |
-| `helm install traefik traefik/traefik --verify` | Verify package signature before installing |
-| `helm install traefik traefik/traefik --dependency-update` | Update missing dependencies before installing |
+| `helm install metrics-server/metrics-server --generate-name` | Auto-generate a release name |
+| `helm install metrics-server metrics-server/metrics-server --verify` | Verify package signature before installing |
+| `helm install metrics-server metrics-server/metrics-server --dependency-update` | Update missing dependencies before installing |
 
 ### Advanced Installation
 
 | Command | Details |
 |---------|---------|
 | `helm install metrics-server metrics-server/metrics-server --wait --timeout 5m` | Wait for deployment to complete |
-| `helm install traefik traefik/traefik --dry-run` | Dry run installation |
-| `helm install traefik traefik/traefik --dry-run --debug` | Dry run & debug installation |
+| `helm install metrics-server metrics-server/metrics-server --dry-run` | Dry run installation |
+| `helm install metrics-server metrics-server/metrics-server --dry-run --debug` | Dry run & debug installation |
 
 ## Upgrade Releases
 
@@ -161,18 +164,18 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 
 | Command | Details |
 |---------|---------|
-| `helm pull traefik/traefik` | Download chart package (tgz) to current directory |
-| `helm pull traefik/traefik --verify` | Download and verify package signature |
-| `helm pull traefik/traefik --untar` | Download and extract |
-| `helm pull traefik/traefik --destination ~/helm-charts` | Download to specific location |
-| `helm pull traefik/traefik --destination ~/helm-charts --untar` | Download and extract to specific location |
-| `helm pull traefik/traefik --version 27.0.0 --destination ~/helm-charts` | Download specific version |
+| `helm pull metrics-server/metrics-server` | Download chart package (tgz) to current directory |
+| `helm pull metrics-server/metrics-server --verify` | Download and verify package signature |
+| `helm pull metrics-server/metrics-server --untar` | Download and extract |
+| `helm pull metrics-server/metrics-server --destination ~/helm-charts` | Download to specific location |
+| `helm pull metrics-server/metrics-server --destination ~/helm-charts --untar` | Download and extract to specific location |
+| `helm pull metrics-server/metrics-server --version 3.12.2 --destination ~/helm-charts` | Download specific version |
 
 ### Download Multiple Charts
 
 ```bash
-mkdir -p ~/helm-charts/{traefik,nginx,postgres}
-helm pull traefik/traefik --destination ~/helm-charts/traefik --untar
+mkdir -p ~/helm-charts/{metrics-server,nginx,postgres}
+helm pull metrics-server/metrics-server --destination ~/helm-charts/metrics-server --untar
 helm pull bitnami/nginx --destination ~/helm-charts/nginx --untar
 helm pull bitnami/postgresql --destination ~/helm-charts/postgres --untar
 ```
@@ -186,6 +189,7 @@ helm pull bitnami/postgresql --destination ~/helm-charts/postgres --untar
 | `helm create my-chart` | Create a new chart |
 | `helm package my-chart` | Package chart into tarball |
 | `helm package my-chart --version 1.2.0` | Package with a specific version |
+| `helm package my-chart --version 1.2.0 --app-version 2.0.0` | Package with specific chart and app versions |
 | `helm lint my-chart` | Validate chart syntax |
 | `helm lint my-chart --values values.yaml` | Validate chart values |
 
@@ -207,7 +211,7 @@ Release information is stored in Kubernetes, not on your local machine.
 
 | Command | Details |
 |---------|---------|
-| `helm list -n argo` | List releases in specific namespace |
+| `helm list -n kube-system` | List releases in specific namespace |
 | `helm list --all` | Show all releases without any filter |
 | `helm list -A` | List all releases across all namespaces (table format) |
 | `helm list -A --output yaml` | List all releases in YAML format |
@@ -224,18 +228,18 @@ Release information is stored in Kubernetes, not on your local machine.
 
 | Command | Details |
 |---------|---------|
-| `helm status argo -n argo` | Show release details |
-| `helm status argo -n argo --revision 2` | Show release status at a specific revision |
-| `helm get values argo -n argo` | Get user-supplied values |
-| `helm get values argo -n argo --all` | Get all values used by release (including defaults) |
-| `helm get manifest argo -n argo` | Get release manifest (rendered YAML) |
+| `helm status metrics-server -n kube-system` | Show release details |
+| `helm status metrics-server -n kube-system --revision 2` | Show release status at a specific revision |
+| `helm get values metrics-server -n kube-system` | Get user-supplied values |
+| `helm get values metrics-server -n kube-system --all` | Get all values used by release (including defaults) |
+| `helm get manifest metrics-server -n kube-system` | Get release manifest (rendered YAML) |
 | `helm get manifest metrics-server -n kube-system --revision 2` | Get manifest at specific revision |
-| `helm get notes argo -n argo` | Get release notes |
-| `helm get hooks argo -n argo` | Download hooks for a release |
-| `helm get all argo -n argo` | Get all information about a named release |
-| `helm history argo -n argo` | Show release history |
-| `helm history argo -n argo --output json` | Show release history in JSON format |
-| `helm history argo -n argo --show-rollback-revision` | Show which revision each rollback targeted |
+| `helm get notes metrics-server -n kube-system` | Get release notes |
+| `helm get hooks metrics-server -n kube-system` | Download hooks for a release |
+| `helm get all metrics-server -n kube-system` | Get all information about a named release |
+| `helm history metrics-server -n kube-system` | Show release history |
+| `helm history metrics-server -n kube-system --output json` | Show release history in JSON format |
+| `helm history metrics-server -n kube-system --show-rollback-revision` | Show which revision each rollback targeted |
 
 ### Kubernetes Storage
 
@@ -243,6 +247,18 @@ Release information is stored in Kubernetes, not on your local machine.
 |---------|---------|
 | `kubectl get secrets -n <namespace> -l owner=helm` | Release data is stored in Kubernetes secrets |
 | `helm diff revision metrics-server -n kube-system 1 2` | Compare releases (requires helm-diff plugin) |
+
+### Backup Releases
+
+```bash
+# Backup a single release
+helm get all metrics-server -n kube-system > backup-metrics-server.yaml
+
+# Backup all releases across all namespaces
+for release in $(helm list -A -q); do
+  helm get all "$release" > "backup-$release.yaml"
+done
+```
 
 ## Environment Configuration
 
@@ -298,7 +314,7 @@ echo 'export HELM_CACHE_HOME=~/my-custom-helm-cache' >> ~/.bash_profile
 | Command | Details |
 |---------|---------|
 | `rm -f ~/Library/Caches/helm/repository/*.tgz` | Remove all cached charts (keeps repository indexes) |
-| `rm -f ~/Library/Caches/helm/repository/traefik-*.tgz` | Remove specific cached chart |
+| `rm -f ~/Library/Caches/helm/repository/metrics-server-*.tgz` | Remove specific cached chart |
 | `rm -rf ~/Library/Caches/helm/` | Clear entire cache (nuclear option) |
 | `helm repo update` | After clearing, update repositories |
 
@@ -308,10 +324,10 @@ echo 'export HELM_CACHE_HOME=~/my-custom-helm-cache' >> ~/.bash_profile
 
 ```bash
 # Download and extract chart
-helm pull traefik/traefik --untar --destination ~/my-custom-charts
+helm pull metrics-server/metrics-server --untar --destination ~/my-custom-charts
 
 # Navigate to chart
-cd ~/my-custom-charts/traefik
+cd ~/my-custom-charts/metrics-server
 
 # Modify values or templates
 vim values.yaml
@@ -319,11 +335,11 @@ vim templates/deployment.yaml
 
 # Create custom chart package
 cd ..
-helm package traefik
-# Creates: traefik-27.0.0.tgz
+helm package metrics-server
+# Creates: metrics-server-3.12.2.tgz
 
 # Install custom chart
-helm install my-traefik ./traefik-27.0.0.tgz
+helm install metrics-server ./metrics-server-3.12.2.tgz
 ```
 
 ## Plugins
@@ -333,13 +349,15 @@ helm install my-traefik ./traefik-27.0.0.tgz
 | `helm plugin install https://github.com/databus23/helm-diff` | Install helm-diff plugin |
 | `helm plugin install https://github.com/jkroepke/helm-secrets` | Install helm-secrets plugin |
 | `helm plugin install https://github.com/fabmation-gmbh/helm-whatup` | Install helm-whatup plugin (check outdated releases) |
+| `helm plugin install https://github.com/chartmuseum/helm-push` | Install helm-push plugin (push charts to ChartMuseum) |
+| `helm plugin install https://github.com/hypnoglow/helm-s3` | Install helm-s3 plugin (use AWS S3 as chart repo) |
 | `helm plugin list` | List installed plugins |
 | `helm plugin update diff` | Update a plugin |
 | `helm plugin uninstall diff` | Uninstall a plugin |
-| `helm diff upgrade my-release bitnami/nginx --values values.yaml` | Preview what would change in an upgrade |
+| `helm diff upgrade metrics-server metrics-server/metrics-server --values values.yaml` | Preview what would change in an upgrade |
 | `helm secrets enc secrets.yaml` | Encrypt secrets file |
-| `helm secrets upgrade myapp ./charts/app -f values/prod.yaml -f secrets/values.enc.yaml --atomic` | Upgrade with encrypted secrets |
-| `helm install my-release ./my-chart -f secrets://secrets.yaml` | Install with encrypted secrets |
+| `helm secrets upgrade metrics-server ./charts/metrics-server -f values/prod.yaml -f secrets/values.enc.yaml --atomic` | Upgrade with encrypted secrets |
+| `helm install metrics-server ./metrics-server -f secrets://secrets.yaml` | Install with encrypted secrets |
 
 ## Dependencies
 
@@ -368,9 +386,9 @@ dependencies:
 
 | Command | Details |
 |---------|---------|
-| `helm show values myrepo/mychart` | Show default values from a **chart** (before installation) |
-| `helm get values myrelease` | Show **actual values used** for an installed release |
-| `helm get values myrelease --all` | Show all values including defaults for an installed release |
+| `helm show values metrics-server/metrics-server` | Show default values from a **chart** (before installation) |
+| `helm get values metrics-server` | Show **actual values used** for an installed release |
+| `helm get values metrics-server --all` | Show all values including defaults for an installed release |
 
 ### Upgrade Values Flags
 
@@ -382,13 +400,13 @@ dependencies:
 
 ```bash
 # Reuse previous values, add a tweak
-helm upgrade my-release my-chart --reuse-values --set newEnv=production
+helm upgrade metrics-server metrics-server/metrics-server --reuse-values --set newEnv=production
 
 # Override entirely — no old values retained
-helm upgrade my-release my-chart --reset-values --set newKey=newValue
+helm upgrade metrics-server metrics-server/metrics-server --reset-values --set newKey=newValue
 
 # Reset to defaults then merge old values back
-helm upgrade my-release my-chart --reset-then-reuse-values --set version=2.0
+helm upgrade metrics-server metrics-server/metrics-server --reset-then-reuse-values --set version=2.0
 ```
 
 **Important caveats:**
@@ -399,13 +417,13 @@ helm upgrade my-release my-chart --reset-then-reuse-values --set version=2.0
 ### Multiple Values Files
 
 ```bash
-helm install myapp ./chart \
+helm install metrics-server ./metrics-server \
   --values values-base.yaml \
   --values values-prod.yaml \
   --values values-secrets.yaml
 
 # Inject sensitive values from files (avoid inline secrets)
-helm upgrade myapp ./chart --set-file db.password=./secrets/db_password.txt
+helm upgrade metrics-server ./metrics-server --set-file db.password=./secrets/db_password.txt
 ```
 
 ## OCI Registries
@@ -414,16 +432,16 @@ helm upgrade myapp ./chart --set-file db.password=./secrets/db_password.txt
 |---------|---------|
 | `helm registry login ghcr.io -u $USER --password-stdin` | Login to OCI registry |
 | `helm registry logout ghcr.io` | Logout from OCI registry |
-| `helm push dist/app-0.1.0.tgz oci://ghcr.io/acme/charts` | Push chart to OCI registry |
-| `helm install myapp oci://ghcr.io/acme/charts/app --version 0.1.0` | Install from OCI registry |
+| `helm push metrics-server-3.12.2.tgz oci://ghcr.io/acme/charts` | Push chart to OCI registry |
+| `helm install metrics-server oci://ghcr.io/acme/charts/metrics-server --version 3.12.2` | Install from OCI registry |
 
 ## Chart Signing & Security
 
 | Command | Details |
 |---------|---------|
 | `helm package my-chart --sign --key my-key --keyring ~/.gnupg/pubring.gpg` | Create a signed package |
-| `helm verify mychart-0.1.0.tgz` | Verify chart signature |
-| `helm install my-release ./mychart-0.1.0.tgz --verify` | Install from signed chart |
+| `helm verify metrics-server-3.12.2.tgz` | Verify chart signature |
+| `helm install metrics-server ./metrics-server-3.12.2.tgz --verify` | Install from signed chart |
 
 ## CI Directory
 
@@ -485,7 +503,8 @@ spec:
 ```
 
 ```bash
-helm test myapp --logs
+helm test metrics-server --logs
+helm test metrics-server --cleanup
 ```
 
 ## Templating
@@ -519,9 +538,9 @@ kind: HorizontalPodAutoscaler
 
 | Command | Details |
 |---------|---------|
-| `helm template myapp ./charts/app --show-only templates/deployment.yaml` | Render a single template file |
-| `helm template myapp ./charts/app --kube-version=1.28.0` | Render against a specific Kubernetes version |
-| `helm template myapp ./charts/app \| kubectl diff -f -` | Preview rendered manifests diff |
+| `helm template metrics-server ./metrics-server --show-only templates/deployment.yaml` | Render a single template file |
+| `helm template metrics-server ./metrics-server --kube-version=1.28.0` | Render against a specific Kubernetes version |
+| `helm template metrics-server ./metrics-server \| kubectl diff -f -` | Preview rendered manifests diff |
 
 ## Check for Chart Updates
 
@@ -533,11 +552,11 @@ helm repo update
 helm list -A
 
 # 3. Check available versions
-helm search repo traefik/traefik --versions
+helm search repo metrics-server/metrics-server --versions
 
 # 4. Compare values between versions
-helm show values traefik/traefik --version 27.0.0 > old-values.yaml
-helm show values traefik/traefik --version 28.0.0 > new-values.yaml
+helm show values metrics-server/metrics-server --version 3.12.0 > old-values.yaml
+helm show values metrics-server/metrics-server --version 3.12.2 > new-values.yaml
 diff old-values.yaml new-values.yaml
 ```
 
@@ -678,51 +697,51 @@ helm status "$name" -n "$namespace" | head -10
 
 ```bash
 # Deploy blue (v1)
-helm install my-app-blue ./my-chart \
+helm install metrics-server-blue ./metrics-server \
   --set image.tag=v1 \
   --namespace production
 
 # Deploy green (v2)
-helm install my-app-green ./my-chart \
+helm install metrics-server-green ./metrics-server \
   --set image.tag=v2 \
   --namespace production
 
 # Switch traffic (via service selector or ingress)
-kubectl patch service my-app -p '{"spec":{"selector":{"version":"green"}}}'
+kubectl patch service metrics-server -p '{"spec":{"selector":{"version":"green"}}}'
 
 # Cleanup blue when stable
-helm uninstall my-app-blue --namespace production
+helm uninstall metrics-server-blue --namespace production
 ```
 
 ### Canary Deployment
 
 ```bash
 # Deploy stable version
-helm install my-app ./my-chart \
+helm install metrics-server ./metrics-server \
   --set replicaCount=3 \
   --set image.tag=stable
 
 # Deploy canary with 1 replica
-helm install my-app-canary ./my-chart \
+helm install metrics-server-canary ./metrics-server \
   --set replicaCount=1 \
   --set image.tag=canary
 
 # Monitor canary metrics
-kubectl top pods -l app=my-app
+kubectl top pods -l app=metrics-server
 
 # Promote canary to stable
-helm upgrade my-app ./my-chart \
+helm upgrade metrics-server ./metrics-server \
   --set image.tag=canary \
   --reuse-values
 
 # Remove canary
-helm uninstall my-app-canary
+helm uninstall metrics-server-canary
 ```
 
 ### Upgrade with Downtime Prevention
 
 ```bash
-helm upgrade my-release bitnami/nginx \
+helm upgrade metrics-server metrics-server/metrics-server -n kube-system \
   --set podDisruptionBudget.minAvailable=1 \
   --set strategy.type=RollingUpdate \
   --set strategy.rollingUpdate.maxUnavailable=0 \
@@ -732,8 +751,8 @@ helm upgrade my-release bitnami/nginx \
 ### Production Deployment
 
 ```bash
-helm upgrade --install prod-app ./myapp \
-  --namespace production \
+helm upgrade --install metrics-server metrics-server/metrics-server \
+  --namespace kube-system \
   --create-namespace \
   --values values-prod.yaml \
   --wait \
@@ -745,13 +764,13 @@ helm upgrade --install prod-app ./myapp \
 
 ```bash
 # Development
-helm upgrade --install myapp-dev ./myapp -n dev --values values-dev.yaml
+helm upgrade --install metrics-server metrics-server/metrics-server -n dev --values values-dev.yaml
 
 # Staging
-helm upgrade --install myapp-staging ./myapp -n staging --values values-staging.yaml
+helm upgrade --install metrics-server metrics-server/metrics-server -n staging --values values-staging.yaml
 
 # Production
-helm upgrade --install myapp-prod ./myapp -n production --values values-prod.yaml
+helm upgrade --install metrics-server metrics-server/metrics-server -n production --values values-prod.yaml
 ```
 
 ## Helm Install Lifecycle
@@ -780,26 +799,26 @@ What happens when you run `helm install`:
 
 | Command | Details |
 |---------|---------|
-| `helm install my-release bitnami/mysql --debug --dry-run` | Verbose dry run output |
-| `helm template my-release ./my-chart --debug --validate` | Template debugging with validation |
-| `helm status my-release --show-resources` | Show release resources |
+| `helm install metrics-server metrics-server/metrics-server --debug --dry-run` | Verbose dry run output |
+| `helm template metrics-server ./metrics-server --debug --validate` | Template debugging with validation |
+| `helm status metrics-server --show-resources` | Show release resources |
 | `helm lint ./my-chart --strict --with-subcharts` | Strict lint with subcharts |
 | `helm list --failed` | List failed releases |
 | `helm list --failed -q \| xargs -I {} helm delete {}` | Clean up all failed releases |
-| `helm template myapp ./charts/app \| kubeconform -strict -kubernetes-version 1.28 -` | Validate rendered resources |
+| `helm template metrics-server ./metrics-server \| kubeconform -strict -kubernetes-version 1.28 -` | Validate rendered resources |
 
 ### Common Issues
 
 ```bash
 # Release stuck in pending-install
-helm rollback my-release 0
+helm rollback metrics-server 0
 
 # Resource conflicts
 kubectl get all -l app.kubernetes.io/managed-by=Helm
 
 # Force delete stuck release
-helm delete myapp --no-hooks
-kubectl delete secret -l owner=helm,name=myapp -n default
+helm delete metrics-server --no-hooks
+kubectl delete secret -l owner=helm,name=metrics-server -n kube-system
 ```
 
 ## Useful Aliases
