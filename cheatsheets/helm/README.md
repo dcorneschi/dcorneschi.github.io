@@ -104,7 +104,7 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | `helm install metrics-server metrics-server/metrics-server -n kube-system --create-namespace --set service.type=LoadBalancer` | Install with inline values |
 | `helm install metrics-server metrics-server/metrics-server --set-string replicas=3` | Override value as string type |
 | `helm install metrics-server metrics-server/metrics-server -f values.yaml` | Install with values file |
-| `helm install metrics-server ./metrics-server` | Install from local chart |
+| `helm install metrics-server ./metrics-server` | Install from local chart (after `helm pull --untar`) |
 | `helm install metrics-server ./metrics-server-3.12.2.tgz` | Install from packaged chart |
 | `helm install metrics-server metrics-server/metrics-server --version 3.12.2` | Install with specific version |
 | `helm install metrics-server/metrics-server --generate-name` | Auto-generate a release name |
@@ -696,45 +696,45 @@ helm status "$name" -n "$namespace" | head -10
 
 ```bash
 # Deploy blue (v1)
-helm install metrics-server-blue ./metrics-server \
+helm install my-app-blue ./my-app \
   --set image.tag=v1 \
   --namespace production
 
 # Deploy green (v2)
-helm install metrics-server-green ./metrics-server \
+helm install my-app-green ./my-app \
   --set image.tag=v2 \
   --namespace production
 
 # Switch traffic (via service selector or ingress)
-kubectl patch service metrics-server -p '{"spec":{"selector":{"version":"green"}}}'
+kubectl patch service my-app -p '{"spec":{"selector":{"version":"green"}}}'
 
 # Cleanup blue when stable
-helm uninstall metrics-server-blue --namespace production
+helm uninstall my-app-blue --namespace production
 ```
 
 ### Canary Deployment
 
 ```bash
 # Deploy stable version
-helm install metrics-server ./metrics-server \
+helm install my-app ./my-app \
   --set replicaCount=3 \
   --set image.tag=stable
 
 # Deploy canary with 1 replica
-helm install metrics-server-canary ./metrics-server \
+helm install my-app-canary ./my-app \
   --set replicaCount=1 \
   --set image.tag=canary
 
 # Monitor canary metrics
-kubectl top pods -l app=metrics-server
+kubectl top pods -l app=my-app
 
 # Promote canary to stable
-helm upgrade metrics-server ./metrics-server \
+helm upgrade my-app ./my-app \
   --set image.tag=canary \
   --reuse-values
 
 # Remove canary
-helm uninstall metrics-server-canary
+helm uninstall my-app-canary
 ```
 
 ### Upgrade with Downtime Prevention
