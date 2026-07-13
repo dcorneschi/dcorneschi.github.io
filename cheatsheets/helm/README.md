@@ -87,6 +87,7 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | Command | Details |
 |---------|---------|
 | `helm install metrics-server metrics-server/metrics-server` | Basic installation (default namespace) |
+| `helm install metrics-server metrics-server/metrics-server --set args={--kubelet-insecure-tls}` | Install without certificate validation |
 | `helm install metrics-server metrics-server/metrics-server --namespace kube-system` | Install in specific namespace |
 | `helm install traefik traefik/traefik -n traefik --create-namespace` | Install and create the namespace |
 | `helm install traefik traefik/traefik -n traefik --create-namespace --set service.type=LoadBalancer` | Install with inline values |
@@ -546,6 +547,103 @@ helm list -A --output json | jq -r '.[] | "\(.name) \(.namespace) \(.chart)"' | 
     fi
     echo ""
 done
+```
+
+### Interactive Upgrade Script
+
+```bash
+#!/bin/bash
+helm repo update > /dev/null 2>&1
+
+releases=()
+names=()
+namespaces=()
+chart_names=()
+installed_versions=()
+latest_versions=()
+repo_charts=()
+
+# Gather release info
+while IFS= read -r line; do
+    name=$(echo "$line" | jq -r '.name')
+    namespace=$(echo "$line" | jq -r '.namespace')
+    chart=$(echo "$line" | jq -r '.chart')
+    chart_name=$(echo "$chart" | sed 's/-[0-9].*//')
+    installed_version=$(echo "$chart" | sed 's/.*-\([0-9].*\)/\1/')
+
+    latest=$(helm search repo "$chart_name" --output json 2>/dev/null | \
+      jq -r --arg cn "$chart_name" '
+        [.[] | select(.name | endswith("/"+$cn))] |
+        (map(select(.name | startswith($cn+"/"))) | first) //
+        first // empty
+      ')
+    latest_version=$(echo "$latest" | jq -r '.version // "unknown"')
+    repo_chart=$(echo "$latest" | jq -r '.name // "unknown"')
+
+    releases+=("$name")
+    names+=("$name")
+    namespaces+=("$namespace")
+    chart_names+=("$chart_name")
+    installed_versions+=("$installed_version")
+    latest_versions+=("$latest_version")
+    repo_charts+=("$repo_chart")
+done < <(helm list -A --output json | jq -c '.[]')
+
+# Display all releases
+echo "=========================================="
+echo "  Installed Helm Releases"
+echo "=========================================="
+echo ""
+
+for i in "${!releases[@]}"; do
+    status="✓"
+    if [ "${installed_versions[$i]}" != "${latest_versions[$i]}" ]; then
+        status="⚠️  UPDATE"
+    fi
+    printf "  %d) %-20s %-15s %s → %s  %s\n" \
+        $((i+1)) "${names[$i]}" "${namespaces[$i]}" \
+        "${installed_versions[$i]}" "${latest_versions[$i]}" "$status"
+done
+
+echo ""
+echo "=========================================="
+echo ""
+read -p "Select release to upgrade (1-${#releases[@]}) or 'q' to quit: " choice
+
+if [[ "$choice" == "q" || -z "$choice" ]]; then
+    echo "Exiting."
+    exit 0
+fi
+
+if [[ "$choice" -lt 1 || "$choice" -gt ${#releases[@]} ]]; then
+    echo "Invalid selection."
+    exit 1
+fi
+
+idx=$((choice - 1))
+name="${names[$idx]}"
+namespace="${namespaces[$idx]}"
+repo_chart="${repo_charts[$idx]}"
+latest_version="${latest_versions[$idx]}"
+
+echo ""
+echo "Upgrading $name in namespace $namespace to $repo_chart $latest_version..."
+echo ""
+read -p "Proceed? (y/n): " confirm
+
+if [[ "$confirm" != "y" ]]; then
+    echo "Cancelled."
+    exit 0
+fi
+
+helm upgrade "$name" "$repo_chart" \
+    --namespace "$namespace" \
+    --version "$latest_version" \
+    --reuse-values
+
+echo ""
+echo "Done. Release status:"
+helm status "$name" -n "$namespace" | head -10
 ```
 
 ## Real-World Workflows
