@@ -64,6 +64,8 @@ Comprehensive Terraform reference guide featuring installation instructions acro
 | `terraform plan -var="region=us-west-2"` | Plan with inline variables |
 | `terraform plan -replace aws_instance.example` | Replace selected resources |
 | `terraform plan -target=module.vpc` | Target specific resources |
+| `terraform plan -detailed-exitcode` | Exit code 0=no changes, 1=error, 2=changes present |
+| `terraform plan -refresh=false` | Skip refresh of remote objects |
 | `terraform validate` | Validate configuration files |
 | `terraform fmt` | Format configuration files |
 | `terraform fmt -check` | Check if input is formatted |
@@ -81,6 +83,7 @@ Comprehensive Terraform reference guide featuring installation instructions acro
 | `terraform apply -var="key=value"` | Apply with specific variable |
 | `terraform apply -var-file="prod.tfvars"` | Apply with variable files |
 | `terraform apply --parallelism=5` | Set number of simultaneous operations |
+| `terraform apply -refresh-only` | Refresh state without changing resources (detect drift) |
 
 ### Destroy & Cleanup
 
@@ -107,6 +110,7 @@ Comprehensive Terraform reference guide featuring installation instructions acro
 | `terraform state rm aws_instance.example` | Remove resource from state |
 | `terraform import aws_instance.example i-1234567890abcdef0` | Import existing resource |
 | `terraform state mv aws_instance.example aws_instance.new_name` | Move resource in state |
+| `terraform state replace-provider hashicorp/aws registry.acme.corp/aws` | Replace provider in state |
 | `terraform state pull` | Pull remote state |
 | `terraform state pull > terraform.tfstate` | Save remote state to file |
 | `terraform state push terraform.tfstate` | Push local state to remote |
@@ -236,11 +240,30 @@ Comprehensive Terraform reference guide featuring installation instructions acro
 | `terraform graph \| dot -Tpng > graph.png` | Convert to PNG (requires Graphviz) |
 | `terraform graph -draw-cycles` | Show resource dependencies |
 
+### Common Flags
+
+| Flag | Description |
+|------|-------------|
+| `-chdir=DIR` | Change to directory before running |
+| `-no-color` | Disable colored output |
+| `-input=false` | Disable interactive input prompts |
+| `-lock=false` | Don't hold state lock |
+| `-lock-timeout=60s` | Duration to wait for lock |
+| `-parallelism=n` | Limit concurrent operations |
+| `-refresh=false` | Skip refresh of remote objects |
+| `-target=resource` | Target specific resource |
+| `-var="key=value"` | Set variable |
+| `-var-file="file.tfvars"` | Load variables from file |
+| `-auto-approve` | Skip interactive approval |
+| `-backup="path"` | Path to backup state file |
+| `-state="path"` | Path to read/write state |
+
 ### Provider Management
 
 | Command | Description |
 |---------|-------------|
 | `terraform providers` | Show providers |
+| `terraform providers schema` | Show provider schemas |
 | `terraform providers lock` | Lock provider versions |
 | `terraform providers lock -platform=linux_amd64 -platform=darwin_amd64 -platform=windows_amd64` | Pre-populate hashes for multiple platforms |
 | `terraform providers mirror /path/to/mirror` | Mirror providers for offline use |
@@ -692,6 +715,164 @@ terraform {
 }
 ```
 
+#### DynamoDB Lock Table
+
+```hcl
+resource "aws_dynamodb_table" "terraform_locks" {
+  name           = "terraform-state-locks"
+  billing_mode   = "PAY_PER_REQUEST"
+  hash_key       = "LockID"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+
+  tags = {
+    Name = "Terraform State Lock Table"
+  }
+}
+```
+
+#### Alternative Backends
+
+```hcl
+# Azure
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "terraform-rg"
+    storage_account_name = "terraformstate"
+    container_name       = "tfstate"
+    key                  = "prod.terraform.tfstate"
+  }
+}
+
+# Google Cloud
+terraform {
+  backend "gcs" {
+    bucket = "my-terraform-state"
+    prefix = "prod"
+  }
+}
+
+# Consul
+terraform {
+  backend "consul" {
+    address = "consul.example.com:8500"
+    scheme  = "https"
+    path    = "terraform/prod"
+  }
+}
+```
+
+#### Backend Configuration File (backend.hcl)
+
+```hcl
+bucket         = "my-terraform-state"
+key            = "prod/terraform.tfstate"
+region         = "us-east-1"
+encrypt        = true
+dynamodb_table = "terraform-locks"
+```
+
+```bash
+terraform init -backend-config=backend.hcl
+terraform init -migrate-state -force-copy
+```
+
+#### Remote State Data Source
+
+```hcl
+# Access outputs from another state file
+data "terraform_remote_state" "vpc" {
+  backend = "s3"
+
+  config = {
+    bucket = "my-terraform-state"
+    key    = "vpc/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
+# Use outputs from remote state
+resource "aws_instance" "example" {
+  ami           = "ami-0c55b159cbfafe1d0"
+  instance_type = "t2.micro"
+  subnet_id     = data.terraform_remote_state.vpc.outputs.private_subnet_id
+
+  vpc_security_group_ids = [
+    data.terraform_remote_state.vpc.outputs.default_security_group_id
+  ]
+}
+```
+
+#### Import with count/for_each
+
+```bash
+# Import resource with count index
+terraform import 'aws_instance.example[0]' i-1234567890abcdef0
+
+# Import resource with for_each key
+terraform import 'aws_instance.example["web"]' i-1234567890abcdef0
+
+# Import into module
+terraform import module.database.aws_db_instance.main mydb-instance
+```
+
+#### Move Resources Between Modules
+
+```bash
+# Move resource into a module
+terraform state mv aws_instance.example module.web.aws_instance.example
+
+# Move resource out of a module
+terraform state mv module.web.aws_instance.example aws_instance.example
+
+# Move between count and for_each
+terraform state mv 'aws_instance.example[0]' 'aws_instance.example["web"]'
+```
+
+#### State Drift Detection and Fix
+
+```bash
+# Detect drift (show what changed outside Terraform)
+terraform plan -refresh-only
+
+# Update state to match real infrastructure (without changing resources)
+terraform apply -refresh-only
+
+# Fix drift by updating infrastructure to match config
+terraform apply
+```
+
+#### IAM Policy for State Access
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": "arn:aws:s3:::my-terraform-state/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:DeleteItem"
+      ],
+      "Resource": "arn:aws:dynamodb:*:*:table/terraform-locks"
+    }
+  ]
+}
+```
+
 State file path convention:
 
 ```
@@ -895,3 +1076,522 @@ terraform plan -refresh-only        # Check for drift
 11. Mark sensitive outputs and variables with `sensitive = true`.
 12. Use `create_before_destroy` for zero-downtime replacements.
 13. Use `prevent_destroy` on critical production resources.
+
+### Common Workflows
+
+```bash
+# Complete workflow
+terraform init
+terraform plan -var-file="prod.tfvars" -out=prod.tfplan
+terraform apply prod.tfplan
+
+# Quick development cycle
+terraform fmt && terraform validate && terraform plan
+
+# Emergency destroy
+terraform plan -destroy -out=destroy.tfplan
+terraform apply destroy.tfplan
+
+# Import and apply
+terraform import aws_s3_bucket.example my-bucket-name
+terraform plan
+terraform apply
+
+# Detect drift without making changes
+terraform plan -refresh-only
+
+# Backup state before major operations
+cp terraform.tfstate terraform.tfstate.backup.$(date +%Y%m%d_%H%M%S)
+```
+
+### HCL Syntax Reference
+
+#### Comments
+
+```hcl
+# Single line comment
+// Also single line comment
+
+/*
+Multi-line
+comment
+*/
+```
+
+#### Data Types
+
+```hcl
+# String
+variable "name" {
+  type    = string
+  default = "example"
+}
+
+# Number
+variable "port" {
+  type    = number
+  default = 80
+}
+
+# Boolean
+variable "enabled" {
+  type    = bool
+  default = true
+}
+
+# List
+variable "availability_zones" {
+  type    = list(string)
+  default = ["us-east-1a", "us-east-1b"]
+}
+
+# Map
+variable "tags" {
+  type = map(string)
+  default = {
+    Environment = "dev"
+    Project     = "example"
+  }
+}
+
+# Object
+variable "server" {
+  type = object({
+    name = string
+    port = number
+  })
+  default = {
+    name = "web"
+    port = 8080
+  }
+}
+
+# Tuple (fixed-length, mixed types)
+variable "mixed_list" {
+  type    = tuple([string, number, bool])
+  default = ["hello", 42, true]
+}
+```
+
+#### Data Sources
+
+```hcl
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"]
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+}
+
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+resource "aws_instance" "example" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
+}
+```
+
+#### Conditional Expressions
+
+```hcl
+locals {
+  # Ternary operator
+  instance_type = var.environment == "prod" ? "t3.large" : "t2.micro"
+
+  # Conditional list
+  security_groups = var.environment == "prod" ? [
+    aws_security_group.prod.id
+  ] : [
+    aws_security_group.dev.id,
+    aws_security_group.debug.id
+  ]
+}
+```
+
+#### For Expressions
+
+```hcl
+locals {
+  # Transform list
+  uppercase_names = [for name in var.names : upper(name)]
+
+  # Filter and transform
+  prod_instances = [
+    for instance in var.instances : instance.name
+    if instance.environment == "prod"
+  ]
+
+  # Create map from list
+  instance_map = {
+    for instance in var.instances : instance.id => instance.name
+  }
+
+  # Transform map values
+  uppercase_tags = {
+    for key, value in var.tags : key => upper(value)
+  }
+
+  # Filter map
+  env_tags = {
+    for key, value in var.tags : key => value
+    if key != "temporary"
+  }
+}
+```
+
+#### Dynamic Blocks
+
+```hcl
+variable "ingress_rules" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+
+  default = [
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+}
+
+resource "aws_security_group" "example" {
+  name = "example"
+
+  dynamic "ingress" {
+    for_each = var.ingress_rules
+    content {
+      from_port   = ingress.value.from_port
+      to_port     = ingress.value.to_port
+      protocol    = ingress.value.protocol
+      cidr_blocks = ingress.value.cidr_blocks
+    }
+  }
+}
+```
+
+#### String Interpolation and Templates
+
+```hcl
+locals {
+  # Interpolation
+  message = "Hello, ${var.name}!"
+
+  # Templatefile
+  user_data = templatefile("${path.module}/user_data.sh", {
+    db_host = var.database_host
+    app_env = var.environment
+  })
+}
+```
+
+#### Provider Aliases
+
+```hcl
+provider "aws" {
+  region = "us-east-1"
+}
+
+provider "aws" {
+  alias  = "us_west"
+  region = "us-west-2"
+}
+
+# Use alias in resource
+resource "aws_instance" "west" {
+  provider      = aws.us_west
+  ami           = "ami-0c55b159cbfafe1d0"
+  instance_type = "t2.micro"
+}
+```
+
+#### Complex Outputs
+
+```hcl
+output "instance_id" {
+  description = "ID of the EC2 instance"
+  value       = aws_instance.example.id
+}
+
+output "instances" {
+  description = "Instance details"
+  value = {
+    for instance in aws_instance.example : instance.id => {
+      private_ip = instance.private_ip
+      public_ip  = instance.public_ip
+    }
+  }
+}
+```
+
+#### Environment-specific Configuration Pattern
+
+```hcl
+locals {
+  config = {
+    dev = {
+      instance_type  = "t2.micro"
+      instance_count = 1
+    }
+    staging = {
+      instance_type  = "t3.small"
+      instance_count = 2
+    }
+    prod = {
+      instance_type  = "t3.large"
+      instance_count = 3
+    }
+  }
+
+  env_config = local.config[var.environment]
+}
+
+resource "aws_instance" "web" {
+  count         = local.env_config.instance_count
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = local.env_config.instance_type
+}
+```
+
+### Providers and Modules
+
+#### Version Constraint Syntax
+
+| Operator | Meaning | Example |
+|----------|---------|---------|
+| `= 3.2.1` | Exactly this version | `version = "= 3.2.1"` |
+| `>= 3.1.0` | At least this version | `version = ">= 3.1.0"` |
+| `~> 5.0` | >= 5.0, < 6.0 (minor releases) | `version = "~> 5.0"` |
+| `~> 5.1.0` | >= 5.1.0, < 5.2.0 (patch releases) | `version = "~> 5.1.0"` |
+| `>= 2.0, < 3.0` | Range constraint | `version = ">= 2.0, < 3.0"` |
+
+#### Provider with assume_role and default_tags
+
+```hcl
+provider "aws" {
+  region  = var.aws_region
+  profile = "default"
+
+  assume_role {
+    role_arn = "arn:aws:iam::123456789012:role/TerraformRole"
+  }
+
+  default_tags {
+    tags = {
+      Project     = "MyApp"
+      Environment = var.environment
+      ManagedBy   = "Terraform"
+    }
+  }
+}
+```
+
+#### Kubernetes Provider
+
+```hcl
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+
+  # Or use explicit config
+  # host                   = var.cluster_endpoint
+  # token                  = var.cluster_token
+  # cluster_ca_certificate = base64decode(var.cluster_ca_cert)
+}
+```
+
+#### Module Sources
+
+```hcl
+# Local path
+source = "./modules/vpc"
+source = "../shared-modules/database"
+
+# Terraform Registry
+source  = "terraform-aws-modules/vpc/aws"
+version = "~> 5.0"
+
+# Git HTTPS
+source = "git::https://example.com/vpc.git"
+source = "git::https://example.com/network.git?ref=v1.2.0"
+source = "git::https://example.com/network.git//modules/vpc?ref=v1.2.0"
+
+# Git SSH
+source = "git::ssh://git@github.com/company/terraform-modules.git//database?ref=v1.0.0"
+
+# S3 bucket
+source = "s3::https://s3-eu-west-1.amazonaws.com/terraform-modules/vpc.zip"
+
+# HTTP URL
+source = "https://example.com/vpc-module.zip"
+```
+
+#### Using Registry Modules
+
+```hcl
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 5.0"
+
+  name = "my-vpc"
+  cidr = "10.0.0.0/16"
+
+  azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+
+  enable_nat_gateway = true
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+
+resource "aws_instance" "example" {
+  ami           = "ami-0c02fb55956c7d316"
+  instance_type = "t3.micro"
+  subnet_id     = module.vpc.private_subnets[0]
+}
+```
+
+#### Creating a Module
+
+```
+modules/web-server/
+├── main.tf
+├── variables.tf
+├── outputs.tf
+├── versions.tf
+└── README.md
+```
+
+```hcl
+# modules/web-server/main.tf
+resource "aws_instance" "web" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
+  subnet_id     = var.subnet_id
+
+  vpc_security_group_ids = [aws_security_group.web.id]
+
+  user_data = base64encode(templatefile("${path.module}/user_data.sh", {
+    app_name = var.app_name
+  }))
+
+  tags = merge(var.tags, {
+    Name = "${var.app_name}-web-server"
+  })
+}
+
+# modules/web-server/variables.tf
+variable "app_name" {
+  description = "Name of the application"
+  type        = string
+}
+
+variable "ami_id" {
+  description = "AMI ID for the instance"
+  type        = string
+}
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+  default     = "t3.micro"
+}
+
+variable "subnet_id" {
+  description = "Subnet ID for the instance"
+  type        = string
+}
+
+variable "tags" {
+  description = "Tags to apply to resources"
+  type        = map(string)
+  default     = {}
+}
+
+# modules/web-server/outputs.tf
+output "instance_id" {
+  description = "ID of the EC2 instance"
+  value       = aws_instance.web.id
+}
+
+output "instance_public_ip" {
+  description = "Public IP of the EC2 instance"
+  value       = aws_instance.web.public_ip
+}
+```
+
+#### Module Composition
+
+```hcl
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 5.0"
+
+  name = var.vpc_name
+  cidr = var.vpc_cidr
+
+  azs             = var.availability_zones
+  private_subnets = var.private_subnets
+  public_subnets  = var.public_subnets
+
+  enable_nat_gateway   = true
+  enable_dns_hostnames = true
+}
+
+module "web_servers" {
+  source = "./modules/web-server"
+  count  = var.web_server_count
+
+  app_name      = "${var.app_name}-${count.index}"
+  subnet_id     = module.vpc.private_subnets[count.index % length(module.vpc.private_subnets)]
+  instance_type = var.web_instance_type
+
+  depends_on = [module.vpc]
+}
+```
+
+#### Private Registry Module
+
+```hcl
+module "internal_vpc" {
+  source  = "app.terraform.io/your-org/vpc/aws"
+  version = "~> 1.0"
+
+  name = "internal-vpc"
+  cidr = "10.0.0.0/16"
+}
+```
+
+#### Provider Mirror (.terraformrc)
+
+```hcl
+provider_installation {
+  network_mirror {
+    url     = "https://terraform-mirror.company.com/"
+    include = ["*/*"]
+  }
+
+  direct {
+    exclude = ["*/*"]
+  }
+}
+```
