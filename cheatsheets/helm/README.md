@@ -523,11 +523,21 @@ helm repo update > /dev/null 2>&1
 helm list -A --output json | jq -r '.[] | "\(.name) \(.namespace) \(.chart)"' | while read name namespace chart; do
     chart_name=$(echo $chart | sed 's/-[0-9].*//')
     installed_version=$(echo $chart | sed 's/.*-\([0-9].*\)/\1/')
-    latest_version=$(helm search repo $chart_name --output json 2>/dev/null | jq -r '.[0].version')
+
+    # Search for the chart and prefer the repo where repo_name matches chart_name
+    # (e.g., metrics-server/metrics-server over bitnami/metrics-server)
+    latest=$(helm search repo "$chart_name" --output json 2>/dev/null | \
+      jq -r --arg cn "$chart_name" '
+        [.[] | select(.name | endswith("/"+$cn))] |
+        (map(select(.name | startswith($cn+"/"))) | first) //
+        first // empty
+      ')
+    latest_version=$(echo "$latest" | jq -r '.version // "unknown"')
+    repo_chart=$(echo "$latest" | jq -r '.name // "unknown"')
 
     echo "Release: $name (Namespace: $namespace)"
     echo "  Installed: $chart"
-    echo "  Latest: $chart_name-$latest_version"
+    echo "  Latest: $repo_chart $latest_version"
 
     if [ "$installed_version" != "$latest_version" ]; then
         echo "  ⚠️  UPDATE AVAILABLE"
