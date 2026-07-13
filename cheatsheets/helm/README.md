@@ -504,7 +504,6 @@ spec:
 
 ```bash
 helm test metrics-server --logs
-helm test metrics-server --cleanup
 ```
 
 ## Templating
