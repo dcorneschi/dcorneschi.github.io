@@ -848,7 +848,8 @@ export KUBECONFIG=~/.kube/config   # Set kubeconfig
 
 | Flag | Details |
 |------|---------|
-| `--atomic` | Roll back automatically on failure |
+| `--atomic` | Roll back automatically on failure (renamed `--rollback-on-failure` in Helm 4) |
+| `--force` | Force resource update via delete/recreate (renamed `--force-replace` in Helm 4) |
 | `--wait` / `--timeout` | Block until resources are ready |
 | `--history-max` | Cap stored revisions |
 | `--set` / `--set-file` / `--set-string` | Control value types precisely |
