@@ -382,7 +382,7 @@ dependencies:
 
 ## Values Management
 
-### `helm show values` vs `helm get values`
+### helm show values vs helm get values
 
 | Command | Details |
 |---------|---------|
