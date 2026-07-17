@@ -29,6 +29,10 @@ Start with font size 13 and 90% vertical spacing, then adjust to preference.
 
 <img src="/articles/images/iterm2-jetbrains-font.png" alt="iterm2-jetbrains-font" width="800"/>
 
+## Other Terminals
+
+Other terminal emulators (Alacritty, Kitty, WezTerm, Windows Terminal, GNOME Terminal, etc.) may or may not have a line height or vertical spacing setting. Check your terminal's documentation — if the option exists, reduce it to around 90% for the best results with JetBrains Mono.
+
 ## Variants
 
 | Variant | Description |
