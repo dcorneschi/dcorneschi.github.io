@@ -66,6 +66,8 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | `helm repo add myrepo https://charts.example.com --username user --password pass` | Add private repo with credentials |
 | `helm repo add secure https://charts.secure.com --ca-file ./ca.crt --cert-file ./client.crt --key-file ./client.key` | Add repo with certificate auth |
 | `helm repo update` | Update repository indexes |
+| `helm repo update bitnami` | Update a specific repository |
+| `helm repo update --debug` | Update with verbose/debug output |
 | `helm repo update --fail-on-repo-update-fail` | Force update all repositories |
 | `helm repo list` | List configured repositories |
 | `helm repo list -o yaml` | List repositories in YAML format |
@@ -80,6 +82,8 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | `helm search repo metrics-server` | Search for charts in repositories |
 | `helm search repo metrics-server/metrics-server --versions` | List all versions with default column width |
 | `helm search repo metrics-server/metrics-server --versions --max-col-width 0` | List all versions with full width output (recommended) |
+| `helm search repo metrics-server/metrics-server --output json` | Search with JSON output (useful for scripting) |
+| `helm search repo metrics-server/metrics-server --output yaml` | Search with YAML output |
 | `helm search hub metrics-server` | Search Helm Hub |
 
 ### Chart Information
@@ -87,8 +91,11 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | Command | Details |
 |---------|---------|
 | `helm show chart metrics-server/metrics-server` | Show chart metadata |
+| `helm show chart metrics-server/metrics-server --version 3.12.2` | Show chart metadata for specific version |
 | `helm show values metrics-server/metrics-server` | Show default values |
+| `helm show values metrics-server/metrics-server --version 3.12.2` | Show default values for specific version |
 | `helm show readme metrics-server/metrics-server` | Show README |
+| `helm show readme metrics-server/metrics-server --version 3.12.2` | Show README for specific version |
 | `helm show all metrics-server/metrics-server` | Show all info |
 
 ## Install Charts
@@ -118,6 +125,9 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | `helm install metrics-server metrics-server/metrics-server --wait --timeout 5m` | Wait for deployment to complete |
 | `helm install metrics-server metrics-server/metrics-server --dry-run` | Dry run installation |
 | `helm install metrics-server metrics-server/metrics-server --dry-run --debug` | Dry run & debug installation |
+| `helm install metrics-server metrics-server/metrics-server --post-renderer ./kustomize-post-render.sh` | Install with post-render hook (e.g., kustomize) |
+| `helm install metrics-server metrics-server/metrics-server --skip-crds` | Skip CRD installation |
+| `helm install metrics-server metrics-server/metrics-server --disable-openapi-validation` | Disable OpenAPI validation |
 
 ## Upgrade Releases
 
@@ -140,15 +150,20 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | `helm upgrade metrics-server metrics-server/metrics-server -n kube-system --force` | Force update (recreate pods) |
 | `helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system` | Upgrade and install if not exists |
 | `helm upgrade metrics-server metrics-server/metrics-server -n kube-system --dependency-update` | Update missing dependencies before upgrading |
+| `helm upgrade metrics-server metrics-server/metrics-server -n kube-system --history-max=10` | Limit stored release history |
+| `helm upgrade metrics-server metrics-server/metrics-server --kube-context my-cluster-context -n production` | Target a specific kube context |
+| `helm upgrade --install metrics-server ./metrics-server -f <(helm get values metrics-server -n kube-system) --atomic` | Reinstall with last values |
 
 ## Rollback
 
 | Command | Details |
 |---------|---------|
 | `helm history metrics-server -n kube-system` | Check upgrade history |
+| `helm history metrics-server -n kube-system --max 10` | Show last 10 revisions |
 | `helm rollback metrics-server -n kube-system` | Rollback to previous release |
 | `helm rollback metrics-server -n kube-system 1` | Rollback to specific revision |
 | `helm rollback metrics-server -n kube-system 1 --cleanup-on-fail` | Rollback with cleanup hooks |
+| `helm rollback metrics-server -n kube-system 1 --wait --timeout 5m` | Rollback and wait for completion |
 
 ## Uninstall
 
@@ -157,6 +172,9 @@ When you run `helm repo update`, Helm downloads only the index (metadata about a
 | `helm uninstall metrics-server` | Uninstall release |
 | `helm uninstall metrics-server -n kube-system` | Uninstall from specific namespace |
 | `helm uninstall metrics-server -n kube-system --keep-history` | Keep release history (soft delete) |
+| `helm uninstall metrics-server -n kube-system --no-hooks` | Skip hook execution during uninstall |
+| `helm uninstall metrics-server --dry-run` | Dry run uninstall |
+| `helm uninstall metrics-server --timeout 300s` | Uninstall with timeout |
 
 ## Download Charts
 
@@ -190,8 +208,12 @@ helm pull bitnami/postgresql --destination ~/helm-charts/postgres --untar
 | `helm package my-chart` | Package chart into tarball |
 | `helm package my-chart --version 1.2.0` | Package with a specific version |
 | `helm package my-chart --version 1.2.0 --app-version 2.0.0` | Package with specific chart and app versions |
+| `helm package my-chart -d dist` | Package to specific directory |
+| `helm package my-chart --sign --key my-key --keyring ~/.gnupg/pubring.gpg` | Create a signed package |
 | `helm lint my-chart` | Validate chart syntax |
 | `helm lint my-chart --values values.yaml` | Validate chart values |
+| `helm lint my-chart --strict` | Lint with strict mode (warnings are errors) |
+| `helm lint my-chart --strict --with-subcharts` | Lint including subcharts |
 
 ### Template Rendering
 
@@ -199,6 +221,7 @@ helm pull bitnami/postgresql --destination ~/helm-charts/postgres --untar
 |---------|---------|
 | `helm template metrics-server metrics-server/metrics-server` | Template rendering (dry run) |
 | `helm template metrics-server metrics-server/metrics-server --set replicas=2` | Template with inline values |
+| `helm template metrics-server metrics-server/metrics-server --set-string key=value` | Template with string value override |
 | `helm template metrics-server metrics-server/metrics-server --values values.yaml` | Template with values file |
 | `helm template metrics-server metrics-server/metrics-server --debug` | Template with debug values |
 | `helm template metrics-server metrics-server/metrics-server > metrics-server-rendered.yaml` | Template to file |
@@ -220,7 +243,9 @@ Release information is stored in Kubernetes, not on your local machine.
 | `helm list -l key1=value1,key2=value2` | Filter releases by label selector |
 | `helm list --date` | Sort releases by date |
 | `helm list --deployed` | Show only deployed releases |
+| `helm list --failed` | Show only failed releases |
 | `helm list --pending` | Show pending releases |
+| `helm list --short` | Show only release names (useful for scripting) |
 | `helm list --uninstalled` | Show uninstalled releases (requires `--keep-history` on uninstall) |
 | `helm list --superseded` | Show superseded releases |
 
@@ -232,6 +257,8 @@ Release information is stored in Kubernetes, not on your local machine.
 | `helm status metrics-server -n kube-system --revision 2` | Show release status at a specific revision |
 | `helm get values metrics-server -n kube-system` | Get user-supplied values |
 | `helm get values metrics-server -n kube-system --all` | Get all values used by release (including defaults) |
+| `helm get values metrics-server -n kube-system --output json` | Get user-supplied values as JSON |
+| `helm get values metrics-server -n kube-system --revision 2` | Get values from a specific revision |
 | `helm get manifest metrics-server -n kube-system` | Get release manifest (rendered YAML) |
 | `helm get manifest metrics-server -n kube-system --revision 2` | Get manifest at specific revision |
 | `helm get notes metrics-server -n kube-system` | Get release notes |
@@ -281,6 +308,15 @@ export HELM_CONFIG_HOME=~/.config/helm
 
 # Set custom data directory
 export HELM_DATA_HOME=~/.local/share/helm
+
+# Enable debug logging
+export HELM_DEBUG=true
+
+# Set default namespace for all Helm commands
+export HELM_NAMESPACE=production
+
+# Set OCI registry config path
+export HELM_REGISTRY_CONFIG="${HOME}/.docker/config.json"
 
 # Make permanent (add to ~/.bash_profile or ~/.zshrc)
 echo 'export HELM_CACHE_HOME=~/my-custom-helm-cache' >> ~/.bash_profile
@@ -799,6 +835,7 @@ What happens when you run `helm install`:
 | Command | Details |
 |---------|---------|
 | `helm install metrics-server metrics-server/metrics-server --debug --dry-run` | Verbose dry run output |
+| `helm install metrics-server metrics-server/metrics-server --debug --dry-run -v=3` | Verbose output with debug level |
 | `helm template metrics-server ./metrics-server --debug --validate` | Template debugging with validation |
 | `helm status metrics-server --show-resources` | Show release resources |
 | `helm lint ./my-chart --strict --with-subcharts` | Strict lint with subcharts |
@@ -855,10 +892,16 @@ export KUBECONFIG=~/.kube/config   # Set kubeconfig
 | `--set` / `--set-file` / `--set-string` | Control value types precisely |
 | `--show-only` | Render a single template file for debugging |
 | `--kube-version` | Render as if targeting a specific cluster version |
+| `--kube-context` | Target a specific kube context |
 | `--skip-crds` | Skip CRD installation |
 | `--no-hooks` | Skip hook execution |
 | `--reuse-values` | Reuse values from previous release |
 | `--reset-values` | Reset values to chart defaults |
+| `--reset-then-reuse-values` | Reset to defaults, then merge old values back (Helm 3.14+) |
+| `--post-renderer` | Pipe rendered manifests through an external command |
+| `--disable-openapi-validation` | Disable OpenAPI schema validation |
+| `--dependency-update` | Update dependencies before install/upgrade |
+| `--generate-name` | Auto-generate a release name |
 
 ## Resources
 
