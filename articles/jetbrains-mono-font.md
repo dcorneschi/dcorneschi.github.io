@@ -27,7 +27,7 @@ Terminal.app does **not** support line height adjustment. You can set the font v
 
 Start with font size 13 and 90% vertical spacing, then adjust to preference.
 
-![iterm2]()
+<img src="/articles/images/iterm2-jetbrains-font.png" alt="iterm2-jetbrains-font" width="800"/>
 
 ## Variants
 
