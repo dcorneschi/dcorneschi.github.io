@@ -41,7 +41,7 @@ Your Project Directory:
 - Account Settings → Security → Personal Access Tokens
 - Create token with "Public Repo Read-only" permissions
 
-<img src="/articles/images/docker_access_token.png" alt="docker_access_token" width="800"/>
+<img src="/articles/images/docker_access_token.png" alt="docker-access-token" width="800"/>
 
 #### 2. Generate Base64 Auth String
 
