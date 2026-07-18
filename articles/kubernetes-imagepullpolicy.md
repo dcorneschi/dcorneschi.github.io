@@ -82,6 +82,8 @@ containers:
 | Guarantees all pods run the image matching the current tag in the registry | Adds latency on every pod start due to registry lookup |
 | Prevents stale image drift across nodes | Requires registry availability — pods won't start if the registry is down |
 
+> **Warning:** If `imagePullPolicy` is set to `Always` and the image registry is offline, the container will not run even if the same image is already stored locally. A registry that is unavailable may therefore prevent your application from (re)starting.
+
 ## Never
 
 Kubelet will not pull images under any circumstances. If the image is present on the node, the pod starts. Otherwise, it enters `ErrImageNeverPull` state.
