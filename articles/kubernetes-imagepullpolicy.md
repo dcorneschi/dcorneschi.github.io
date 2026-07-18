@@ -4,11 +4,11 @@ The `imagePullPolicy` field controls whether kubelet pulls a container image whe
 
 ## Quick Reference
 
-| Value | Behavior |
-|-------|----------|
-| `IfNotPresent` | Pull only if the image is not already on the node |
-| `Always` | Check the registry every time — pull only if the digest differs from what's cached locally |
-| `Never` | Never pull — fail with `ErrImageNeverPull` if the image isn't on the node |
+| Value | Behavior | Registry Contact | When Image Exists Locally | When Image Missing Locally |
+|-------|----------|-----------------|--------------------------|---------------------------|
+| `IfNotPresent` | Pull only if not cached on the node | Only when image is missing | Uses local cache, no registry call | Pulls from registry, caches it |
+| `Always` | Verify with registry every time | Every pod start | Compares digests — uses cache if match, pulls if different | Pulls from registry |
+| `Never` | Never pull from registry | Never | Uses local cache | Fails with `ErrImageNeverPull` |
 
 ## Decision Flow
 
@@ -16,20 +16,10 @@ The `imagePullPolicy` field controls whether kubelet pulls a container image whe
   <img src="/articles/images/imagepullpolicy-flow.png" alt="imagePullPolicy decision flow diagram" width="800"/>
 </p>
 
-## Listing Pod Policies
+## Listing Pod imagePullPolicy
 
 ```bash
-kubectl get pod <pod-name> -o yaml | grep Policy | sort | uniq
-```
-
-Typical output:
-
-```
-dnsPolicy: ClusterFirst
-imagePullPolicy: Always
-preemptionPolicy: PreemptLowerPriority
-restartPolicy: Always
-terminationMessagePolicy: File
+kubectl get pod <pod-name> -n <namespace> -o yaml | grep imagePullPolicy
 ```
 
 ## IfNotPresent
@@ -100,6 +90,28 @@ containers:
 - Preloaded images on nodes for minimal startup latency
 - Air-gapped environments without registry access
 - Avoiding authentication overhead with private registries when images are pre-distributed
+
+## Policy on Restarts
+
+The `imagePullPolicy` is not just evaluated when a pod is first created — it applies every time a container is restarted (crash loop, liveness probe failure, etc.).
+
+This has a useful side effect with `Always`: if a container fails and you push a fixed image under the same tag, the updated image gets pulled automatically on the next restart. No need to delete and recreate the pod.
+
+> **Note:** With `IfNotPresent`, a restarted container reuses the cached image. A new push under the same tag won't be picked up until the image is removed from the node or the pod is recreated.
+
+## Image Pull Order
+
+Kubernetes does not pull all images at the same moment. The order depends on the container type:
+
+| Container Type | Pull Order | Behavior |
+|----------------|-----------|----------|
+| Init containers | Sequential | Images are pulled one at a time. The next init container's image is only pulled after the previous one completes successfully. |
+| Regular containers | Parallel | All images are pulled concurrently. Containers start as their images become available — a slow pull means a delayed start for that container. |
+
+### Key details
+
+- If one container's image fails to pull, the other containers in the pod still run normally.
+- A container with a slow image pull will start later than siblings whose images were already cached or downloaded faster — keep this in mind if your containers have startup dependencies.
 
 ## Default Behavior
 
