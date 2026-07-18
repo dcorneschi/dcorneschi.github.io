@@ -10,12 +10,6 @@ The `imagePullPolicy` field controls whether kubelet pulls a container image whe
 | `Always` | Verify with registry every time | Every pod start | Compares digests — uses cache if match, pulls if different | Pulls from registry |
 | `Never` | Never pull from registry | Never | Uses local cache | Fails with `ErrImageNeverPull` |
 
-## Decision Flow
-
-<p align="center">
-  <img src="/articles/images/imagepullpolicy-flow.png" alt="imagePullPolicy decision flow diagram" width="800"/>
-</p>
-
 ## Listing Pod imagePullPolicy
 
 ```bash
