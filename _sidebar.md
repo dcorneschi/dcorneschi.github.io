@@ -11,6 +11,7 @@
   
 - Articles
   - [Getting Started with Argo CD](articles/getting-started-argo.md)
+  - [Kubernetes imagePullPolicy](articles/kubernetes-imagepullpolicy.md)
   - [Kubernetes emptyDir Volumes](articles/kubernetes-emptyDir-volumes.md)
   - [Fix Gitea Runner Docker Hub Rate Limits](articles/gitea-runner-fix.md)
   - [dbash — Docker Shell Function](articles/dbash-function.md)
