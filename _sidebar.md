@@ -13,6 +13,7 @@
   - [Getting Started with Argo CD](articles/getting-started-argo.md)
   - [Kubernetes imagePullPolicy](articles/kubernetes-imagepullpolicy.md)
   - [Kubernetes emptyDir Volumes](articles/kubernetes-emptyDir-volumes.md)
+  - [Kubernetes PriorityClasses Guide](articles/kubernetes-priority-classes-guide.md)
   - [Fix Gitea Runner Docker Hub Rate Limits](articles/gitea-runner-fix.md)
   - [dbash — Docker Shell Function](articles/dbash-function.md)
   - [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md)

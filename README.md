@@ -40,6 +40,7 @@ Longer-form write-ups on specific concepts, going deeper than a quick reference.
 | [Getting Started with Argo CD](articles/getting-started-argo.md) | Deploying your first application with ArgoCD — installing ArgoCD, understanding Application manifests, and deploying the Metrics Server via Helm. |
 | [Kubernetes imagePullPolicy](articles/kubernetes-imagepullpolicy.md) | How `imagePullPolicy` controls image pulling behavior — policy values, defaults, digests vs tags, private registries, parallel pulls, and troubleshooting. |
 | [Kubernetes emptyDir Volumes](articles/kubernetes-emptyDir-volumes.md) | How `emptyDir` volumes work, sharing files between containers in a Pod, and memory-backed volumes. |
+| [Kubernetes PriorityClasses Guide](articles/kubernetes-priority-classes-guide.md) | How PriorityClasses control scheduling and preemption — recommended tiers, preemptionPolicy, globalDefault, and common pitfalls. |
 | [Fix Gitea Runner Docker Hub Rate Limits](articles/gitea-runner-fix.md) | Mounting a Docker config file into the runner container to authenticate pulls and avoid rate limiting. |
 | [dbash — Docker Shell Function](articles/dbash-function.md) | A simple bash function to quickly access shell environments in Docker containers with automatic shell detection. |
 | [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md) | How to install and use a newer version of bash on macOS, which ships with the outdated 3.2.x due to licensing. |
