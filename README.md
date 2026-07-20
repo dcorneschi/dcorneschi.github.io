@@ -50,6 +50,7 @@ Longer-form write-ups on specific concepts, going deeper than a quick reference.
 | [Ingress for Kubernetes Dashboard on MicroK8s](articles/ingress-kubernetes-dashboard-microk8s.md) | Exposing the Kubernetes Dashboard through an Ingress resource on MicroK8s with NGINX annotations and token auth. |
 | [Ingress with MetalLB on MicroK8s](articles/ingress-metallb-microk8s-guide.md) | Setting up NGINX Ingress with MetalLB for bare-metal load balancing on MicroK8s. |
 | [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md) | Installing the NFS CSI driver on MicroK8s for persistent volumes backed by a network NFS server. |
+| [Linux File Permissions Guide](articles/linux-file-permissions.md) | Linux file permissions and ownership — standard permissions, umask, special permissions (SUID, SGID, sticky bit), ACLs, precedence, and practical examples. |
 | [User Administration on RHEL](articles/user-administration.md) | Linux user and group management — UID ranges, password hashing, chage, PAM lockout, and changes across RHEL 6 to 10. |
 | [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md) | Installing and configuring sysstat on Ubuntu 22.04 and 24.04 — enabling collection, setting 1-minute intervals via systemd timers, and data retention. |
 | [JetBrains Mono Font](articles/jetbrains-mono-font.md) | JetBrains Mono — a free, open-source monospaced font designed for terminals and code editors with improved readability. |

@@ -23,6 +23,7 @@
   - [Ingress for Kubernetes Dashboard on MicroK8s](articles/ingress-kubernetes-dashboard-microk8s.md)
   - [Ingress with MetalLB on MicroK8s](articles/ingress-metallb-microk8s-guide.md)
   - [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md)
+  - [Linux File Permissions Guide](articles/linux-file-permissions.md)
   - [User Administration on RHEL](articles/user-administration.md)
   - [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md)
   - [JetBrains Mono Font](articles/jetbrains-mono-font.md)
