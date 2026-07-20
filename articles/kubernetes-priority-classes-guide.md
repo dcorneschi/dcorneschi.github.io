@@ -377,20 +377,16 @@ kubectl get pc
 kubectl create priorityclass production-high --value=500000 --description="Revenue-critical production services"
 
 # Patch an existing deployment to assign a priority class
-kubectl patch deployment myapp -p '{"spec":{"template":{"spec":{"priorityClassName":"production-high"}}}}'
+kubectl patch deployment <deployment-name> -p '{"spec":{"template":{"spec":{"priorityClassName":"production-high"}}}}'
 
 # Check a single pod's priority value
 kubectl get pod <pod-name> -n <namespace> -o jsonpath='{.spec.priority}'
 
-# View pod priority with node placement
-kubectl get pods -A -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,PRIORITY:.spec.priority,NODE:.spec.nodeName,STATUS:.status.phase
-
 # See which pods have which priority
-kubectl get pods -A -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,PRIORITY:.spec.priority,CLASS:.spec.priorityClassName | sort -k3 -n -r
+kubectl get pods -A -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,NODE:.spec.nodeName,PRIORITY:.spec.priority,CLASS:.spec.priorityClassName | (read -r header; echo "$header"; sort -k4 -n -r)
 
 # Check for recent preemption events
 kubectl get events -A --field-selector reason=Preempted
-kubectl get events -A --field-selector reason=Preempting
 
 # Find pods pending due to resource constraints (potential preemption triggers)
 kubectl get pods -A --field-selector=status.phase=Pending -o custom-columns=NS:.metadata.namespace,NAME:.metadata.name,PRIORITY:.spec.priority,NOMINATED:.status.nominatedNodeName
