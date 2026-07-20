@@ -4,6 +4,8 @@
 
 PriorityClasses define the relative importance of Pods in a Kubernetes cluster. When the scheduler cannot find room for a pending Pod, it uses priority to decide which existing Pods to preempt (evict). Higher priority Pods can displace lower priority ones.
 
+Priority values range from **-2,147,483,648** to **1,000,000,000** (values above 1 billion are reserved for system components).
+
 Every cluster ships with two built-in system PriorityClasses:
 
 | Name | Value | Purpose |
@@ -262,6 +264,43 @@ Batch jobs with `PreemptLowerPriority` will evict your lower-priority running se
 
 During preemption, the scheduler tries to avoid PDB violations but will violate them for sufficiently high-priority pods. Don't rely solely on PDBs to protect low-priority workloads from preemption.
 
+Pair your high-priority deployments with a PodDisruptionBudget to guard against excessive preemption:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: payment-api
+  template:
+    metadata:
+      labels:
+        app: payment-api
+    spec:
+      priorityClassName: production-high
+      containers:
+      - name: api
+        image: myapp/payment-api:latest
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: payment-api-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: payment-api
+```
+
 ---
 
 ## Quick Setup — Apply All Classes at Once
@@ -334,6 +373,18 @@ kubectl get priorityclasses
 # Check current priority classes
 kubectl get pc
 
+# Create a priority class imperatively (quick one-liner)
+kubectl create priorityclass production-high --value=500000 --description="Revenue-critical production services"
+
+# Patch an existing deployment to assign a priority class
+kubectl patch deployment myapp -p '{"spec":{"template":{"spec":{"priorityClassName":"production-high"}}}}'
+
+# Check a single pod's priority value
+kubectl get pod <pod-name> -n <namespace> -o jsonpath='{.spec.priority}'
+
+# View pod priority with node placement
+kubectl get pods -A -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,PRIORITY:.spec.priority,NODE:.spec.nodeName,STATUS:.status.phase
+
 # See which pods have which priority
 kubectl get pods -A -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,PRIORITY:.spec.priority,CLASS:.spec.priorityClassName | sort -k3 -n -r
 
@@ -343,6 +394,34 @@ kubectl get events -A --field-selector reason=Preempting
 
 # Find pods pending due to resource constraints (potential preemption triggers)
 kubectl get pods -A --field-selector=status.phase=Pending -o custom-columns=NS:.metadata.namespace,NAME:.metadata.name,PRIORITY:.spec.priority,NOMINATED:.status.nominatedNodeName
+```
+
+---
+
+## Validation Script
+
+A quick script to audit priority classes and preemption events across the cluster:
+
+```bash
+#!/bin/bash
+set -e
+
+echo "=== Priority Class Validation ==="
+
+echo -e "\nAvailable Priority Classes:"
+kubectl get priorityclasses --sort-by='.value' \
+  -o custom-columns=NAME:.metadata.name,VALUE:.value,DEFAULT:.globalDefault,PREEMPTION:.preemptionPolicy
+
+echo -e "\n=== Pods with Priority Classes ==="
+kubectl get pods --all-namespaces \
+  -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,PRIORITY-CLASS:.spec.priorityClassName,PRIORITY-VALUE:.spec.priority,STATUS:.status.phase \
+  | (read -r header; echo "$header"; sort -k4 -n -r)
+
+echo -e "\n=== Node Resource Pressure ==="
+kubectl top nodes 2>/dev/null || echo "(metrics-server not available)"
+
+echo -e "\n=== Recent Preemption Events ==="
+kubectl get events --all-namespaces --field-selector=reason=Preempted --sort-by='.lastTimestamp' 2>/dev/null | tail -10 || echo "No preemption events found"
 ```
 
 ---
