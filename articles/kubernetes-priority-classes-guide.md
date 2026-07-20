@@ -301,6 +301,84 @@ spec:
       app: payment-api
 ```
 
+### 6. Not accounting for graceful termination during preemption
+
+When a pod is preempted, it gets a default 30-second graceful termination period. If your pod has `terminationGracePeriodSeconds` or `preStop` lifecycle hooks, those override the default. Long-running cleanup tasks can delay preemption and leave high-priority pods waiting longer than expected.
+
+```yaml
+# If your pod needs time to drain connections:
+spec:
+  terminationGracePeriodSeconds: 60  # Preempted pods get up to 60s to shut down
+```
+
+### 7. Confusing QoS-based eviction with priority-based preemption
+
+These are two separate mechanisms:
+
+- **Scheduler preemption** — triggered when a high-priority pod is in the scheduling queue and no resources are available. The scheduler ignores QoS class entirely — it only looks at pod priority values.
+- **Kubelet eviction** — triggered by node resource pressure (memory/disk/PID). The kubelet considers QoS class *first* (`BestEffort` → `Burstable` → `Guaranteed`), then pod priority *within* the same QoS tier.
+
+A `Guaranteed` pod with low priority won't be preempted by kubelet eviction before a `BestEffort` pod, but it *will* be preempted by the scheduler if a higher-priority pod needs the resources.
+
+### 8. Ignoring `nominatedNodeName` behavior
+
+When a pod triggers preemption, its `status.nominatedNodeName` is set to the target node. However, the pod is **not guaranteed** to land on that node:
+
+- A higher-priority pod may arrive and take the nominated node instead.
+- Another node might free up while victims are terminating, and the scheduler will use that instead.
+- The scheduler clears `nominatedNodeName` if the pod loses its spot, making it eligible to preempt elsewhere.
+
+Don't assume `nominatedNodeName == nodeName` — they can differ.
+
+### 9. Inter-pod affinity towards lower-priority pods
+
+If a pending high-priority pod has inter-pod affinity to a lower-priority pod on a node, the scheduler **won't preempt from that node** — evicting the lower-priority pod would break the affinity rule and make scheduling impossible anyway.
+
+Best practice: only define inter-pod affinity towards pods of equal or higher priority.
+
+### 10. No cross-node preemption
+
+The scheduler won't evict pods on Node B to satisfy topology or anti-affinity constraints for scheduling on Node A. Preemption only considers pods on the same candidate node.
+
+Example: if Pod P has zone-wide anti-affinity with Pod Q on another node in the same zone, the scheduler won't preempt Pod Q to make room. Pod P will be deemed unschedulable on that node.
+
+### 11. Not using ResourceQuota to limit PriorityClass usage
+
+In multi-tenant clusters, any user can create pods with high PriorityClasses unless restricted. Use `ResourceQuota` with `scopeSelector` to limit which namespaces can consume specific priority classes:
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: limit-critical-priority
+  namespace: dev-team
+spec:
+  hard:
+    pods: "0"
+  scopeSelector:
+    matchExpressions:
+    - scopeName: PriorityClass
+      operator: In
+      values:
+      - platform-critical
+      - production-high
+```
+
+This prevents the `dev-team` namespace from creating pods using `platform-critical` or `production-high` classes.
+
+### 12. Deleting a PriorityClass that's still in use
+
+If you delete a PriorityClass:
+
+- Existing pods **keep their priority value** — they're unaffected.
+- New pods referencing the deleted class name will be **rejected** by the admission controller.
+
+Always verify no workloads reference a PriorityClass before deleting it:
+
+```bash
+kubectl get pods -A -o jsonpath='{range .items[?(@.spec.priorityClassName=="<class-name>")]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}'
+```
+
 ---
 
 ## Quick Setup — Apply All Classes at Once
