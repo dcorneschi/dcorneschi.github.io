@@ -66,6 +66,20 @@ When the system checks a file's permissions, it runs through a series of checks.
 └── file type (- = file, d = directory, l = symlink)
 ```
 
+### File Type Indicators
+
+The first character in `ls -l` output indicates the file type:
+
+| Character | Type |
+|-----------|------|
+| `-` | Regular file |
+| `d` | Directory |
+| `l` | Symbolic link |
+| `c` | Character device (e.g., `/dev/tty`) |
+| `b` | Block device (e.g., `/dev/sda`) |
+| `p` | Named pipe (FIFO) |
+| `s` | Socket |
+
 ### Numeric (Octal) Notation
 
 | Permission | Value |
@@ -93,6 +107,8 @@ The `umask` determines the default permissions for newly created files and direc
 
 - Maximum permissions for files: `666` (no execute by default)
 - Maximum permissions for directories: `777`
+
+> **Why files never get execute by default:** For security reasons, the kernel never grants execute permission to newly created regular files, even if the umask would allow it. This prevents accidentally creating executable files. You must explicitly `chmod +x` a file to make it executable.
 
 **Calculation:** `default permissions = max permissions - umask`
 
@@ -474,3 +490,102 @@ Setting the SGID bit (`2775`) on directories ensures that new files and subdirec
 ## About the `users` Group
 
 The `users` group exists just to be assigned to users which don't need to belong in any other group, as far as permissions are concerned. It basically exists just because every user must be at least part of a primary group (which you can find in `/etc/passwd`). Think of `users` like a "fallback" — if no group is assigned to a user, the `useradd` utility uses it as a default when homonym groups are disabled.
+
+---
+
+## Finding Files by Permission
+
+Useful for security auditing — find files with specific permission bits set:
+
+```sh
+# Find all SUID files
+find / -perm -4000 -type f 2>/dev/null
+
+# Find all SGID files
+find / -perm -2000 -type f 2>/dev/null
+
+# Find all SUID and SGID files
+find / -perm /6000 -type f 2>/dev/null
+
+# Find world-writable files
+find / -perm -0002 -type f 2>/dev/null
+
+# Find world-writable directories (without sticky bit — potential security risk)
+find / -perm -0002 -type d ! -perm -1000 2>/dev/null
+
+# Find files with no owner
+find / -nouser 2>/dev/null
+
+# Find files with no group
+find / -nogroup 2>/dev/null
+
+# Find files with exact permissions 644
+find /var/www -perm 644
+
+# Find files with at least read and write for owner
+find /home -perm -u+rw
+```
+
+---
+
+## Inspecting Permissions with `stat`
+
+The `stat` command shows permissions in both octal and symbolic format at once, along with ownership and timestamps:
+
+```sh
+$ stat /etc/passwd
+  File: /etc/passwd
+  Size: 2468      Blocks: 8          IO Block: 4096   regular file
+Device: fd00h/64768d    Inode: 1048950     Links: 1
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2024-01-15 10:30:00.000000000 +0000
+Modify: 2024-01-10 08:15:22.000000000 +0000
+Change: 2024-01-10 08:15:22.000000000 +0000
+ Birth: -
+```
+
+```sh
+# Show only the octal permissions
+stat -c "%a %n" /etc/passwd
+644 /etc/passwd
+
+# Show owner and group
+stat -c "%U:%G %n" /path/to/file
+
+# Show human-readable permissions
+stat -c "%A %n" /path/to/file
+-rw-r--r-- /path/to/file
+
+# Useful format: octal, symbolic, owner, group, filename
+stat -c "%a %A %U:%G %n" /etc/passwd
+644 -rw-r--r-- root:root /etc/passwd
+```
+
+---
+
+## Debugging Permission Chains with `namei`
+
+The `namei` command traces the permission chain along a full path. Useful when troubleshooting "permission denied" errors on deeply nested directories — the problem is often a missing execute bit on a parent directory:
+
+```sh
+$ namei -l /var/www/html/index.html
+f: /var/www/html/index.html
+dr-xr-xr-x root root /
+drwxr-xr-x root root var
+drwxr-xr-x root root www
+drwxr-xr-x root root html
+-rw-r--r-- root root index.html
+```
+
+```sh
+# Show all permissions along the path (with modes)
+namei -l /path/to/file
+
+# Include mountpoint information
+namei -m /path/to/file
+
+# Show owners numerically (UID/GID)
+namei -o /path/to/file
+```
+
+If any directory in the chain is missing the execute (`x`) bit for the requesting user, access will be denied even if the final file has open permissions.
