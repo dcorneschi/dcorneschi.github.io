@@ -188,6 +188,84 @@ Scheduler evaluates nodes:
   Pending high-priority pod is scheduled on Node B.
 ```
 
+### Preemption Decision Flow
+
+```
+                    ┌─────────────────────────┐
+                    │  High-priority Pod (P)  │
+                    │ enters scheduling queue │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │  Can P be scheduled on  │
+                    │  any node as-is?        │
+                    └────────────┬────────────┘
+                          │            │
+                         YES          NO
+                          │            │
+                          ▼            ▼
+                    ┌──────────┐  ┌──────────────────────────┐
+                    │ Schedule │  │Find nodes where removing │
+                    │ normally │  │lower-priority pods would │
+                    └──────────┘  │make room for P           │
+                                  └─────────────┬────────────┘
+                                          │           │
+                                        FOUND      NOT FOUND
+                                          │           │
+                                          ▼           ▼
+                              ┌────────────────┐  ┌──────────────┐
+                              │ Check:         │  │ P stays in   │
+                              │ • PDB impact   │  │pending queue │
+                              │ • Pod affinity │  └──────────────┘
+                              │ • Preemption   │
+                              │   policy       │
+                              └───────┬────────┘
+                                      │
+                                      ▼
+                              ┌────────────────────────────────┐
+                              │ Select victim pods             │
+                              │ (lowest priority first)        │
+                              └───────┬────────────────────────┘
+                                      │
+                                      ▼
+                              ┌────────────────────────────────┐
+                              │ Set P.nominatedNodeName = Node │
+                              │ Send graceful termination to   │
+                              │ victims (default 30s)          │
+                              └───────┬────────────────────────┘
+                                      │
+                                      ▼
+                              ┌────────────────────────────────┐
+                              │ Victims terminated?            │
+                              │                                │
+                              │ • If yes → schedule P on node  │
+                              │ • If higher-priority Pod Q     │
+                              │   arrives → Q may take the     │
+                              │   node, P.nominatedNodeName    │
+                              │   is cleared, P retries        │
+                              └────────────────────────────────┘
+```
+
+### Key Preemption Constraints
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ PREEMPTION RULES                                                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ✓ Only evicts pods on the SAME candidate node (no cross-node)      │
+│  ✓ Picks the node with lowest-priority victims first                │
+│  ✓ Respects PDB where possible (best-effort, not guaranteed)        │
+│  ✓ Won't preempt if pod has affinity to a lower-priority victim     │
+│  ✓ nominatedNodeName ≠ guaranteed final placement                   │
+│  ✓ preemptionPolicy: Never pods queue first but never evict others  │
+│  ✓ Victims get graceful termination (30s default or pod's setting)  │
+│  ✓ Minimum victims evicted (not necessarily all lower-priority)     │ 
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## The `preemptionPolicy` Field
@@ -378,6 +456,111 @@ Always verify no workloads reference a PriorityClass before deleting it:
 ```bash
 kubectl get pods -A -o jsonpath='{range .items[?(@.spec.priorityClassName=="<class-name>")]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}'
 ```
+
+---
+
+## Best Practices
+
+### Keep the priority model small and deliberate
+
+3–5 application-facing priority levels is the sweet spot. More levels create confusion without improving scheduling behavior. Use wide numeric gaps between values (e.g. 100000, 500000, 1000000) to leave room for future classes without renumbering.
+
+### Require resource requests for elevated priority
+
+The scheduler makes placement decisions using resource *requests*, not actual usage. A high-priority pod without requests can be scheduled in ways that create node pressure later. If a team can't define reasonable requests, they shouldn't receive preemption rights yet.
+
+### Treat frequent preemption as a capacity problem
+
+If high-priority pods are constantly preempting lower-priority pods, your cluster is telling you something: capacity, quotas, or workload placement rules are wrong. Don't solve this by raising more priorities — fix the underlying capacity issue.
+
+Watch for these signals:
+
+- Lower-priority Deployments that can't return to their desired replica count
+- Pods with frequent `Preempted` events after high-priority deploys
+- Autoscaling events that show the cluster can't add nodes fast enough
+- Namespaces repeatedly hitting high-priority ResourceQuotas
+
+### Enforce priority assignment with admission policies
+
+Without enforcement, anyone can assign any PriorityClass to their workload. Use admission policies to control which namespaces or teams can use which priority classes:
+
+- **ValidatingAdmissionPolicy** (Kubernetes 1.26+) — built-in, no external tooling needed
+- **Kyverno** or **Gatekeeper** — for more complex rules
+
+Example Kyverno policy restricting `platform-critical` usage:
+
+```yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-platform-critical
+spec:
+  validationFailureAction: Enforce
+  rules:
+  - name: deny-platform-critical-outside-infra
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    exclude:
+      any:
+      - resources:
+          namespaces:
+          - kube-system
+          - monitoring
+          - ingress-nginx
+    validate:
+      message: "Only infrastructure namespaces can use platform-critical PriorityClass"
+      pattern:
+        spec:
+          =(priorityClassName): "!platform-critical"
+```
+
+### Restart workloads after changing a PriorityClass value
+
+Priority is resolved at pod admission time. Changing a PriorityClass value does not update running pods — they keep their old priority until recreated:
+
+```bash
+kubectl rollout restart deployment/payment-api -n production
+```
+
+Verify the effective priority:
+
+```bash
+kubectl get pod <pod-name> -o jsonpath='{.spec.priorityClassName} {.spec.priority}'
+```
+
+### Test preemption before enabling it broadly
+
+Don't introduce high-priority preemption directly into a busy production cluster. Test in a dedicated namespace:
+
+1. Create your PriorityClasses
+2. Deploy lower-priority pods that consume most available resources
+3. Deploy a higher-priority pod that can't fit
+4. Observe which pods get preempted
+5. Check events and verify recovery behavior
+
+```bash
+# Watch preemption in action
+kubectl get events -n priority-test --sort-by='.lastTimestamp' --field-selector reason=Preempted
+kubectl get pods -n priority-test -w
+```
+
+### Rollout checklist
+
+Before merging PriorityClasses into a shared cluster:
+
+- [ ] No more than 3–5 application-facing priority levels
+- [ ] `system-*` classes reserved for Kubernetes system components only
+- [ ] One clear `globalDefault` set (typically a normal workload class)
+- [ ] Resource requests required for every workload with elevated priority
+- [ ] ResourceQuotas scoped by PriorityClass per namespace
+- [ ] `preemptionPolicy: Never` used where queue ordering is sufficient
+- [ ] Preemption tested in a non-production namespace
+- [ ] Admission policy enforcing which namespaces can use high-priority classes
+- [ ] Monitoring in place for preemptions, pending pods, and quota failures
+- [ ] Documentation of who can approve new high-priority workloads
 
 ---
 
