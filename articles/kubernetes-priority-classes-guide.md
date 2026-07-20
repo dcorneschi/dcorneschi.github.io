@@ -680,16 +680,3 @@ kubectl top nodes 2>/dev/null || echo "(metrics-server not available)"
 echo -e "\n=== Recent Preemption Events ==="
 kubectl get events --all-namespaces --field-selector=reason=Preempted --sort-by='.lastTimestamp' 2>/dev/null | tail -10 || echo "No preemption events found"
 ```
-
----
-
-## Summary
-
-| What to do | Why |
-|------------|-----|
-| Create 3–5 custom PriorityClasses | Give the scheduler a hierarchy to make intelligent preemption decisions |
-| Keep values well below 1 billion | Avoid conflicting with system-critical components |
-| Set a `globalDefault` | Ensure pods without explicit priority aren't at 0 |
-| Use `preemptionPolicy: Never` for batch | Prevent batch jobs from killing running services |
-| Assign priority to monitoring/platform | Ensure observability survives resource pressure |
-| Combine with PDBs | Priority handles preemption; PDBs handle voluntary disruptions (drains) |
