@@ -44,7 +44,17 @@ Each set can have:
 | `w` (write) | Contents of file can be changed | Any file in directory can be created or deleted |
 | `x` (executable) | Contents of file can be executed as a command | Contents of directory can be accessed (dependent on file's own permissions) |
 
-> **Note:** Read without execute on a directory lets you list filenames but not access anything. Execute without read lets you access files (if you know the name) but not list them. Write on a directory without the sticky bit means any user with that permission can delete any file in it, regardless of the file's own permissions.
+> **Note:** Read without execute on a directory lets you list filenames but not access anything. Execute without read lets you access files (if you know the name) but not list them. Write without execute on a directory is also useless — you cannot add or remove files if you can't access the directory's metadata. Write on a directory without the sticky bit means any user with that permission can delete any file in it, regardless of the file's own permissions.
+
+### Permission Check Order
+
+When the system checks a file's permissions, it runs through a series of checks. The three fields (user, group, other) are **mutually exclusive** — you can only be covered under one:
+
+1. Are you the **user owner** of the file? → User permissions apply, no further checks.
+2. Do you belong to the **group** that owns the file? → Group permissions apply, no further checks.
+3. Neither? → **Other** permissions apply.
+
+> **Note:** A file can execute without the `x` permission if you invoke the interpreter directly (e.g., `bash script.sh` or `python script.py`). The execute bit only prevents direct execution (`./script.sh`). This is important for security — restricting execute does not fully prevent script content from running.
 
 ### Reading Permissions
 
