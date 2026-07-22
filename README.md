@@ -1,8 +1,8 @@
 <div align="center">
 
-<h1>📚 Cheatsheets & Articles</h1>
-
 <img src="articles/images/corneschi-logo.png" alt="corneschi.ro" width="400" />
+
+<h1>📚 Cheatsheets & Articles</h1>
 
 <p>Quick reference guides, command tables, and longer-form write-ups covering Kubernetes, container runtimes, networking, terminal tooling, and infrastructure as code — all tailored to a self-hosted homelab environment.</p>
 
