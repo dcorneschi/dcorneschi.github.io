@@ -1,4 +1,4 @@
-## 1. Enable bash debug mode with `set -x`
+## 1. Enable bash debug mode with set -x
 This shows each command before it's executed:
 ```bash
 set -x          # Enable debug mode
@@ -17,7 +17,7 @@ Add this at the top of your bash script:
 #!/bin/bash -x
 ```
 
-## 4. Verbose mode with `set -v`
+## 4. Verbose mode with set -v
 This prints shell input lines as they are read:
 ```bash
 set -v          # Enable verbose mode
@@ -31,7 +31,7 @@ set -xv         # Both debug and verbose
 bash -xv script.sh
 ```
 
-## 6. For more detailed debugging, use `set -euxo pipefail`
+## 6. For more detailed debugging, use set -euxo pipefail
 - `-e`: Exit on error
 - `-u`: Exit on undefined variable
 - `-x`: Print commands before executing
@@ -54,7 +54,7 @@ ls -la
 echo "Script completed"
 ```
 
-### Syntax check with `set -n`
+### Syntax check with set -n
 Parse a script without executing it — catches missing `fi`, `done`, unclosed quotes:
 ```bash
 bash -n script.sh
