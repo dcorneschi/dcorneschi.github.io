@@ -3,6 +3,7 @@
 - Cheatshets
   - [crictl Cheatsheet](cheatsheets/crictl/README.md)
   - [Helm Cheatsheet](cheatsheets/helm/README.md)
+  - [iotop Cheatsheet](cheatsheets/iotop/README.md)
   - [k9s Cheatsheet](cheatsheets/k9s/README.md)
   - [Kitty Cheatsheet](cheatsheets/kitty/README.md)
   - [ss Cheatsheet](cheatsheets/ss/README.md)

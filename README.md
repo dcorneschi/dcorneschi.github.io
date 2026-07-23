@@ -20,6 +20,7 @@ Each cheatsheet is a self-contained reference guide with installation instructio
 |------------|--------------|
 | [crictl](cheatsheets/crictl/) | CLI for inspecting and debugging container runtimes (containerd, CRI-O) at the CRI level. |
 | [Helm](cheatsheets/helm/) | Package manager for Kubernetes — repositories, chart installs, upgrades, rollbacks, and releases. |
+| [iotop](cheatsheets/iotop/) | Interactive I/O monitoring tool — per-process disk read/write usage, batch logging, and troubleshooting. |
 | [k9s](cheatsheets/k9s/) | Terminal UI for navigating, observing, and managing Kubernetes clusters. |
 | [Kitty](cheatsheets/kitty/) | GPU-accelerated terminal emulator — tabs, windows, layouts, and configuration. |
 | [ss](cheatsheets/ss/) | Socket statistics tool for inspecting TCP/UDP connections, states, and troubleshooting network issues. |
