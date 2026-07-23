@@ -108,6 +108,16 @@ sudo iotop -t -o -p <pid> -b -n 86400 -t -qqq > iotop.out &
 sudo iotop $(pgrep nginx | sed 's/^/-p /' | tr '\n' ' ')
 ```
 
+### Top 5 processes by write I/O
+```bash
+sudo iotop -boP -qqq -n 1 | sort -k6 -rn | head -5
+```
+
+### Top 5 processes by read I/O
+```bash
+sudo iotop -boP -qqq -n 1 | sort -k4 -rn | head -5
+```
+
 ### Filter processes by I/O threshold
 ```bash
 # Show processes with > 50MB/s I/O
@@ -317,24 +327,6 @@ sudo strace -p <PID> -e trace=read,write,openat -T -y 2>&1 | head -50
 | Open files | `ls -la /proc/<PID>/fd` | No lsof needed, works in minimal containers |
 | Syscall tracing | `strace -p <PID> -T -y` | Per-syscall timing with resolved paths |
 | Syscall tracing | `perf trace -p <PID>` | Lower overhead than strace |
-
-### Quick one-liners
-
-```bash
-# Top 5 processes by write I/O right now
-sudo iotop -boP -n 1 | sort -k6 -rn | head -5
-
-# Which files is PID writing to?
-sudo strace -p <PID> -e write -y 2>&1 | grep -oP '(?<=<).*(?=>)'
-
-# Dirty pages — are writes piling up in cache?
-watch -n 1 'grep -E "Dirty|Writeback" /proc/meminfo'
-
-# Per-disk queue depth (nr_requests in flight)
-cat /sys/block/sda/inflight
-```
-
-
 
 ## Why iotop and iostat Show Different Numbers
 
