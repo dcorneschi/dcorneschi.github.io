@@ -43,31 +43,37 @@
   <text x="200" y="95" font-family="-apple-system, 'Helvetica Neue', sans-serif" font-size="54" font-weight="800" fill="#b8bb26">homelab</text>
   <text x="200" y="140" font-family="-apple-system, 'Helvetica Neue', sans-serif" font-size="28" font-weight="300" fill="#a89984" letter-spacing="12">WIKI</text>
 
-  <!-- Right side: uptime/status indicators with icons (same height as rack: 175px, 4 cards) -->
-  <g transform="translate(580, 30)">
-    <!-- Network icon (globe) -->
-    <rect x="0" y="0" width="180" height="38" rx="6" fill="#3c3836" fill-opacity="0.6" stroke="#665c54" stroke-width="1.5"/>
-    <g transform="translate(10, 7)">
+  <!-- Right side: uptime/status indicators (minimal underline style) -->
+  <g transform="translate(580, 40)">
+    <!-- Uptime -->
+    <g transform="translate(0, 0)">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="#fb4934" stroke-width="1.5"/>
+      <polyline points="12,6 12,12 16,14" fill="none" stroke="#fb4934" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="30" y="17" font-family="monospace" font-size="13" font-weight="bold" fill="#fb4934">Up: 42 days</text>
+      <line x1="0" y1="28" x2="180" y2="28" stroke="#fb4934" stroke-width="1" opacity="0.4"/>
+    </g>
+
+    <!-- Network -->
+    <g transform="translate(0, 33)">
       <circle cx="12" cy="12" r="9" fill="none" stroke="#b8bb26" stroke-width="1.5"/>
       <ellipse cx="12" cy="12" rx="4" ry="9" fill="none" stroke="#b8bb26" stroke-width="1"/>
       <line x1="3" y1="12" x2="21" y2="12" stroke="#b8bb26" stroke-width="1"/>
+      <text x="30" y="17" font-family="monospace" font-size="13" font-weight="bold" fill="#b8bb26">Net: 12MB/s 4MB/s</text>
+      <line x1="0" y1="28" x2="180" y2="28" stroke="#b8bb26" stroke-width="1" opacity="0.4"/>
     </g>
-    <text x="38" y="24" font-family="monospace" font-size="13" fill="#b8bb26">Network: Online</text>
 
-    <!-- Storage icon (HDD) -->
-    <rect x="0" y="46" width="180" height="38" rx="6" fill="#3c3836" fill-opacity="0.6" stroke="#665c54" stroke-width="1.5"/>
-    <g transform="translate(10, 51)">
+    <!-- Storage -->
+    <g transform="translate(0, 66)">
       <rect x="2" y="3" width="20" height="18" rx="3" fill="none" stroke="#83a598" stroke-width="1.5"/>
       <circle cx="12" cy="13" r="5" fill="none" stroke="#83a598" stroke-width="1"/>
       <circle cx="12" cy="13" r="1.5" fill="#83a598"/>
+      <text x="30" y="17" font-family="monospace" font-size="13" font-weight="bold" fill="#83a598">Storage: 2.4TB</text>
+      <line x1="0" y1="28" x2="180" y2="28" stroke="#83a598" stroke-width="1" opacity="0.4"/>
     </g>
-    <text x="38" y="70" font-family="monospace" font-size="13" fill="#83a598">Storage: 2.4TB</text>
 
-    <!-- CPU icon (chip) -->
-    <rect x="0" y="92" width="180" height="38" rx="6" fill="#3c3836" fill-opacity="0.6" stroke="#665c54" stroke-width="1.5"/>
-    <g transform="translate(10, 97)">
+    <!-- CPU -->
+    <g transform="translate(0, 99)">
       <rect x="5" y="5" width="14" height="14" rx="2" fill="none" stroke="#fabd2f" stroke-width="1.5"/>
-      <!-- Pins -->
       <line x1="8" y1="3" x2="8" y2="5" stroke="#fabd2f" stroke-width="1.5"/>
       <line x1="12" y1="3" x2="12" y2="5" stroke="#fabd2f" stroke-width="1.5"/>
       <line x1="16" y1="3" x2="16" y2="5" stroke="#fabd2f" stroke-width="1.5"/>
@@ -80,21 +86,20 @@
       <line x1="19" y1="8" x2="21" y2="8" stroke="#fabd2f" stroke-width="1.5"/>
       <line x1="19" y1="12" x2="21" y2="12" stroke="#fabd2f" stroke-width="1.5"/>
       <line x1="19" y1="16" x2="21" y2="16" stroke="#fabd2f" stroke-width="1.5"/>
+      <text x="30" y="17" font-family="monospace" font-size="13" font-weight="bold" fill="#fabd2f">CPU: 68%</text>
+      <line x1="0" y1="28" x2="180" y2="28" stroke="#fabd2f" stroke-width="1" opacity="0.4"/>
     </g>
-    <text x="38" y="116" font-family="monospace" font-size="13" fill="#fabd2f">CPU: 68%</text>
 
-    <!-- Memory icon (RAM stick) -->
-    <rect x="0" y="138" width="180" height="38" rx="6" fill="#3c3836" fill-opacity="0.6" stroke="#665c54" stroke-width="1.5"/>
-    <g transform="translate(10, 143)">
+    <!-- Memory -->
+    <g transform="translate(0, 132)">
       <rect x="2" y="6" width="20" height="12" rx="2" fill="none" stroke="#d3869b" stroke-width="1.5"/>
-      <!-- Chips on RAM -->
       <rect x="5" y="9" width="3" height="6" rx="0.5" fill="#d3869b"/>
       <rect x="10" y="9" width="3" height="6" rx="0.5" fill="#d3869b"/>
       <rect x="15" y="9" width="3" height="6" rx="0.5" fill="#d3869b"/>
-      <!-- Notch -->
       <line x1="12" y1="18" x2="12" y2="20" stroke="#d3869b" stroke-width="1.5"/>
+      <text x="30" y="17" font-family="monospace" font-size="13" font-weight="bold" fill="#d3869b">Mem: 12GB</text>
+      <line x1="0" y1="28" x2="180" y2="28" stroke="#d3869b" stroke-width="1" opacity="0.4"/>
     </g>
-    <text x="38" y="162" font-family="monospace" font-size="13" fill="#d3869b">Mem: 12GB</text>
   </g>
 
   <!-- Bash terminal prompt (mac style) -->
