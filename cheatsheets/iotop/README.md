@@ -299,8 +299,6 @@ sudo ionice -c 3 tar czf /backup/archive.tar.gz /data/
 
 ## Troubleshooting Disk Saturation
 
-### Troubleshooting workflow
-
 ```bash
 # 1. Is the disk busy? (single device, header once)
 iostat -dx 1 sda | awk '/^Device/ {if(!h){h=1; print}; next} /^sda/ {print}'
