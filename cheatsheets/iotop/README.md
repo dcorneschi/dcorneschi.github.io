@@ -100,7 +100,7 @@ sudo iotop -b -d 1 -qq | grep "^Total"
 
 ### Monitor PID for 24 hours in background
 ```bash
-sudo iotop -t -o -p <pid> -b -n 86400 -t -qqq > iotop.out &
+sudo iotop -t -o -p <pid> -b -n 86400 -t -qqq > iotop_$(date +%Y%m%d_%H%M%S).log &
 ```
 
 ### Monitor all PIDs of a process by name
