@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="articles/images/corneschi-logo.png" alt="corneschi.ro" width="400" />
+<img src="articles/images/homelab-wiki-logo.svg" alt="corneschi.ro" width="500" />
 
 <h1>📚 Cheatsheets & Articles</h1>
 
