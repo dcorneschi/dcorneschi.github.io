@@ -38,6 +38,7 @@ Longer-form write-ups on specific concepts, going deeper than a quick reference.
 | [Kubernetes PriorityClasses Guide](articles/kubernetes-priority-classes-guide.md) | How PriorityClasses control scheduling and preemption — recommended tiers, preemptionPolicy, globalDefault, and common pitfalls. |
 | [Fix Gitea Runner Docker Hub Rate Limits](articles/gitea-runner-fix.md) | Mounting a Docker config file into the runner container to authenticate pulls and avoid rate limiting. |
 | [dbash — Docker Shell Function](articles/dbash-function.md) | A simple bash function to quickly access shell environments in Docker containers with automatic shell detection. |
+| [Bash Troubleshooting Guide](articles/bash-troubleshooting-guide.md) | Bash debugging and troubleshooting — `set -x`, `set -n`, `set -euo pipefail`, PS4 customization, tracing functions, and practical examples. |
 | [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md) | How to install and use a newer version of bash on macOS, which ships with the outdated 3.2.x due to licensing. |
 | [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) | How to remove .DS_Store files from your git repo and prevent them from being tracked in the future. |
 | [sed Replace Line Guide](articles/sed-replace-line-guide.md) | How to use `sed` to replace entire lines based on a string match. |
