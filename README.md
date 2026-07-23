@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="articles/images/homelab-wiki-logo.svg" alt="corneschi.ro" width="600" />
+<img src="articles/images/homelab-wiki-logo.svg" alt="corneschi.ro" width="700" />
 
 <p>Quick reference guides, command tables, and longer-form write-ups covering Kubernetes, container runtimes, networking, terminal tooling, and infrastructure as code — all tailored to a self-hosted homelab environment.</p>
 
