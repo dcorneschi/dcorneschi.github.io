@@ -10,9 +10,7 @@
     </linearGradient>
   </defs>
 
-  <!-- Background (transparent) -->
-  <rect width="800" height="200" rx="10" fill="none"/>
-  <rect x="1" y="1" width="798" height="198" rx="9" fill="none" stroke="#ddd" stroke-width="2"/>
+
 
   <!-- Left accent bar -->
   <rect x="0" y="0" width="8" height="200" rx="4" fill="url(#green5)"/>
