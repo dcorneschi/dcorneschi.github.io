@@ -1,5 +1,19 @@
 # Linux Processes and Signals Cheatsheet
 
+## Syntax Styles
+
+`ps` supports three styles of options that can be mixed but behave differently:
+
+| Style | Syntax | Example |
+|-------|--------|---------|
+| **UNIX** | Single dash | `ps -ef` |
+| **BSD** | No dash | `ps aux` |
+| **GNU long** | Double dash | `ps --forest` |
+
+> Mixing styles works but can cause subtle differences in output. Stick to one style per command when possible.
+
+---
+
 ## Process I/O and Return Codes
 
 A process takes standard input (STDIN) and returns:
@@ -210,6 +224,14 @@ ps -eo pid,ni,cmd
 ps -u username -o pid,%cpu,%mem,cmd
 ```
 
+### Select processes by command name (-C)
+
+```bash
+ps -C nginx                         # all nginx processes
+ps -C sshd,nginx -o pid,cmd,%cpu    # multiple commands with custom format
+ps -C httpd -L -o pid,tid,cmd,%cpu  # with threads
+```
+
 ### Show only process name and PID
 
 ```bash
@@ -252,6 +274,27 @@ ps -eo nlwp,pid,cmd | awk '$1 > 1' | sort -rn | head
 ps -efww
 ```
 
+### Suppress headers (useful for scripting)
+
+```bash
+ps aux --no-headers
+ps -eo pid,cmd --no-headers | wc -l    # count processes
+ps -C apache2 -o pid= --no-headers     # get PIDs only
+```
+
+### Continuous monitoring with watch
+
+```bash
+# Top memory consumers, refreshed every 2 seconds
+watch -n 2 'ps aux --sort=-%mem | head -20'
+
+# Monitor specific process
+watch -n 1 'ps -p $(pgrep nginx) -o pid,ppid,%cpu,%mem,cmd'
+
+# Watch for state changes
+watch -n 1 'ps -eo state,pid,cmd | grep "^[DR]"'
+```
+
 ### Show process start time in full format
 
 ```bash
@@ -262,4 +305,82 @@ ps -eo pid,lstart,cmd | head
 
 ```bash
 ps -eo tty,pid,cmd | grep "^?"
+```
+
+
+---
+
+## Format Specifier Reference
+
+Quick lookup for `-o` / `--format` fields.
+
+### Process Identity
+
+| Specifier | Description |
+|-----------|-------------|
+| `pid` | Process ID |
+| `ppid` | Parent process ID |
+| `pgid` | Process group ID |
+| `sid` | Session ID |
+| `tid` | Thread ID |
+| `tgid` | Thread group ID |
+| `nlwp` | Number of threads (lightweight processes) |
+
+### User/Ownership
+
+| Specifier | Description |
+|-----------|-------------|
+| `user` | Effective username |
+| `uid` | Effective user ID |
+| `ruser` | Real username |
+| `ruid` | Real user ID |
+| `group` | Effective group name |
+| `gid` | Effective group ID |
+
+### CPU/Memory
+
+| Specifier | Description |
+|-----------|-------------|
+| `%cpu` | CPU usage percentage |
+| `%mem` | Memory usage percentage |
+| `rss` | Resident set size (physical memory, KB) |
+| `vsz` | Virtual memory size (KB) |
+| `sz` | Size in physical pages |
+| `pmem` | Same as `%mem` |
+| `maj_flt` | Major page faults |
+| `min_flt` | Minor page faults |
+
+### Priority/Scheduling
+
+| Specifier | Description |
+|-----------|-------------|
+| `pri` | Priority (higher = more priority) |
+| `ni` | Nice value (-20 to 19) |
+| `rtprio` | Real-time priority |
+| `cls` / `class` | Scheduling class (TS, FF, RR) |
+| `psr` | Processor/CPU core assigned |
+
+### State/Time
+
+| Specifier | Description |
+|-----------|-------------|
+| `stat` / `s` | Process state code |
+| `time` | Cumulative CPU time |
+| `cputime` | Same as `time` |
+| `etime` | Elapsed time since start |
+| `start` | Start time (short format) |
+| `lstart` | Start time (full format) |
+
+### Command
+
+| Specifier | Description |
+|-----------|-------------|
+| `cmd` | Full command with arguments (may truncate) |
+| `comm` | Command name only (no args) |
+| `args` | Full command line with all arguments |
+
+### Example combining specifiers
+
+```bash
+ps -eo pid,ppid,user,ni,%cpu,%mem,rss,etime,cmd --sort=-%mem | head -20
 ```
