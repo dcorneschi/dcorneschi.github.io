@@ -39,3 +39,4 @@
   - [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md)
   - [Terraform Lock File Checksums: zh and h1](articles/terraform-lock-file-checksums.md)
   - [JetBrains Mono Font](articles/jetbrains-mono-font.md)
+  - [PuTTY Default Settings](articles/putty-default-settings.md)
