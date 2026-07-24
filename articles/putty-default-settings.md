@@ -1,10 +1,21 @@
 # PuTTY Default Settings
 
-<img src="/articles/images/putty-logo.svg" alt="Putty" width="200">
+<img src="/articles/images/putty-logo.svg" alt="Putty" width="150">
 
-Configuration changes to apply to the **Default Settings** profile after a fresh Windows install. These settings persist for all new sessions.
+Configuration changes to apply to the **Default Settings** profile. These settings persist for all new sessions.
 
 > Open PuTTY → load **Default Settings** → make changes → click **Save** (back on the Session panel) to persist them.
+
+### My Default Settings
+
+| Setting | Value |
+|---------|-------|
+| Font | Lucida Console, size 10 |
+| Bell | Disabled |
+| Window size | 120 x 40 |
+| Scrollback | 10000 lines |
+| Scrollbar | Hidden |
+| Color scheme | Gotham |
 
 ---
 
