@@ -1,5 +1,7 @@
 # Fix Gitea Runner Docker Hub Rate Limits
 
+<img src="/articles/images/docker-logo.svg" alt="Docker" width="200">
+
 ### Problem
 
 Gitea runners hitting Docker Hub rate limits when pulling images:

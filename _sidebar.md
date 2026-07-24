@@ -16,7 +16,7 @@
   - [Kubernetes imagePullPolicy](articles/kubernetes-imagepullpolicy.md)
   - [Kubernetes emptyDir Volumes](articles/kubernetes-emptyDir-volumes.md)
   - [Kubernetes PriorityClasses Guide](articles/kubernetes-priority-classes-guide.md)
-  - [Fix Gitea Runner Docker Hub Rate Limits](articles/gitea-runner-fix.md)
+  - [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md)
   - [dbash — Docker Shell Function](articles/docker-dbash-function.md)
   - [Bash Essentials Guide](articles/bash-essentials-guide.md)
   - [Bash Test Conditions: \[ \] vs \[\[ \]\]](articles/bash-test-conditions-guide.md)
