@@ -23,6 +23,7 @@ Each cheatsheet is a self-contained reference guide with installation instructio
 | [iotop](cheatsheets/iotop/) | Interactive I/O monitoring tool — per-process disk read/write usage, batch logging, and troubleshooting. |
 | [k9s](cheatsheets/k9s/) | Terminal UI for navigating, observing, and managing Kubernetes clusters. |
 | [Kitty](cheatsheets/kitty/) | GPU-accelerated terminal emulator — tabs, windows, layouts, and configuration. |
+| [ps](cheatsheets/ps/) | Process status tool — listing, filtering, and inspecting running processes, resource usage, and process trees. |
 | [ss](cheatsheets/ss/) | Socket statistics tool for inspecting TCP/UDP connections, states, and troubleshooting network issues. |
 | [Terraform](cheatsheets/terraform/) | Infrastructure as Code tool — core commands, state management, workspaces, and variable handling. |
 | [tmux](cheatsheets/tmux/) | Terminal multiplexer for sessions, windows, panes, and copy mode. |
