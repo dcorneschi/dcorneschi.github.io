@@ -11,6 +11,53 @@ A guide to RHEL boot modes, rescue environments, and troubleshooting techniques 
 * Process `rc.sysinit` and `rc1.d` scripts
 * `/` file system is mounted read-write
 * Network is not activated
+* Applies to **RHEL 5 and 6** only (SysVinit-based systems)
+* On RHEL 7+, runlevel 1 is symlinked to `rescue.target` for backward compatibility
+
+**What happens during Runlevel 1 boot:**
+
+1. The kernel loads and starts `/sbin/init` (SysVinit)
+2. `/etc/rc.d/rc.sysinit` runs — this performs early system initialization:
+   * Sets the hostname
+   * Mounts `/proc`, `/sys`, and other virtual filesystems
+   * Configures kernel parameters from `/etc/sysctl.conf`
+   * Activates LVM volumes and software RAID
+   * Checks and mounts local filesystems from `/etc/fstab`
+   * Initializes hardware (loads modules via `/etc/modprobe.conf`)
+   * Sets the system clock
+   * Enables SELinux policy
+3. `/etc/rc.d/rc` executes all scripts in `/etc/rc1.d/` (symlinks to `/etc/init.d/`)
+   * Scripts starting with `K` (Kill) stop services
+   * Scripts starting with `S` (Start) start services
+   * The numeric order determines execution sequence (e.g., `S01single` runs before `S99local`)
+4. Typically ends with `/sbin/sulogin` prompting for the root password
+
+**Services running in Runlevel 1:**
+
+* Only services with `S*` scripts in `/etc/rc1.d/` are started
+* Usually limited to: `single` (launches the single-user shell), `syslog` (on some configurations)
+* Multi-user services (sshd, httpd, crond, nfs, etc.) are explicitly stopped via `K*` scripts
+
+**Key differences from Single-User Mode (`single` parameter):**
+
+* Runlevel 1 runs the **full** `rc.sysinit` **and** all `rc1.d` scripts
+* Single-user mode (`single` kernel parameter) only runs `rc.sysinit` — it skips `rc1.d` entirely
+* Runlevel 1 may start additional services defined in `/etc/rc1.d/`
+* Both provide a root shell and no networking
+
+**How to enter Runlevel 1:**
+
+* At the GRUB boot menu, append `1` to the `kernel` line
+* From a running system: `telinit 1` or `init 1`
+* Set as default: edit `/etc/inittab` and change `id:5:initdefault:` to `id:1:initdefault:`
+
+**When to use:**
+
+* System maintenance that requires services from `rc1.d` to be running
+* Troubleshooting boot issues where you need `rc.sysinit` to have fully completed
+* When single-user mode is insufficient because you need specific `rc1.d` services
+
+> **Note:** On RHEL 7+, `init 1` and `telinit 1` are intercepted by systemd and translated to `systemctl isolate rescue.target`. The SysVinit runlevel concept no longer applies — use `rescue.target` instead.
 
 ---
 
@@ -29,7 +76,59 @@ A guide to RHEL boot modes, rescue environments, and troubleshooting techniques 
 systemctl rescue
 ```
 
+**What runs in rescue.target (RHEL 7-10):**
+
+* `systemd` is PID 1 and processes its default dependencies
+* `sysinit.target` is started — this brings up udev, mounts filesystems from `/etc/fstab`, activates LVM/LUKS, loads kernel modules, etc.
+* All local filesystems listed in `/etc/fstab` are mounted (read-write for `/`)
+* `rescue.service` launches a root shell (`sulogin`) on the console
+* SELinux is loaded and enforcing (if configured)
+* Logging (`systemd-journald`) is running — use `journalctl` to inspect logs
+* No network services are started (`network.target` is not pulled in)
+* No multi-user services (sshd, httpd, cron, etc.) are started
+
+**When to use:**
+
+* Fixing user or permission issues (e.g., locked out accounts, broken sudo)
+* Repairing corrupted configuration files that prevent multi-user boot
+* Removing a faulty package or service that causes boot loops
+* Rebuilding the initramfs (`dracut -f`)
+* Running `fsck` on non-root filesystems
+* Reinstalling or reconfiguring GRUB
+
+**Entering rescue mode from GRUB:**
+
+1. Reboot and press any key to interrupt the GRUB countdown
+2. Press `e` to edit the default boot entry
+3. Find the `linux` line and append `systemd.unit=rescue.target` (or simply `1` / `single`)
+4. Optionally remove `rhgb quiet` to see verbose boot output
+5. Press `Ctrl+X` to boot
+
+**Authentication:**
+
+* On RHEL 7-10, `sulogin` prompts for the **root password** before granting shell access
+* If the root account is locked or the password is unknown, use `rd.break` or Emergency mode with `rd.break enforcing=0` instead
+
 > **Note:** On RHEL 8-10, the concept of runlevels is fully replaced by systemd targets. The `rescue.target` is the equivalent of single-user mode and provides a minimal environment with the root filesystem mounted read-write and essential services running.
+
+---
+
+## Differences Between Boot Modes
+
+| Feature | Runlevel 1 (RHEL 5-6) | Single-User / Rescue Target | Emergency Mode | rd.break / Skip init |
+|---------|------------------------|----------------------------|----------------|---------------------|
+| **Init system** | SysVinit | SysVinit (5-6) / systemd (7-10) | SysVinit (5-6) / systemd (7-10) | initramfs shell (no init) |
+| **Kernel parameter** | `1` | `1`, `single`, `systemd.unit=rescue.target` | `emergency`, `systemd.unit=emergency.target` | `rd.break` or `init=/bin/bash` |
+| **Scripts executed** | `rc.sysinit` + `rc1.d` | `rc.sysinit` only (5-6) / `sysinit.target` (7-10) | None (`sulogin` only) | None |
+| **Root filesystem** | Read-write | Read-write | Read-only | Read-only (at `/sysroot`) |
+| **Other local filesystems** | Mounted | Mounted | Not mounted | Not mounted |
+| **Network** | Not activated | Not activated | Not activated | Not activated |
+| **Services running** | Minimal (rc1.d services) | Minimal (journald, udev) | None | None |
+| **Authentication** | Root password | Root password (`sulogin`) | Root password (`sulogin`) | No password required |
+| **SELinux** | Enforcing | Enforcing | Enforcing | Not loaded (initramfs) |
+| **Use when** | Minor fixes, password resets (legacy) | Config repairs, package fixes, GRUB rebuild | `/etc/fstab` broken, filesystem corruption | Root password reset, corrupted `/sbin/init` |
+| **Cannot use if** | rc1.d is corrupted | Filesystem cannot mount, root password unknown | Root password unknown | — |
+| **RHEL versions** | 5-6 only | All (5-10) | All (5-10) | 5-6 (`init=/bin/bash`), 7-10 (`rd.break`) |
 
 ---
 
