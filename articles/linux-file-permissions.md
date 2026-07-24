@@ -24,8 +24,6 @@ However, changing the ownership (user/group) of files and directories with `chow
 - **Mount options** — filesystems mounted with `nosuid` ignore setuid/setgid bits. Mounting with `ro` prevents any changes regardless of file permissions.
 - **Owners cannot give away files** — on Linux, unlike some Unix systems, an unprivileged user cannot `chown` a file they own to another user. This prevents users from evading disk quotas.
 
----
-
 ## Understanding Permissions
 
 Every file and directory has three permission sets:
@@ -99,8 +97,6 @@ Common patterns:
 | `600` | `rw-------` | Private files (SSH keys, configs with secrets) |
 | `440` | `r--r-----` | sudoers files |
 
----
-
 ## umask
 
 The `umask` determines the default permissions for newly created files and directories by masking out (removing) bits from the maximum permissions.
@@ -132,8 +128,6 @@ umask 027
 # Persistent: add to ~/.bashrc or /etc/profile
 echo "umask 027" >> ~/.bashrc
 ```
-
----
 
 ## Special Permissions
 
@@ -229,8 +223,6 @@ chmod 1777 /tmp
 chmod 3775 /shared/dropbox
 ```
 
----
-
 ## Immutable File Attributes (chattr/lsattr)
 
 Beyond standard permissions and ACLs, Linux ext2/ext3/ext4 and xfs filesystems support extended file attributes set with `chattr`. These override normal permissions — even root is restricted until the attribute is removed.
@@ -286,8 +278,6 @@ find / -xdev -exec lsattr {} + 2>/dev/null | grep -e "----i"
 ```
 
 > **Note:** `chattr` only works on ext2/ext3/ext4 and xfs filesystems. The `CAP_LINUX_IMMUTABLE` capability is required to set or remove the immutable flag.
-
----
 
 ## Access Control Lists (ACLs)
 
@@ -420,8 +410,6 @@ getfacl -R /shared/project > acl_backup.txt
 setfacl --restore=acl_backup.txt
 ```
 
----
-
 ## Common chmod/chown/chgrp Commands
 
 ```sh
@@ -457,8 +445,6 @@ find /var/www -type f -exec chmod 644 {} \;   # files
 find /home/user -type f -name "*.sh" -exec chmod 750 {} \;  # scripts
 ```
 
----
-
 ## Give Write Permissions to Multiple Users on a Folder
 
 ### Solution 1 — Dedicated Group
@@ -485,13 +471,9 @@ find /var/www -type f -exec chmod ug+rw {} \;
 
 Setting the SGID bit (`2775`) on directories ensures that new files and subdirectories inherit the group ownership of the parent directory.
 
----
-
 ## About the `users` Group
 
 The `users` group exists just to be assigned to users which don't need to belong in any other group, as far as permissions are concerned. It basically exists just because every user must be at least part of a primary group (which you can find in `/etc/passwd`). Think of `users` like a "fallback" — if no group is assigned to a user, the `useradd` utility uses it as a default when homonym groups are disabled.
-
----
 
 ## Finding Files by Permission
 
@@ -526,8 +508,6 @@ find /var/www -perm 644
 find /home -perm -u+rw
 ```
 
----
-
 ## Inspecting Permissions with `stat`
 
 The `stat` command shows permissions in both octal and symbolic format at once, along with ownership and timestamps:
@@ -560,8 +540,6 @@ stat -c "%A %n" /path/to/file
 stat -c "%a %A %U:%G %n" /etc/passwd
 644 -rw-r--r-- root:root /etc/passwd
 ```
-
----
 
 ## Debugging Permission Chains with `namei`
 
