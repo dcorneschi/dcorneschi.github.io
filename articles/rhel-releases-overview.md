@@ -60,23 +60,64 @@ Red Hat supports in-place upgrades between consecutive major versions using the 
 
 ---
 
-## New stuff in RHEL 6
+## What's New in RHEL 5
 
-* ext4 is the default file system
-* UUID is used by default in the `/etc/fstab` file
-* Upstart has replaced SysV init
-* Mounting via NFS defaults to NFS 4
-* In addition to `/etc/sysctl.conf`, there is also `/etc/sysctl.d/` directory. Instead of modifying `/etc/sysctl.conf` directly, files can be placed under `/etc/sysctl.d/`
-* `/etc/modprobe.d/` directory instead of `/etc/modprobe.conf`
+* Based on Fedora Core 6, upstream kernel version 2.6.18
+* **Xen** virtualization included as a core feature (full and para-virtualization)
+* **KVM** hypervisor added (fully supported from RHEL 5.4+)
+* SELinux enabled by default with targeted policy and improved usability
+* ext3 capacity extended from 8 TB to 16 TB
+* Stateless Linux infrastructure for provisioning large numbers of systems
+* GFS2 (Global File System 2) included as technology preview
+* FS-Cache local caching facility for remote file systems (NFS)
+* SystemTap for dynamic kernel instrumentation without recompilation
+* AIGLX (Accelerated Indirect GLX) for 3D desktop effects
+* Compiz compositing window manager (technology preview)
+* Installation numbers for subscription-based package set configuration
+* GCC 4.1, glibc 2.5, Python 2.4
 
 ---
 
-## New stuff in RHEL 7
+## What's New in RHEL 6
+
+* Based on Fedora 12/13, upstream kernel version 2.6.32
+* **ext4** is the default file system (XFS available for high-performance workloads)
+* UUID is used by default in the `/etc/fstab` file
+* **Upstart** has replaced SysV init
+* **KVM** is the only hypervisor (Xen removed)
+* Mounting via NFS defaults to NFS 4
+* Comprehensive IPv6 support (NFS 4, CIFS, mobile support)
+* **Tickless kernel** and power management improvements (PowerTOP, Tuned, ASPM, ALPM)
+* Completely Fair Scheduler (CFS) and **Control Groups (cgroups)** for fine-grained resource management
+* sVirt SELinux-based security for virtual machines
+* SSSD (System Security Services Daemon) for unified identity and authentication with offline caching
+* SR-IOV and NPIV for high-performance virtual use of physical devices
+* FCoE (Fibre Channel over Ethernet) and iSCSI storage support
+* In addition to `/etc/sysctl.conf`, there is also `/etc/sysctl.d/` directory. Instead of modifying `/etc/sysctl.conf` directly, files can be placed under `/etc/sysctl.d/`
+* `/etc/modprobe.d/` directory instead of `/etc/modprobe.conf`
+* GCC 4.4, glibc 2.11, GDB 7.0, Python 2.6
+* GNOME 2.28 and KDE 4.3
+
+---
+
+## What's New in RHEL 7
 
 * Based on Fedora 19/20, upstream kernel version 3.10
-* XFS is the new default filesystem (scale up to 500 TB)
+* **XFS** is the new default filesystem (scale up to 500 TB)
 * ext4 scales to 50 TB
 * CRC32 checksums for XFS and ext4 reduce file system repair times
+* **systemd** replaces Upstart as the init system and service manager
+* **firewalld** replaces iptables as the default firewall management tool (dynamic rules with zones)
+* **NetworkManager** is the primary network configuration service
+* **Docker** container support (Linux containers with Docker format)
+* **kpatch** kernel live patching utility (technology preview) — patch the kernel without rebooting
+* **GRUB2** replaces legacy GRUB boot loader
+* **chronyd** replaces ntpd as the default NTP daemon
+* Predictable network interface naming based on physical device location (e.g., `enp0s3`)
+* Network teaming as a new alternative to bonding
+* OpenLMI for common infrastructure management of Linux systems
+* Performance Co-Pilot (PCP) for monitoring and performance analysis
+* GCC 4.8, glibc 2.17, Python 2.7, Ruby 2.0
 
 In Red Hat Enterprise Linux 7, four directories in `/` now have identical contents as their counterparts located in `/usr`:
 
@@ -125,7 +166,7 @@ XFS is the RHEL 7 default file system. Key benefits:
 
 ---
 
-## New stuff in RHEL 8
+## What's New in RHEL 8
 
 * Based on Fedora 28, upstream kernel version 4.18, systemd 239, and GNOME 3.28
 * The Cockpit web console is available by default
@@ -142,7 +183,7 @@ XFS is the RHEL 7 default file system. Key benefits:
 
 ---
 
-## New stuff in RHEL 9
+## What's New in RHEL 9
 
 * Based on Fedora 34, upstream kernel version 5.14
 * systemd 249 (vs 239 in RHEL 8)
@@ -184,7 +225,7 @@ XFS is the RHEL 7 default file system. Key benefits:
 
 ---
 
-## New stuff in RHEL 10
+## What's New in RHEL 10
 
 * Based on CentOS Stream 10, upstream kernel version 6.12
 * Support commitments extend to 2035
@@ -217,7 +258,8 @@ XFS is the RHEL 7 default file system. Key benefits:
 
 | Version | Release Notes | Adopting Guide | Product Documentation |
 |---------|--------------|----------------|----------------------|
-| RHEL 6  | [6.0 Release Notes](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html-single/6.0_release_notes/index) | — | [RHEL 6 Docs](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6) |
+| RHEL 5  | [5.0 Release Notes](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/5/html-single/5.0_release_notes/index) | — | [RHEL 5 Docs](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/5) |
+| RHEL 6  | [6.0 Release Notes](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html-single/6.0_release_notes/index) | [Migration Planning Guide](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/migration_planning_guide/chap-migration_guide-introduction) | [RHEL 6 Docs](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6) |
 | RHEL 7  | [7.0 Release Notes](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html-single/7.0_release_notes/index) | [Migration Planning Guide](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html-single/migration_planning_guide/index) | [RHEL 7 Docs](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7) |
 | RHEL 8  | [8.0 Release Notes](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html-single/8.0_release_notes/index) | [Considerations in Adopting RHEL 8](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html-single/considerations_in_adopting_rhel_8/index) | [RHEL 8 Docs](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8) |
 | RHEL 9  | [9.0 Release Notes](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/9.0_release_notes/overview) | [Considerations in Adopting RHEL 9](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html-single/considerations_in_adopting_rhel_9/index) | [RHEL 9 Docs](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9) |
