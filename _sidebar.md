@@ -32,4 +32,5 @@
   - [terraform.tfstate vs .terraform/ State](articles/terraform-tfstate-vs-terraform-directory-state.md)
   - [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md)
   - [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md)
+  - [Terraform Lock File Checksums: zh and h1](articles/terraform-lock-file-checksums.md)
   - [JetBrains Mono Font](articles/jetbrains-mono-font.md)

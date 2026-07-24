@@ -51,6 +51,7 @@ Longer-form write-ups on specific concepts, going deeper than a quick reference.
 | [terraform.tfstate vs .terraform/ State](articles/terraform-tfstate-vs-terraform-directory-state.md) | The difference between `terraform.tfstate` and `.terraform/terraform.tfstate` — state file vs backend cache, `init -reconfigure`, state locking, recovery, and recommended `.gitignore`. |
 | [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md) | How `terraform init -upgrade` works, version constraint syntax (`~>`, `>=`, `=`), when to tighten or loosen constraints, the lock file workflow, and common pitfalls. |
 | [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md) | The difference between `terraform get -update` and `terraform init -upgrade` — scope, provider handling, performance, and when to use each command. |
+| [Terraform Lock File Checksums: zh and h1](articles/terraform-lock-file-checksums.md) | How `zh:` and `h1:` hashes in `.terraform.lock.hcl` work — calculating the dirhash, where `zh` hashes originate, multi-platform hashes, security model, and troubleshooting mismatches. |
 
 ### Misc
 
