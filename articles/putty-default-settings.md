@@ -1,6 +1,6 @@
 # PuTTY Default Settings
 
-<img src="/articles/images/putty-logo.svg" alt="Putty" width="150">
+<img src="/articles/images/putty-logo.svg" alt="Putty" width="100">
 
 Configuration changes to apply to the **Default Settings** profile. These settings persist for all new sessions.
 
