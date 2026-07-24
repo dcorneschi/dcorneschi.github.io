@@ -52,6 +52,7 @@ Longer-form write-ups on specific concepts, going deeper than a quick reference.
 | [User Administration on RHEL](articles/user-administration.md) | Linux user and group management — UID ranges, password hashing, chage, PAM lockout, and changes across RHEL 6 to 10. |
 | [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md) | Installing and configuring sysstat on Ubuntu 22.04 and 24.04 — enabling collection, setting 1-minute intervals via systemd timers, and data retention. |
 | [terraform.tfstate vs .terraform/ State](articles/terraform-tfstate-vs-terraform-directory-state.md) | The difference between `terraform.tfstate` and `.terraform/terraform.tfstate` — state file vs backend cache, `init -reconfigure`, state locking, recovery, and recommended `.gitignore`. |
+| [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md) | How `terraform init -upgrade` works, version constraint syntax (`~>`, `>=`, `=`), when to tighten or loosen constraints, the lock file workflow, and common pitfalls. |
 | [JetBrains Mono Font](articles/jetbrains-mono-font.md) | JetBrains Mono — a free, open-source monospaced font designed for terminals and code editors with improved readability. |
 
 ## About

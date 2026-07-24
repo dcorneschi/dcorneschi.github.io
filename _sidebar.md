@@ -30,4 +30,5 @@
   - [User Administration on RHEL](articles/user-administration.md)
   - [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md)
   - [terraform.tfstate vs .terraform/ State](articles/terraform-tfstate-vs-terraform-directory-state.md)
+  - [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md)
   - [JetBrains Mono Font](articles/jetbrains-mono-font.md)
