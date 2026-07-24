@@ -29,4 +29,5 @@
   - [Linux File Permissions Guide](articles/linux-file-permissions.md)
   - [User Administration on RHEL](articles/user-administration.md)
   - [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md)
+  - [terraform.tfstate vs .terraform/ State](articles/terraform-tfstate-vs-terraform-directory-state.md)
   - [JetBrains Mono Font](articles/jetbrains-mono-font.md)
