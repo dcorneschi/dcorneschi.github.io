@@ -98,7 +98,7 @@ terraform init -upgrade
 
 ## When to Use Which
 
-### Use `terraform get -update` when:
+### Use terraform get -update when:
 
 - You updated a module's source code (pushed a new commit to a git ref you're tracking)
 - You want to refresh modules without risking provider version changes
@@ -106,7 +106,7 @@ terraform init -upgrade
 - Your backend is broken/misconfigured and you just need fresh modules to work on
 - You want a fast operation that doesn't re-resolve providers (faster in large projects)
 
-### Use `terraform init -upgrade` when:
+### Use terraform init -upgrade when:
 
 - You want to upgrade both providers and modules
 - You changed provider version constraints and need to re-resolve
@@ -114,7 +114,7 @@ terraform init -upgrade
 - You're doing a scheduled dependency update
 - A new provider version has a fix you need
 
-### Use plain `terraform init` when:
+### Use plain terraform init when:
 
 - You cloned the repo and need to set up the working directory
 - You want to install exactly what's locked (deterministic)
