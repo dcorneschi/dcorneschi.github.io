@@ -32,12 +32,30 @@ Each cheatsheet is a self-contained reference guide with installation instructio
 
 Longer-form write-ups on specific concepts, going deeper than a quick reference.
 
+### Kubernetes
+
 | Article | Description |
 |---------|--------------|
 | [Getting Started with Argo CD](articles/getting-started-argo.md) | Deploying your first application with ArgoCD — installing ArgoCD, understanding Application manifests, and deploying the Metrics Server via Helm. |
 | [Kubernetes imagePullPolicy](articles/kubernetes-imagepullpolicy.md) | How `imagePullPolicy` controls image pulling behavior — policy values, defaults, digests vs tags, private registries, parallel pulls, and troubleshooting. |
 | [Kubernetes emptyDir Volumes](articles/kubernetes-emptyDir-volumes.md) | How `emptyDir` volumes work, sharing files between containers in a Pod, and memory-backed volumes. |
 | [Kubernetes PriorityClasses Guide](articles/kubernetes-priority-classes-guide.md) | How PriorityClasses control scheduling and preemption — recommended tiers, preemptionPolicy, globalDefault, and common pitfalls. |
+| [Ingress for Kubernetes Dashboard on MicroK8s](articles/ingress-kubernetes-dashboard-microk8s.md) | Exposing the Kubernetes Dashboard through an Ingress resource on MicroK8s with NGINX annotations and token auth. |
+| [Ingress with MetalLB on MicroK8s](articles/ingress-metallb-microk8s-guide.md) | Setting up NGINX Ingress with MetalLB for bare-metal load balancing on MicroK8s. |
+| [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md) | Installing the NFS CSI driver on MicroK8s for persistent volumes backed by a network NFS server. |
+
+### Terraform
+
+| Article | Description |
+|---------|--------------|
+| [terraform.tfstate vs .terraform/ State](articles/terraform-tfstate-vs-terraform-directory-state.md) | The difference between `terraform.tfstate` and `.terraform/terraform.tfstate` — state file vs backend cache, `init -reconfigure`, state locking, recovery, and recommended `.gitignore`. |
+| [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md) | How `terraform init -upgrade` works, version constraint syntax (`~>`, `>=`, `=`), when to tighten or loosen constraints, the lock file workflow, and common pitfalls. |
+| [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md) | The difference between `terraform get -update` and `terraform init -upgrade` — scope, provider handling, performance, and when to use each command. |
+
+### Misc
+
+| Article | Description |
+|---------|--------------|
 | [Fix Gitea Runner Docker Hub Rate Limits](articles/gitea-runner-fix.md) | Mounting a Docker config file into the runner container to authenticate pulls and avoid rate limiting. |
 | [dbash — Docker Shell Function](articles/dbash-function.md) | A simple bash function to quickly access shell environments in Docker containers with automatic shell detection. |
 | [Bash Troubleshooting Guide](articles/bash-troubleshooting-guide.md) | Bash debugging and troubleshooting — `set -x`, `set -n`, `set -euo pipefail`, PS4 customization, tracing functions, and practical examples. |
@@ -45,15 +63,9 @@ Longer-form write-ups on specific concepts, going deeper than a quick reference.
 | [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) | How to remove .DS_Store files from your git repo and prevent them from being tracked in the future. |
 | [sed Replace Line Guide](articles/sed-replace-line-guide.md) | How to use `sed` to replace entire lines based on a string match. |
 | [Vim White Spaces](articles/vim-white-spaces.md) | Configuring vim to show white spaces with custom symbols. |
-| [Ingress for Kubernetes Dashboard on MicroK8s](articles/ingress-kubernetes-dashboard-microk8s.md) | Exposing the Kubernetes Dashboard through an Ingress resource on MicroK8s with NGINX annotations and token auth. |
-| [Ingress with MetalLB on MicroK8s](articles/ingress-metallb-microk8s-guide.md) | Setting up NGINX Ingress with MetalLB for bare-metal load balancing on MicroK8s. |
-| [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md) | Installing the NFS CSI driver on MicroK8s for persistent volumes backed by a network NFS server. |
 | [Linux File Permissions Guide](articles/linux-file-permissions.md) | Linux file permissions and ownership — standard permissions, umask, special permissions (SUID, SGID, sticky bit), ACLs, precedence, and practical examples. |
 | [User Administration on RHEL](articles/user-administration.md) | Linux user and group management — UID ranges, password hashing, chage, PAM lockout, and changes across RHEL 6 to 10. |
 | [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md) | Installing and configuring sysstat on Ubuntu 22.04 and 24.04 — enabling collection, setting 1-minute intervals via systemd timers, and data retention. |
-| [terraform.tfstate vs .terraform/ State](articles/terraform-tfstate-vs-terraform-directory-state.md) | The difference between `terraform.tfstate` and `.terraform/terraform.tfstate` — state file vs backend cache, `init -reconfigure`, state locking, recovery, and recommended `.gitignore`. |
-| [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md) | How `terraform init -upgrade` works, version constraint syntax (`~>`, `>=`, `=`), when to tighten or loosen constraints, the lock file workflow, and common pitfalls. |
-| [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md) | The difference between `terraform get -update` and `terraform init -upgrade` — scope, provider handling, performance, and when to use each command. |
 | [JetBrains Mono Font](articles/jetbrains-mono-font.md) | JetBrains Mono — a free, open-source monospaced font designed for terminals and code editors with improved readability. |
 
 ## About
