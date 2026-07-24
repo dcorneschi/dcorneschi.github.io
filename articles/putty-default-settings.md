@@ -81,7 +81,7 @@ Adjust to fit your monitor. 120x40 works well on 1920x1080 displays.
 
 PuTTY with Gotham color scheme and Lucida Console font
 
-<img src="/articles/images/putty-gotham-lucida.png" alt="iterm2-jetbrains-font" width="800"/>
+<img src="/articles/images/putty-gotham-lucida.png" alt="Putty" width="800"/>
 
 A dark theme that's easy on the eyes. Adjust RGB values to your preference, or use a pre-built theme from [putty-color-themes](https://github.com/AlexAkulov/putty-color-themes) — a collection of ready-to-import `.reg` files for popular color schemes. For more inspiration, browse [iterm2colorschemes.com](https://iterm2colorschemes.com) which previews hundreds of terminal color schemes.
 

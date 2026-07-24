@@ -1,6 +1,6 @@
 # Bash Subshells
 
-<img src="/articles/images/bash-logo.svg" alt="Bash" width="200">
+<img src="/articles/images/bash-logo.svg" alt="Bash" width="150">
 
 A subshell is a child process spawned by the current shell. It inherits a copy of the parent's environment (variables, functions, file descriptors) but runs in its own isolated process. Changes made inside a subshell do not affect the parent shell.
 

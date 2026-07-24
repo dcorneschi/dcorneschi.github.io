@@ -1,6 +1,6 @@
 # Bash Essentials Guide
 
-<img src="/articles/images/bash-logo.svg" alt="Bash" width="200">
+<img src="/articles/images/bash-logo.svg" alt="Bash" width="150">
 
 A comprehensive reference covering shell sessions, environment variables, quoting, debugging, customization, and keyboard shortcuts.
 
