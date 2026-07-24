@@ -17,7 +17,7 @@ A comprehensive overview of Red Hat Enterprise Linux major releases, their key f
 | RHEL 6  | Santiago | Nov 2010    | 2.6.32 | Fedora 12/13 |
 | RHEL 7  | Maipo    | Jun 2014    | 3.10   | Fedora 19/20 |
 | RHEL 8  | Ootpa    | May 2019    | 4.18   | Fedora 28 |
-| RHEL 9  | —        | May 2022    | 5.14   | Fedora 34 / CentOS Stream 9 |
+| RHEL 9  | Plow     | May 2022    | 5.14   | Fedora 34 / CentOS Stream 9 |
 | RHEL 10 | Coughlan | May 2025    | 6.12   | CentOS Stream 10 |
 
 ---
@@ -129,8 +129,6 @@ XFS is the RHEL 7 default file system. Key benefits:
 
 ## New stuff in RHEL 8
 
-Codename: **Ootpa**
-
 * Based on Fedora 28, upstream kernel version 4.18, systemd 239, and GNOME 3.28
 * The Cockpit web console is available by default
 * New version of YUM (v4) based on DNF technology. Compatible with YUM v3 (RHEL 7)
@@ -148,13 +146,13 @@ Codename: **Ootpa**
 
 ## New stuff in RHEL 9
 
-Codename: **—** (first release built from CentOS Stream, no traditional codename) — Released: **May 17, 2022**
-
 * Based on Fedora 34, upstream kernel version 5.14
+* systemd 249 (vs 239 in RHEL 8)
 * Built with GCC 11 and the latest versions of LLVM, Rust, and Go compilers
 * Based on glibc 2.34 for long-term platform stability
 * **Link Time Optimization (LTO)** enabled by default in userspace for the first time
 * **Python 3.9** is the default Python version for the life of RHEL 9
+* bash 5.1.8 (vs 4.4 in RHEL 8)
 * **GNOME 40** with Wayland as the default display server
 * **PipeWire** replaces PulseAudio as the default audio server
 * All application packaging methods (modules, SCLs, Flatpaks, traditional RPMs) incorporated into Application Streams
@@ -163,15 +161,25 @@ Codename: **—** (first release built from CentOS Stream, no traditional codena
 * **Integrity Measurement Architecture (IMA)** to dynamically verify OS integrity
 * Kernel live patch management available via the web console
 * Red Hat Insights enhancements: Resource Optimization and Malware Detection
+* ext4 supports timestamps beyond the year 2038
+* `ansible-core` 2.12 replaces `ansible-engine` (delivered as AppStream)
 * Support for multiple architectures: x86_64, aarch64, IBM POWER9, Power10, IBM Z
 
 ### Key changes from RHEL 8 to RHEL 9
 
-* Network configuration files moved from `/etc/sysconfig/network-scripts/ifcfg-*` to NetworkManager keyfiles (`/etc/NetworkManager/system-connections/`)
-* `network-scripts` package deprecated and removed
+* Network configuration files moved from `/etc/sysconfig/network-scripts/ifcfg-*` to NetworkManager keyfiles (`/etc/NetworkManager/system-connections/`). The `network-scripts` package is fully removed.
 * OpenSSL updated to 3.0
 * SSH root login with password disabled by default
-* Legacy SHA-1 for signatures disabled in the DEFAULT crypto policy
+* OpenSSH SCP protocol deprecated — `scp` now uses SFTP by default (use `-O` flag to restore old behavior)
+* **SHA-1** signed packages blocked by default in the DEFAULT crypto policy
+* SELinux can no longer be disabled via `/etc/sysconfig/selinux` — requires kernel parameter `selinux=0`
+* `tuned` no longer installed by default (must be added manually)
+* `teamd` deprecated — bonding is the preferred method for NIC teaming
+* `iptables` deprecated — `nftables` is the only firewall framework
+* `mailx` replaced by `s-nail`
+* `redhat-support-tool` removed
+* `abrtd` (crash reporting daemon) removed
+* GRUB menu hidden by default if previous boot was successful (disable with `grub2-editenv - unset menu_auto_hide`)
 
 **References:**
 * [RHEL 9 Networking: Say Goodbye to ifcfg Files](https://www.redhat.com/en/blog/rhel-9-networking-say-goodbye-ifcfg-files-and-hello-keyfiles)
@@ -179,8 +187,6 @@ Codename: **—** (first release built from CentOS Stream, no traditional codena
 ---
 
 ## New stuff in RHEL 10
-
-Codename: **Coughlan** — Released: **May 20, 2025**
 
 * Based on CentOS Stream 10, upstream kernel version 6.12
 * Support commitments extend to 2035
