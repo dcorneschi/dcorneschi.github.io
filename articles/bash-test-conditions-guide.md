@@ -1,4 +1,4 @@
-# Bash Test Conditions: `[ ]` vs `[[ ]]`
+# Bash Test Conditions: [ ] vs [[ ]]
 
 <img src="/articles/images/bash-logo.svg" alt="Bash" width="150">
 
