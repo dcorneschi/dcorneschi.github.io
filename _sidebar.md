@@ -18,6 +18,8 @@
   - [Kubernetes PriorityClasses Guide](articles/kubernetes-priority-classes-guide.md)
   - [Fix Gitea Runner Docker Hub Rate Limits](articles/gitea-runner-fix.md)
   - [dbash — Docker Shell Function](articles/dbash-function.md)
+  - [Bash Essentials Guide](articles/bash-essentials-guide.md)
+  - [Bash Test Conditions: [ ] vs [[ ]]](articles/bash-test-conditions-guide.md)
   - [Bash Troubleshooting Guide](articles/bash-troubleshooting-guide.md)
   - [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md)
   - [Remove .DS_Store from Git](articles/remove-ds-store-guide.md)
