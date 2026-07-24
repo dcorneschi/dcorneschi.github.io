@@ -1,5 +1,7 @@
 # Bash Test Conditions: `[ ]` vs `[[ ]]`
 
+<img src="/articles/images/bash-logo.svg" alt="Bash" width="150">
+
 A guide to understanding the differences between `[ ]` (test command) and `[[ ]]` (bash keyword) for writing conditionals in shell scripts.
 
 ---

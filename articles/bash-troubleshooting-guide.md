@@ -1,4 +1,9 @@
+# Bash Troubleshooting Guide
+
+<img src="/articles/images/bash-logo.svg" alt="Bash" width="150">
+
 ## 1. Enable bash debug mode with set -x
+
 This shows each command before it's executed:
 ```bash
 set -x          # Enable debug mode
@@ -7,17 +12,20 @@ set +x          # Disable debug mode
 ```
 
 ## 2. Run bash scripts with debug flag
+
 ```bash
 bash -x script.sh
 ```
 
 ## 3. Add debug shebang to scripts
+
 Add this at the top of your bash script:
 ```bash
 #!/bin/bash -x
 ```
 
 ## 4. Verbose mode with set -v
+
 This prints shell input lines as they are read:
 ```bash
 set -v          # Enable verbose mode
@@ -25,6 +33,7 @@ set +v          # Disable verbose mode
 ```
 
 ## 5. Combine multiple debug options
+
 ```bash
 set -xv         # Both debug and verbose
 # or
@@ -32,6 +41,7 @@ bash -xv script.sh
 ```
 
 ## 6. For more detailed debugging, use set -euxo pipefail
+
 - `-e`: Exit on error
 - `-u`: Exit on undefined variable
 - `-x`: Print commands before executing
@@ -44,6 +54,7 @@ set -euxo pipefail
 ## Common Usage Examples
 
 ### Debugging an entire script
+
 ```bash
 #!/bin/bash
 set -x
@@ -55,17 +66,20 @@ echo "Script completed"
 ```
 
 ### Syntax check with set -n
+
 Parse a script without executing it — catches missing `fi`, `done`, unclosed quotes:
 ```bash
 bash -n script.sh
 ```
 
 ### Redirect debug output to a file
+
 ```bash
 bash -x script.sh 2>debug.log
 ```
 
 ### Debug in background with log
+
 ```bash
 # Trace goes to debug.log, stdout still prints to terminal
 (set -x; ./script.sh) 2>debug.log &
@@ -75,12 +89,14 @@ bash -x script.sh 2>debug.log
 ```
 
 ### Inspect a function definition
+
 ```bash
 declare -f my_function  # Show full function body
 declare -F              # List all defined function names
 ```
 
 ## Notes
+
 - The most commonly used option is `set -x` which shows commands with variable expansions
 - Use `set +x` to disable debugging mode
 - Debug output goes to stderr, so you can redirect it: `bash -x script.sh 2>debug.log`
@@ -98,6 +114,7 @@ declare -F              # List all defined function names
 ## Debugging Functions
 
 ### 1. Enable debug mode before calling the function
+
 Define or source the function first, then wrap the call with `set -x` / `set +x`:
 ```bash
 # Define the function (or source it from a file)
@@ -123,6 +140,7 @@ bash -x -c "$(bash -c 'source ./debug_demo.sh >/dev/null 2>&1; declare -f cleanu
 > The function must already be defined in the current shell. Check with `declare -f my_function`. The subshell inherits it and isolates `set -x` so it doesn't leak into your session.
 
 ### 3. Use environment variables
+
 ```bash
 DEBUG=1 my_function
 # or
@@ -142,6 +160,7 @@ fi
 ```
 
 ### 4. Debug multiple function calls
+
 ```bash
 set -x
 my_function1
