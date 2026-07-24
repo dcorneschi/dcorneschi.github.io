@@ -68,7 +68,7 @@ Longer-form write-ups on specific concepts, going deeper than a quick reference.
 | Article | Description |
 |---------|--------------|
 | [Fix Gitea Runner Docker Hub Rate Limits](articles/gitea-runner-fix.md) | Mounting Docker config into the runner to avoid rate limiting. |
-| [dbash — Docker Shell Function](articles/dbash-function.md) | Bash function to quickly shell into Docker containers. |
+| [dbash — Docker Shell Function](articles/docker-dbash-function.md) | Bash function to quickly shell into Docker containers. |
 | [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) | Remove and prevent .DS_Store files from being tracked in git. |
 | [sed Replace Line Guide](articles/sed-replace-line-guide.md) | Using `sed` to replace entire lines based on a string match. |
 | [Vim White Spaces](articles/vim-white-spaces.md) | Configuring vim to show white spaces with custom symbols. |

@@ -17,7 +17,7 @@
   - [Kubernetes emptyDir Volumes](articles/kubernetes-emptyDir-volumes.md)
   - [Kubernetes PriorityClasses Guide](articles/kubernetes-priority-classes-guide.md)
   - [Fix Gitea Runner Docker Hub Rate Limits](articles/gitea-runner-fix.md)
-  - [dbash — Docker Shell Function](articles/dbash-function.md)
+  - [dbash — Docker Shell Function](articles/docker-dbash-function.md)
   - [Bash Essentials Guide](articles/bash-essentials-guide.md)
   - [Bash Test Conditions: \[ \] vs \[\[ \]\]](articles/bash-test-conditions-guide.md)
   - [Bash Subshells](articles/bash-subshells-guide.md)
