@@ -326,6 +326,3 @@ terraform init -upgrade
 - [Terraform Dependency Lock File](https://developer.hashicorp.com/terraform/language/files/dependency-lock)
 - [Lock and Upgrade Provider Versions](https://developer.hashicorp.com/terraform/tutorials/configuration-language/provider-versioning)
 - [Version Constraints](https://developer.hashicorp.com/terraform/language/expressions/version-constraints)
-- [Terraform as Part of Software Supply Chain — Modules and Providers (GitLab Blog)](https://about.gitlab.com/blog/terraform-as-part-of-software-supply-chain-part1-modules-and-providers)
-- [Terraform hash.go source (HashiCorp)](https://github.com/hashicorp/terraform/blob/v1.5.2/internal/getproviders/hash.go)
-- [Go dirhash package source](https://github.com/golang/mod/blob/master/sumdb/dirhash/hash.go)

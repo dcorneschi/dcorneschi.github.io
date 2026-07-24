@@ -1,7 +1,7 @@
 # RHEL Releases Overview
 
 <p align="center">
-  <img src="images/rhel-logo.svg" alt="RHEL Logo" width="120">
+  <img src="/articles/images/rhel-logo.svg" alt="RHEL Logo" width="120">
 </p>
 
 A comprehensive overview of Red Hat Enterprise Linux major releases, their key features, and important changes between versions.

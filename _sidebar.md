@@ -28,6 +28,7 @@
   - [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md)
   - [Linux File Permissions Guide](articles/linux-file-permissions.md)
   - [RHEL Releases Overview](articles/rhel-releases-overview.md)
+  - [RHEL Boot Modes and Troubleshooting](articles/rhel-boot-troubleshooting.md)
   - [User Administration on RHEL](articles/user-administration.md)
   - [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md)
   - [terraform.tfstate vs .terraform/ State](articles/terraform-tfstate-vs-terraform-directory-state.md)
