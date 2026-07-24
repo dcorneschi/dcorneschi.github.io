@@ -17,7 +17,6 @@ Configuration changes to apply to the **Default Settings** profile. These settin
 | Scrollbar | Hidden |
 | Color scheme | Gotham |
 
----
 
 ## Font
 
@@ -30,7 +29,6 @@ Configuration changes to apply to the **Default Settings** profile. These settin
 
 Click **Change...** next to the font display, select **Lucida Console**, set the size, and confirm.
 
----
 
 ## Disable Bell
 
@@ -42,7 +40,6 @@ Click **Change...** next to the font display, select **Lucida Console**, set the
 
 This prevents the annoying system beep on tab completion failures or when hitting the end of scrollback.
 
----
 
 ## Window Size
 
@@ -55,7 +52,6 @@ This prevents the annoying system beep on tab completion failures or when hittin
 
 Adjust to fit your monitor. 120x40 works well on 1920x1080 displays.
 
----
 
 ## Scrollback
 
@@ -68,7 +64,6 @@ Adjust to fit your monitor. 120x40 works well on 1920x1080 displays.
 
 10,000 lines ensures you can scroll back through long command outputs without losing history.
 
----
 
 ## Color Scheme
 
@@ -80,7 +75,6 @@ PuTTY with Gotham color scheme and Lucida Console font
 
 A dark theme that's easy on the eyes. Adjust RGB values to your preference, or use a pre-built theme from [putty-color-themes](https://github.com/AlexAkulov/putty-color-themes) — a collection of ready-to-import `.reg` files for popular color schemes. For more inspiration, browse [iterm2colorschemes.com](https://iterm2colorschemes.com) which previews hundreds of terminal color schemes.
 
----
 
 ## Registry Export (Backup/Restore)
 
@@ -106,7 +100,6 @@ reg import putty-defaults.reg
 reg export "HKEY_CURRENT_USER\Software\SimonTatham\PuTTY" putty-all-sessions.reg
 ```
 
----
 
 ## Quick Checklist
 
@@ -120,7 +113,6 @@ After a fresh Windows install:
 6. Go back to **Session** → Click **Save** on Default Settings
 7. (Optional) Export registry key for future reinstalls
 
----
 
 ## References
 

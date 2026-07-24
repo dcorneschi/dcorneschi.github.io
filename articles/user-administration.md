@@ -115,7 +115,6 @@ awk 'NF && $1 !~ /^#/' /etc/login.defs
 grep -E '^ENCRYPT_METHOD' /etc/login.defs
 ```
 
----
 
 ## Password Hash Format
 

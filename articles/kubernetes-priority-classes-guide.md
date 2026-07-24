@@ -15,7 +15,6 @@ Every cluster ships with two built-in system PriorityClasses:
 
 If you don't assign a PriorityClass to your Pods, they get a priority value of **0** — the lowest possible.
 
----
 
 ## Why This Matters
 
@@ -41,7 +40,6 @@ Priority Scale
 3. **Node pressure eviction treats them equally** — kubelet uses priority as a tiebreaker within QoS classes.
 4. **Starvation risk** — low-importance workloads can starve high-importance ones by consuming all available resources first.
 
----
 
 ## Recommended Priority Tiers
 
@@ -62,7 +60,6 @@ Priority Scale (Recommended)
 
 ```
 
----
 
 ## Creating PriorityClasses
 
@@ -131,7 +128,6 @@ preemptionPolicy: Never    # These pods will NOT preempt others
 description: "Best-effort workloads: batch jobs, dev environments, experiments"
 ```
 
----
 
 ## Using PriorityClasses in Your Pods
 
@@ -156,7 +152,6 @@ spec:
             memory: "1Gi"
 ```
 
----
 
 ## How Priority Interacts with Eviction
 
@@ -266,7 +261,6 @@ Scheduler evaluates nodes:
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
----
 
 ## The `preemptionPolicy` Field
 
@@ -291,7 +285,6 @@ preemptionPolicy: Never    # High priority in queue, but won't evict others
 description: "Important batch jobs that should not preempt production workloads"
 ```
 
----
 
 ## The `globalDefault` Field
 
@@ -310,7 +303,6 @@ description: "Default priority for all workloads"
 
 **Recommendation:** Consider setting `production-low` or a similar mid-tier as the global default so that pods without explicit priority aren't sitting at 0.
 
----
 
 ## Common Pitfalls
 
@@ -457,7 +449,6 @@ Always verify no workloads reference a PriorityClass before deleting it:
 kubectl get pods -A -o jsonpath='{range .items[?(@.spec.priorityClassName=="<class-name>")]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}'
 ```
 
----
 
 ## Best Practices
 
@@ -562,7 +553,6 @@ Before merging PriorityClasses into a shared cluster:
 - [ ] Monitoring in place for preemptions, pending pods, and quota failures
 - [ ] Documentation of who can approve new high-priority workloads
 
----
 
 ## Quick Setup — Apply All Classes at Once
 
@@ -626,7 +616,6 @@ Verify:
 kubectl get priorityclasses
 ```
 
----
 
 ## Monitoring Priority and Preemption
 
@@ -653,7 +642,6 @@ kubectl get events -A --field-selector reason=Preempted
 kubectl get pods -A --field-selector=status.phase=Pending -o custom-columns=NS:.metadata.namespace,NAME:.metadata.name,PRIORITY:.spec.priority,NOMINATED:.status.nominatedNodeName
 ```
 
----
 
 ## Validation Script
 

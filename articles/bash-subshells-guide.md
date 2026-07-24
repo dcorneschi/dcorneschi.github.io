@@ -4,7 +4,6 @@
 
 A subshell is a child process spawned by the current shell. It inherits a copy of the parent's environment (variables, functions, file descriptors) but runs in its own isolated process. Changes made inside a subshell do not affect the parent shell.
 
----
 
 ## How Subshells Are Created
 
@@ -100,7 +99,6 @@ ps --forest
 # 1237 pts/0    R+     0:00          \_ ps --forest
 ```
 
----
 
 ## Subshell vs Current Shell
 
@@ -125,7 +123,6 @@ x=1
 echo "outside: $x"             # outside: 99
 ```
 
----
 
 ## Detecting a Subshell
 
@@ -147,7 +144,6 @@ echo "Level: $BASH_SUBSHELL"       # 0
 ((echo "Level: $BASH_SUBSHELL"))   # 2
 ```
 
----
 
 ## The Pipeline Variable Problem
 
@@ -197,7 +193,6 @@ done
 echo "$count"   # Correct count
 ```
 
----
 
 ## Practical Uses
 
@@ -255,7 +250,6 @@ Group commands so they either all succeed or fail together:
 ) || echo "Update failed — original config unchanged"
 ```
 
----
 
 ## Performance Considerations
 
@@ -288,7 +282,6 @@ result=$(cat file.txt | grep "pattern")
 result=$(grep "pattern" file.txt)
 ```
 
----
 
 ## Summary
 
@@ -303,7 +296,6 @@ result=$(grep "pattern" file.txt)
 | `source script` | no | Run in current shell |
 | `. script` | no | Same as source |
 
----
 
 ## References
 

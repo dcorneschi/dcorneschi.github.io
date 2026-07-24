@@ -18,7 +18,6 @@ A comprehensive overview of Red Hat Enterprise Linux major releases, their key f
 | RHEL 9  | Plow     | May 2022    | 5.14   | Fedora 34 / CentOS Stream 9 |
 | RHEL 10 | Coughlan | May 2025    | 6.12   | CentOS Stream 10 |
 
----
 
 ## Lifecycle and End of Support
 
@@ -39,7 +38,6 @@ RHEL versions 8, 9, and 10 deliver a **10-year lifecycle** across three producti
 
 **Reference:** [Red Hat Enterprise Linux Life Cycle](https://access.redhat.com/support/policy/updates/errata)
 
----
 
 ## In-Place Upgrade Paths (Leapp)
 
@@ -58,7 +56,6 @@ Red Hat supports in-place upgrades between consecutive major versions using the 
 
 **Reference:** [Supported Upgrade Paths](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/upgrading_from_rhel_9_to_rhel_10/supported-upgrade-paths)
 
----
 
 ## What's New in RHEL 5
 
@@ -76,7 +73,6 @@ Red Hat supports in-place upgrades between consecutive major versions using the 
 * Installation numbers for subscription-based package set configuration
 * GCC 4.1, glibc 2.5, Python 2.4
 
----
 
 ## What's New in RHEL 6
 
@@ -98,7 +94,6 @@ Red Hat supports in-place upgrades between consecutive major versions using the 
 * GCC 4.4, glibc 2.11, GDB 7.0, Python 2.6
 * GNOME 2.28 and KDE 4.3
 
----
 
 ## What's New in RHEL 7
 
@@ -164,7 +159,6 @@ XFS is the RHEL 7 default file system. Key benefits:
 * No file system check at boot time
 * CRC checksums on all metadata blocks
 
----
 
 ## What's New in RHEL 8
 
@@ -181,7 +175,6 @@ XFS is the RHEL 7 default file system. Key benefits:
 * PHP 7.2 included
 * Nginx 1.14 available in core repository
 
----
 
 ## What's New in RHEL 9
 
@@ -223,7 +216,6 @@ XFS is the RHEL 7 default file system. Key benefits:
 **References:**
 * [RHEL 9 Networking: Say Goodbye to ifcfg Files](https://www.redhat.com/en/blog/rhel-9-networking-say-goodbye-ifcfg-files-and-hello-keyfiles)
 
----
 
 ## What's New in RHEL 10
 
@@ -252,7 +244,6 @@ XFS is the RHEL 7 default file system. Key benefits:
 * RHEL extensions repository for trusted developer tools and libraries
 * Kernel updated from 5.14 to 6.12
 
----
 
 ## Official Documentation Links
 

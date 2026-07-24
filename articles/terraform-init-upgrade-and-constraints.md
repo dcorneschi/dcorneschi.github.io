@@ -6,7 +6,6 @@
 
 Understanding when to use `-upgrade` and how to write effective version constraints keeps your infrastructure reproducible while still allowing controlled updates.
 
----
 
 ## What terraform init Does Normally
 
@@ -18,7 +17,6 @@ A plain `terraform init`:
 
 It will **never** change a locked version. If your lock file says `aws = 5.40.0`, init downloads exactly that, even if `5.60.0` is available.
 
----
 
 ## What -upgrade Changes
 
@@ -36,7 +34,6 @@ With `-upgrade`, Terraform:
 
 Think of it like `npm update` vs `npm install` — one resolves fresh, the other installs what's locked.
 
----
 
 ## When to Use -upgrade
 
@@ -55,7 +52,6 @@ Think of it like `npm update` vs `npm install` — one resolves fresh, the other
 - In production CI pipelines without review — upgrades can introduce breaking changes
 - When you haven't tested the newer version locally first
 
----
 
 ## Version Constraint Syntax
 
@@ -94,7 +90,6 @@ version = ">= 5.40.0, < 6.0.0"
 
 This is equivalent to `~> 5.40` but more explicit.
 
----
 
 ## Where Constraints Are Declared
 
@@ -158,7 +153,6 @@ terraform {
 
 This prevents running your config with an incompatible Terraform binary. Unlike providers, this isn't tracked in the lock file — it's checked at runtime.
 
----
 
 ## When to Configure Constraints
 
@@ -192,7 +186,6 @@ Unconstrained providers default to "any version", which means:
 - Security patches are being published and you want them automatically
 - You're the sole consumer and can validate quickly
 
----
 
 ## The Lock File (.terraform.lock.hcl)
 
@@ -235,7 +228,6 @@ terraform providers lock \
   -platform=darwin_amd64
 ```
 
----
 
 ## Practical Workflows
 
@@ -314,7 +306,6 @@ terraform plan -out=tfplan
 # Review plan output, create PR with updated lock file
 ```
 
----
 
 ## Module Upgrades
 
@@ -340,7 +331,6 @@ To get deterministic module versions:
 - Or rely on the cached `.terraform/modules/` directory (fragile)
 - Or use git refs for source: `?ref=v5.2.0`
 
----
 
 ## Common Pitfalls
 
@@ -403,7 +393,6 @@ New syntax features, state format changes, and provider protocol versions can al
 
 `-upgrade` also re-fetches modules. If you have a module constraint like `~> 5.0` and a new minor was published, it will be pulled in — potentially changing resource configurations.
 
----
 
 ## Relationship Between Constraints, Lock File, and -upgrade
 
@@ -430,7 +419,6 @@ New syntax features, state format changes, and provider protocol versions can al
 └─────────────────────────────────┘
 ```
 
----
 
 ## TL;DR
 

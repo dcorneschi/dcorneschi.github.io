@@ -4,7 +4,6 @@
 
 A guide to understanding the differences between `[ ]` (test command) and `[[ ]]` (bash keyword) for writing conditionals in shell scripts.
 
----
 
 ## Overview
 
@@ -25,7 +24,6 @@ test -f /etc/passwd && echo "exists"
 
 All return an exit status: 0 for true, 1 for false.
 
----
 
 ## Key Differences
 
@@ -41,7 +39,6 @@ All return an exit status: 0 for true, 1 for false.
 | String comparison | `=` | `==` or `=` |
 | Parentheses for grouping | `\( \)` (escaped) | `( )` (no escaping) |
 
----
 
 ## Why `[ ]` Requires Quoting
 
@@ -66,7 +63,6 @@ var=""
 [[ $var == "hello" ]]
 ```
 
----
 
 ## String Comparisons
 
@@ -96,7 +92,6 @@ var=""
 [[ -n $var ]]
 ```
 
----
 
 ## Numeric Comparisons
 
@@ -119,7 +114,6 @@ With `[[ ]]`, you can also use `(( ))` for arithmetic:
 (( a >= b && a <= c ))
 ```
 
----
 
 ## Pattern Matching
 
@@ -149,7 +143,6 @@ Only available with `[[ ]]`. The right-hand side of `==` is treated as a glob pa
 [[ $file == *.txt ]]     # Matches anything ending in .txt
 ```
 
----
 
 ## Regex Matching
 
@@ -175,7 +168,6 @@ fi
 
 > Do **not** quote the regex pattern — quoting disables regex interpretation.
 
----
 
 ## Logical Operators
 
@@ -197,7 +189,6 @@ fi
 [[ ! -f $file ]]
 ```
 
----
 
 ## File Test Operators
 
@@ -232,7 +223,6 @@ These work the same in both `[ ]` and `[[ ]]`:
 [[ -L /usr/bin/python ]] && echo "It's a symlink"
 ```
 
----
 
 ## Common Patterns
 
@@ -263,7 +253,6 @@ name=${name:-"default"}
 [[ $# -lt 2 ]] && echo "Usage: $0 <arg1> <arg2>" && exit 1
 ```
 
----
 
 ## When to Use Which
 
@@ -278,7 +267,6 @@ name=${name:-"default"}
 
 > Rule of thumb: use `[[ ]]` in bash scripts for safer and more powerful conditionals. Use `[ ]` only when POSIX portability is required (e.g., scripts with `#!/bin/sh`).
 
----
 
 ## References
 

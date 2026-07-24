@@ -4,7 +4,6 @@
 
 A comprehensive reference covering shell sessions, environment variables, quoting, debugging, customization, and keyboard shortcuts.
 
----
 
 ## Shell Sessions
 
@@ -36,7 +35,6 @@ Only the **first** user-specific file found is executed. Most default `~/.bash_p
 
 Non-interactive shells do **not** read any of the above files. They only read the file pointed to by the `BASH_ENV` environment variable, if set.
 
----
 
 ### 1. Interactive Login Shell
 
@@ -111,7 +109,6 @@ Test it:
 bash -c 'echo "$- | $(shopt login_shell)"'
 ```
 
----
 
 ### Detecting Your Shell Type
 
@@ -157,7 +154,6 @@ The `$-` variable contains single-letter flags representing active shell options
 
 Interactive shells (`himBHc`) include `i`, `m`, and `H` for user interaction, job control, and history. Non-interactive shells (`hBc`) strip these since there's no user at the prompt.
 
----
 
 ## Standard File Descriptors
 
@@ -175,7 +171,6 @@ Display them for the current shell:
 lsof +f g -ap $BASHPID -d 0,1,2
 ```
 
----
 
 ## Environment Variables
 
@@ -231,7 +226,6 @@ export -n EXAMPLE_VAR
 unset EXAMPLE_VAR
 ```
 
----
 
 ## Quoting and Escaping
 
@@ -279,7 +273,6 @@ $ — shell syntax
 | `.` | Not special itself, but dot files are excluded from `*` globs by default. |
 | `:` | Not special to the shell, but some commands parse it specially (e.g., `hostname:filename`). |
 
----
 
 ## I/O Redirection
 
@@ -311,7 +304,6 @@ command |& tee file.log
 command 2>&1 | tee file.log
 ```
 
----
 
 ## Debugging
 
@@ -341,7 +333,6 @@ set +x
 
 The `set -xv` combination shows statements both before and after interpretation, letting you see how the shell transforms each line.
 
----
 
 ## Shell Options and Flags
 
@@ -412,7 +403,6 @@ shopt -s extdebug
 declare -F <function>
 ```
 
----
 
 ## Useful Commands
 
@@ -483,7 +473,6 @@ curl -fsSL https://example.com/install.sh | sudo bash
 curl -fsSL https://example.com/install.sh -o install.sh && bash install.sh
 ```
 
----
 
 ## Prompt Customization
 
@@ -517,7 +506,6 @@ function parse_git_dirty {
 export -f parse_git_dirty
 ```
 
----
 
 ## Bash History Configuration
 
@@ -563,7 +551,6 @@ export LESS="-XF"
 history -c > .bash_history
 ```
 
----
 
 ## Using sudo with Redirection
 
@@ -611,7 +598,6 @@ EOF'
 sudo vim /root/.bashrc
 ```
 
----
 
 ## Modular .bashrc with .bashrc.d
 
@@ -634,7 +620,6 @@ done
 chmod +x ~/.bashrc.d/*.bashrc
 ```
 
----
 
 ## Script Collection Path
 
@@ -643,7 +628,6 @@ PATH=$PATH:$HOME/bin
 export PATH
 ```
 
----
 
 ## Display Reminder Messages on Login
 
@@ -658,7 +642,6 @@ if [ -r ./.to-do ]; then
 fi
 ```
 
----
 
 ## Useful One-Liners
 
@@ -673,7 +656,6 @@ for file in *; do
 done
 ```
 
----
 
 ## Keyboard Shortcuts
 
@@ -734,7 +716,6 @@ done
 | `CTRL+X` then `CTRL+E` | Open current command in `$EDITOR`, execute on save |
 | `CTRL+A` then `D` | Detach from screen session without killing it |
 
----
 
 ## References
 

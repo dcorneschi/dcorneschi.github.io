@@ -4,7 +4,6 @@
 
 The `.terraform.lock.hcl` file stores cryptographic hashes that verify the integrity of downloaded providers. Two hash schemes exist: `zh:` (a legacy scheme tied to zip archives) and `h1:` (a directory hash of the unpacked provider). Understanding how these are calculated helps when debugging lock file mismatches or verifying providers manually.
 
----
 
 ## zh and h1 Checksums
 
@@ -17,7 +16,6 @@ It also calculates a new `h1:` hash for that package, because Terraform has a "h
 
 The dirhash (`h1`) is created from the list of `sha256sum` filenames. Once this list is sha256sum'd again, the resulting hash is taken in binary representation and then converted to Base64.
 
----
 
 ## Calculate h1 Hash
 
@@ -81,7 +79,6 @@ provider "registry.terraform.io/bpg/proxmox" {
 }
 ```
 
----
 
 ## How h1 Actually Works (Under the Hood)
 
@@ -168,7 +165,6 @@ sha256sum $(ls | sort) | sha256sum | awk '{print $1}' \
   | python3 -c "import sys,base64,binascii; print(base64.b64encode(binascii.unhexlify(sys.stdin.read().strip())).decode())"
 ```
 
----
 
 ## Where zh Hashes Come From
 
@@ -180,7 +176,6 @@ curl -sL https://github.com/bpg/terraform-provider-proxmox/releases/download/v0.
 
 Each line in that file is the SHA256 hash of a platform-specific zip archive. Terraform uses these to verify the downloaded zip before extraction.
 
----
 
 ## Why zh Is Considered Legacy
 
@@ -192,7 +187,6 @@ The `zh:` scheme only works for `.zip` files downloaded through the main Terrafo
 
 The `h1:` scheme works regardless of how the provider was obtained because it hashes the unpacked directory contents, not the delivery format.
 
----
 
 ## Security Model
 
@@ -216,7 +210,6 @@ This means an attacker who modifies a provider binary on disk could compute a ne
 - Treat lock file changes in PRs with the same scrutiny as dependency upgrades
 - Run `terraform init` only in trusted environments for the initial lock generation
 
----
 
 ## Multi-Platform Hashes
 
@@ -233,7 +226,6 @@ terraform providers lock \
 
 This downloads the provider zip for each platform, computes both `zh:` and `h1:` hashes, and writes them all to `.terraform.lock.hcl`. Commit the result so all team members and CI can verify their platform-specific download.
 
----
 
 ## Providers Mirror (Air-Gapped Environments)
 
@@ -254,7 +246,6 @@ provider_installation {
 
 The lock file works the same way with mirrors — hashes are still verified against the recorded values.
 
----
 
 ## Troubleshooting
 
@@ -305,7 +296,6 @@ terraform providers lock \
 
 Review and commit the new lock file.
 
----
 
 ## Update Terraform Providers
 
@@ -319,7 +309,6 @@ terraform init -upgrade
 
 > You should never directly modify the lock file.
 
----
 
 ## References
 

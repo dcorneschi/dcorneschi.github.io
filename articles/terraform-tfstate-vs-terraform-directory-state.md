@@ -57,7 +57,6 @@ Contents look something like:
 | Sensitive | Yes | Not really |
 | In version control | No (if using remote backend) | No (entire `.terraform/` dir is gitignored) |
 
----
 
 ## Why terraform init -reconfigure is required
 
@@ -161,7 +160,6 @@ terraform init \
 
 Without `-reconfigure`, this would fail on the second run if `ENV` changed between pipelines, because the cached backend config no longer matches.
 
----
 
 ## What's Inside the .terraform/ Directory
 
@@ -189,7 +187,6 @@ Key points:
 - **environment** — A single-line file with the active workspace name (default: `default`)
 - Everything here is reproducible via `terraform init` — it's safe to delete the whole directory and re-init
 
----
 
 ## .terraform.lock.hcl (The Dependency Lock File)
 
@@ -206,7 +203,6 @@ Not to be confused with `.terraform/terraform.tfstate`, this file lives in the *
 - **Should be committed to version control** — unlike the `.terraform/` directory
 - Updated by `terraform init -upgrade` when you want to pull newer provider versions within your constraints
 
----
 
 ## State Locking (Preventing Concurrent Corruption)
 
@@ -249,7 +245,6 @@ Force-unlock with caution:
 terraform force-unlock LOCK_ID
 ```
 
----
 
 ## State Recovery and Disaster Scenarios
 
@@ -267,7 +262,6 @@ terraform force-unlock LOCK_ID
 - Use separate state files per environment/component (state isolation)
 - Run `terraform plan` in CI before `apply` to catch drift early
 
----
 
 ## Recommended .gitignore for Terraform Projects
 
@@ -303,7 +297,6 @@ terraform.rc
 - `*.tf` files (your actual configuration)
 - `terraform.tfvars.example` (template without real values)
 
----
 
 ## TL;DR
 

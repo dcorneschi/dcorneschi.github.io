@@ -4,7 +4,6 @@
 
 Both commands refresh module sources, but they operate at different scopes and serve different purposes. Confusing them — or using one when you need the other — leads to stale modules, unexpected provider changes, or wasted time re-downloading things you didn't intend to touch.
 
----
 
 ## Quick Comparison
 
@@ -18,7 +17,6 @@ Both commands refresh module sources, but they operate at different scopes and s
 | Can be run without a backend configured | Yes | No (fails if backend is misconfigured) |
 | Typical use case | Refresh module source code | Full dependency upgrade |
 
----
 
 ## terraform get
 
@@ -60,7 +58,6 @@ With `-update`, Terraform re-fetches all modules regardless of what's cached:
 - Does not initialize or reconfigure the backend
 - Does not validate provider requirements
 
----
 
 ## terraform init -upgrade
 
@@ -94,7 +91,6 @@ terraform init -upgrade
 4. Update `.terraform.lock.hcl` with new versions and hashes
 5. Re-fetch all modules (same behavior as `get -update`)
 
----
 
 ## When to Use Which
 
@@ -120,7 +116,6 @@ terraform init -upgrade
 - You want to install exactly what's locked (deterministic)
 - Normal day-to-day workflow before `plan`/`apply`
 
----
 
 ## Behavior with Different Module Sources
 
@@ -135,7 +130,6 @@ terraform init -upgrade
 
 For module handling, the two commands are identical. The difference is everything else `init -upgrade` does on top.
 
----
 
 ## Provider Handling: The Key Difference
 
@@ -165,7 +159,6 @@ terraform init -upgrade
 
 If your constraint says `~> 5.40` and `5.50.0` was released since your last lock, you'll now have `5.50.0`. The lock file is rewritten.
 
----
 
 ## Performance Differences
 
@@ -179,7 +172,6 @@ In large projects with many providers (AWS provider alone is ~400MB), the distin
 
 If you only need fresh modules, `get -update` avoids downloading hundreds of megabytes of provider binaries.
 
----
 
 ## Common Scenarios
 
@@ -252,7 +244,6 @@ terraform apply tfplan
 
 This pattern ensures modules are fresh while providers remain at their locked versions.
 
----
 
 ## Edge Cases and Gotchas
 
@@ -291,7 +282,6 @@ Even after `init -upgrade`, module versions are not recorded in `.terraform.lock
 - `terraform get -update` and `terraform init -upgrade` can both silently pick up new module versions
 - For deterministic module versions, use exact version constraints or git refs with specific tags/commits
 
----
 
 ## Decision Flowchart
 
@@ -314,7 +304,6 @@ Need to refresh dependencies?
     └── Yes → terraform init
 ```
 
----
 
 ## TL;DR
 

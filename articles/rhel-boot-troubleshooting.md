@@ -4,7 +4,6 @@
 
 A guide to RHEL boot modes, rescue environments, and troubleshooting techniques for recovering from system failures.
 
----
 
 ## Runlevel 1
 
@@ -59,7 +58,6 @@ A guide to RHEL boot modes, rescue environments, and troubleshooting techniques 
 
 > **Note:** On RHEL 7+, `init 1` and `telinit 1` are intercepted by systemd and translated to `systemctl isolate rescue.target`. The SysVinit runlevel concept no longer applies — use `rescue.target` instead.
 
----
 
 ## Single-User Mode / Rescue Target
 
@@ -111,7 +109,6 @@ systemctl rescue
 
 > **Note:** On RHEL 8-10, the concept of runlevels is fully replaced by systemd targets. The `rescue.target` is the equivalent of single-user mode and provides a minimal environment with the root filesystem mounted read-write and essential services running.
 
----
 
 ## Differences Between Boot Modes
 
@@ -130,7 +127,6 @@ systemctl rescue
 | **Cannot use if** | rc1.d is corrupted | Filesystem cannot mount, root password unknown | Root password unknown | — |
 | **RHEL versions** | 5-6 only | All (5-10) | All (5-10) | 5-6 (`init=/bin/bash`), 7-10 (`rd.break`) |
 
----
 
 ## Emergency Mode
 
@@ -148,7 +144,6 @@ systemctl emergency
 
 > **Note:** On RHEL 8-10, `emergency.target` starts only the root filesystem (read-only) and a shell. No services, no network, no other filesystems. Useful when `/etc/fstab` is corrupted or a filesystem fails to mount.
 
----
 
 ## Skip init / rd.break
 
@@ -181,7 +176,6 @@ mount -o remount,rw /sysroot
 * Check root filesystem integrity
 * Fix corrupted `/etc/fstab`
 
----
 
 ## Reset Root Password (RHEL 7-10)
 
@@ -206,7 +200,6 @@ exit
 
 > **Important:** The `touch /.autorelabel` step is mandatory on SELinux-enforcing systems. Without it, the new password hash in `/etc/shadow` will have the wrong SELinux context and login will be denied. Alternatively, use `restorecon -v /etc/shadow` for a faster targeted relabel.
 
----
 
 ## Booting to the Debug Shell (RHEL 7-10)
 
@@ -230,7 +223,6 @@ systemctl enable debug-shell
 
 > **Warning:** Permanently enabling the debug shell is a security risk because no authentication is required to use it. Disable it when the debugging session has ended.
 
----
 
 ## Dracut Emergency Shell (RHEL 8-10)
 
@@ -262,7 +254,6 @@ exit
 
 > **Note:** The dracut shell is distinct from the systemd `emergency.target`. Dracut runs earlier in the boot process, within the initramfs, before the real root filesystem is accessible.
 
----
 
 ## Install Kernel from Rescue Mode
 
@@ -290,7 +281,6 @@ exit
 
 > **Note:** On RHEL 8+, `dnf` replaces `rpm -ivh` for kernel installation as it handles dependencies automatically. Ensure network is available in rescue mode or use the installation media as a local repository.
 
----
 
 ## Change the Verbosity of Debug Logs During Booting
 
@@ -334,7 +324,6 @@ grubby --update-kernel=ALL --remove-args="rhgb quiet"
 grubby --info=DEFAULT
 ```
 
----
 
 ## GRUB2 Differences Across RHEL Versions
 
@@ -349,7 +338,6 @@ grubby --info=DEFAULT
 
 > **Key change in RHEL 8+:** The `linux16` and `initrd16` directives used on RHEL 7 BIOS systems are replaced by `linux` and `initrd`. When editing the GRUB boot entry, always look for the line starting with `linux` regardless of firmware type.
 
----
 
 ## Summary: Boot Interrupt Methods by RHEL Version
 

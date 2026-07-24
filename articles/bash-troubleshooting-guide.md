@@ -178,7 +178,6 @@ export PS4='+${BASH_SOURCE}:${LINENO}: '
 set -x
 ```
 
----
 
 ## Sample Script to Test These Commands
 
