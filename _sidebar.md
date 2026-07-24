@@ -20,6 +20,7 @@
   - [dbash — Docker Shell Function](articles/dbash-function.md)
   - [Bash Essentials Guide](articles/bash-essentials-guide.md)
   - [Bash Test Conditions: \[ \] vs \[\[ \]\]](articles/bash-test-conditions-guide.md)
+  - [Bash Subshells](articles/bash-subshells-guide.md)
   - [Bash Troubleshooting Guide](articles/bash-troubleshooting-guide.md)
   - [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md)
   - [Remove .DS_Store from Git](articles/remove-ds-store-guide.md)

@@ -294,6 +294,21 @@ command > /dev/null 2>&1
 command &> /dev/null
 ```
 
+### Piping Both stdout and stderr
+
+Standard pipes (`|`) only capture stdout. If a command writes to stderr, it skips the pipe and prints directly to the terminal, missing your log file. Use `|&` to pipe **both** stdout and stderr (shorthand for `2>&1 |`):
+
+```bash
+# Only stdout goes to tee — stderr still prints to terminal
+command | tee file.log
+
+# Both stdout and stderr go to tee — nothing is lost
+command |& tee file.log
+
+# Equivalent longhand
+command 2>&1 | tee file.log
+```
+
 ---
 
 ## Debugging
