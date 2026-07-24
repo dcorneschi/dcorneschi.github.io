@@ -7,7 +7,7 @@ A subshell is a child process spawned by the current shell. It inherits a copy o
 
 ## How Subshells Are Created
 
-### Explicit Subshell with `( )`
+### Explicit Subshell with ( )
 
 Wrapping commands in parentheses runs them in a subshell:
 
@@ -18,7 +18,7 @@ cd /tmp
 echo "Outside: $PWD"             # Outside: /tmp
 ```
 
-### Command Substitution `$( )`
+### Command Substitution $( )
 
 Each command substitution runs in a subshell:
 
@@ -39,7 +39,7 @@ echo "$var"    # Empty — var was set in the subshell, not the parent
 
 > In bash 4.2+ with `shopt -s lastpipe`, the last command in a pipeline runs in the current shell (not a subshell) when job control is disabled.
 
-### Background Processes `&`
+### Background Processes &
 
 Commands run in the background execute in a subshell:
 
@@ -47,14 +47,14 @@ Commands run in the background execute in a subshell:
 (sleep 10; echo "done") &
 ```
 
-### Process Substitution `<( )` and `>( )`
+### Process Substitution <( ) and >( )
 
 ```bash
 diff <(ls /dir1) <(ls /dir2)
 # Each ls runs in its own subshell
 ```
 
-### Co-Processes `coproc`
+### Co-Processes coproc
 
 A co-process creates a subshell with a two-way pipe, allowing the parent to send input and read output from the child process:
 
@@ -70,7 +70,7 @@ read -r output <&${MY_PROC[0]}
 echo "$output"   # hello from coproc
 ```
 
-### Replacing the Shell with `exec`
+### Replacing the Shell with exec
 
 `exec` replaces the current shell process entirely — no subshell is spawned and no new nesting level is added:
 
@@ -84,7 +84,7 @@ exec bash --login
 
 > After `exec`, the previous shell no longer exists. There is nothing to `exit` back to.
 
-### Visualizing Shell Nesting with `ps --forest`
+### Visualizing Shell Nesting with ps --forest
 
 Use `ps --forest` to see the parent/child hierarchy of shell processes:
 
