@@ -210,3 +210,15 @@ XFS is the RHEL 7 default file system. Key benefits:
 * Image mode (bootc) is a first-class deployment method alongside traditional package mode
 * RHEL extensions repository for trusted developer tools and libraries
 * Kernel updated from 5.14 to 6.12
+
+---
+
+## Official Documentation Links
+
+| Version | Release Notes | Adopting Guide | Product Documentation |
+|---------|--------------|----------------|----------------------|
+| RHEL 6  | [6.0 Release Notes](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html-single/6.0_release_notes/index) | — | [RHEL 6 Docs](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6) |
+| RHEL 7  | [7.0 Release Notes](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html-single/7.0_release_notes/index) | [Migration Planning Guide](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html-single/migration_planning_guide/index) | [RHEL 7 Docs](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7) |
+| RHEL 8  | [8.0 Release Notes](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html-single/8.0_release_notes/index) | [Considerations in Adopting RHEL 8](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html-single/considerations_in_adopting_rhel_8/index) | [RHEL 8 Docs](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8) |
+| RHEL 9  | [9.0 Release Notes](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/9.0_release_notes/overview) | [Considerations in Adopting RHEL 9](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html-single/considerations_in_adopting_rhel_9/index) | [RHEL 9 Docs](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9) |
+| RHEL 10 | [10.0 Release Notes](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/10.0_release_notes/overview) | [Considerations in Adopting RHEL 10](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html-single/considerations_in_adopting_rhel_10/index) | [RHEL 10 Docs](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10) |
