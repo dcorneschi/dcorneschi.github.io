@@ -1,8 +1,6 @@
 # RHEL Boot Modes and Troubleshooting
 
-<p align="center">
-  <img src="images/rhel-logo.svg" alt="RHEL Logo" width="120">
-</p>
+<img src="/articles/images/rhel-logo.svg" alt="RHEL Logo" width="120">
 
 A guide to RHEL boot modes, rescue environments, and troubleshooting techniques for recovering from system failures.
 
