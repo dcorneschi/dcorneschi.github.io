@@ -27,7 +27,6 @@ Configuration changes to apply to the **Default Settings** profile. These settin
 |---------|-------|
 | Font | Lucida Console |
 | Size | 10 (adjust to preference) |
-| Font quality | ClearType |
 
 Click **Change...** next to the font display, select **Lucida Console**, set the size, and confirm.
 
@@ -40,8 +39,6 @@ Click **Change...** next to the font display, select **Lucida Console**, set the
 | Setting | Value |
 |---------|-------|
 | Action to happen when a bell occurs | None (bell disabled) |
-| Taskbar/caption indication on bell | Disabled |
-| Attempt to flash terminal | Unchecked |
 
 This prevents the annoying system beep on tab completion failures or when hitting the end of scrollback.
 
@@ -68,8 +65,6 @@ Adjust to fit your monitor. 120x40 works well on 1920x1080 displays.
 |---------|-------|
 | Lines of scrollback | 10000 |
 | Display scrollbar | Never |
-| Reset scrollback on keypress | Checked |
-| Reset scrollback on display activity | Unchecked |
 
 10,000 lines ensures you can scroll back through long command outputs without losing history.
 
