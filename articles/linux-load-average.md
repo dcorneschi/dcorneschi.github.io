@@ -129,7 +129,7 @@ iostat -x 1 3
 iostat -x sda 1 3
 
 # Per-process I/O stats
-sudo iotop -boP -qqq -n 1 | sort -k6 -rn | head
+sudo iotop -boP -qqq -n 1 | sort -k6 -rn
 # or
 pidstat -d 1 3
 ```
@@ -218,14 +218,14 @@ cat /proc/loadavg
 nproc
 
 # Real-time breakdown
-vmstat 1
+vmstat -w 1
 
 # Find R/D state processes
 ps -eLo state,pid,cmd | grep -e "^R" -e "^D"
 
 # I/O stats
-iostat -x 1
-iotop -b -n 1
+iostat -xd 1 sda | awk '/^Device/{if(seen++){next}} /^$/{next} 1'
+sudo iotop -boP -qqq -n 1 | sort -k6 -rn
 
 # Historical data
 sar -q
