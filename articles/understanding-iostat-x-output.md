@@ -6,7 +6,6 @@ The `iostat` command is one of the most important tools for monitoring block dev
 
 This article explains what `iostat -x` does, how to read its output, what each field means, and how to identify common disk performance issues like stalled storage.
 
----
 
 ## What Does iostat -x Do?
 
@@ -30,7 +29,6 @@ iostat -x 5 1 -y
 
 The `-y` flag skips the boot-time average, and then outputs one sample averaged over the last 5 seconds.
 
----
 
 ## Installation
 
@@ -48,7 +46,6 @@ Version history across RHEL releases:
 - RHEL 6: sysstat 9.0.4
 - RHEL 5: sysstat 7.0.2
 
----
 
 ## Data Source: /proc/diskstats
 
@@ -83,7 +80,6 @@ Maj Minor Dev  #1   #2   #3   #4   #5   #6   #7   #8   #9  #10  #11  #12  #13  #
 - Since kernel 4.19, request times are measured with nanosecond precision and truncated to milliseconds in this interface.
 - Since kernel 5.0, field #10 (`io_ticks`) uses a sampling-based approach rather than precise calculation (see the %util Known Issues section below).
 
----
 
 ## Output Format by RHEL Version
 
@@ -111,7 +107,6 @@ The column order differs between RHEL versions:
 - Default data unit is kB/s instead of sectors
 - Average request size is now in kB instead of sectors
 
----
 
 ## Field Definitions
 
@@ -342,7 +337,6 @@ The average time (in milliseconds) for flush requests issued to the device to be
 
 - Because the block layer combines and serializes flush requests, flush operations can appear to take twice as long: wait for the current flush to finish, then execute the new one.
 
----
 
 ## Calculating IOPS
 
@@ -366,7 +360,6 @@ iostat -g System /dev/sd*[a-z] | egrep "Device|System"
 
 This sums all matching devices into a single "System" group in the output.
 
----
 
 ## Identifying Stalled Disks
 
@@ -414,7 +407,6 @@ sdf  ...  0.00  70.00   0.00  32300.00  ...  161.52  6893.67  ...  100.10   <- r
 - RAID rebuild with priority configured over host I/O
 - Shared storage contention
 
----
 
 ## Await Discrepancies in Stacked Device-Mapper Environments (LVM over dm-multipath)
 
@@ -479,7 +471,6 @@ mount -t debugfs none /sys/kernel/debug
 blktrace -w 120 /dev/dm-3 /dev/dm-2 /dev/sda /dev/sdb
 ```
 
----
 
 ## Diagnosing High Await with blktrace
 
@@ -540,7 +531,6 @@ High await observed
 
 One common cause of spikey high-await writes: accumulated dirty pages in large physical memory configurations. For example, a 64GB+ system with 40% dirty ratio can accumulate 20+ GB of dirty data. When the kernel decides to flush, it can overwhelm a disk capable of only 100 MB/s write rates — taking 200+ seconds to drain. Tuning `vm.dirty_ratio` and `vm.dirty_background_ratio` to reduce dirty page accumulation prevents these spikes.
 
----
 
 ## Best Practices
 
@@ -554,7 +544,6 @@ One common cause of spikey high-await writes: accumulated dirty pages in large p
 8. **Monitor discard and flush latency** on SSD/NVMe workloads — high `d_await` or `f_await` can indicate storage firmware issues or journal contention
 9. **Baseline your system** — compare against what your system looks like when functioning normally. The importance of getting a baseline cannot be overstressed.
 
----
 
 ## Quick Reference
 
