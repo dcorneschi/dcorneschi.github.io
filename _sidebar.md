@@ -43,3 +43,4 @@
   - [Terraform Lock File Checksums: zh and h1](articles/terraform-lock-file-checksums.md)
   - [JetBrains Mono Font](articles/jetbrains-mono-font.md)
   - [PuTTY Default Settings](articles/putty-default-settings.md)
+  - [Windows Battery Report](articles/windows-battery-report.md)
