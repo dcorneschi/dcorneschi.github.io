@@ -6,7 +6,6 @@ The `iostat` command is one of the most important tools for monitoring block dev
 
 This article explains what `iostat -x` does, how to read its output, what each field means, and how to identify common disk performance issues like stalled storage.
 
-
 ## What Does iostat -x Do?
 
 Adding the `-x` flag to `iostat` outputs extended block device I/O statistics. Instead of just showing `tps` (I/O per second), the extended statistics break this into separate `r/s` (reads per second) and `w/s` (writes per second) columns, along with many other metrics. The extended statistics are generally more useful for understanding and monitoring the I/O load on a system.

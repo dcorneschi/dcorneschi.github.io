@@ -2,8 +2,6 @@
 
 Load average is one of the first metrics you check when a system feels slow, yet it's often misunderstood. On Linux specifically, it behaves differently than on other Unix systems.
 
----
-
 ## What Load Average Actually Measures
 
 Load average represents the average number of processes in a **runnable** or **uninterruptible** state over 1, 5, and 15 minutes.
@@ -16,8 +14,6 @@ On Linux, two process states contribute:
 | `D` | Uninterruptible sleep (usually waiting on disk I/O) |
 
 This is a critical distinction: **Linux includes I/O-blocked processes in load average**. A system with heavy disk activity can show high load even when CPUs are mostly idle.
-
----
 
 ## Checking Load Average
 
@@ -33,8 +29,6 @@ w
 ```
 
 The three numbers represent averages over 1, 5, and 15 minutes. The trend tells you whether things are getting worse or recovering.
-
----
 
 ## Interpreting the Numbers
 
@@ -56,8 +50,6 @@ lscpu | grep "^CPU(s):"
 | Load > CPU count | Overloaded, processes are waiting |
 
 Example: load of 4.0 on a 4-core system = full utilization. The same load on a 16-core system = 25% utilization.
-
----
 
 ## Distinguishing CPU Load from I/O Load
 
@@ -91,8 +83,6 @@ ps aux | awk '$8 ~ /R|D/'
 top -b -n 1 | awk 'NR<=7 || /^ *[0-9]+ .*(R|D)/'
 ```
 
----
-
 ## Using sar for Historical Data
 
 ```bash
@@ -114,8 +104,6 @@ If `sar` data isn't being collected, enable it:
 sudo systemctl enable sysstat
 sudo systemctl start sysstat
 ```
-
----
 
 ## The D State Problem
 
@@ -148,8 +136,6 @@ pidstat -d 1 3
 
 If `%iowait` in `iostat` is high and load is high but `%user` + `%system` CPU is low, your load is I/O driven, not CPU driven.
 
----
-
 ## Load Average and Containers
 
 In containerized environments:
@@ -170,8 +156,6 @@ cat /sys/fs/cgroup/cpu,cpuacct/cpu.stat
 ```
 
 For Kubernetes pods, the load average visible inside the pod is the node's load average, not the pod's.
-
----
 
 ## Pressure Stall Information (PSI)
 
@@ -196,8 +180,6 @@ cat /proc/pressure/memory
 
 PSI separates CPU, I/O, and memory pressure — something load average alone cannot do.
 
----
-
 ## Practical Troubleshooting Flow
 
 ```
@@ -216,8 +198,6 @@ Run: vmstat 1 5
                 → Address I/O first (usually the bigger bottleneck)
 ```
 
----
-
 ## Key Takeaways
 
 1. **Load average != CPU usage** — on Linux it includes I/O-blocked processes
@@ -226,8 +206,6 @@ Run: vmstat 1 5
 4. **Look at trends** — compare 1m vs 15m to see direction
 5. **Consider PSI** — on modern kernels it gives you cleaner signal than load average
 6. **In containers** — `/proc/loadavg` is host-level; use cgroup pressure files instead
-
----
 
 ## Quick Commands Reference
 
