@@ -50,7 +50,7 @@ Version history across RHEL releases:
 
 ---
 
-## Data Source: `/proc/diskstats`
+## Data Source: /proc/diskstats
 
 The common data source for `iostat`, `sar`, `collectl`, PCP (Performance Co-Pilot), and similar tools is `/proc/diskstats`. The fields are:
 
@@ -115,7 +115,7 @@ The column order differs between RHEL versions:
 
 ## Field Definitions
 
-### `rrqm/s` - Read Request Merges Per Second
+### rrqm/s - Read Request Merges Per Second
 
 The number of read requests merged per second that were queued to the I/O scheduler.
 
@@ -124,7 +124,7 @@ The number of read requests merged per second that were queued to the I/O schedu
 - Merges are counted at I/O submit time, while `r/s` is measured at I/O completion
 - No or few read merges often indicates random I/O or direct/synchronous I/O, especially if average request size is small (<16kB)
 
-### `wrqm/s` - Write Request Merges Per Second
+### wrqm/s - Write Request Merges Per Second
 
 The number of write requests merged per second that were queued to the I/O scheduler.
 
@@ -132,19 +132,19 @@ The number of write requests merged per second that were queued to the I/O sched
 - **Note:** `wrqm/s + w/s` = total number of writes submitted to the I/O scheduler
 - Same interpretation as `rrqm/s` but for writes
 
-### `%rrqm` - Percentage of Read Merges (RHEL 8+)
+### %rrqm - Percentage of Read Merges (RHEL 8+)
 
 The percentage of read requests merged together before being sent to the device.
 
 - **Formula:** `(read-merges / (read-merges + reads)) * 100`
 
-### `%wrqm` - Percentage of Write Merges (RHEL 8+)
+### %wrqm - Percentage of Write Merges (RHEL 8+)
 
 The percentage of write requests merged together before being sent to the device.
 
 - **Formula:** `(write-merges / (write-merges + writes)) * 100`
 
-### `r/s` - Reads Per Second
+### r/s - Reads Per Second
 
 The number of read requests, **after merges**, that were completed by the device per second.
 
@@ -152,14 +152,14 @@ The number of read requests, **after merges**, that were completed by the device
 - Only incremented when an I/O actually completes
 - **IOPS** can be calculated as `r/s + w/s`
 
-### `w/s` - Writes Per Second
+### w/s - Writes Per Second
 
 The number of write requests, **after merges**, that were completed by the device per second.
 
 - **Formula:** `writes-completed / interval-in-seconds`
 - Only incremented when an I/O actually completes
 
-### `rsec/s` / `rkB/s` - Read Throughput
+### rsec/s / rkB/s - Read Throughput
 
 The number of sectors (or kilobytes with `-k`) read from the device per second.
 
@@ -168,14 +168,14 @@ The number of sectors (or kilobytes with `-k`) read from the device per second.
 - **Throughput** = `rsec/s + wsec/s` (or `rkB/s + wkB/s`)
 - KiB output is preferred over MiB to avoid hiding small I/O rates behind `0.00`
 
-### `wsec/s` / `wkB/s` - Write Throughput
+### wsec/s / wkB/s - Write Throughput
 
 The number of sectors (or kilobytes with `-k`) written to the device per second.
 
 - **Formula:** `(written-sectors / interval-in-seconds) / conversion-factor`
 - Same notes as read throughput
 
-### `avgrq-sz` - Average Request Size (RHEL 5-7)
+### avgrq-sz - Average Request Size (RHEL 5-7)
 
 The average size, in sectors, of the requests completed by the device.
 
@@ -183,21 +183,21 @@ The average size, in sectors, of the requests completed by the device.
 - Always displayed in sectors; `-k` and `-m` do not affect this column
 - Split into `rareq-sz` and `wareq-sz` in RHEL 8
 
-### `rareq-sz` - Average Read Request Size (RHEL 8+)
+### rareq-sz - Average Read Request Size (RHEL 8+)
 
 The average size, in kilobytes (KiB), of read requests issued to the device.
 
 - **Formula:** `(sectors-read / reads-completed) / 2`
 - Always displayed in KiB
 
-### `wareq-sz` - Average Write Request Size (RHEL 8+)
+### wareq-sz - Average Write Request Size (RHEL 8+)
 
 The average size, in kilobytes (KiB), of write requests issued to the device.
 
 - **Formula:** `(sectors-written / writes-completed) / 2`
 - Always displayed in KiB
 
-### `avgqu-sz` / `aqu-sz` - Average Queue Length
+### avgqu-sz / aqu-sz - Average Queue Length
 
 The average queue length of requests issued to the device.
 
@@ -211,7 +211,7 @@ The average queue length of requests issued to the device.
 - Queue depth increasing with steady await time = high I/O submission rate (normal load)
 - Queue depth increasing with climbing await time = storage latency issue
 
-### `await` - Average I/O Wait Time (RHEL 5-7)
+### await - Average I/O Wait Time (RHEL 5-7)
 
 The average time (in milliseconds) for I/O requests to be served, including time in the I/O scheduler queue and time in storage.
 
@@ -254,21 +254,21 @@ For virtual machines, the path also includes hypervisor scheduler time and possi
 3. Accumulated dirty pages in large-memory configurations — e.g., a 64GB+ system with 40% dirty pages trying to flush 20+ GB to a disk capable of 100 MB/s can cause spikey write loads and sustained high await
 4. Contention on shared storage (FC SAN) or shared hypervisor resources
 
-### `r_await` - Read Await Time (RHEL 7+)
+### r_await - Read Await Time (RHEL 7+)
 
 The average time (in milliseconds) for read requests to be served.
 
 - **Formula:** `time-spent-performing-reads / reads-performed`
 - Helps identify if latency issues are read-specific
 
-### `w_await` - Write Await Time (RHEL 7+)
+### w_await - Write Await Time (RHEL 7+)
 
 The average time (in milliseconds) for write requests to be served.
 
 - **Formula:** `time-spent-performing-writes / writes-performed`
 - Helps identify if latency issues are write-specific
 
-### `svctm` - Service Time (Deprecated/Unreliable)
+### svctm - Service Time (Deprecated/Unreliable)
 
 The effective average service time in milliseconds for completed I/O.
 
@@ -285,7 +285,7 @@ The effective average service time in milliseconds for completed I/O.
 
 **Why svctm is unreliable:** It yields an "effective I/O rate" for storage — not a representation of actual disk latency. It is unrelated to any representation of per-I/O service time and its use for any given specific purpose is suspect.
 
-### `%util` - Device Utilization (Busy Time)
+### %util - Device Utilization (Busy Time)
 
 Percentage of elapsed wall clock time during which I/O requests were issued to the device.
 
@@ -300,7 +300,7 @@ Percentage of elapsed wall clock time during which I/O requests were issued to t
 
 The interpretation of how much capacity is being used depends on the I/O load profile, storage type, and configuration -- information often unknown from the host's perspective.
 
-### `d/s` - Discards Per Second (RHEL 9+)
+### d/s - Discards Per Second (RHEL 9+)
 
 The number of discard requests (after merges) completed per second for the device.
 
@@ -308,27 +308,27 @@ The number of discard requests (after merges) completed per second for the devic
 - Discard operations (TRIM/UNMAP) inform the storage device that blocks of data are no longer in use
 - Common with SSDs, thin-provisioned storage, and filesystems that issue TRIM
 
-### `dkB/s` - Discard Throughput (RHEL 9+)
+### dkB/s - Discard Throughput (RHEL 9+)
 
 The amount of data discarded for the device per second, in kilobytes.
 
-### `drqm/s` - Discard Request Merges Per Second (RHEL 9+)
+### drqm/s - Discard Request Merges Per Second (RHEL 9+)
 
 The number of discard requests merged per second that were queued to the device.
 
-### `%drqm` - Percentage of Discard Merges (RHEL 9+)
+### %drqm - Percentage of Discard Merges (RHEL 9+)
 
 The percentage of discard requests merged together before being sent to the device.
 
-### `d_await` - Discard Await Time (RHEL 9+)
+### d_await - Discard Await Time (RHEL 9+)
 
 The average time (in milliseconds) for discard requests issued to the device to be served, including queue time and service time.
 
-### `dareq-sz` - Average Discard Request Size (RHEL 9+)
+### dareq-sz - Average Discard Request Size (RHEL 9+)
 
 The average size (in kibibytes) of the discard requests that were issued to the device.
 
-### `f/s` - Flush Requests Per Second (RHEL 9+)
+### f/s - Flush Requests Per Second (RHEL 9+)
 
 The number of flush requests completed per second for the device.
 
@@ -336,7 +336,7 @@ The number of flush requests completed per second for the device.
 - Before being merged, flush operations are counted as writes
 - The block layer combines flush requests and executes at most one at a time
 
-### `f_await` - Flush Await Time (RHEL 9+)
+### f_await - Flush Await Time (RHEL 9+)
 
 The average time (in milliseconds) for flush requests issued to the device to be served.
 
