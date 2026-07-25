@@ -337,7 +337,7 @@ find / -group 1005 -exec ls -l {} \;
 * Clear a user's authentication failure logs: `faillock --user <username> --reset`
 * Reset all users: `faillock --reset`
 
-### Configuration (`/etc/security/faillock.conf`)
+### Configuration (/etc/security/faillock.conf)
 
 ```
 # Number of failed attempts before lockout
