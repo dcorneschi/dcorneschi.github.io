@@ -11,8 +11,6 @@ Every Linux process operates within its own virtual address space. The kernel, v
 
 The key takeaway: **what a process thinks it has (virtual) and what it actually uses (physical) are two very different things**.
 
----
-
 ## VSZ — Virtual Memory Size
 
 VSZ (also shown as VIRT in `top`) represents the total virtual address space of a process. It includes:
@@ -34,8 +32,6 @@ ps -eo pid,vsz,cmd --sort=-vsz | head
 2. Shared libraries are mapped entirely into the virtual space but only the used pages are loaded
 3. Memory-mapped files (e.g. via `mmap`) add to VSZ even if only a few pages are accessed
 
----
-
 ## RSS — Resident Set Size
 
 RSS represents the amount of physical memory (RAM) currently held by a process. It includes:
@@ -56,8 +52,6 @@ ps -eo pid,rss,cmd --sort=-rss | head
 # RSS from /proc
 cat /proc/<pid>/status | grep VmRSS
 ```
-
----
 
 ## Why RSS Is Misleading
 
@@ -95,8 +89,6 @@ ps -eo rss | awk '{sum+=$1} END {print sum/1024 " MB"}'
 
 The result will **exceed** your total physical RAM. This doesn't mean you're out of memory — it means shared pages are being counted multiple times.
 
----
-
 ## Better Metrics: PSS and USS
 
 ### PSS — Proportional Set Size
@@ -130,8 +122,6 @@ grep Private /proc/<pid>/smaps | awk '{sum+=$2} END {print sum " kB"}'
 | **PSS** | Proportionally | Yes (resident) | Yes (accurate) | `/proc/pid/smaps`, `/proc/pid/smaps_rollup` |
 | **USS** | No | Yes (resident) | No (undercounts) | `/proc/pid/smaps` |
 
----
-
 ## Reading /proc/\<pid\>/smaps
 
 The `smaps` file provides per-mapping memory detail:
@@ -156,8 +146,6 @@ For a quick summary without parsing the full file:
 # Aggregated view (Linux 4.14+)
 cat /proc/<pid>/smaps_rollup
 ```
-
----
 
 ## Practical Commands
 
@@ -218,8 +206,6 @@ pmap -x <pid>      # extended format with RSS per mapping
 pmap -X <pid>      # includes PSS (Linux 4.5+)
 ```
 
----
-
 ## Memory Overcommit
 
 Linux allows processes to allocate more virtual memory than physically available (overcommit). This is controlled by:
@@ -241,8 +227,6 @@ grep -i commit /proc/meminfo
 ```
 
 When overcommit is enabled and memory runs out, the OOM killer steps in and terminates processes. This is why VSZ alone tells you nothing about actual resource pressure — a process can `malloc` 100 GB, never touch it, and the system is fine.
-
----
 
 ## Summary
 

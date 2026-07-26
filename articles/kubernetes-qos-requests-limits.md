@@ -1,7 +1,5 @@
 # Kubernetes QoS Classes — When Requests and Limits Matter
 
-<img src="/articles/images/kubernetes-logo.svg" alt="k8s logo" width="200"/>
-
 Pod Quality of Service (QoS) classes determine how Kubernetes treats your workloads under resource pressure. They control eviction order, OOM kill priority, and scheduling behavior. Understanding them is essential for running stable clusters.
 
 ## The Three QoS Classes
