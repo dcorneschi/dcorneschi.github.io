@@ -39,6 +39,7 @@
   - [Understanding iostat -x Output](articles/understanding-iostat-x-output.md)
   - [Linux Load Average](articles/linux-load-average.md)
   - [Linux Memory: RSS, VSZ, and Why RSS Alone Is Misleading](articles/linux-memory-rss-vsz.md)
+  - [Linux Swap Usage: When Processes Aren't the Culprit](articles/linux-swap-shm-segments.md)
   - [terraform.tfstate vs .terraform/terraform.tfstate](articles/terraform-tfstate-vs-terraform-directory-state.md)
   - [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md)
   - [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md)
