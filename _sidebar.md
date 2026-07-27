@@ -1,6 +1,7 @@
 - [Home](README.md)
 
 - Cheatshets
+  - [Bash Cheatsheet](cheatsheets/bash/README.md)
   - [crictl Cheatsheet](cheatsheets/crictl/README.md)
   - [Helm Cheatsheet](cheatsheets/helm/README.md)
   - [iotop Cheatsheet](cheatsheets/iotop/README.md)
