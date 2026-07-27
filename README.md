@@ -18,7 +18,7 @@ Each cheatsheet is a self-contained reference guide with installation instructio
 
 | Cheatsheet | Description |
 |------------|--------------|
-| [Bash](cheatsheets/bash/) | GNU Bourne Again SHell — quoting, escaping, variables, loops, and built-ins. |
+| [bash](cheatsheets/bash/) | GNU Bourne Again SHell — quoting, escaping, variables, loops, and built-ins. |
 | [crictl](cheatsheets/crictl/) | CLI for inspecting and debugging container runtimes at the CRI level. |
 | [Helm](cheatsheets/helm/) | Package manager for Kubernetes — repos, installs, upgrades, and rollbacks. |
 | [iotop](cheatsheets/iotop/) | Interactive I/O monitoring — per-process disk read/write usage. |
