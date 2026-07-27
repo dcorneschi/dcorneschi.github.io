@@ -14,7 +14,7 @@ Three quoting types control how Bash parses your input:
 | Weak quoting | `"..."` | Allows variable/command expansion, prevents word splitting and globbing |
 | Strong quoting | `'...'` | Everything is literal, no expansion at all |
 
-### Per-character Escaping (`\`)
+### Per-character Escaping (\)
 
 ```bash
 echo \$HOME          # prints: $HOME (literal, not expanded)
@@ -26,7 +26,7 @@ echo "this is" \
      "one command"
 ```
 
-### Weak Quoting (Double Quotes `"..."`)
+### Weak Quoting (Double Quotes "...")
 
 ```bash
 # Variable expansion WORKS inside double quotes
@@ -41,7 +41,7 @@ echo "Price is \$5"   # prints: Price is $5
 echo "Path is \x"     # prints: Path is \x (backslash preserved)
 ```
 
-### Strong Quoting (Single Quotes `'...'`)
+### Strong Quoting (Single Quotes '...')
 
 ```bash
 # NOTHING is interpreted inside single quotes
@@ -53,7 +53,7 @@ echo 'Here'\''s my test'     # break out and re-enter
 echo "Here's my test"        # or just use double quotes
 ```
 
-### ANSI-C Quoting (`$'...'`)
+### ANSI-C Quoting ($'...')
 
 ```bash
 # Interprets escape sequences like C
@@ -563,7 +563,7 @@ done
 
 ## Conditional Expressions
 
-### `[[ ... ]]` (Bash Extended Test)
+### [[ ... ]] (Bash Extended Test)
 
 ```bash
 # String comparisons
@@ -593,7 +593,7 @@ done
 [[ ! condition ]]           # NOT
 ```
 
-### `(( ... ))` (Arithmetic Test)
+### (( ... )) (Arithmetic Test)
 
 ```bash
 (( x > 5 ))
@@ -867,7 +867,7 @@ process_array my_array
 | `[a-z]` | Any character in range |
 | `[^abc]` or `[!abc]` | Any character NOT in set |
 
-### Extended Globs (`shopt -s extglob`)
+### Extended Globs (shopt -s extglob)
 
 | Pattern | Matches |
 |---------|---------|
