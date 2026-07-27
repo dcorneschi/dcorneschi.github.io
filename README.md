@@ -48,6 +48,7 @@ Longer-form write-ups on specific concepts, going deeper than a quick reference.
 | [Ingress for Kubernetes Dashboard on MicroK8s](articles/ingress-kubernetes-dashboard-microk8s.md) | Exposing the Kubernetes Dashboard through Ingress on MicroK8s. |
 | [Ingress with MetalLB on MicroK8s](articles/ingress-metallb-microk8s-guide.md) | NGINX Ingress with MetalLB for bare-metal load balancing. |
 | [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md) | NFS CSI driver on MicroK8s for persistent volumes. |
+| [Kubernetes PodDisruptionBudgets Guide](articles/kubernetes-pdb-guide.md) | Kubernetes PodDisruptionBudgets Guide |
 
 ### Terraform
 

@@ -18,6 +18,7 @@
   - [Kubernetes emptyDir Volumes](articles/kubernetes-emptyDir-volumes.md)
   - [Kubernetes PriorityClasses Guide](articles/kubernetes-priority-classes-guide.md)
   - [Kubernetes QoS Classes — Requests and Limits](articles/kubernetes-qos-requests-limits.md)
+  - [Kubernetes PodDisruptionBudgets Guide](articles/kubernetes-pdb-guide.md)
   - [Kubernetes Pod Evictions Cheatsheet](articles/kubernetes-evictions-cheatsheet.md)
   - [kubectl run vs kubectl create](articles/kubectl-run-vs-create.md)
   - [Init Containers vs Regular Containers](articles/kubernetes-init-vs-regular-containers.md)
