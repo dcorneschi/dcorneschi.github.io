@@ -721,7 +721,7 @@ Commands for reading/parsing input, or producing/formatting output of standard s
 | `printf` | - | builtin | Formatted output ("advanced echo") |
 | `read` | - | builtin | Read input into variables or arrays, or split strings using delimiters |
 
-### `declare` Flags Quick Reference
+### declare Flags Quick Reference
 
 | Flag | Description |
 |------|-------------|
