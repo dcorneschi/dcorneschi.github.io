@@ -5,6 +5,7 @@
   - [bat Cheatsheet](cheatsheets/bat/README.md)
   - [crictl Cheatsheet](cheatsheets/crictl/README.md)
   - [free Cheatsheet](cheatsheets/free/README.md)
+  - [fsck Cheatsheet](cheatsheets/fsck/README.md)
   - [Helm Cheatsheet](cheatsheets/helm/README.md)
   - [iotop Cheatsheet](cheatsheets/iotop/README.md)
   - [k9s Cheatsheet](cheatsheets/k9s/README.md)

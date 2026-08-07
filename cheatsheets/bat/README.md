@@ -200,7 +200,9 @@ man ls
 find . -name "*.py" -exec bat {} +
 
 # Use with tail
-tail -f /var/log/syslog | bat --paging=never -l syslog
+tail -f /var/log/syslog | bat --paging=never -l syslog       # Debian/Ubuntu
+tail -f /var/log/messages | bat --paging=never -l syslog     # RHEL/CentOS
+journalctl -f | bat --paging=never -l syslog                 # systemd (all distros)
 
 # Use with fzf preview
 fzf --preview="bat --color=always --style=numbers {}"
