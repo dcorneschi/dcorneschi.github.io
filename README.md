@@ -22,6 +22,7 @@ Each cheatsheet is a self-contained reference guide with installation instructio
 | [bat](cheatsheets/bat/) | A cat clone with syntax highlighting, git integration, themes, and paging. |
 | [crictl](cheatsheets/crictl/) | CLI for inspecting and debugging container runtimes at the CRI level. |
 | [free](cheatsheets/free/) | Memory usage — free, top, /proc/meminfo, vmstat, and per-process memory. |
+| [fdisk](cheatsheets/fdisk/) | Disk partitioning — fdisk, gdisk, parted, sgdisk, sfdisk, mkfs, and LVM setup. |
 | [fsck](cheatsheets/fsck/) | Filesystem check and repair — e2fsck, xfs_repair, badblocks, and SMART. |
 | [Helm](cheatsheets/helm/) | Package manager for Kubernetes — repos, installs, upgrades, and rollbacks. |
 | [iotop](cheatsheets/iotop/) | Interactive I/O monitoring — per-process disk read/write usage. |
@@ -98,6 +99,8 @@ Longer-form write-ups on specific concepts, going deeper than a quick reference.
 | [Understanding vmstat Output](articles/understanding-vmstat-output.md) | Understanding vmstat output — CPU, memory, I/O, and process scheduling diagnostics. |
 | [Understanding iostat -x Output](articles/understanding-iostat-x-output.md) | Extended block device I/O statistics — granular disk performance monitoring. |
 | [Linux Load Average](articles/linux-load-average.md) | What load average actually measures on Linux, how to interpret it, and common misconceptions. |
+| [Linux I/O Schedulers](articles/linux-io-schedulers.md) | I/O schedulers (noop, deadline, cfq, mq-deadline, bfq, kyber), tuning, and per-distro defaults. |
+| [Linux Disk I/O Internals](articles/linux-disk-io-internals.md) | Page cache, standard I/O, direct I/O, mmap, block alignment, and write durability. |
 | [Linux ulimit Guide](articles/linux-ulimit-guide.md) | Per-process resource limits, limits.conf, systemd directives, sysctl, and troubleshooting. |
 | [JetBrains Mono Font](articles/jetbrains-mono-font.md) | Free monospaced font designed for terminals and code editors. |
 | [PuTTY Default Settings](articles/putty-default-settings.md) | Font, bell, colors, window size, and scrollback — settings to apply after a fresh Windows install. |
