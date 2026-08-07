@@ -55,6 +55,7 @@
   - [Partition Alignment Guide](articles/partition-alignment-guide.md)
   - [XFS Internals: Superblock and Addressing](articles/xfs-internals-superblock.md)
   - [ext4 Journal Modes](articles/ext4-journal-modes.md)
+  - [Extending Partitions with growpart](articles/growpart-extend-partitions.md)
   - [Linux ulimit Guide](articles/linux-ulimit-guide.md)
   - [Linux Memory: RSS, VSZ, and Why RSS Alone Is Misleading](articles/linux-memory-rss-vsz.md)
   - [Linux Swap Usage: When Processes Aren't the Culprit](articles/linux-swap-shm-segments.md)
