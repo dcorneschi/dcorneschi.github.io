@@ -158,6 +158,11 @@ grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg  # UEFI
 `tuned` can set the I/O scheduler as part of a performance profile:
 
 ```bash
+# Install tuned (if not already present)
+yum install tuned          # RHEL/CentOS
+apt install tuned          # Ubuntu/Debian
+systemctl enable --now tuned
+
 # Check current profile
 tuned-adm active
 

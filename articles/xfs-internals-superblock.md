@@ -307,6 +307,27 @@ xfs_db -r /dev/sda1 -c "convert fsblock 0x800004 agno"
 # Check filesystem consistency (unmounted)
 xfs_repair -n /dev/sda1
 
+# Repair filesystem
+xfs_repair /dev/sda1
+# If journal is corrupt and nothing else works:
+xfs_repair -L /dev/sda1    # force log zeroing (may lose recent data)
+
+# Create an XFS filesystem
+mkfs.xfs /dev/sda1
+
+# Create with label
+mkfs.xfs -L "data" /dev/sda1
+
+# Force overwrite existing filesystem
+mkfs.xfs -f /dev/sda1
+
+# Display XFS settings
+xfs_info /mountpoint
+
+# Grow XFS filesystem (must be mounted, XFS cannot be shrunk)
+lvextend --size +50M /dev/vg/lv_vol
+xfs_growfs /mnt
+
 # Dump superblock via raw hex
 dd if=/dev/sda1 bs=512 count=1 | xxd | head -20
 
@@ -316,6 +337,11 @@ xfs_db -r /dev/sda1 -c "sb 0" -c "print agsize"
 # Superblock 1 is at block offset = agsize
 # Superblock 2 is at block offset = 2 × agsize
 ```
+
+> **Important notes about XFS:**
+> - `xfs_growfs` only works on mounted filesystems (unlike `resize2fs` for ext4)
+> - XFS **cannot be shrunk** — you must back up, recreate, and restore
+> - `xfs_check` is deprecated — use `xfs_repair -n` instead for read-only checks
 
 ---
 
