@@ -31,6 +31,7 @@
   - [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md)
   - [Remove .DS_Store from Git](articles/remove-ds-store-guide.md)
   - [Running Multiple Commands with sudo](articles/sudo-multiple-commands.md)
+  - [sudoers Guide](articles/sudo-sudoers-guide.md)
   - [sed Replace Line Guide](articles/sed-replace-line-guide.md)
   - [Vim White Spaces](articles/vim-white-spaces.md)
   - [Ingress for Kubernetes Dashboard on MicroK8s](articles/ingress-kubernetes-dashboard-microk8s.md)
