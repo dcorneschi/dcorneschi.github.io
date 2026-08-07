@@ -2,6 +2,7 @@
 
 - Cheatshets
   - [bash Cheatsheet](cheatsheets/bash/README.md)
+  - [bat Cheatsheet](cheatsheets/bat/README.md)
   - [crictl Cheatsheet](cheatsheets/crictl/README.md)
   - [Helm Cheatsheet](cheatsheets/helm/README.md)
   - [iotop Cheatsheet](cheatsheets/iotop/README.md)
