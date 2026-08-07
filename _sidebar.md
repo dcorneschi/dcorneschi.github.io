@@ -51,6 +51,7 @@
   - [Linux Load Average](articles/linux-load-average.md)
   - [Linux I/O Schedulers](articles/linux-io-schedulers.md)
   - [Linux Disk I/O Internals](articles/linux-disk-io-internals.md)
+  - [Partition Alignment Guide](articles/partition-alignment-guide.md)
   - [Linux ulimit Guide](articles/linux-ulimit-guide.md)
   - [Linux Memory: RSS, VSZ, and Why RSS Alone Is Misleading](articles/linux-memory-rss-vsz.md)
   - [Linux Swap Usage: When Processes Aren't the Culprit](articles/linux-swap-shm-segments.md)
