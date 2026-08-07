@@ -21,6 +21,7 @@ Each cheatsheet is a self-contained reference guide with installation instructio
 | [bash](cheatsheets/bash/) | GNU Bourne Again SHell — quoting, escaping, variables, loops, and built-ins. |
 | [bat](cheatsheets/bat/) | A cat clone with syntax highlighting, git integration, themes, and paging. |
 | [crictl](cheatsheets/crictl/) | CLI for inspecting and debugging container runtimes at the CRI level. |
+| [cut](cheatsheets/cut/) | Extract fields, characters, or bytes from text — delimiters, ranges, and practical patterns. |
 | [free](cheatsheets/free/) | Memory usage — free, top, /proc/meminfo, vmstat, and per-process memory. |
 | [fdisk](cheatsheets/fdisk/) | Disk partitioning — fdisk, gdisk, parted, sgdisk, sfdisk, mkfs, and LVM setup. |
 | [fsck](cheatsheets/fsck/) | Filesystem check and repair — e2fsck, xfs_repair, badblocks, and SMART. |

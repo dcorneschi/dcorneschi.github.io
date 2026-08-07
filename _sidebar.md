@@ -4,6 +4,7 @@
   - [bash Cheatsheet](cheatsheets/bash/README.md)
   - [bat Cheatsheet](cheatsheets/bat/README.md)
   - [crictl Cheatsheet](cheatsheets/crictl/README.md)
+  - [cut Cheatsheet](cheatsheets/cut/README.md)
   - [free Cheatsheet](cheatsheets/free/README.md)
   - [fdisk Cheatsheet](cheatsheets/fdisk/README.md)
   - [fsck Cheatsheet](cheatsheets/fsck/README.md)
