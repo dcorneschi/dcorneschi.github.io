@@ -283,6 +283,13 @@ find / -xdev -exec lsattr {} + 2>/dev/null | grep -e "----i"
 
 ACLs extend the traditional user/group/other model by allowing fine-grained permissions for specific users or groups on a file or directory.
 
+There are two types of ACLs:
+
+| Type | Description |
+|------|-------------|
+| **Access ACL** | The access control list for a specific file or directory. |
+| **Default ACL** | Can only be associated with a directory. Files or subdirectories created within inherit these rules if they don't have their own access ACL. |
+
 ### Prerequisites
 
 The filesystem must be mounted with ACL support (enabled by default on ext4, xfs):
@@ -302,6 +309,27 @@ tune2fs -o acl /dev/sda1
 
 # Remove ACL mount option from defaults
 tune2fs -o ^acl /dev/sda1
+```
+
+### Syntax
+
+```
+setfacl -m <rules> <files>
+```
+
+| Rule format | Description |
+|-------------|-------------|
+| `u:<uid>:<perms>` | Set access ACL for a user. Username or UID. |
+| `g:<gid>:<perms>` | Set access ACL for a group. Group name or GID. |
+| `m:<perms>` | Set the effective rights mask. |
+| `o:<perms>` | Set access ACL for others (not owner, not in group). |
+
+Permissions (`<perms>`) are a combination of `r`, `w`, and `x`. Prefix with `d:` to set a default ACL on a directory:
+
+```sh
+# These two are equivalent:
+setfacl -d -m u:daniel:rx apps
+setfacl -m d:u:daniel:rx apps
 ```
 
 ### Setting ACLs
