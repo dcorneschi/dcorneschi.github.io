@@ -79,6 +79,7 @@ cloud-init --version
 | `cloud-init query userdata` | Query raw user-data |
 | `cloud-init query --format '{{v1.cloud_name}}'` | Custom format query |
 | `cloud-init query --list-keys` | List available query keys |
+| `cloud-init query --all` | Dump all instance data |
 
 ### Validation & Testing
 
@@ -97,6 +98,7 @@ cloud-init --version
 | `sudo cloud-init clean` | Remove logs and artifacts (re-runs on next boot) |
 | `sudo cloud-init clean --reboot` | Clean and immediately reboot |
 | `sudo cloud-init clean --logs` | Remove only logs, keep instance state |
+| `sudo cloud-init clean && sudo cloud-init init --local` | Clean state and re-run local stage |
 | `sudo cloud-init single --name runcmd --frequency once` | Re-run a single module |
 | `sudo cloud-init single --name set_hostname --frequency always` | Re-run module ignoring frequency |
 | `sudo cloud-init init` | Re-run the init stage |
@@ -113,6 +115,10 @@ cloud-init --version
 | `cloud-init analyze boot` | Show time from kernel boot to cloud-init completion |
 | `cloud-init collect-logs` | Collect debug tarball for bug reports |
 | `cloud-init features` | List supported features |
+| `tail -f /var/log/cloud-init.log` | Follow main cloud-init log |
+| `tail -f /var/log/cloud-init-output.log` | Follow script output log |
+| `journalctl -u cloud-init.service -f` | Follow cloud-init service journal |
+| `grep -i error /var/log/cloud-init.log` | Search for errors in log |
 
 ## User-Data Formats
 
@@ -1816,22 +1822,4 @@ echo -e "\n=== DNS ==="
 cat /etc/resolv.conf
 echo -e "\n=== Connectivity ==="
 ping -c 3 8.8.8.8
-```
-
-### Quick Reference Commands
-
-```bash
-# Status and logs
-cloud-init status --wait
-tail -f /var/log/cloud-init.log
-journalctl -u cloud-init.service -f
-
-# Validation and testing
-cloud-init schema --system
-cloud-init clean && cloud-init init --local
-
-# Debug and analysis
-cloud-init analyze blame
-cloud-init query --all
-grep -i error /var/log/cloud-init.log
 ```
