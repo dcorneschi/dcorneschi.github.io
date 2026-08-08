@@ -75,6 +75,7 @@
 - Networking
   - [SSH Cheatsheet](articles/ssh-cheatsheet.md)
   - [SSH ControlMaster](articles/ssh-controlmaster.md)
+  - [SSH ProxyJump vs ProxyCommand](articles/ssh-proxyjump-vs-proxycommand.md)
   - [ss Cheatsheet](articles/ss-cheatsheet.md)
 
 - Cloud-Init
