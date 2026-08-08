@@ -399,6 +399,23 @@
   --theme-code-inline: #e69875;
 }
 
+/* --- Green Phosphor (inspired by book.rymcg.tech terminal) --- */
+[data-theme="green-phosphor"] {
+  --theme-bg: #0a1208;
+  --theme-text: #33cc33;
+  --theme-heading: #66ff66;
+  --theme-muted: #1a8c1a;
+  --theme-accent: #66ff66;
+  --theme-accent-hover: #99ff99;
+  --theme-sidebar-bg: #060d04;
+  --theme-sidebar-text: #2eb82e;
+  --theme-border: #1a3d1a;
+  --theme-code-bg: #0d1a0a;
+  --theme-code-block-bg: #060d04;
+  --theme-code-text: #33cc33;
+  --theme-code-inline: #66ff66;
+}
+
 /* ============================================================
    LIGHT THEMES
    ============================================================ */

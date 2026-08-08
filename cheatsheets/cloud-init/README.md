@@ -1112,4 +1112,726 @@ tail -f /var/log/cloud-init-output.log
 6. **Check cloud-init version** — different versions support different features
 7. **Use runcmd for complex operations** — for multi-step operations, use runcmd over bootcmd
 8. **Handle secrets carefully** — avoid putting sensitive data directly in user-data (use instance roles or vault)
+9. **Randomize instance-id** — if cloud-init detects the same instance-id as a previous run, the entire configuration is skipped
+10. **Mind module execution order** — `write_files` runs before `users_groups`; use `defer: true` when writing to user home directories that don't exist yet
+11. **Don't write to /tmp** — use `/run/somedir` instead, as early boot races with `systemd-tmpfiles-clean`
+12. **Use `preserve_hostname: false`** — if you want cloud-init to manage the hostname on every boot, otherwise the OS may overwrite it
+13. **Disable APT recommends** — reduce image bloat with `apt.conf: | APT::Install-Recommends "0";`
+14. **Use output directive** — redirect cloud-init output for easier debugging: `output: { all: "| tee -a /var/log/cloud-init-output.log" }`
 
+## Password Configuration
+
+### Set Passwords
+
+```yaml
+#cloud-config
+# Set password for default user
+password: mypassword
+chpasswd:
+  expire: false
+
+# Or set passwords for multiple users
+chpasswd:
+  expire: false
+  users:
+    - name: root
+      password: $6$rounds=4096$saltsalt$hash...
+      type: HASH
+    - name: admin
+      password: plaintext-password
+      type: text
+```
+
+### Enable Password SSH (for initial access)
+
+```yaml
+#cloud-config
+ssh_pwauth: true
+password: temporary-password
+chpasswd:
+  expire: true  # Force password change on first login
+```
+
+## Advanced Re-running & Debugging
+
+### Re-run a Single Module with Custom User-Data
+
+```bash
+# Edit the cached user-data, then re-run the specific module
+sudo cloud-init single --name cc_ntp --frequency always \
+  -f /var/lib/cloud/instances/<instance-id>/user-data.txt
+
+# Re-run an entire stage with frequency override
+sudo cloud-init modules --mode config --frequency always \
+  -f /var/lib/cloud/instances/<instance-id>/user-data.txt
+```
+
+### Inspect Instance State
+
+```bash
+# List all instance runs (useful when instance-id changed)
+ls -l /var/lib/cloud/instances/
+
+# Show what cloud-init knows about this instance
+cloud-init query --all
+
+# List available query keys
+cloud-init query --list-keys
+
+# Check which datasource was used
+cloud-init query ds
+
+# View the actual user-data cloud-init received
+cat /var/lib/cloud/instance/user-data.txt
+
+# View rendered cloud-config (after includes/merging)
+cat /var/lib/cloud/instance/cloud-config.txt
+
+# Check the boot-finished marker
+cat /var/lib/cloud/instance/boot-finished
+```
+
+### Verify SSH Configuration After Provisioning
+
+```bash
+# Test effective SSH config (very useful after hardening)
+sshd -T | grep -iE 'permitrootlogin|passwordauthentication|pubkeyauthentication|usepam'
+```
+
+### Inspect Config Drive (VPS Providers)
+
+```bash
+# Many VPS providers attach a CIDATA ISO — inspect it
+blkid /dev/sr0
+mkdir -p /mnt/cidata
+mount -t iso9660 -o ro /dev/sr0 /mnt/cidata
+ls -la /mnt/cidata
+cat /mnt/cidata/user-data
+cat /mnt/cidata/meta-data
+cat /mnt/cidata/network-config
+umount /mnt/cidata
+```
+
+## Terraform Integration
+
+### Using cloudinit_config Provider
+
+```hcl
+# main.tf
+data "cloudinit_config" "server" {
+  gzip          = false
+  base64_encode = false
+
+  part {
+    content_type = "text/cloud-config"
+    content = templatefile("cloud-config.yaml.tpl", {
+      ssh_key  = var.ssh_public_key
+      hostname = var.hostname
+    })
+  }
+}
+
+resource "hcloud_server" "main" {
+  name        = var.hostname
+  image       = "ubuntu-24.04"
+  server_type = "cx21"
+  user_data   = data.cloudinit_config.server.rendered
+}
+```
+
+### AWS EC2 with User-Data
+
+```bash
+aws ec2 run-instances \
+    --image-id ami-0c7217cdde317cfec \
+    --instance-type t3.micro \
+    --key-name my-key \
+    --user-data file://cloud-config.yaml \
+    --security-group-ids sg-xxxxxxxxx \
+    --subnet-id subnet-xxxxxxxxx
+```
+
+### Hetzner Cloud
+
+```bash
+hcloud server create \
+    --name my-server \
+    --type cx21 \
+    --image ubuntu-24.04 \
+    --user-data-from-file cloud-config.yaml \
+    --ssh-key my-key
+```
+
+### DigitalOcean
+
+```bash
+doctl compute droplet create my-server \
+    --image ubuntu-24-04-x64 \
+    --size s-1vcpu-1gb \
+    --region nyc3 \
+    --ssh-keys my-key-id \
+    --user-data-file cloud-config.yaml
+```
+
+## Instance Identity & Re-Provisioning
+
+### What Triggers a "New Instance"
+
+| Trigger | Result |
+|---------|--------|
+| Different `instance-id` in datasource | Full re-run of all once-per-instance modules |
+| `cloud-init clean` + reboot | Treats next boot as a new instance |
+| Same `instance-id` after reboot | Only `always`-frequency modules run |
+| Change hostname only | Does NOT trigger full re-run |
+
+### Force New Instance Without Clean
+
+```bash
+# Change the instance-id in NoCloud seed (triggers full re-provisioning)
+echo "instance-id: $(uuidgen)" > /var/lib/cloud/seed/nocloud/meta-data
+reboot
+```
+
+## Incus / LXD Integration
+
+### Launch with cloud-init User-Data
+
+```bash
+# Inline cloud-config
+lxc launch ubuntu:24.04 my-container \
+  --config=user.user-data="#cloud-config
+packages: [nginx]
+runcmd:
+  - systemctl enable --now nginx"
+
+# From file
+lxc launch ubuntu:24.04 my-container \
+  --config=user.user-data="$(cat cloud-config.yaml)"
+
+# Watch provisioning
+lxc exec my-container -- tail -f /var/log/cloud-init-output.log
+
+# Verify completion
+lxc exec my-container -- cloud-init status --wait
+```
+
+### Incus Profile with cloud-init
+
+```yaml
+name: my-profile
+config:
+  cloud-init.user-data: |
+    #cloud-config
+    package_update: true
+    packages: [nginx, curl]
+    runcmd:
+      - systemctl enable --now nginx
+  cloud-init.network-config: |
+    version: 2
+    ethernets:
+      eth0:
+        dhcp4: true
+```
+
+## KVM Provisioning with virt-install
+
+### Launch VM with cloud-init Files
+
+```bash
+virt-install --name my-vm \
+  --memory 4096 --os-variant ubuntu22.04 \
+  --disk=size=10,backing_store="$(pwd)/image/ubuntu-22.04-minimal-cloudimg-amd64.img" \
+  --cloud-init user-data="$(pwd)/user-data",meta-data="$(pwd)/meta-data",network-config="$(pwd)/network-config" \
+  --network network=default
+```
+
+### Generate Instance ID for meta-data
+
+```bash
+# Generate a random instance-id (ensures cloud-init treats this as a new instance)
+echo "instance-id: $(uuidgen)" > meta-data
+```
+
+### Wait for cloud-init to Complete (Scripting)
+
+```bash
+# Block until cloud-init finishes — useful in automation pipelines
+cloud-init status --wait
+echo $?  # 0 = success, 1 = error
+
+# Get DHCP lease to find VM IP
+virsh net-dhcp-leases default
+```
+
+## Proxmox Cloud-Init Templates
+
+### Create a Template from Cloud Image
+
+```bash
+# Download cloud image
+wget https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
+
+# Create VM
+qm create 9000
+
+# Import disk
+qm importdisk 9000 noble-server-cloudimg-amd64.img local-lvm
+
+# Configure VM with cloud-init
+qm set 9000 \
+  --name ubuntu-template \
+  --scsihw virtio-scsi-pci \
+  --scsi0 local-lvm:vm-9000-disk-0 \
+  --ide2 local-lvm:cloudinit \
+  --boot c --bootdisk scsi0 \
+  --serial0 socket --vga serial0 \
+  --net0 virtio,bridge=vmbr0 \
+  --ipconfig0 ip=dhcp \
+  --sshkey ~/.ssh/authorized_keys \
+  --agent 1
+
+# Resize disk
+qm resize 9000 scsi0 +50G
+
+# Convert to template
+qm template 9000
+```
+
+### Clone and Launch from Template
+
+```bash
+# Clone (linked clone)
+qm clone 9000 100 --name my-server --full 0
+
+# Start
+qm start 100
+
+# Get IP via guest agent
+pvesh get nodes/$(hostname)/qemu/100/agent/network-get-interfaces --output-format=json | \
+  jq -r '.result[] | select(.name=="eth0") | ."ip-addresses"[] | select(."ip-address-type"=="ipv4") | ."ip-address"'
+```
+
+### Custom User-Data via Snippets
+
+```bash
+# Write custom cloud-init user-data to snippets directory
+cat > /var/lib/vz/snippets/vm-100-user-data.yaml <<'EOF'
+#cloud-config
+fqdn: my-server
+ssh_pwauth: false
+users:
+  - name: admin
+    groups: [sudo, docker]
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAA... admin@workstation
+runcmd:
+  - apt-get update
+  - apt-get install -y qemu-guest-agent
+  - systemctl start qemu-guest-agent
+EOF
+
+# Attach custom user-data to VM
+qm set 100 --cicustom "user=local:snippets/vm-100-user-data.yaml"
+```
+
+### APT Proxy Configuration
+
+```yaml
+#cloud-config
+apt:
+  preserve_sources_list: true
+  http_proxy: http://proxy.example.com:3128
+  https_proxy: http://proxy.example.com:3128
+  conf: |
+    APT {
+      Get {
+        Assume-Yes "true";
+        Fix-Broken "true";
+      }
+    }
+```
+
+## Networking Tips
+
+### Disable cloud-init Network Management
+
+```bash
+# Prevent cloud-init from overwriting your network config
+sudo tee /etc/cloud/cloud.cfg.d/99-disable-network.cfg <<'EOF'
+network: {config: disabled}
+EOF
+```
+
+### Pin Datasource to Avoid Probing Delays
+
+```bash
+# On non-cloud systems, restrict to NoCloud only
+sudo tee /etc/cloud/cloud.cfg.d/90-datasource.cfg <<'EOF'
+datasource_list: [NoCloud, None]
+EOF
+```
+
+### Explicit NoCloud Seed Path
+
+```bash
+# Point NoCloud to a specific seed directory (removes ambiguity)
+sudo tee /etc/cloud/cloud.cfg.d/91-nocloud-seed.cfg <<'EOF'
+datasource:
+  NoCloud:
+    seedfrom: file:///var/lib/cloud/seed/nocloud/
+EOF
+```
+
+## Security Considerations
+
+When sharing cloud-init logs or configs, be aware these can contain secrets:
+
+| File | Risk |
+|------|------|
+| `/var/lib/cloud/instance/user-data.txt` | May contain passwords, tokens, SSH keys |
+| `/var/lib/cloud/instance/vendor-data.txt` | May contain provider tokens |
+| `/var/log/cloud-init.log` | May echo rendered config with credentials |
+| `/var/log/cloud-init-output.log` | May contain command output with secrets |
+| `cloud-init query --all` | Includes sensitive instance data |
+
+### Redaction Checklist Before Sharing
+
+- Remove lines containing `password`, `token`, `secret`, `key`, `Authorization`, or `Bearer`
+- Replace SSH public keys if you don't want them tied to a host identity
+- Scan `cloud-init.log` for rendered config content, not just obvious credentials
+- Use `cloud-init collect-logs` which creates a tarball — review before sharing
+
+
+## Troubleshooting Guide
+
+### System Service Status
+
+```bash
+# Check if cloud-init services are running
+systemctl status cloud-init.service
+systemctl status cloud-init-local.service
+systemctl status cloud-config.service
+systemctl status cloud-final.service
+
+# Check service logs
+journalctl -u cloud-init.service
+journalctl -u cloud-config.service
+
+# Boot logs
+dmesg | grep -i cloud
+```
+
+### Log Analysis Commands
+
+```bash
+# Search for errors in logs
+grep -i error /var/log/cloud-init.log
+grep -i fail /var/log/cloud-init.log
+grep -i warn /var/log/cloud-init.log
+
+# Check specific stage execution
+grep "modules-init" /var/log/cloud-init.log
+grep "modules-config" /var/log/cloud-init.log
+grep "modules-final" /var/log/cloud-init.log
+
+# Filter by specific modules
+grep "cc_users_groups" /var/log/cloud-init.log
+grep "cc_ssh" /var/log/cloud-init.log
+grep "cc_write_files" /var/log/cloud-init.log
+grep "cc_runcmd" /var/log/cloud-init.log
+grep "cc_package" /var/log/cloud-init.log
+```
+
+### Show Current Configuration
+
+```bash
+# Show merged cloud-init configuration
+cloud-init query --all
+
+# Show specific configuration keys
+cloud-init query users
+cloud-init query packages
+cloud-init query write_files
+
+# Show instance metadata
+cloud-init query ds
+```
+
+### Test Specific Modules
+
+```bash
+# Run single-use modules again
+cloud-init single --name cc_users_groups
+cloud-init single --name cc_ssh
+cloud-init single --name cc_write_files
+
+# List available modules
+cloud-init single --list-modules
+```
+
+### Issue: Cloud-Init Not Running
+
+```bash
+# Diagnosis
+systemctl is-enabled cloud-init.service
+systemctl is-enabled cloud-config.service
+systemctl status cloud-init.service --no-pager
+
+# Fix: Enable services
+systemctl enable cloud-init.service
+systemctl enable cloud-config.service
+systemctl enable cloud-final.service
+systemctl start cloud-init.service
+
+# Fix: Remove disable file if exists
+ls -la /etc/cloud/cloud-init.disabled
+rm /etc/cloud/cloud-init.disabled
+```
+
+### Issue: YAML Syntax Errors
+
+```yaml
+# BAD: Mixed tabs and spaces
+users:
+	- name: ubuntu  # Tab used here
+  - name: admin    # Spaces used here
+
+# GOOD: Consistent spaces
+users:
+  - name: ubuntu
+  - name: admin
+
+# BAD: Incorrect indentation
+write_files:
+- path: /tmp/file
+content: |
+  Hello World
+
+# GOOD: Proper indentation
+write_files:
+  - path: /tmp/file
+    content: |
+      Hello World
+```
+
+### Issue: User Creation Failures
+
+```bash
+# Diagnosis
+grep "cc_users_groups" /var/log/cloud-init.log
+id username
+cat /etc/passwd | grep username
+cat /home/username/.ssh/authorized_keys
+sudo -l -U username
+```
+
+```yaml
+# Ensure proper user configuration
+users:
+  - name: ubuntu
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']  # Use array format
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2E...  # Full key on one line
+    lock_passwd: false  # Allow password if needed
+```
+
+### Issue: SSH Access Problems
+
+```bash
+# Diagnosis
+systemctl status ssh
+grep -E "(PasswordAuthentication|PubkeyAuthentication)" /etc/ssh/sshd_config
+ls -la /home/username/.ssh/
+cat /home/username/.ssh/authorized_keys
+journalctl -u ssh.service
+tail -f /var/log/auth.log
+
+# Fix permissions
+chmod 700 /home/username/.ssh
+chmod 600 /home/username/.ssh/authorized_keys
+chown -R username:username /home/username/.ssh
+systemctl restart ssh
+```
+
+### Issue: Package Installation Failures
+
+```bash
+# Diagnosis
+grep "cc_package" /var/log/cloud-init.log
+cat /var/log/apt/history.log
+cat /var/log/dpkg.log
+
+# Test manually
+apt update
+apt install -y package-name
+```
+
+### Issue: File Write Problems
+
+```bash
+# Diagnosis
+grep "cc_write_files" /var/log/cloud-init.log
+ls -la /path/to/file
+ls -ld /path/to/  # Check parent directory
+```
+
+```yaml
+# Ensure permissions are quoted
+write_files:
+  - path: /opt/myapp/config.conf
+    content: |
+      setting=value
+    owner: root:root
+    permissions: '0644'  # Always quote permissions
+```
+
+### Issue: Command Execution Failures
+
+```bash
+# Diagnosis
+grep "cc_runcmd" /var/log/cloud-init.log
+grep -A 10 -B 5 "runcmd" /var/log/cloud-init-output.log
+grep "Failed" /var/log/cloud-init.log
+```
+
+```yaml
+runcmd:
+  # Use full paths
+  - /usr/bin/systemctl enable docker
+  
+  # Handle errors gracefully
+  - systemctl enable nginx || echo "nginx enable failed"
+  
+  # Use proper quoting for complex commands
+  - 'curl -fsSL https://get.docker.com | sh'
+  
+  # Use array format for commands with arguments
+  - [wget, "-O", "/tmp/file.tar.gz", "https://example.com/file.tar.gz"]
+```
+
+### Issue: Network Configuration Problems
+
+```bash
+# Diagnosis
+ip addr show
+ip route show
+cat /etc/resolv.conf
+ls -la /etc/netplan/
+netplan get
+
+# Fix
+netplan --debug apply
+systemctl restart systemd-networkd
+```
+
+### Timing and Boot Analysis
+
+```bash
+# Check cloud-init timing
+cloud-init analyze show
+cloud-init analyze blame
+
+# System boot timing
+systemd-analyze
+systemd-analyze blame
+systemd-analyze critical-chain cloud-init.service
+```
+
+### Module Dependency Issues
+
+```bash
+# Check module execution order
+grep -E "(modules-init|modules-config|modules-final)" /var/log/cloud-init.log
+
+# Check disabled/skipped modules
+grep -i "skip" /var/log/cloud-init.log
+```
+
+### Complete Reset (Recovery)
+
+```bash
+# Full cloud-init reset
+cloud-init clean --seed --logs
+rm -rf /var/lib/cloud/*
+rm -rf /run/cloud-init
+cloud-init init --local
+```
+
+### Emergency Access Recovery
+
+```bash
+# Add temporary user (run as root from console)
+useradd -m -s /bin/bash emergency
+echo 'emergency:password' | chpasswd
+usermod -aG sudo emergency
+
+# Enable password authentication temporarily
+sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+systemctl restart ssh
+```
+
+### Reduce Boot Time
+
+```yaml
+#cloud-config
+# Disable unnecessary operations
+package_update: false
+package_upgrade: false
+
+# Use faster mirror
+apt:
+  primary:
+    - arches: [default]
+      uri: http://us.archive.ubuntu.com/ubuntu/
+```
+
+### Cloud-Init Status Debug Script
+
+```bash
+#!/bin/bash
+echo "=== Cloud-Init Status ==="
+cloud-init status --long
+
+echo -e "\n=== Service Status ==="
+systemctl status cloud-init.service --no-pager -l
+systemctl status cloud-config.service --no-pager -l
+
+echo -e "\n=== Recent Errors ==="
+grep -i error /var/log/cloud-init.log | tail -10
+
+echo -e "\n=== Module Timing ==="
+cloud-init analyze blame | head -10
+```
+
+### Network Debug Script
+
+```bash
+#!/bin/bash
+echo "=== Network Configuration ==="
+ip addr show
+echo -e "\n=== Routing ==="
+ip route show
+echo -e "\n=== DNS ==="
+cat /etc/resolv.conf
+echo -e "\n=== Connectivity ==="
+ping -c 3 8.8.8.8
+```
+
+### Quick Reference Commands
+
+```bash
+# Status and logs
+cloud-init status --wait
+tail -f /var/log/cloud-init.log
+journalctl -u cloud-init.service -f
+
+# Validation and testing
+cloud-init schema --system
+cloud-init clean && cloud-init init --local
+
+# Debug and analysis
+cloud-init analyze blame
+cloud-init query --all
+grep -i error /var/log/cloud-init.log
+```
