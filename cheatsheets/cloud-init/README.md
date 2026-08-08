@@ -110,6 +110,7 @@ cloud-init --version
 | Command | Description |
 |---------|-------------|
 | `cloud-init analyze show` | Show timestamps for each module |
+| `cloud-init analyze show -i /var/log/cloud-init-output.log` | Analyze a specific log file |
 | `cloud-init analyze blame` | Show slowest modules (descending) |
 | `cloud-init analyze dump` | Dump raw event data |
 | `cloud-init analyze boot` | Show time from kernel boot to cloud-init completion |
@@ -119,6 +120,10 @@ cloud-init --version
 | `tail -f /var/log/cloud-init-output.log` | Follow script output log |
 | `journalctl -u cloud-init.service -f` | Follow cloud-init service journal |
 | `grep -i error /var/log/cloud-init.log` | Search for errors in log |
+| `dmesg -T \| grep -i -e warning -e error -e fatal` | Check kernel/boot errors related to cloud-init |
+| `systemctl --failed` | Show failed systemd services that may block cloud-init |
+| `systemctl list-jobs --after` | Show waiting/running jobs (diagnose stuck cloud-init) |
+| `pstree <PID>` | Find subprocesses blocking cloud-init from completing |
 
 ## User-Data Formats
 
