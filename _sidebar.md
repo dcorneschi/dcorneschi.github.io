@@ -17,12 +17,14 @@
   - [crictl Cheatsheet](articles/crictl-cheatsheet.md)
   - [k9s Cheatsheet](articles/k9s-cheatsheet.md)
 
-- Virtualization & Containers
+- Docker
   - [Docker Cheatsheet](articles/docker-cheatsheet.md)
   - [Docker Compose Cheatsheet](articles/docker-compose-cheatsheet.md)
-  - [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md)
   - [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md)
   - [dbash — Docker Shell Function](articles/docker-dbash-function.md)
+
+- Virtualization
+  - [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md)
 
 - Terraform
   - [Terraform Cheatsheet](articles/terraform-cheatsheet.md)
