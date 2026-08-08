@@ -3,6 +3,7 @@
 - Cheatshets
   - [bash Cheatsheet](cheatsheets/bash/README.md)
   - [bat Cheatsheet](cheatsheets/bat/README.md)
+  - [cloud-init Cheatsheet](cheatsheets/cloud-init/README.md)
   - [crictl Cheatsheet](cheatsheets/crictl/README.md)
   - [cut Cheatsheet](cheatsheets/cut/README.md)
   - [free Cheatsheet](cheatsheets/free/README.md)
@@ -65,4 +66,5 @@
   - [Terraform Lock File Checksums: zh and h1](articles/terraform-lock-file-checksums.md)
   - [JetBrains Mono Font](articles/jetbrains-mono-font.md)
   - [PuTTY Default Settings](articles/putty-default-settings.md)
+  - [cloud-init: bootcmd vs runcmd](articles/cloud-init-bootcmd-vs-runcmd.md)
   - [Windows Battery Report](articles/windows-battery-report.md)

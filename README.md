@@ -20,6 +20,7 @@ Each cheatsheet is a self-contained reference guide with installation instructio
 |------------|--------------|
 | [bash](cheatsheets/bash/) | GNU Bourne Again SHell — quoting, escaping, variables, loops, and built-ins. |
 | [bat](cheatsheets/bat/) | A cat clone with syntax highlighting, git integration, themes, and paging. |
+| [cloud-init](cheatsheets/cloud-init/) | Cross-platform cloud instance initialization — user-data, modules, networking, and debugging. |
 | [crictl](cheatsheets/crictl/) | CLI for inspecting and debugging container runtimes at the CRI level. |
 | [cut](cheatsheets/cut/) | Extract fields, characters, or bytes from text — delimiters, ranges, and practical patterns. |
 | [free](cheatsheets/free/) | Memory usage — free, top, /proc/meminfo, vmstat, and per-process memory. |
@@ -107,6 +108,7 @@ Longer-form write-ups on specific concepts, going deeper than a quick reference.
 | [ext4 Journal Modes](articles/ext4-journal-modes.md) | Journal modes (ordered, writeback, journal), configuration, commit intervals, and barriers. |
 | [Extending Partitions with growpart](articles/growpart-extend-partitions.md) | Extend partitions online on cloud/VM instances — AWS, Azure, GCP, LVM, and troubleshooting. |
 | [Linux ulimit Guide](articles/linux-ulimit-guide.md) | Per-process resource limits, limits.conf, systemd directives, sysctl, and troubleshooting. |
+| [cloud-init: bootcmd vs runcmd](articles/cloud-init-bootcmd-vs-runcmd.md) | Boot stages, execution timing, frequency differences, and common mistakes. |
 | [JetBrains Mono Font](articles/jetbrains-mono-font.md) | Free monospaced font designed for terminals and code editors. |
 | [PuTTY Default Settings](articles/putty-default-settings.md) | Font, bell, colors, window size, and scrollback — settings to apply after a fresh Windows install. |
 
