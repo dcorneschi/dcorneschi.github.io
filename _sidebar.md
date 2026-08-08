@@ -77,6 +77,7 @@
   - [SSH ControlMaster](articles/ssh-controlmaster.md)
   - [SSH ProxyJump vs ProxyCommand](articles/ssh-proxyjump-vs-proxycommand.md)
   - [SSH Managing Multiple Keys](articles/ssh-managing-multiple-keys.md)
+  - [SSH Remote Script Execution](articles/ssh-remote-script-execution.md)
   - [ss Cheatsheet](articles/ss-cheatsheet.md)
 
 - Cloud-Init

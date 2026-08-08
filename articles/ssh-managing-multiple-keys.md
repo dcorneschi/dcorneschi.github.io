@@ -26,6 +26,77 @@ Organize keys by service or environment:
 └── homelab.pub
 ```
 
+### Subdirectory-Based Organization
+
+For larger setups, organize keys and configs into subdirectories per service:
+
+```
+~/.ssh/
+├── config                  # main config (includes others)
+├── known_hosts
+├── hetzner/
+│   ├── config              # hetzner-specific host definitions
+│   └── id_rsa
+├── proxmox/
+│   ├── config              # proxmox-specific host definitions
+│   └── id_rsa
+└── github/
+    ├── config
+    └── id_ed25519
+```
+
+Create the directories:
+
+```bash
+mkdir ~/.ssh/hetzner
+mkdir ~/.ssh/proxmox
+mkdir ~/.ssh/github
+```
+
+### Split Config with Include
+
+Use `Include` in the main `~/.ssh/config` to pull in per-service configs:
+
+```bash
+vi ~/.ssh/config
+```
+
+```
+Include ~/.ssh/hetzner/config
+Include ~/.ssh/proxmox/config
+Include ~/.ssh/github/config
+```
+
+Then define hosts in each service-specific file.
+
+#### ~/.ssh/hetzner/config
+
+```
+Host docker-prod-01
+    HostName docker-prod-01.example.com
+    User admin
+    IdentityFile ~/.ssh/hetzner/id_rsa
+```
+
+#### ~/.ssh/proxmox/config
+
+Connect via both short and full forms of host names — type `ssh pve1` or `ssh pve1.internal.example.com` and both work:
+
+```
+Host * !*.internal.example.com
+    Hostname %h.internal.example.com
+    User root
+    IdentityFile ~/.ssh/proxmox/id_rsa
+
+Host *.internal.example.com
+    User root
+    IdentityFile ~/.ssh/proxmox/id_rsa
+```
+
+The first block catches short hostnames (e.g., `pve1`) and appends the domain automatically via `%h`. The negation (`!*.internal.example.com`) prevents the rule from applying when the full domain is already typed. The second block handles the full hostname directly.
+
+> **Note:** For proper precedence, place `Include` directives at the top of the main config file (before other `Host` blocks). SSH uses first-match rules, so included configs need to be seen first to take effect.
+
 ## Generate Keys Per Service
 
 Use descriptive filenames and comments to identify each key:
