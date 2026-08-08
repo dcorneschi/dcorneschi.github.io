@@ -73,6 +73,7 @@
   - [Extending Partitions with growpart](articles/growpart-extend-partitions.md)
 
 - Networking
+  - [SSH Cheatsheet](articles/ssh-cheatsheet.md)
   - [SSH ControlMaster](articles/ssh-controlmaster.md)
   - [ss Cheatsheet](articles/ss-cheatsheet.md)
 
