@@ -1417,3 +1417,13 @@ systemctl restart pveproxy
 # Check if services are running
 systemctl status pve*
 ```
+
+---
+
+## Resources
+
+- [Proxmox VE Official Site](https://www.proxmox.com/en)
+- [Proxmox VE Wiki](https://pve.proxmox.com/wiki/Main_Page)
+- [Proxmox VE Community Scripts](https://community-scripts.github.io/ProxmoxVE)
+- [Terraform Provider for Proxmox](https://github.com/bpg/terraform-provider-proxmox)
+- [Custom themes for Proxmox](https://github.com/IT-BAER/proxmorph)
