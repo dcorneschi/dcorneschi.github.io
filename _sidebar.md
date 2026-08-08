@@ -20,6 +20,7 @@
 - Docker
   - [Docker Cheatsheet](articles/docker-cheatsheet.md)
   - [Docker Compose Cheatsheet](articles/docker-compose-cheatsheet.md)
+  - [Docker Compose: ports vs expose](articles/docker-ports-vs-expose.md)
   - [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md)
   - [dbash — Docker Shell Function](articles/docker-dbash-function.md)
 
