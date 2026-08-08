@@ -416,6 +416,23 @@
   --theme-code-inline: #66ff66;
 }
 
+/* --- Green Mist (light, inspired by book.rymcg.tech) --- */
+[data-theme="green-mist"] {
+  --theme-bg: #c8cec4;
+  --theme-text: #3a3f37;
+  --theme-heading: #2e332b;
+  --theme-muted: #6b7266;
+  --theme-accent: #4a6741;
+  --theme-accent-hover: #3a5432;
+  --theme-sidebar-bg: #b8bfb3;
+  --theme-sidebar-text: #3a3f37;
+  --theme-border: #a3ab9e;
+  --theme-code-bg: #bcc3b7;
+  --theme-code-block-bg: #b3bab0;
+  --theme-code-text: #2e332b;
+  --theme-code-inline: #4a6741;
+}
+
 /* ============================================================
    LIGHT THEMES
    ============================================================ */
