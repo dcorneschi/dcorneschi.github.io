@@ -13,6 +13,7 @@
   - [iotop Cheatsheet](cheatsheets/iotop/README.md)
   - [k9s Cheatsheet](cheatsheets/k9s/README.md)
   - [Kitty Cheatsheet](cheatsheets/kitty/README.md)
+  - [Proxmox Cheatsheet](cheatsheets/proxmox/README.md)
   - [ps Cheatsheet](cheatsheets/ps/README.md)
   - [ss Cheatsheet](cheatsheets/ss/README.md)
   - [Terraform Cheatsheet](cheatsheets/terraform/README.md)
