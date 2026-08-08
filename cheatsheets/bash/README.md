@@ -1,8 +1,8 @@
-# Bash Cheatsheet
+<p align="center">
+  <img src="/cheatsheets/bash/images/bash-logo.svg" alt="helm logo" width="200"/>
+</p>
 
-<img src="/articles/images/bash-logo.svg" alt="Bash" width="150">
-
-**GNU Bourne Again SHell**
+<h1 align="center">Bash Cheatsheet</h1>
 
 ## Quoting and Escaping
 
