@@ -67,4 +67,6 @@
   - [JetBrains Mono Font](articles/jetbrains-mono-font.md)
   - [PuTTY Default Settings](articles/putty-default-settings.md)
   - [cloud-init: bootcmd vs runcmd](articles/cloud-init-bootcmd-vs-runcmd.md)
+  - [cloud-init: Why tee Output Doesn't Appear in Logs](articles/cloud-init-tee-output-missing.md)
+  - [cloud-init: User Management and the gecos Field](articles/cloud-init-users-gecos.md)
   - [Windows Battery Report](articles/windows-battery-report.md)
