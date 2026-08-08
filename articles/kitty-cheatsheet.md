@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/cheatsheets/kitty/images/kitty-logo.svg" alt="Kitty Logo" width="200"/>
+  <img src="/articles/images/kitty-logo.svg" alt="Kitty Logo" width="200"/>
 </p>
 
 <h1 align="center">Kitty Cheatsheet</h1>

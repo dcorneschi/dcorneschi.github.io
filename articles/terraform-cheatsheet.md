@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/cheatsheets/terraform/images/terraform-logo.svg" alt="Terraform Logo" width="200"/>
+  <img src="/articles/images/terraform-logo.svg" alt="Terraform Logo" width="200"/>
 </p>
 
 <h1 align="center">Terraform Cheatsheet</h1>

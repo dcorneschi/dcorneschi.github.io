@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/cheatsheets/helm/images/helm-logo.svg" alt="helm logo" width="200"/>
+  <img src="/articles/images/helm-logo.svg" alt="helm logo" width="200"/>
 </p>
 
 <h1 align="center">Helm Cheatsheet</h1>

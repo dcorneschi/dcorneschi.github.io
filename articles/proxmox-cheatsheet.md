@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/cheatsheets/proxmox/images/proxmox-logo.svg" alt="Proxmox logo" width="400"/>
+  <img src="/articles/images/proxmox-logo.svg" alt="Proxmox logo" width="400"/>
 </p>
 
 <h1 align="center">Proxmox Cheatsheet</h1>

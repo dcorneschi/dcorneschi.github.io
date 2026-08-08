@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/cheatsheets/cloud-init/images/cloud-init-logo.svg" alt="cloud-init logo" width="300"/>
+  <img src="/articles/images/cloud-init-logo.svg" alt="cloud-init logo" width="300"/>
 </p>
 
 <h1 align="center">cloud-init Cheatsheet</h1>

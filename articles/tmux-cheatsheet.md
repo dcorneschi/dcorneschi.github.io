@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/cheatsheets/tmux/images/tmux-logo.svg" alt="tmux logo" width="300"/>
+  <img src="/articles/images/tmux-logo.svg" alt="tmux logo" width="300"/>
 </p>
 
 <h1 align="center">tmux Cheatsheet</h1>

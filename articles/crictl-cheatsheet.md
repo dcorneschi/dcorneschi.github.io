@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/cheatsheets/crictl/images/kubernetes-logo.svg" alt="Kubernetes Logo" width="200"/>
+  <img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes Logo" width="200"/>
 </p>
 
 <h1 align="center">critctl Cheatsheet</h1>

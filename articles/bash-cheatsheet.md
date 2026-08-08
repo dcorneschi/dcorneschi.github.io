@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/cheatsheets/bash/images/bash-logo.svg" alt="helm logo" width="200"/>
+  <img src="/articles/images/bash-logo.svg" alt="bash logo" width="200"/>
 </p>
 
 <h1 align="center">Bash Cheatsheet</h1>

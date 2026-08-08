@@ -1,73 +1,93 @@
 - [Home](README.md)
 
-- Cheatshets
-  - [bash Cheatsheet](cheatsheets/bash/README.md)
-  - [bat Cheatsheet](cheatsheets/bat/README.md)
-  - [cloud-init Cheatsheet](cheatsheets/cloud-init/README.md)
-  - [crictl Cheatsheet](cheatsheets/crictl/README.md)
-  - [cut Cheatsheet](cheatsheets/cut/README.md)
-  - [free Cheatsheet](cheatsheets/free/README.md)
-  - [fdisk Cheatsheet](cheatsheets/fdisk/README.md)
-  - [fsck Cheatsheet](cheatsheets/fsck/README.md)
-  - [Helm Cheatsheet](cheatsheets/helm/README.md)
-  - [iotop Cheatsheet](cheatsheets/iotop/README.md)
-  - [k9s Cheatsheet](cheatsheets/k9s/README.md)
-  - [Kitty Cheatsheet](cheatsheets/kitty/README.md)
-  - [Proxmox Cheatsheet](cheatsheets/proxmox/README.md)
-  - [ps Cheatsheet](cheatsheets/ps/README.md)
-  - [ss Cheatsheet](cheatsheets/ss/README.md)
-  - [Terraform Cheatsheet](cheatsheets/terraform/README.md)
-  - [tmux Cheatsheet](cheatsheets/tmux/README.md)
-  
-- Articles
+- Kubernetes
   - [Getting Started with Argo CD](articles/getting-started-argo.md)
   - [Kubernetes imagePullPolicy](articles/kubernetes-imagepullpolicy.md)
   - [Kubernetes emptyDir Volumes](articles/kubernetes-emptyDir-volumes.md)
   - [Kubernetes PriorityClasses Guide](articles/kubernetes-priority-classes-guide.md)
   - [Kubernetes QoS Classes — Requests and Limits](articles/kubernetes-qos-requests-limits.md)
-  - [Kubernetes PodDisruptionBudgets Guide](articles/kubernetes-pdb-guide.md)
   - [Kubernetes Pod Evictions Cheatsheet](articles/kubernetes-evictions-cheatsheet.md)
+  - [Kubernetes PodDisruptionBudgets Guide](articles/kubernetes-pdb-guide.md)
   - [kubectl run vs kubectl create](articles/kubectl-run-vs-create.md)
   - [Init Containers vs Regular Containers](articles/kubernetes-init-vs-regular-containers.md)
+  - [Ingress for Kubernetes Dashboard on MicroK8s](articles/ingress-kubernetes-dashboard-microk8s.md)
+  - [Ingress with MetalLB on MicroK8s](articles/ingress-metallb-microk8s-guide.md)
+  - [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md)
+  - [Helm Cheatsheet](articles/helm-cheatsheet.md)
+  - [crictl Cheatsheet](articles/crictl-cheatsheet.md)
+  - [k9s Cheatsheet](articles/k9s-cheatsheet.md)
+
+- Virtualization & Containers
+  - [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md)
   - [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md)
   - [dbash — Docker Shell Function](articles/docker-dbash-function.md)
+
+- Terraform
+  - [Terraform Cheatsheet](articles/terraform-cheatsheet.md)
+  - [terraform.tfstate vs .terraform/terraform.tfstate](articles/terraform-tfstate-vs-terraform-directory-state.md)
+  - [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md)
+  - [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md)
+  - [Terraform Lock File Checksums: zh and h1](articles/terraform-lock-file-checksums.md)
+
+- Bash & Shell
+  - [bash Cheatsheet](articles/bash-cheatsheet.md)
   - [Bash Essentials Guide](articles/bash-essentials-guide.md)
   - [Bash Test Conditions: \[ \] vs \[\[ \]\]](articles/bash-test-conditions-guide.md)
   - [Bash Subshells](articles/bash-subshells-guide.md)
   - [Bash Troubleshooting Guide](articles/bash-troubleshooting-guide.md)
   - [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md)
-  - [Remove .DS_Store from Git](articles/remove-ds-store-guide.md)
+  - [sed Replace Line Guide](articles/sed-replace-line-guide.md)
   - [Running Multiple Commands with sudo](articles/sudo-multiple-commands.md)
   - [sudoers Guide](articles/sudo-sudoers-guide.md)
-  - [sed Replace Line Guide](articles/sed-replace-line-guide.md)
   - [Vim White Spaces](articles/vim-white-spaces.md)
-  - [Ingress for Kubernetes Dashboard on MicroK8s](articles/ingress-kubernetes-dashboard-microk8s.md)
-  - [Ingress with MetalLB on MicroK8s](articles/ingress-metallb-microk8s-guide.md)
-  - [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md)
+
+- Linux System Administration
   - [Linux File Permissions Guide](articles/linux-file-permissions.md)
+  - [User Administration on RHEL](articles/user-administration.md)
   - [RHEL Releases Overview](articles/rhel-releases-overview.md)
   - [RHEL Boot Modes and Troubleshooting](articles/rhel-boot-troubleshooting.md)
-  - [User Administration on RHEL](articles/user-administration.md)
-  - [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md)
-  - [Understanding vmstat Output](articles/understanding-vmstat-output.md)
-  - [Understanding iostat -x Output](articles/understanding-iostat-x-output.md)
+  - [Linux ulimit Guide](articles/linux-ulimit-guide.md)
+  - [Remove .DS_Store from Git](articles/remove-ds-store-guide.md)
+
+- Linux Performance & I/O
   - [Linux Load Average](articles/linux-load-average.md)
   - [Linux I/O Schedulers](articles/linux-io-schedulers.md)
   - [Linux Disk I/O Internals](articles/linux-disk-io-internals.md)
+  - [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md)
+  - [Understanding vmstat Output](articles/understanding-vmstat-output.md)
+  - [Understanding iostat -x Output](articles/understanding-iostat-x-output.md)
+  - [iotop Cheatsheet](articles/iotop-cheatsheet.md)
+  - [ps Cheatsheet](articles/ps-cheatsheet.md)
+  - [free Cheatsheet](articles/free-cheatsheet.md)
+
+- Linux Memory
+  - [Linux Memory: RSS, VSZ, and Why RSS Alone Is Misleading](articles/linux-memory-rss-vsz.md)
+  - [Linux Swap Usage: When Processes Aren't the Culprit](articles/linux-swap-shm-segments.md)
+
+- Linux Storage & Filesystems
+  - [fdisk Cheatsheet](articles/fdisk-cheatsheet.md)
+  - [fsck Cheatsheet](articles/fsck-cheatsheet.md)
   - [Partition Alignment Guide](articles/partition-alignment-guide.md)
   - [XFS Internals: Superblock and Addressing](articles/xfs-internals-superblock.md)
   - [ext4 Journal Modes](articles/ext4-journal-modes.md)
   - [Extending Partitions with growpart](articles/growpart-extend-partitions.md)
-  - [Linux ulimit Guide](articles/linux-ulimit-guide.md)
-  - [Linux Memory: RSS, VSZ, and Why RSS Alone Is Misleading](articles/linux-memory-rss-vsz.md)
-  - [Linux Swap Usage: When Processes Aren't the Culprit](articles/linux-swap-shm-segments.md)
-  - [terraform.tfstate vs .terraform/terraform.tfstate](articles/terraform-tfstate-vs-terraform-directory-state.md)
-  - [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md)
-  - [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md)
-  - [Terraform Lock File Checksums: zh and h1](articles/terraform-lock-file-checksums.md)
-  - [JetBrains Mono Font](articles/jetbrains-mono-font.md)
-  - [PuTTY Default Settings](articles/putty-default-settings.md)
+
+- Networking
+  - [ss Cheatsheet](articles/ss-cheatsheet.md)
+
+- Cloud-Init
+  - [cloud-init Cheatsheet](articles/cloud-init-cheatsheet.md)
   - [cloud-init: bootcmd vs runcmd](articles/cloud-init-bootcmd-vs-runcmd.md)
   - [cloud-init: Why tee Output Doesn't Appear in Logs](articles/cloud-init-tee-output-missing.md)
   - [cloud-init: User Management and the gecos Field](articles/cloud-init-users-gecos.md)
+
+- Terminal & Tools
+  - [bat Cheatsheet](articles/bat-cheatsheet.md)
+  - [cut Cheatsheet](articles/cut-cheatsheet.md)
+  - [tmux Cheatsheet](articles/tmux-cheatsheet.md)
+  - [Kitty Cheatsheet](articles/kitty-cheatsheet.md)
+  - [JetBrains Mono Font](articles/jetbrains-mono-font.md)
+  - [PuTTY Default Settings](articles/putty-default-settings.md)
+
+- Windows
   - [Windows Battery Report](articles/windows-battery-report.md)

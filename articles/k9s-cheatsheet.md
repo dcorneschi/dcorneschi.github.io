@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/cheatsheets/k9s/images/k9s-logo.png" alt="k9s logo" width="200"/>
+  <img src="/articles/images/k9s-logo.png" alt="k9s logo" width="200"/>
 </p>
 
 <h1 align="center">k9s Cheatsheet</h1>
