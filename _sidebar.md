@@ -18,6 +18,8 @@
   - [k9s Cheatsheet](articles/k9s-cheatsheet.md)
 
 - Virtualization & Containers
+  - [Docker Cheatsheet](articles/docker-cheatsheet.md)
+  - [Docker Compose Cheatsheet](articles/docker-compose-cheatsheet.md)
   - [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md)
   - [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md)
   - [dbash — Docker Shell Function](articles/docker-dbash-function.md)
