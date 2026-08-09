@@ -133,6 +133,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [SAN Storage Commands](articles/san-storage-commands.md) | SCSI scanning, HBA info, Fibre Channel diagnostics, disk mapping, I/O scheduler, and SAR monitoring. |
 | [Linux Storage Stack](articles/linux-storage-stack.md) | VFS, filesystems, page cache, block layer, device mapper, SCSI/NVMe — layers, tools, and tuning. |
 | [fdisk Cheatsheet](articles/fdisk-cheatsheet.md) | Disk partitioning — fdisk, gdisk, parted, sgdisk, sfdisk, mkfs, and LVM setup. |
+| [LVM Cheatsheet](articles/lvm-cheatsheet.md) | Logical Volume Manager — PVs, VGs, LVs, snapshots, thin provisioning, RAID, cache, and troubleshooting. |
 | [fsck Cheatsheet](articles/fsck-cheatsheet.md) | Filesystem check and repair — e2fsck, xfs_repair, badblocks, and SMART. |
 | [Partition Alignment Guide](articles/partition-alignment-guide.md) | Why 1 MiB alignment matters for SSDs, 4Kn HDDs, RAID, LVM, and virtual machines. |
 | [XFS Internals: Superblock and Addressing](articles/xfs-internals-superblock.md) | XFS superblock structure, allocation groups, and block/inode addressing schemes. |

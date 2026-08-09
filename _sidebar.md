@@ -89,6 +89,7 @@
   - [SAN Storage Commands](articles/san-storage-commands.md)
   - [Linux Storage Stack](articles/linux-storage-stack.md)
   - [fdisk Cheatsheet](articles/fdisk-cheatsheet.md)
+  - [LVM Cheatsheet](articles/lvm-cheatsheet.md)
   - [fsck Cheatsheet](articles/fsck-cheatsheet.md)
   - [Partition Alignment Guide](articles/partition-alignment-guide.md)
   - [XFS Internals: Superblock and Addressing](articles/xfs-internals-superblock.md)
