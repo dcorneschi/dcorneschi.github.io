@@ -482,6 +482,9 @@ Existing repos — update the remote:
 
 ```bash
 git remote set-url origin git@github-work:company/repo.git
+
+# Verify remote URL
+git remote -v
 ```
 
 ## Testing and Verification

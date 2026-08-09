@@ -28,6 +28,7 @@
 
 - AWS
   - [EC2 Cheatsheet](articles/aws-ec2-cheatsheet.md)
+  - [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md)
   - [JMESPath Query Guide](articles/aws-jmespath-guide.md)
 
 - Virtualization
@@ -93,6 +94,8 @@
   - [SSH ControlMaster](articles/ssh-controlmaster.md)
   - [SSH ProxyJump vs ProxyCommand](articles/ssh-proxyjump-vs-proxycommand.md)
   - [SSH Managing Multiple Keys](articles/ssh-managing-multiple-keys.md)
+  - [SSH Generate Keys](articles/ssh-keygen-guide.md)
+  - [SSH Convert Keys](articles/ssh-convert-keys.md)
   - [SSH Remote Script Execution](articles/ssh-remote-script-execution.md)
   - [ss Cheatsheet](articles/ss-cheatsheet.md)
 

@@ -1067,6 +1067,9 @@ sudo ufw status
 # Verbose connect to see which keys are tried
 ssh -vvv user@host
 
+# Check which key is being offered
+ssh -v user@host 2>&1 | grep "Offering"
+
 # Check authorized_keys permissions on remote
 ls -la ~/.ssh/
 ls -la ~/.ssh/authorized_keys
@@ -1076,6 +1079,15 @@ ssh-add -l
 
 # Check sshd logs for details
 journalctl -u sshd --since "5 minutes ago"
+```
+
+### Regenerate Server Host Keys
+
+After cloning a VM or if host keys are compromised:
+
+```bash
+sudo ssh-keygen -A
+sudo systemctl restart sshd
 ```
 
 ### Host Key Changed
@@ -1102,6 +1114,28 @@ Host *
 ### Frozen Session
 
 Press `Enter` then `~.` to force disconnect a hung session.
+
+## Git over SSH
+
+```bash
+# Clone with SSH
+git clone git@github.com:user/repo.git
+
+# Clone using a host alias from ~/.ssh/config
+git clone git@github-work:company/repo.git
+
+# Set SSH URL for existing repo
+git remote set-url origin git@github.com:user/repo.git
+
+# Check current remote URLs
+git remote -v
+
+# Test GitHub SSH connectivity
+ssh -T git@github.com
+
+# Test GitLab SSH connectivity
+ssh -T git@gitlab.com
+```
 
 ## Tips
 
