@@ -27,6 +27,7 @@
   - [dbash — Docker Shell Function](articles/docker-dbash-function.md)
 
 - AWS
+  - [AWS CLI Installation](articles/aws-cli-install.md)
   - [EC2 Cheatsheet](articles/aws-ec2-cheatsheet.md)
   - [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md)
   - [Installing SSM Agent](articles/aws-ssm-agent-install.md)

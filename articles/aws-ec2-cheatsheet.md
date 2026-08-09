@@ -677,6 +677,11 @@ aws ec2 wait instance-status-ok --instance-ids i-0123456789abcdef0
 ## AWS CLI Configuration
 
 ```bash
+# Verify your identity and account
+aws sts get-caller-identity
+aws sts get-caller-identity --query Account --output text
+aws sts get-caller-identity | jq -r '.Account'
+
 # Configure default profile
 aws configure
 
