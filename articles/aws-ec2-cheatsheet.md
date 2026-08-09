@@ -365,6 +365,27 @@ aws ec2 delete-key-pair --key-name my-key-pair
 # List volumes
 aws ec2 describe-volumes
 
+# Pretty-print with jq
+aws ec2 describe-volumes | jq .
+
+# List all volume IDs (JMESPath)
+aws ec2 describe-volumes --query 'Volumes[*].VolumeId'
+
+# List volume IDs and types (JMESPath)
+aws ec2 describe-volumes --query 'Volumes[].[VolumeId, VolumeType]'
+
+# List all volume IDs (jq)
+aws ec2 describe-volumes --output json | jq -r '.Volumes[].VolumeId'
+
+# List volume IDs and types (jq)
+aws ec2 describe-volumes --output json | jq -r '.Volumes[] | .VolumeId, .VolumeType'
+
+# Find available (unattached) volumes (jq)
+aws ec2 describe-volumes | jq '.Volumes[] | select(.State=="available") | .VolumeId'
+
+# Available volumes without quotes
+aws ec2 describe-volumes | jq '.Volumes[] | select(.State=="available") | .VolumeId' | tr -d \"
+
 # List volumes attached to an instance
 aws ec2 describe-volumes \
     --filters "Name=attachment.instance-id,Values=i-0123456789abcdef0"

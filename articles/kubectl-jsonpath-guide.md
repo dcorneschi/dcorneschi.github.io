@@ -47,6 +47,9 @@ kubectl get <resource> -o jsonpath='{<expression>}'
 # All names on one line, space-separated
 kubectl get pods -n <namespace> -o jsonpath='{.items[*].metadata.name}'
 # pod1 pod2 pod3
+
+# With trailing newline (cleaner terminal output)
+kubectl get pods -n <namespace> -o jsonpath='{.items[*].metadata.name}{"\n"}'
 ```
 
 ### One Per Line (range)

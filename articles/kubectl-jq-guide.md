@@ -333,9 +333,12 @@ kubectl get pods -n <namespace> -o json | jq --arg cm "$CONFIGMAP" '.items[] | s
 
 ## Discovering JSON Structure
 
-When you don't know the structure, use these techniques:
+When you don't know the structure, use these techniques. Kubernetes resources have deeply nested JSON — pods alone have hundreds of fields across metadata, spec, and status. Listing all paths lets you find the exact field you need without reading documentation or guessing at nesting levels.
 
 ```bash
+# List ALL paths in compact format (the starting point for exploration)
+kubectl get pods -A -o json | jq -c paths
+
 # See top-level keys
 kubectl get pods -n <namespace> -o json | jq '.items[0] | keys'
 
@@ -344,6 +347,15 @@ kubectl get pods -n <namespace> -o json | jq -r '.items[0] | paths(scalars) | jo
 
 # See paths containing a keyword
 kubectl get pods -n <namespace> -o json | jq -c '.items[0] | paths | select(. | join(".") | contains("restart"))'
+
+# Search paths with grep (alternative)
+kubectl get pods -A -o json | jq -c 'paths|join(".")' | grep startTime
+
+# Alternative: grep raw paths then convert commas to dots
+kubectl get pods -A -o json | jq -c paths | grep startTime | sed 's/,/./g'
+
+# Get paths AND values in a single dot-notation line
+kubectl get pods -A -o json | jq -r 'paths(scalars) as $p | $p + [getpath($p)] | join(".")'
 
 # See structure without values (keys only, recursive)
 kubectl get pods -n <namespace> -o json | jq '.items[0] | .. | objects | keys' | sort -u

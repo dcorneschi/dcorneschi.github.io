@@ -29,6 +29,7 @@
 - AWS
   - [EC2 Cheatsheet](articles/aws-ec2-cheatsheet.md)
   - [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md)
+  - [Installing SSM Agent](articles/aws-ssm-agent-install.md)
   - [JMESPath Query Guide](articles/aws-jmespath-guide.md)
 
 - Virtualization
