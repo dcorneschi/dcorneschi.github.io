@@ -24,6 +24,10 @@
   - [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md)
   - [dbash — Docker Shell Function](articles/docker-dbash-function.md)
 
+- AWS
+  - [EC2 Cheatsheet](articles/aws-ec2-cheatsheet.md)
+  - [JMESPath Query Guide](articles/aws-jmespath-guide.md)
+
 - Virtualization
   - [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md)
 
