@@ -84,6 +84,9 @@
   - [Linux Swap Usage: When Processes Aren't the Culprit](articles/linux-swap-shm-segments.md)
 
 - Linux Storage & Filesystems
+  - [Multipath Cheatsheet](articles/multipath-cheatsheet.md)
+  - [EMC PowerPath Cheatsheet](articles/emc-powerpath-cheatsheet.md)
+  - [SAN Storage Commands](articles/san-storage-commands.md)
   - [fdisk Cheatsheet](articles/fdisk-cheatsheet.md)
   - [fsck Cheatsheet](articles/fsck-cheatsheet.md)
   - [Partition Alignment Guide](articles/partition-alignment-guide.md)
