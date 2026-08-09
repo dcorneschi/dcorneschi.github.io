@@ -207,18 +207,68 @@ echo '["a","b","c"]' | jq 'join("-")'
 echo '"hello world"' | jq 'gsub("world"; "jq")'
 # "hello jq"
 
+# Replace first occurrence only
+echo '"hello world world"' | jq 'sub("world"; "jq")'
+# "hello jq world"
+
 # Uppercase/lowercase
 echo '"hello"' | jq 'ascii_upcase'
 # "HELLO"
+echo '"HELLO"' | jq 'ascii_downcase'
+# "hello"
 
 # String length
 echo '"hello"' | jq 'length'
 # 5
 
-# Trim/test
+# Trim prefix/suffix
 echo '"  hello  "' | jq 'ltrimstr(" ") | rtrimstr(" ")'
+
+# Regex test (returns true/false)
 echo '"web-server-01"' | jq 'test("^web-")'
 # true
+
+# Regex match with captures
+echo '"2024-01-15"' | jq 'capture("(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})")'
+# {"year":"2024","month":"01","day":"15"}
+
+# Case-insensitive regex search with shell variable
+jq --arg q "$QUERY" '.[] | select(.name | test($q; "i"))' data.json
+```
+
+### Encoding and Formatting
+
+```bash
+# Base64 encode
+echo '"hello world"' | jq '@base64'
+# "aGVsbG8gd29ybGQ="
+
+# Base64 decode
+echo '"aGVsbG8gd29ybGQ="' | jq '@base64d'
+# "hello world"
+
+# Kubernetes secret decode
+kubectl get secret mysecret -o json | jq -r '.data.password | @base64d'
+
+# URL encode
+echo '"hello world & more"' | jq '@uri'
+# "hello%20world%20%26%20more"
+
+# HTML escape
+echo '"<script>alert(1)</script>"' | jq '@html'
+# "&lt;script&gt;alert(1)&lt;/script&gt;"
+
+# Serialize as JSON string (for embedding)
+echo '{"a":1}' | jq '@json'
+# "{\"a\":1}"
+
+# Convert to string
+echo '42' | jq 'tostring'
+# "42"
+
+# Convert to number
+echo '"42"' | jq 'tonumber'
+# 42
 ```
 
 ### jq with AWS CLI
@@ -403,6 +453,338 @@ cat data.json | jq -c '.items[]'
 
 # Null input (construct JSON)
 jq -n '{name: "new", version: 1}'
+```
+
+### Object Operations
+
+```bash
+# to_entries — convert object to key/value array
+echo '{"a":1,"b":2}' | jq 'to_entries'
+# [{"key":"a","value":1},{"key":"b","value":2}]
+
+# from_entries — convert back to object
+echo '[{"key":"a","value":1}]' | jq 'from_entries'
+# {"a":1}
+
+# with_entries — transform keys/values in one pass
+echo '{"name":"test","age":30}' | jq 'with_entries(.key = "prefix_" + .key)'
+# {"prefix_name":"test","prefix_age":30}
+
+# Convert JSON object to key=value lines
+echo '{"host":"db","port":5432}' | jq -r 'to_entries[] | "\(.key)=\(.value)"'
+# host=db
+# port=5432
+
+# Merge objects (right wins on conflicts)
+echo '{"a":1}' | jq '. + {"b":2, "a":99}'
+# {"a":99,"b":2}
+
+# Check if key exists
+echo '{"name":"test"}' | jq 'has("name")'
+# true
+
+# Get all keys
+echo '{"a":1,"b":2,"c":3}' | jq 'keys'
+# ["a","b","c"]
+
+# Select specific fields from object
+echo '{"name":"test","age":30,"tmp":"x"}' | jq '{name, age}'
+# {"name":"test","age":30}
+```
+
+### Array Advanced
+
+```bash
+# Flatten nested arrays
+echo '[[1,2],[3,[4,5]]]' | jq 'flatten'
+# [1,2,3,4,5]
+
+# Flatten one level only
+echo '[[1,2],[3,[4,5]]]' | jq 'flatten(1)'
+# [1,2,3,[4,5]]
+
+# any/all — boolean tests on arrays
+echo '[1,2,3,4,5]' | jq 'any(. > 3)'
+# true
+echo '[1,2,3,4,5]' | jq 'all(. > 0)'
+# true
+
+# unique_by (deduplicate by field)
+echo '[{"id":1,"name":"a"},{"id":1,"name":"b"},{"id":2,"name":"c"}]' | jq 'unique_by(.id)'
+# [{"id":1,"name":"a"},{"id":2,"name":"c"}]
+
+# indices — find positions of a value
+echo '["a","b","c","a","b"]' | jq 'indices("a")'
+# [0,3]
+
+# contains — check if array has all elements
+echo '[1,2,3,4]' | jq 'contains([2,4])'
+# true
+
+# limit — take first N results from a generator
+echo '[1,2,3,4,5]' | jq '[limit(3; .[])]'
+# [1,2,3]
+```
+
+### Error Handling and Debugging
+
+```bash
+# Try — suppress errors on missing fields
+echo '{"a":1}' | jq '.b.c?'
+# null (no error)
+
+# try/catch
+echo '"not a number"' | jq 'try tonumber catch "invalid"'
+# "invalid"
+
+# // (alternative/null coalescing) — default when null or false
+echo '{"name":null}' | jq '.name // "default"'
+# "default"
+echo '{}' | jq '.missing // "fallback"'
+# "fallback"
+
+# debug — print intermediate values to stderr
+echo '[1,2,3]' | jq '.[] | debug | . * 2'
+# stderr: ["DEBUG:",1]
+# stderr: ["DEBUG:",2]
+# stderr: ["DEBUG:",3]
+# stdout: 2 4 6
+
+# Access environment variables
+NAME="world" jq -n 'env.NAME'
+# "world"
+```
+
+### walk (Recursive Transformation)
+
+```bash
+# Recursively transform all values
+# Remove newlines from all strings in entire document
+cat data.json | jq 'walk(if type == "string" then gsub("\\n"; " ") else . end)'
+
+# Recursively convert all keys to lowercase
+cat data.json | jq 'walk(if type == "object" then with_entries(.key |= ascii_downcase) else . end)'
+
+# Recursively trim all string values
+cat data.json | jq 'walk(if type == "string" then ltrimstr(" ") | rtrimstr(" ") else . end)'
+```
+
+### Useful One-Liners
+
+```bash
+# Pretty-print a JSON file
+jq . file.json
+
+# Merge and deduplicate paginated API responses
+jq -s 'map(.items) | flatten | unique_by(.id)' page1.json page2.json page3.json
+
+# Convert JSON object to key=value (for .env files)
+jq -r 'to_entries[] | "\(.key)=\(.value)"' config.json
+
+# Get most recent entry from a sorted array
+jq -r '.results | sort_by(.date) | reverse | .[0]' data.json
+
+# Count items per group
+jq 'group_by(.status) | map({(.[0].status): length}) | add' data.json
+
+# Reshape — keep only specific fields
+jq '[.[] | {id, name}]' data.json
+
+# Prefix all object keys
+jq 'with_entries(.key = "app_" + .key)' config.json
+
+# Decode all base64 values in a Kubernetes secret
+kubectl get secret mysecret -o json | jq '.data | map_values(@base64d)'
+```
+
+### Math and Aggregation
+
+```bash
+# Sum an array
+echo '[1,2,3,4,5]' | jq 'add'
+# 15
+
+# Sum a field across objects
+echo '[{"price":10},{"price":20}]' | jq '[.[].price] | add'
+# 30
+
+# Average
+echo '[10,20,30]' | jq 'add / length'
+# 20
+
+# Min / Max
+echo '[3,1,4,1,5]' | jq 'min'    # 1
+echo '[3,1,4,1,5]' | jq 'max'    # 5
+
+# Floor / Ceil / Round
+echo '3.7' | jq 'floor'    # 3
+echo '3.2' | jq 'ceil'     # 4
+echo '3.5' | jq 'round'    # 4
+
+# Absolute value
+echo '-5' | jq 'fabs'      # 5
+
+# Modulo
+echo 'null' | jq '17 % 5'  # 2
+
+# Generate a range
+jq -n '[range(5)]'          # [0,1,2,3,4]
+jq -n '[range(2;8;2)]'     # [2,4,6]
+```
+
+### Dates and Time
+
+```bash
+# Unix timestamp to ISO date
+echo '1704067200' | jq 'todate'
+# "2024-01-01T00:00:00Z"
+
+# ISO date to Unix timestamp
+echo '"2024-01-01T00:00:00Z"' | jq 'fromdateiso8601'
+# 1704067200
+
+# Current time as ISO date
+jq -n 'now | todate'
+
+# Current time as Unix timestamp
+jq -n 'now'
+```
+
+### Type Selectors (Recursive Descent)
+
+```bash
+# Find all numbers anywhere in the document
+echo '{"a":1,"b":{"c":2},"d":"x"}' | jq '.. | numbers'
+# 1
+# 2
+
+# Find all strings
+cat data.json | jq '.. | strings'
+
+# Find all arrays
+cat data.json | jq '.. | arrays'
+
+# Find all objects
+cat data.json | jq '.. | objects'
+
+# Find all values of a specific key at any depth
+cat data.json | jq '.. | .id? // empty'
+
+# Select by type
+echo '[1,"two",3,"four",null]' | jq '.[] | numbers'
+# 1
+# 3
+```
+
+### INDEX (Convert Array to Lookup Object)
+
+```bash
+# Create lookup by ID
+echo '[{"id":"a","val":1},{"id":"b","val":2}]' | jq 'INDEX(.[]; .id)'
+# {"a":{"id":"a","val":1},"b":{"id":"b","val":2}}
+
+# Useful for merging data from two sources
+jq -s '(.[0] | INDEX(.[]; .id)) as $lookup | .[1][] | . + $lookup[.id]' users.json orders.json
+```
+
+### User-Defined Functions
+
+```bash
+# Define and use a function
+echo '[1,2,3]' | jq 'def double: . * 2; map(double)'
+# [2,4,6]
+
+# Function with arguments
+echo '5' | jq 'def add(x): . + x; add(10)'
+# 15
+
+# Reusable formatting function
+echo '[{"name":"a","age":30},{"name":"b","age":25}]' | \
+    jq 'def fmt: "\(.name) is \(.age)"; .[] | fmt'
+# "a is 30"
+# "b is 25"
+```
+
+### Variables and Binding
+
+```bash
+# Bind a value to a variable
+echo '{"price":10,"qty":3}' | jq '.price as $p | .qty * $p'
+# 30
+
+# Multiple bindings
+echo '{"a":2,"b":3}' | jq '.a as $x | .b as $y | $x + $y'
+# 5
+
+# Variable from external input
+jq --argjson threshold 100 '.[] | select(.value > $threshold)' data.json
+```
+
+### Path Operations
+
+```bash
+# Get path to a field
+echo '{"a":{"b":{"c":1}}}' | jq 'path(.a.b.c)'
+# ["a","b","c"]
+
+# Set value at path
+echo '{"a":{"b":1}}' | jq 'setpath(["a","b"]; 99)'
+# {"a":{"b":99}}
+
+# Get value at path
+echo '{"a":{"b":42}}' | jq 'getpath(["a","b"])'
+# 42
+```
+
+### Conditionals (Extended)
+
+```bash
+# not operator
+echo '[{"active":true},{"active":false}]' | jq '.[] | select(.active | not)'
+# {"active":false}
+
+# startswith / endswith
+echo '["https://a.com","http://b.com"]' | jq '.[] | select(startswith("https"))'
+# "https://a.com"
+
+echo '["file.json","file.yaml"]' | jq '.[] | select(endswith(".json"))'
+# "file.json"
+
+# empty (suppress output)
+echo '[1,2,3,4,5]' | jq '.[] | if . > 3 then . else empty end'
+# 4
+# 5
+```
+
+### Real-World Patterns
+
+```bash
+# Merge two config files (deep merge — right wins)
+jq -s '.[0] * .[1]' defaults.json overrides.json
+
+# Remove sensitive fields before commit
+jq 'del(.password, .api_key, .secret)' config.json
+
+# Parse JSON logs — filter errors
+cat app.log | jq -c 'select(.level == "error")'
+
+# Count errors by type
+cat app.log | jq -s 'group_by(.error_type) | map({type: .[0].error_type, count: length})'
+
+# Pivot data (group then reshape)
+cat data.json | jq 'group_by(.category) | map({category: .[0].category, items: map(.name)})'
+
+# Update a specific field in config
+jq '.database.host = "newhost"' config.json > config.new.json
+
+# Rename a key
+echo '{"old_name":"value"}' | jq '.new_name = .old_name | del(.old_name)'
+
+# Convert array to lookup and join with another file
+jq -s '(.[0] | INDEX(.[]; .id)) as $map | .[1][] | . + ($map[.user_id] // {})' users.json events.json
+
+# Flatten nested structure, extract specific fields
+cat data.json | jq '[.. | objects | select(has("value")) | .value]'
 ```
 
 ### jq Flags Reference

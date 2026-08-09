@@ -1,6 +1,8 @@
 - [Home](README.md)
 
 - Kubernetes
+  - [Using jq with kubectl](articles/kubectl-jq-guide.md)
+  - [kubectl JSONPath Guide](articles/kubectl-jsonpath-guide.md)
   - [Getting Started with Argo CD](articles/getting-started-argo.md)
   - [Kubernetes imagePullPolicy](articles/kubernetes-imagepullpolicy.md)
   - [Kubernetes emptyDir Volumes](articles/kubernetes-emptyDir-volumes.md)
