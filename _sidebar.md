@@ -34,6 +34,7 @@
   - [Installing KVM](articles/kvm-installation.md)
   - [KVM / virsh Cheatsheet](articles/kvm-cheatsheet.md)
   - [Adding a New Disk in KVM](articles/kvm-add-disk.md)
+  - [Enable virsh console](articles/kvm-virsh-console.md)
   - [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md)
 
 - Terraform
