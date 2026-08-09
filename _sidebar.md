@@ -73,6 +73,7 @@
   - [Understanding iostat -x Output](articles/understanding-iostat-x-output.md)
   - [iotop Cheatsheet](articles/iotop-cheatsheet.md)
   - [ps Cheatsheet](articles/ps-cheatsheet.md)
+  - [top Cheatsheet](articles/top-cheatsheet.md)
   - [free Cheatsheet](articles/free-cheatsheet.md)
 
 - Linux Memory
