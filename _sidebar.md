@@ -31,6 +31,9 @@
   - [JMESPath Query Guide](articles/aws-jmespath-guide.md)
 
 - Virtualization
+  - [Installing KVM](articles/kvm-installation.md)
+  - [KVM / virsh Cheatsheet](articles/kvm-cheatsheet.md)
+  - [Adding a New Disk in KVM](articles/kvm-add-disk.md)
   - [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md)
 
 - Terraform
