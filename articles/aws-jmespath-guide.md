@@ -648,6 +648,51 @@ Tags[?Key==`Name`].Value | [0]
 # "my-instance"
 ```
 
+### Flatten `[]` to Remove Empty Arrays
+
+When filtering at a parent level, non-matching parents return empty arrays. Append `[]` to clean up:
+
+```bash
+# Without flatten — contains empty arrays for non-matching reservations
+aws ec2 describe-instances \
+    --query 'Reservations[*].Instances[?Tags[?Key==`Name` && Value==`my-app`]].InstanceId'
+# [[], ["i-0123456789abcdef0"], []]
+
+# With flatten — clean result
+aws ec2 describe-instances \
+    --query 'Reservations[*].Instances[?Tags[?Key==`Name` && Value==`my-app`]].InstanceId[]'
+# ["i-0123456789abcdef0"]
+```
+
+### Filter at Parent Level, Access Child Field
+
+To find a parent object based on a nested value, apply the filter at the parent level:
+
+```bash
+# "Get the Instance ID for instances named 'my-app'"
+# Filter at Instances level (not Tags level), then access InstanceId
+aws ec2 describe-instances \
+    --query "Reservations[*].Instances[? Tags[? Key=='Name' && Value=='my-app'] ].InstanceId[]"
+```
+
+This pattern: filter Instances by their Tags, then select InstanceId from the matching Instances.
+
+### Using JMESPath in Python (boto3)
+
+```python
+import boto3, jmespath, json
+
+ec2 = boto3.client('ec2')
+response = ec2.describe_instances()
+
+# Apply JMESPath filter to the response
+expression = "Reservations[*].Instances[? Tags[? Key == 'Name' && Value == 'my-app'] ].InstanceId[]"
+result = jmespath.search(expression, response)
+print(json.dumps(result, indent=2))
+```
+
+Install: `pip install jmespath` (also bundled with boto3).
+
 ### Combining with --filter
 
 `--filter` (server-side) + `--query` (client-side) is the most efficient pattern:

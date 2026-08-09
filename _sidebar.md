@@ -96,6 +96,7 @@
   - [cloud-init: User Management and the gecos Field](articles/cloud-init-users-gecos.md)
 
 - Terminal & Tools
+  - [JSON Query Tools: JMESPath vs jq vs JSONPath](articles/json-query-tools.md)
   - [bat Cheatsheet](articles/bat-cheatsheet.md)
   - [cut Cheatsheet](articles/cut-cheatsheet.md)
   - [tmux Cheatsheet](articles/tmux-cheatsheet.md)
