@@ -9,13 +9,13 @@ kubectl outputs JSON with `-o json`. Pipe it to jq for powerful filtering, trans
 ## The Basic Pattern
 
 ```bash
-kubectl get pods -A -o json | jq '<expression>'
+kubectl get pods -n <namespace> -o json | jq '<expression>'
 ```
 
 jq expressions are **composable** — every filter takes input and produces output. Chain them with `|`:
 
 ```bash
-kubectl get pods -A -o json | jq '.items[] | select(.status.phase == "Running") | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.status.phase == "Running") | .metadata.name'
 ```
 
 This reads as: take all items → keep only running pods → extract the name.
@@ -26,22 +26,22 @@ The key to jq is building up expressions incrementally. Start simple, add comple
 
 ```bash
 # Step 1: See the raw structure
-kubectl get pods -A -o json | jq '.items[0]' | head -50
+kubectl get pods -n <namespace> -o json | jq '.items[0]' | head -50
 
 # Step 2: Identify the fields you need
-kubectl get pods -A -o json | jq '.items[0] | keys'
+kubectl get pods -n <namespace> -o json | jq '.items[0] | keys'
 
 # Step 3: Extract a single field
-kubectl get pods -A -o json | jq '.items[].metadata.name'
+kubectl get pods -n <namespace> -o json | jq '.items[].metadata.name'
 
 # Step 4: Add more fields
-kubectl get pods -A -o json | jq '.items[] | {name: .metadata.name, phase: .status.phase}'
+kubectl get pods -n <namespace> -o json | jq '.items[] | {name: .metadata.name, phase: .status.phase}'
 
 # Step 5: Add filtering
-kubectl get pods -A -o json | jq '.items[] | select(.status.phase == "Running") | {name: .metadata.name}'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.status.phase == "Running") | {name: .metadata.name}'
 
 # Step 6: Format the output
-kubectl get pods -A -o json | jq -r '.items[] | select(.status.phase == "Running") | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq -r '.items[] | select(.status.phase == "Running") | .metadata.name'
 ```
 
 ## Pods
@@ -50,66 +50,66 @@ kubectl get pods -A -o json | jq -r '.items[] | select(.status.phase == "Running
 
 ```bash
 # All pod names
-kubectl get pods -A -o json | jq -r '.items[].metadata.name'
+kubectl get pods -n <namespace> -o json | jq -r '.items[].metadata.name'
 
 # Pod names and status
-kubectl get pods -A -o json | jq -r '.items[] | "\(.metadata.name)\t\(.status.phase)"'
+kubectl get pods -n <namespace> -o json | jq -r '.items[] | "\(.metadata.name)\t\(.status.phase)"'
 
 # Pod names, namespace, and status
-kubectl get pods -A -o json | jq -r '.items[] | "\(.metadata.namespace)\t\(.metadata.name)\t\(.status.phase)"'
+kubectl get pods -n <namespace> -o json | jq -r '.items[] | "\(.metadata.namespace)\t\(.metadata.name)\t\(.status.phase)"'
 
 # Pods with IP addresses
-kubectl get pods -A -o json | jq -r '.items[] | "\(.metadata.name)\t\(.status.podIP)"'
+kubectl get pods -n <namespace> -o json | jq -r '.items[] | "\(.metadata.name)\t\(.status.podIP)"'
 
 # Pod names and the node they're running on
-kubectl get pods -A -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.nodeName)"'
+kubectl get pods -n <namespace> -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.nodeName)"'
 ```
 
 ### Filter Pods
 
 ```bash
 # Only running pods
-kubectl get pods -A -o json | jq '.items[] | select(.status.phase == "Running") | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.status.phase == "Running") | .metadata.name'
 
 # Pods NOT running
-kubectl get pods -A -o json | jq '.items[] | select(.status.phase != "Running") | {name: .metadata.name, phase: .status.phase}'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.status.phase != "Running") | {name: .metadata.name, phase: .status.phase}'
 
 # Pods in CrashLoopBackOff
-kubectl get pods -A -o json | jq '.items[] | select(.status.containerStatuses[]?.state.waiting?.reason == "CrashLoopBackOff") | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.status.containerStatuses[]?.state.waiting?.reason == "CrashLoopBackOff") | .metadata.name'
 
 # Pods with restarts > 0
-kubectl get pods -A -o json | jq '.items[] | select(.status.containerStatuses[]?.restartCount > 0) | {name: .metadata.name, restarts: .status.containerStatuses[0].restartCount}'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.status.containerStatuses[]?.restartCount > 0) | {name: .metadata.name, restarts: .status.containerStatuses[0].restartCount}'
 
 # Pods older than 24 hours (using now)
-kubectl get pods -A -o json | jq --argjson cutoff "$(date -d '24 hours ago' +%s)" '.items[] | select((.metadata.creationTimestamp | fromdateiso8601) < $cutoff) | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq --argjson cutoff "$(date -d '24 hours ago' +%s)" '.items[] | select((.metadata.creationTimestamp | fromdateiso8601) < $cutoff) | .metadata.name'
 
 # Pods using more than 1Gi memory request
-kubectl get pods -A -o json | jq '.items[] | select(.spec.containers[].resources.requests.memory // "" | test("Gi")) | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.spec.containers[].resources.requests.memory // "" | test("Gi")) | .metadata.name'
 ```
 
 ### Container Details
 
 ```bash
 # All container images in use
-kubectl get pods -A -o json | jq -r '.items[].spec.containers[].image' | sort -u
+kubectl get pods -n <namespace> -o json | jq -r '.items[].spec.containers[].image' | sort -u
 
 # All init container images
-kubectl get pods -A -o json | jq -r '.items[].spec.initContainers[]?.image' | sort -u
+kubectl get pods -n <namespace> -o json | jq -r '.items[].spec.initContainers[]?.image' | sort -u
 
 # Pods and their container images
-kubectl get pods -A -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.containers[].image)"'
+kubectl get pods -n <namespace> -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.containers[].image)"'
 
 # Containers with resource limits
-kubectl get pods -A -o json | jq '.items[].spec.containers[] | select(.resources.limits != null) | {name: .name, limits: .resources.limits}'
+kubectl get pods -n <namespace> -o json | jq '.items[].spec.containers[] | select(.resources.limits != null) | {name: .name, limits: .resources.limits}'
 
 # Containers WITHOUT resource limits
-kubectl get pods -A -o json | jq '.items[] | {pod: .metadata.name, containers: [.spec.containers[] | select(.resources.limits == null) | .name]} | select(.containers | length > 0)'
+kubectl get pods -n <namespace> -o json | jq '.items[] | {pod: .metadata.name, containers: [.spec.containers[] | select(.resources.limits == null) | .name]} | select(.containers | length > 0)'
 
 # Environment variables for a specific container
 kubectl get pod mypod -o json | jq '.spec.containers[0].env[]'
 
 # All containers with their ports
-kubectl get pods -A -o json | jq '.items[].spec.containers[] | {name: .name, ports: [.ports[]?.containerPort]}'
+kubectl get pods -n <namespace> -o json | jq '.items[].spec.containers[] | {name: .name, ports: [.ports[]?.containerPort]}'
 ```
 
 ### Pod Events and Conditions
@@ -119,45 +119,45 @@ kubectl get pods -A -o json | jq '.items[].spec.containers[] | {name: .name, por
 kubectl get pod mypod -o json | jq '.status.conditions[] | {type: .type, status: .status}'
 
 # Pods that are not Ready
-kubectl get pods -A -o json | jq '.items[] | select(.status.conditions[]? | select(.type == "Ready" and .status == "False")) | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.status.conditions[]? | select(.type == "Ready" and .status == "False")) | .metadata.name'
 
 # Last termination reason
-kubectl get pods -A -o json | jq '.items[] | select(.status.containerStatuses[]?.lastState.terminated != null) | {name: .metadata.name, reason: .status.containerStatuses[0].lastState.terminated.reason}'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.status.containerStatuses[]?.lastState.terminated != null) | {name: .metadata.name, reason: .status.containerStatuses[0].lastState.terminated.reason}'
 ```
 
 ## Deployments
 
 ```bash
 # Deployment names and replica counts
-kubectl get deployments -A -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.replicas)\t\(.status.readyReplicas // 0)"'
+kubectl get deployments -n <namespace> -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.replicas)\t\(.status.readyReplicas // 0)"'
 
 # Deployments not fully available
-kubectl get deployments -A -o json | jq '.items[] | select(.status.readyReplicas != .spec.replicas) | {name: .metadata.name, desired: .spec.replicas, ready: (.status.readyReplicas // 0)}'
+kubectl get deployments -n <namespace> -o json | jq '.items[] | select(.status.readyReplicas != .spec.replicas) | {name: .metadata.name, desired: .spec.replicas, ready: (.status.readyReplicas // 0)}'
 
 # Deployment images
-kubectl get deployments -A -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.template.spec.containers[0].image)"'
+kubectl get deployments -n <namespace> -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.template.spec.containers[0].image)"'
 
 # Deployments with specific label
-kubectl get deployments -A -o json | jq '.items[] | select(.metadata.labels.app == "web") | .metadata.name'
+kubectl get deployments -n <namespace> -o json | jq '.items[] | select(.metadata.labels.app == "web") | .metadata.name'
 
 # Deployment strategy
-kubectl get deployments -A -o json | jq '.items[] | {name: .metadata.name, strategy: .spec.strategy.type}'
+kubectl get deployments -n <namespace> -o json | jq '.items[] | {name: .metadata.name, strategy: .spec.strategy.type}'
 ```
 
 ## Services
 
 ```bash
 # Service names and types
-kubectl get services -A -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.type)\t\(.spec.clusterIP)"'
+kubectl get services -n <namespace> -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.type)\t\(.spec.clusterIP)"'
 
 # LoadBalancer services with external IPs
-kubectl get services -A -o json | jq '.items[] | select(.spec.type == "LoadBalancer") | {name: .metadata.name, external: .status.loadBalancer.ingress[]?.ip}'
+kubectl get services -n <namespace> -o json | jq '.items[] | select(.spec.type == "LoadBalancer") | {name: .metadata.name, external: .status.loadBalancer.ingress[]?.ip}'
 
 # Service ports
-kubectl get services -A -o json | jq '.items[] | {name: .metadata.name, ports: [.spec.ports[] | "\(.port):\(.targetPort)/\(.protocol)"]}'
+kubectl get services -n <namespace> -o json | jq '.items[] | {name: .metadata.name, ports: [.spec.ports[] | "\(.port):\(.targetPort)/\(.protocol)"]}'
 
 # Services with selectors
-kubectl get services -A -o json | jq '.items[] | {name: .metadata.name, selector: .spec.selector}'
+kubectl get services -n <namespace> -o json | jq '.items[] | {name: .metadata.name, selector: .spec.selector}'
 ```
 
 ## Nodes
@@ -192,7 +192,7 @@ kubectl get nodes -o json | jq -r '.items[] | "\(.metadata.name)\t\(.status.addr
 
 ```bash
 # List secret names and types
-kubectl get secrets -A -o json | jq -r '.items[] | "\(.metadata.name)\t\(.type)"'
+kubectl get secrets -n <namespace> -o json | jq -r '.items[] | "\(.metadata.name)\t\(.type)"'
 
 # Decode a specific secret value
 kubectl get secret mysecret -o json | jq -r '.data["password"] | @base64d'
@@ -214,7 +214,7 @@ kubectl get configmap myconfig -o json | jq -r '.data | to_entries[] | "--- \(.k
 kubectl get pv -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.capacity.storage)\t\(.status.phase)"'
 
 # PVCs and their bound volumes
-kubectl get pvc -A -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.volumeName)\t\(.status.phase)"'
+kubectl get pvc -n <namespace> -o json | jq -r '.items[] | "\(.metadata.name)\t\(.spec.volumeName)\t\(.status.phase)"'
 
 # Unbound PVs
 kubectl get pv -o json | jq '.items[] | select(.status.phase == "Available") | {name: .metadata.name, capacity: .spec.capacity.storage}'
@@ -227,44 +227,44 @@ kubectl get pv -o json | jq '.items | sort_by(.spec.capacity.storage) | .[] | {n
 
 ```bash
 # Get all labels for pods
-kubectl get pods -A -o json | jq '.items[] | {name: .metadata.name, labels: .metadata.labels}'
+kubectl get pods -n <namespace> -o json | jq '.items[] | {name: .metadata.name, labels: .metadata.labels}'
 
 # Find pods with a specific label
-kubectl get pods -A -o json | jq '.items[] | select(.metadata.labels.app == "frontend") | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.metadata.labels.app == "frontend") | .metadata.name'
 
 # Find pods missing a required label
-kubectl get pods -A -o json | jq '.items[] | select(.metadata.labels.team == null) | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.metadata.labels.team == null) | .metadata.name'
 
 # Get all unique label keys across all pods
-kubectl get pods -A -o json | jq '[.items[].metadata.labels | keys[]] | unique'
+kubectl get pods -n <namespace> -o json | jq '[.items[].metadata.labels | keys[]] | unique'
 
 # Get all annotation keys
-kubectl get pods -A -o json | jq '[.items[].metadata.annotations // {} | keys[]] | unique'
+kubectl get pods -n <namespace> -o json | jq '[.items[].metadata.annotations // {} | keys[]] | unique'
 
 # Find pods with a specific annotation
-kubectl get pods -A -o json | jq '.items[] | select(.metadata.annotations["prometheus.io/scrape"] == "true") | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.metadata.annotations["prometheus.io/scrape"] == "true") | .metadata.name'
 ```
 
 ## Aggregation and Counting
 
 ```bash
 # Count pods per namespace
-kubectl get pods -A -o json | jq '.items | group_by(.metadata.namespace) | map({namespace: .[0].metadata.namespace, count: length}) | sort_by(.count) | reverse'
+kubectl get pods -n <namespace> -o json | jq '.items | group_by(.metadata.namespace) | map({namespace: .[0].metadata.namespace, count: length}) | sort_by(.count) | reverse'
 
 # Count pods per node
-kubectl get pods -A -o json | jq '.items | group_by(.spec.nodeName) | map({node: .[0].spec.nodeName, count: length})'
+kubectl get pods -n <namespace> -o json | jq '.items | group_by(.spec.nodeName) | map({node: .[0].spec.nodeName, count: length})'
 
 # Count pods per status
-kubectl get pods -A -o json | jq '.items | group_by(.status.phase) | map({status: .[0].status.phase, count: length})'
+kubectl get pods -n <namespace> -o json | jq '.items | group_by(.status.phase) | map({status: .[0].status.phase, count: length})'
 
 # Count container images in use
-kubectl get pods -A -o json | jq '[.items[].spec.containers[].image] | group_by(.) | map({image: .[0], count: length}) | sort_by(.count) | reverse'
+kubectl get pods -n <namespace> -o json | jq '[.items[].spec.containers[].image] | group_by(.) | map({image: .[0], count: length}) | sort_by(.count) | reverse'
 
 # Total requested CPU across all pods
-kubectl get pods -A -o json | jq '[.items[].spec.containers[].resources.requests.cpu // "0" | rtrimstr("m") | tonumber] | add'
+kubectl get pods -n <namespace> -o json | jq '[.items[].spec.containers[].resources.requests.cpu // "0" | rtrimstr("m") | tonumber] | add'
 
 # Pods per deployment (via owner reference)
-kubectl get pods -A -o json | jq '.items | group_by(.metadata.ownerReferences[0].name) | map({owner: .[0].metadata.ownerReferences[0].name, count: length})'
+kubectl get pods -n <namespace> -o json | jq '.items | group_by(.metadata.ownerReferences[0].name) | map({owner: .[0].metadata.ownerReferences[0].name, count: length})'
 ```
 
 ## Formatting Output
@@ -273,10 +273,10 @@ kubectl get pods -A -o json | jq '.items | group_by(.metadata.ownerReferences[0]
 
 ```bash
 # Tab-separated (pipe to awk, cut, sort, etc.)
-kubectl get pods -A -o json | jq -r '.items[] | [.metadata.name, .status.phase, .status.podIP] | @tsv'
+kubectl get pods -n <namespace> -o json | jq -r '.items[] | [.metadata.name, .status.phase, .status.podIP] | @tsv'
 
 # Sort by name
-kubectl get pods -A -o json | jq -r '.items | sort_by(.metadata.name) | .[] | [.metadata.name, .status.phase] | @tsv'
+kubectl get pods -n <namespace> -o json | jq -r '.items | sort_by(.metadata.name) | .[] | [.metadata.name, .status.phase] | @tsv'
 ```
 
 ### CSV for Spreadsheets
@@ -284,51 +284,51 @@ kubectl get pods -A -o json | jq -r '.items | sort_by(.metadata.name) | .[] | [.
 ```bash
 # With header
 echo "name,namespace,status,ip" && \
-kubectl get pods -A -o json | jq -r '.items[] | [.metadata.name, .metadata.namespace, .status.phase, .status.podIP] | @csv'
+kubectl get pods -n <namespace> -o json | jq -r '.items[] | [.metadata.name, .metadata.namespace, .status.phase, .status.podIP] | @csv'
 ```
 
 ### Custom Formatted Strings
 
 ```bash
 # Formatted report
-kubectl get pods -A -o json | jq -r '.items[] | "Pod: \(.metadata.name) | Status: \(.status.phase) | IP: \(.status.podIP // "N/A")"'
+kubectl get pods -n <namespace> -o json | jq -r '.items[] | "Pod: \(.metadata.name) | Status: \(.status.phase) | IP: \(.status.podIP // "N/A")"'
 
 # Markdown table
 echo "| Pod | Status | Node |" && echo "|-----|--------|------|" && \
-kubectl get pods -A -o json | jq -r '.items[] | "| \(.metadata.name) | \(.status.phase) | \(.spec.nodeName) |"'
+kubectl get pods -n <namespace> -o json | jq -r '.items[] | "| \(.metadata.name) | \(.status.phase) | \(.spec.nodeName) |"'
 ```
 
 ### JSON Output (Reshaped)
 
 ```bash
 # Clean JSON array of objects
-kubectl get pods -A -o json | jq '[.items[] | {name: .metadata.name, status: .status.phase, ip: .status.podIP}]'
+kubectl get pods -n <namespace> -o json | jq '[.items[] | {name: .metadata.name, status: .status.phase, ip: .status.podIP}]'
 
 # Save to file
-kubectl get pods -A -o json | jq '[.items[] | {name: .metadata.name, image: .spec.containers[0].image}]' > pods.json
+kubectl get pods -n <namespace> -o json | jq '[.items[] | {name: .metadata.name, image: .spec.containers[0].image}]' > pods.json
 ```
 
 ## Combining with Shell Commands
 
 ```bash
 # Delete all failed pods
-kubectl get pods -A -o json | jq -r '.items[] | select(.status.phase == "Failed") | .metadata.name' | xargs kubectl delete pod
+kubectl get pods -n <namespace> -o json | jq -r '.items[] | select(.status.phase == "Failed") | .metadata.name' | xargs kubectl delete pod
 
 # Restart all deployments in a namespace
-kubectl get deployments -A -o json | jq -r '.items[].metadata.name' | xargs -I{} kubectl rollout restart deployment/{}
+kubectl get deployments -n <namespace> -o json | jq -r '.items[].metadata.name' | xargs -I{} kubectl rollout restart deployment/{}
 
 # Get logs from all pods with a label
 kubectl get pods -l app=web -o json | jq -r '.items[].metadata.name' | xargs -I{} sh -c 'echo "=== {} ===" && kubectl logs {} --tail=5'
 
 # Scale down all deployments
-kubectl get deployments -A -o json | jq -r '.items[].metadata.name' | xargs -I{} kubectl scale deployment/{} --replicas=0
+kubectl get deployments -n <namespace> -o json | jq -r '.items[].metadata.name' | xargs -I{} kubectl scale deployment/{} --replicas=0
 
 # Copy a secret to another namespace
 kubectl get secret mysecret -o json | jq 'del(.metadata.namespace, .metadata.resourceVersion, .metadata.uid, .metadata.creationTimestamp)' | kubectl apply -n other-namespace -f -
 
 # Find which pods are using a specific configmap
 CONFIGMAP="myconfig"
-kubectl get pods -A -o json | jq --arg cm "$CONFIGMAP" '.items[] | select(.spec.volumes[]?.configMap.name == $cm) | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq --arg cm "$CONFIGMAP" '.items[] | select(.spec.volumes[]?.configMap.name == $cm) | .metadata.name'
 ```
 
 ## Discovering JSON Structure
@@ -337,16 +337,16 @@ When you don't know the structure, use these techniques:
 
 ```bash
 # See top-level keys
-kubectl get pods -A -o json | jq '.items[0] | keys'
+kubectl get pods -n <namespace> -o json | jq '.items[0] | keys'
 
 # See all paths (dot notation)
-kubectl get pods -A -o json | jq -r '.items[0] | paths(scalars) | join(".")'
+kubectl get pods -n <namespace> -o json | jq -r '.items[0] | paths(scalars) | join(".")'
 
 # See paths containing a keyword
-kubectl get pods -A -o json | jq -c '.items[0] | paths | select(. | join(".") | contains("restart"))'
+kubectl get pods -n <namespace> -o json | jq -c '.items[0] | paths | select(. | join(".") | contains("restart"))'
 
 # See structure without values (keys only, recursive)
-kubectl get pods -A -o json | jq '.items[0] | .. | objects | keys' | sort -u
+kubectl get pods -n <namespace> -o json | jq '.items[0] | .. | objects | keys' | sort -u
 
 # Get a single pod in full to study
 kubectl get pod <name> -o json | jq '.' > pod-structure.json
@@ -356,32 +356,32 @@ kubectl get pod <name> -o json | jq '.' > pod-structure.json
 
 ```bash
 # Use // for defaults (null coalescing)
-kubectl get pods -A -o json | jq '.items[] | {name: .metadata.name, ip: (.status.podIP // "pending")}'
+kubectl get pods -n <namespace> -o json | jq '.items[] | {name: .metadata.name, ip: (.status.podIP // "pending")}'
 
 # Use ? to suppress errors
-kubectl get pods -A -o json | jq '.items[] | {name: .metadata.name, restart: (.status.containerStatuses[0]?.restartCount // 0)}'
+kubectl get pods -n <namespace> -o json | jq '.items[] | {name: .metadata.name, restart: (.status.containerStatuses[0]?.restartCount // 0)}'
 
 # Skip items where a field doesn't exist
-kubectl get pods -A -o json | jq '.items[] | select(.status.podIP != null) | {name: .metadata.name, ip: .status.podIP}'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.status.podIP != null) | {name: .metadata.name, ip: .status.podIP}'
 
 # Handle optional arrays
-kubectl get pods -A -o json | jq '.items[] | {name: .metadata.name, init_containers: [.spec.initContainers[]?.name] | length}'
+kubectl get pods -n <namespace> -o json | jq '.items[] | {name: .metadata.name, init_containers: [.spec.initContainers[]?.name] | length}'
 ```
 
 ## Multi-Resource Queries
 
 ```bash
 # Compare desired vs actual replicas across all deployments
-kubectl get deployments -A -o json | jq -r '
+kubectl get deployments -n <namespace> -o json | jq -r '
     .items[] |
     select(.status.readyReplicas != .spec.replicas) |
     "\(.metadata.namespace)/\(.metadata.name)\tdesired:\(.spec.replicas)\tready:\(.status.readyReplicas // 0)"'
 
 # Find pods not owned by a ReplicaSet (orphans)
-kubectl get pods -A -o json | jq '.items[] | select(.metadata.ownerReferences == null) | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq '.items[] | select(.metadata.ownerReferences == null) | .metadata.name'
 
 # Match services to their pod endpoints
-kubectl get endpoints -A -o json | jq '.items[] | {service: .metadata.name, endpoints: [.subsets[]?.addresses[]?.ip]}'
+kubectl get endpoints -n <namespace> -o json | jq '.items[] | {service: .metadata.name, endpoints: [.subsets[]?.addresses[]?.ip]}'
 ```
 
 ## Performance Tips
@@ -400,7 +400,7 @@ kubectl get pods -n production -o json | jq '...'
 kubectl get pods -A --chunk-size=100 -o json | jq '...'
 
 # Pipe through jq -c for compact output (less memory)
-kubectl get pods -A -o json | jq -c '.items[] | {name: .metadata.name}'
+kubectl get pods -n <namespace> -o json | jq -c '.items[] | {name: .metadata.name}'
 ```
 
 ## Reusable Scripts
@@ -411,7 +411,7 @@ kubectl get pods -A -o json | jq -c '.items[] | {name: .metadata.name}'
 #!/bin/bash
 # pod-health.sh — Show pods with issues
 
-kubectl get pods -A -o json | jq -r '
+kubectl get pods -n <namespace> -o json | jq -r '
     .items[] |
     select(
         .status.phase != "Running" and .status.phase != "Succeeded"
@@ -428,7 +428,7 @@ kubectl get pods -A -o json | jq -r '
 #!/bin/bash
 # image-inventory.sh — List all images with their pods
 
-kubectl get pods -A -o json | jq -r '
+kubectl get pods -n <namespace> -o json | jq -r '
     .items[] |
     .metadata as $meta |
     .spec.containers[] |
@@ -442,7 +442,7 @@ kubectl get pods -A -o json | jq -r '
 #!/bin/bash
 # resource-summary.sh — Requested resources per namespace
 
-kubectl get pods -A -o json | jq '
+kubectl get pods -n <namespace> -o json | jq '
     .items |
     group_by(.metadata.namespace) |
     map({
@@ -460,7 +460,7 @@ kubectl get pods -A -o json | jq '
 # stale-resources.sh — Find old resources
 
 echo "=== Pods older than 7 days ==="
-kubectl get pods -A -o json | jq -r --argjson cutoff "$(date -d '7 days ago' +%s 2>/dev/null || date -v-7d +%s)" '
+kubectl get pods -n <namespace> -o json | jq -r --argjson cutoff "$(date -d '7 days ago' +%s 2>/dev/null || date -v-7d +%s)" '
     .items[] |
     select((.metadata.creationTimestamp | fromdateiso8601) < $cutoff) |
     [.metadata.namespace, .metadata.name, .metadata.creationTimestamp] |
@@ -507,16 +507,16 @@ kubectl get nodes --no-headers | grep Ready | grep -v SchedulingDisabled | awk '
 kubectl get nodes -o jsonpath=$'NAME\tSTATUS\tVERSION\n{range .items[*]}{.metadata.name}{"\t"}{.status.conditions[?(@.type=="Ready")].status}{"\t"}{.status.nodeInfo.kubeletVersion}{"\n"}{end}'
 
 # Space-separated to newline-separated (tr trick)
-kubectl get pods -A -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n'
+kubectl get pods -n <namespace> -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n'
 
 # Multiple fields with custom separator
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{" -> "}{.status.phase}{" -> "}{.spec.nodeName}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{" -> "}{.status.phase}{" -> "}{.spec.nodeName}{"\n"}{end}'
 
 # CSV format with headers
-kubectl get pods -A -o jsonpath=$'NAMESPACE/POD,IP\n{range .items[*]}{.metadata.namespace}{"/"}{.metadata.name}{","}{.status.podIP}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath=$'NAMESPACE/POD,IP\n{range .items[*]}{.metadata.namespace}{"/"}{.metadata.name}{","}{.status.podIP}{"\n"}{end}'
 
 # Namespace:Pod format
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.namespace}{":"}{.metadata.name}{" -> "}{.status.podIP}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.namespace}{":"}{.metadata.name}{" -> "}{.status.podIP}{"\n"}{end}'
 ```
 
 ### JSONPath Common Patterns
@@ -532,16 +532,16 @@ kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.n
 kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.nodeInfo.kubeletVersion}{"\n"}{end}'
 
 # Pod names, IPs, and nodes
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.podIP}{"\t"}{.spec.nodeName}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.podIP}{"\t"}{.spec.nodeName}{"\n"}{end}'
 
 # Pod restart counts
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.containerStatuses[0].restartCount}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.containerStatuses[0].restartCount}{"\n"}{end}'
 
 # Resource requests and limits
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].resources.requests.cpu}{"\t"}{.spec.containers[0].resources.limits.memory}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].resources.requests.cpu}{"\t"}{.spec.containers[0].resources.limits.memory}{"\n"}{end}'
 
 # Service endpoints (name, ClusterIP, port)
-kubectl get services -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.clusterIP}{"\t"}{.spec.ports[0].port}{"\n"}{end}'
+kubectl get services -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.clusterIP}{"\t"}{.spec.ports[0].port}{"\n"}{end}'
 
 # Ingress hosts
 kubectl get ingress -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.rules[*].host}{"\n"}{end}'
@@ -551,10 +551,10 @@ kubectl get ingress -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.r
 
 ```bash
 # Filter by label
-kubectl get pods -A -o jsonpath='{range .items[?(@.metadata.labels.app=="nginx")]}{.metadata.name}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[?(@.metadata.labels.app=="nginx")]}{.metadata.name}{"\n"}{end}'
 
 # Filter by phase
-kubectl get pods -A -o jsonpath='{range .items[?(@.status.phase=="Running")]}{.metadata.name}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[?(@.status.phase=="Running")]}{.metadata.name}{"\n"}{end}'
 
 # Filter nodes by Ready condition
 kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.conditions[?(@.type=="Ready")].status}{"\n"}{end}'
@@ -582,30 +582,30 @@ kubectl get nodes -o json | jq -r '
     .metadata.name'
 
 # JSONPath can't count — use jq
-kubectl get pods -A -o json | jq '.items | length'
+kubectl get pods -n <namespace> -o json | jq '.items | length'
 
 # JSONPath can't sort — use jq or --sort-by
-kubectl get pods -A -o json | jq -r '.items | sort_by(.metadata.creationTimestamp) | .[] | .metadata.name'
+kubectl get pods -n <namespace> -o json | jq -r '.items | sort_by(.metadata.creationTimestamp) | .[] | .metadata.name'
 ```
 
 ## Troubleshooting JSONPath
 
 ```bash
 # Test with a single item first
-kubectl get pods -A -o jsonpath='{.items[0].metadata.name}'
+kubectl get pods -n <namespace> -o jsonpath='{.items[0].metadata.name}'
 
 # Verify the path exists (use jq to explore)
-kubectl get pods -A -o json | jq '.items[0].metadata.name'
+kubectl get pods -n <namespace> -o json | jq '.items[0].metadata.name'
 
 # Count results
-kubectl get pods -A -o jsonpath='{.items[*].metadata.name}' | wc -w
+kubectl get pods -n <namespace> -o jsonpath='{.items[*].metadata.name}' | wc -w
 
 # Common mistake: missing range for line-by-line output
 # Wrong — all names on one line:
-kubectl get pods -A -o jsonpath='{.items[*].metadata.name}'
+kubectl get pods -n <namespace> -o jsonpath='{.items[*].metadata.name}'
 
 # Right — one name per line:
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'
 
 # Common mistake: using jsonpath when jq is needed
 # Can't filter by multiple conditions in jsonpath — use jq instead
@@ -698,13 +698,13 @@ kubectl get pv -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.phas
 
 ```bash
 # PVC requested storage
-kubectl get pvc -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.resources.requests.storage}{"\n"}{end}'
+kubectl get pvc -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.resources.requests.storage}{"\n"}{end}'
 
 # PVC storage classes
-kubectl get pvc -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.storageClassName}{"\n"}{end}'
+kubectl get pvc -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.storageClassName}{"\n"}{end}'
 
 # Bound PVCs with their volumes
-kubectl get pvc -A -o jsonpath='{range .items[?(@.status.phase=="Bound")]}{.metadata.name}{"\t"}{.spec.volumeName}{"\n"}{end}'
+kubectl get pvc -n <namespace> -o jsonpath='{range .items[?(@.status.phase=="Bound")]}{.metadata.name}{"\t"}{.spec.volumeName}{"\n"}{end}'
 ```
 
 ## Secrets by Type
@@ -851,19 +851,19 @@ For pods with multiple containers, use nested range:
 
 ```bash
 # Container names and images per pod
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.containers[*]}{.name}:{.image}{" "}{end}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.containers[*]}{.name}:{.image}{" "}{end}{"\n"}{end}'
 
 # Container ports per pod
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.containers[*].ports[*]}{.containerPort}{" "}{end}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.containers[*].ports[*]}{.containerPort}{" "}{end}{"\n"}{end}'
 
 # Container resource requests per pod
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.containers[*]}{.resources.requests.cpu}{" "}{.resources.requests.memory}{" "}{end}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.containers[*]}{.resources.requests.cpu}{" "}{.resources.requests.memory}{" "}{end}{"\n"}{end}'
 
 # Container resource limits per pod
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.containers[*]}{.resources.limits.cpu}{" "}{.resources.limits.memory}{" "}{end}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.containers[*]}{.resources.limits.cpu}{" "}{.resources.limits.memory}{" "}{end}{"\n"}{end}'
 
 # All pod conditions (type:status pairs)
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .status.conditions[*]}{.type}{":"}{.status}{" "}{end}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .status.conditions[*]}{.type}{":"}{.status}{" "}{end}{"\n"}{end}'
 ```
 
 ## Recursive Searches Across Resources
@@ -873,23 +873,23 @@ kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .
 kubectl get deployments,daemonsets,statefulsets -o jsonpath='{..image}' | tr ' ' '\n' | sort | uniq
 
 # All resource limits across all pods
-kubectl get pods -A -o jsonpath='{..resources.limits}' | tr ' ' '\n' | sort | uniq
+kubectl get pods -n <namespace> -o jsonpath='{..resources.limits}' | tr ' ' '\n' | sort | uniq
 
 # All secret references in pods
-kubectl get pods -A -o jsonpath='{..secretKeyRef.name}' | tr ' ' '\n' | sort | uniq
+kubectl get pods -n <namespace> -o jsonpath='{..secretKeyRef.name}' | tr ' ' '\n' | sort | uniq
 
 # All configmap references
-kubectl get pods -A -o jsonpath='{..configMapKeyRef.name}' | tr ' ' '\n' | sort | uniq
+kubectl get pods -n <namespace> -o jsonpath='{..configMapKeyRef.name}' | tr ' ' '\n' | sort | uniq
 ```
 
 ## Service Ports and NodePorts
 
 ```bash
 # Service ports with target ports
-kubectl get services -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.ports[*]}{.port}{":"}{.targetPort}{" "}{end}{"\n"}{end}'
+kubectl get services -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.ports[*]}{.port}{":"}{.targetPort}{" "}{end}{"\n"}{end}'
 
 # NodePort services with node ports
-kubectl get services -A -o jsonpath='{range .items[?(@.spec.type=="NodePort")]}{.metadata.name}{"\t"}{range .spec.ports[*]}{.nodePort}{" "}{end}{"\n"}{end}'
+kubectl get services -n <namespace> -o jsonpath='{range .items[?(@.spec.type=="NodePort")]}{.metadata.name}{"\t"}{range .spec.ports[*]}{.nodePort}{" "}{end}{"\n"}{end}'
 ```
 
 ## Troubleshooting JSONPath (Extended)
@@ -911,23 +911,23 @@ kubectl get nodes -o jsonpath='{.items[?(@.status.conditions[?(@.type=="DiskPres
 
 ```bash
 # Pods with high restart count (> 5)
-kubectl get pods -A -o jsonpath='{.items[?(@.status.containerStatuses[0].restartCount>5)].metadata.name}'
+kubectl get pods -n <namespace> -o jsonpath='{.items[?(@.status.containerStatuses[0].restartCount>5)].metadata.name}'
 
 # Non-running pods with waiting reason
-kubectl get pods -A -o jsonpath='{range .items[?(@.status.phase!="Running")]}{.metadata.name}{"\t"}{.status.phase}{"\t"}{.status.containerStatuses[*].state.waiting.reason}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[?(@.status.phase!="Running")]}{.metadata.name}{"\t"}{.status.phase}{"\t"}{.status.containerStatuses[*].state.waiting.reason}{"\n"}{end}'
 
 # Failed pods with exit codes
-kubectl get pods -A -o jsonpath='{range .items[?(@.status.phase=="Failed")]}{.metadata.name}{"\t"}{.status.containerStatuses[*].state.terminated.exitCode}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[?(@.status.phase=="Failed")]}{.metadata.name}{"\t"}{.status.containerStatuses[*].state.terminated.exitCode}{"\n"}{end}'
 ```
 
 ### Escaping Special Characters
 
 ```bash
 # Labels with dots (escape with backslash)
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.labels.app\.kubernetes\.io/name}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.labels.app\.kubernetes\.io/name}{"\n"}{end}'
 
 # Annotations with slashes
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.annotations.kubectl\.kubernetes\.io/last-applied-configuration}{"\n"}{end}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.annotations.kubectl\.kubernetes\.io/last-applied-configuration}{"\n"}{end}'
 ```
 
 ### Validate Structure with kubectl explain
@@ -967,7 +967,7 @@ count-by-status() {
 
 # Get failing pods
 failing-pods() {
-    kubectl get pods -A -o jsonpath='{.items[?(@.status.phase!="Running")].metadata.name}'
+    kubectl get pods -n <namespace> -o jsonpath='{.items[?(@.status.phase!="Running")].metadata.name}'
 }
 ```
 
@@ -975,37 +975,37 @@ failing-pods() {
 
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
-alias kgpn='kubectl get pods -A -o jsonpath="{.items[*].metadata.name}"'
-alias kgpi='kubectl get pods -A -o jsonpath="{.items[*].status.podIP}"'
+alias kgpn='kubectl get pods -n <namespace> -o jsonpath="{.items[*].metadata.name}"'
+alias kgpi='kubectl get pods -n <namespace> -o jsonpath="{.items[*].status.podIP}"'
 alias kgsip='kubectl get svc -o jsonpath="{.items[*].spec.clusterIP}"'
 alias kgni='kubectl get nodes -o jsonpath="{.items[*].status.addresses[?(@.type==\"InternalIP\")].address}"'
-alias kstatus='kubectl get pods -A -o jsonpath="{.items[*].status.phase}" | tr " " "\n" | sort | uniq -c'
+alias kstatus='kubectl get pods -n <namespace> -o jsonpath="{.items[*].status.phase}" | tr " " "\n" | sort | uniq -c'
 ```
 
 ## Combining JSONPath with Shell Tools
 
 ```bash
 # Sort pods by creation time
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.creationTimestamp}{"\t"}{.metadata.name}{"\n"}{end}' | sort
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.creationTimestamp}{"\t"}{.metadata.name}{"\n"}{end}' | sort
 
 # Sort nodes by CPU capacity (numeric)
 kubectl get nodes -o jsonpath='{range .items[*]}{.status.capacity.cpu}{"\t"}{.metadata.name}{"\n"}{end}' | sort -n
 
 # Filter with awk
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.phase}{"\n"}{end}' | awk '$2=="Running" {print $1}'
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.phase}{"\n"}{end}' | awk '$2=="Running" {print $1}'
 
 # Filter with grep
-kubectl get services -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.type}{"\n"}{end}' | grep LoadBalancer
+kubectl get services -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.type}{"\n"}{end}' | grep LoadBalancer
 
 # Formatted table with column
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.phase}{"\t"}{.spec.containers[*].image}{"\t"}{.status.podIP}{"\n"}{end}' | column -t
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.phase}{"\t"}{.spec.containers[*].image}{"\t"}{.status.podIP}{"\n"}{end}' | column -t
 
 # Pod phase summary
-kubectl get pods -A -o jsonpath='{.items[*].status.phase}' | tr ' ' '\n' | sort | uniq -c
+kubectl get pods -n <namespace> -o jsonpath='{.items[*].status.phase}' | tr ' ' '\n' | sort | uniq -c
 
 # CSV export
 echo "Name,Status,IP,Image" > pods.csv
-kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{","}{.status.phase}{","}{.status.podIP}{","}{.spec.containers[*].image}{"\n"}{end}' >> pods.csv
+kubectl get pods -n <namespace> -o jsonpath='{range .items[*]}{.metadata.name}{","}{.status.phase}{","}{.status.podIP}{","}{.spec.containers[*].image}{"\n"}{end}' >> pods.csv
 ```
 
 ## Notes
