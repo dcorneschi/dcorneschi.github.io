@@ -1,4 +1,4 @@
-<img src="/articles/images/datadog-logo.svg" alt="bash logo" width="150"/>
+<img src="/articles/images/datadog-logo.png" alt="bash logo" width="150"/>
 
 # Exporting Datadog Monitors to Terraform
 
