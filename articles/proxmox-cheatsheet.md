@@ -1,4 +1,4 @@
-<img src="/articles/images/proxmox-logo.svg" alt="Proxmox" width="150">
+<img src="/articles/images/proxmox-logo.svg" alt="Proxmox" width="250">
 
 # Proxmox Cheatsheet
 
