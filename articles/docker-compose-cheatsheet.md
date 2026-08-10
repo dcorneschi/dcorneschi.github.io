@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/docker-logo.svg" alt="Docker logo" width="200"/>
-</p>
+<img src="/articles/images/docker-logo.svg" alt="Docker" width="150">
 
-<h1 align="center">Docker Compose Cheatsheet</h1>
+# Docker Compose Cheatsheet
 
 ## Basic Commands
 

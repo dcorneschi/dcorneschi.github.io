@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/tmux-logo.svg" alt="tmux logo" width="300"/>
-</p>
+<img src="/articles/images/tmux-logo.svg" alt="tmux" width="150">
 
-<h1 align="center">tmux Cheatsheet</h1>
+# tmux Cheatsheet
 
 Comprehensive tmux reference guide featuring installation instructions across multiple platforms, custom configuration examples, vim-style navigation, mouse support, and practical tips for productive terminal multiplexing.
 

@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes Logo" width="200"/>
-</p>
+<img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes" width="150">
 
-<h1 align="center">critctl Cheatsheet</h1>
+# crictl Cheatsheet
 
 Comprehensive crictl reference guide featuring configuration examples, pod and container management commands, and practical tips for debugging Kubernetes nodes at the container runtime level.
 

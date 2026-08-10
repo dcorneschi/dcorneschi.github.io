@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/docker-logo.svg" alt="Docker logo" width="200"/>
-</p>
+<img src="/articles/images/docker-logo.svg" alt="Docker" width="150">
 
-<h1 align="center">Docker Cheatsheet</h1>
+# Docker Cheatsheet
 
 ## Container Lifecycle
 

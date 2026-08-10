@@ -1,4 +1,4 @@
-<h1 align="center">SSH Cheatsheet</h1>
+# SSH Cheatsheet
 
 ## Basic Connections
 

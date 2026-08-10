@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/bash-logo.svg" alt="bash logo" width="200"/>
-</p>
+<img src="/articles/images/bash-logo.svg" alt="Bash" width="150">
 
-<h1 align="center">Bash Cheatsheet</h1>
+# Bash Cheatsheet
 
 ## Quoting and Escaping
 

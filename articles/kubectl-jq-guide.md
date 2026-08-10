@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes logo" width="200"/>
-</p>
+<img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes" width="150">
 
-<h1 align="center">Using jq with kubectl</h1>
+# Using jq with kubectl
 
 kubectl outputs JSON with `-o json`. Pipe it to jq for powerful filtering, transformation, and formatting that goes far beyond what JSONPath or custom-columns can do.
 

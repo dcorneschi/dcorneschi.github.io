@@ -1,4 +1,4 @@
-<h1 align="center">ss Cheatsheet</h1>
+# ss Cheatsheet
 
 Comprehensive ss (socket statistics) reference guide covering common flags, practical socket inspection examples, and real-world troubleshooting for connection states, port exhaustion, socket memory, and TCP retransmits. ss queries the kernel directly via netlink, making it significantly faster than netstat (which reads /proc).
 

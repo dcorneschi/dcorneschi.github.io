@@ -1,4 +1,4 @@
-<img src="/articles/images/docker-logo.svg" alt="Docker" width="200">
+<img src="/articles/images/docker-logo.svg" alt="Docker" width="150">
 
 A simple bash function to quickly access shell environments in Docker containers with automatic shell detection.
 

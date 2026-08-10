@@ -1,6 +1,6 @@
 # User Administration on RHEL
 
-<img src="/articles/images/rhel-logo.svg" alt="Red Hat Logo" width="200">
+<img src="/articles/images/rhel-logo.svg" alt="Red Hat Logo" width="150">
 
 ## UID ranges
 

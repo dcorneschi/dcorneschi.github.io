@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes logo" width="200"/>
-</p>
+<img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes" width="150">
 
-<h1 align="center">kubectl JSONPath Guide</h1>
+# kubectl JSONPath Guide
 
 JSONPath is built into kubectl — no extra tools needed. Use `-o jsonpath='{expression}'` to extract and format data from Kubernetes resources.
 

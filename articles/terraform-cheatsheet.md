@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/terraform-logo.svg" alt="Terraform Logo" width="200"/>
-</p>
+<img src="/articles/images/terraform-logo.svg" alt="Terraform" width="150">
 
-<h1 align="center">Terraform Cheatsheet</h1>
+# Terraform Cheatsheet
 
 Comprehensive Terraform reference guide featuring installation instructions across multiple platforms, core commands, state management, workspace operations, debugging techniques, and essential utilities for infrastructure as code.
 

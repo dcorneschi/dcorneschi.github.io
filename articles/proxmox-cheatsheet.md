@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/proxmox-logo.svg" alt="Proxmox logo" width="400"/>
-</p>
+<img src="/articles/images/proxmox-logo.svg" alt="Proxmox" width="150">
 
-<h1 align="center">Proxmox Cheatsheet</h1>
+# Proxmox Cheatsheet
 
 Comprehensive Proxmox VE reference guide covering VM and container management, storage configuration, networking, cluster operations, backup and restore, firewall rules, and CLI/API usage for virtualization infrastructure.
 

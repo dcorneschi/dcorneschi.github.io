@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/k9s-logo.png" alt="k9s logo" width="200"/>
-</p>
+<img src="/articles/images/k9s-logo.png" alt="k9s" width="150">
 
-<h1 align="center">k9s Cheatsheet</h1>
+# k9s Cheatsheet
 
 Complete k9s reference guide featuring launch options, resource navigation, log viewing, filtering, sorting, and cluster management commands for efficient Kubernetes terminal UI workflows.
 

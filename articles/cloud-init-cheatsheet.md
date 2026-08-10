@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/cloud-init-logo.svg" alt="cloud-init logo" width="300"/>
-</p>
+<img src="/articles/images/cloud-init-logo.svg" alt="cloud-init" width="150">
 
-<h1 align="center">cloud-init Cheatsheet</h1>
+# cloud-init Cheatsheet
 
 Comprehensive cloud-init reference guide covering instance initialization, user-data formats, module configuration, networking, debugging, and common cloud-config patterns for provisioning cloud instances across all major providers.
 

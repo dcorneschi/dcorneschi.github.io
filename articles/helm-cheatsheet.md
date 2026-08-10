@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/helm-logo.svg" alt="helm logo" width="200"/>
-</p>
+<img src="/articles/images/helm-logo.svg" alt="Helm" width="150">
 
-<h1 align="center">Helm Cheatsheet</h1>
+# Helm Cheatsheet
 
 Comprehensive Helm reference guide featuring installation instructions, repository management, chart deployment, upgrade strategies, rollback procedures, and development best practices for Kubernetes package management.
 

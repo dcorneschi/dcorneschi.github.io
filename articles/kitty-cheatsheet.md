@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="/articles/images/kitty-logo.svg" alt="Kitty Logo" width="200"/>
-</p>
+<img src="/articles/images/kitty-logo.svg" alt="Kitty" width="150">
 
-<h1 align="center">Kitty Cheatsheet</h1>
+# Kitty Cheatsheet
 
 Comprehensive kitty reference guide featuring installation instructions, keyboard shortcuts, layout configurations, and practical tips for productive terminal usage.
 
