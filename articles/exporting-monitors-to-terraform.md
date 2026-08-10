@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="/articles/images/datadog-logo.svg" alt="bash logo" width="200"/>
+</p>
+
 # Exporting Datadog Monitors to Terraform
 
 Managing Datadog monitors as code gives you version control, peer review, and reproducibility. This guide covers three ways to export existing monitors into Terraform HCL.
