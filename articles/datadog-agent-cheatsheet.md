@@ -134,7 +134,210 @@ tags:
   - env:production
   - team:platform
   - service:web-api
+```
 
+### Reserved tag keys
+
+Datadog treats certain tag keys as special — they enable cross-product correlation and scoping:
+
+| Tag Key | Purpose |
+|---------|---------|
+| `host` | Correlation between metrics, traces, processes, and logs |
+| `device` | Segregation of metrics, traces, processes, and logs by device or disk |
+| `source` | Span filtering and automated pipeline creation for Log Management |
+| `service` | Scoping of application-specific data across metrics, traces, and logs |
+| `env` | Scoping of application-specific data across metrics, traces, and logs |
+| `version` | Scoping of application-specific data across metrics, traces, and logs |
+| `team` | Assigning ownership to any resources |
+
+These three together (`service`, `env`, `version`) form [unified service tagging](https://docs.datadoghq.com/getting_started/tagging/unified_service_tagging/) — they link metrics, traces, and logs for a given service in a given environment at a given version. Always set them.
+
+### Tag naming rules
+
+Tags use the format `<key>:<value>` (recommended) or just `<value>`:
+
+- Must **start with a letter**
+- Can contain: letters (Unicode), numbers, underscores, minuses, colons, periods, forward slashes
+- Max **200 characters** (key + `:` + value combined)
+- Normalized to **lowercase** (avoid camelCase)
+- All other characters (spaces, commas, emoji) are converted to underscores
+
+```bash
+# Good tags
+env:production
+service:payment-api
+team:platform
+region:eu-west-1
+
+# Bad tags (will be normalized or rejected)
+Env:Production         # camelCase → normalized to env:production
+2024-deploy:v1         # starts with a digit — may not work consistently
+user_id:12345          # unbounded source — causes cardinality explosion
+```
+
+Avoid tags from unbounded sources (timestamps, user IDs, request IDs) — they cause metric cardinality to grow without limit.
+
+See: [Getting Started with Tags](https://docs.datadoghq.com/getting_started/tagging/)
+
+### Metric units
+
+When submitting custom metrics, specify a unit in the Datadog UI (Metric Summary > Edit > Metadata) so graphs display human-readable values. Without a unit, Datadog uses SI notation (k, M, G, T).
+
+Common unit categories:
+
+| Category | Units |
+|----------|-------|
+| Bytes | `bit`, `byte`, `kibibyte (KiB)`, `mebibyte (MiB)`, `gibibyte (GiB)`, `tebibyte (TiB)` |
+| Time | `nanosecond (ns)`, `microsecond (μs)`, `millisecond (ms)`, `second (s)`, `minute (min)`, `hour (hr)`, `day`, `week` |
+| Percentage | `percent (%)`, `apdex`, `fraction` |
+| CPU | `nanocore (ncores)`, `millicore (mcores)`, `core`, `kilocore (Kcores)` |
+| Network | `connection (conn)`, `request (req)`, `packet (pkt)`, `response (rsp)`, `message (msg)` |
+| System | `process (proc)`, `thread`, `host`, `node`, `instance` |
+| Disk | `file`, `inode`, `sector`, `block (blk)` |
+| DB | `table`, `index (idx)`, `lock`, `transaction (tx)`, `query`, `row` |
+| Cache | `hit`, `miss`, `eviction`, `get`, `set` |
+| General | `error (err)`, `read (rd)`, `write (wr)`, `operation (op)`, `event`, `task` |
+
+Auto-formatting examples:
+
+| Unit | Raw Value | Displayed |
+|------|-----------|-----------|
+| byte | 1 | 1 B |
+| kibibyte | 1234235 | 1.18 GiB |
+| hertz | 6345223 | 6.35 MHz |
+| cent | 1337 | 13.37 $ |
+| nanosecond | 0 | 0s |
+| second | 0.032123 | 32.12ms |
+| second | 967 | 16m 7s |
+| second | 86390 | 1d |
+
+See: [Metrics Units](https://docs.datadoghq.com/metrics/units/)
+
+### Autodiscovery template variables
+
+When configuring integrations for containers (Docker, Kubernetes, ECS), use these template variables in `conf.d` annotations or labels to dynamically resolve container values:
+
+| Template Variable | Description |
+|-------------------|-------------|
+| `%%host%%` | Container's network IP |
+| `%%host_<NETWORK>%%` | IP on a specific network (falls back to `%%host%%` if not found) |
+| `%%port%%` | Highest exposed port (sorted ascending) |
+| `%%port_<N>%%` | Nth port sorted ascending (`%%port_0%%` = lowest) |
+| `%%port_<NAME>%%` | Port associated with a named port |
+| `%%pid%%` | Container process ID |
+| `%%hostname%%` | Hostname from container config (use when `%%host%%` can't get a reliable IP, e.g., ECS awsvpc) |
+| `%%env_<ENV_VAR>%%` | Value of an environment variable visible to the Agent |
+| `%%kube_namespace%%` | Kubernetes namespace |
+| `%%kube_pod_name%%` | Kubernetes pod name |
+| `%%kube_pod_uid%%` | Kubernetes pod UID |
+
+**Example — Kubernetes pod annotation for an nginx check:**
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    ad.datadoghq.com/nginx.checks: |
+      {
+        "nginx": {
+          "instances": [{"nginx_status_url": "http://%%host%%:%%port%%/nginx_status"}]
+        }
+      }
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 8080
+```
+
+**Example — Docker label for a Redis check:**
+
+```yaml
+labels:
+  com.datadoghq.ad.checks: '{"redisdb": {"instances": [{"host": "%%host%%", "port": "%%port%%"}]}}'
+```
+
+**Platform support:**
+
+| Variable | Docker | ECS Fargate | Kubernetes |
+|----------|--------|-------------|------------|
+| `%%host%%` | Yes | Yes | Yes |
+| `%%port%%` | Yes | No | Yes |
+| `%%pid%%` | Yes | No | No |
+| `%%env_*%%` | Yes | Yes | Yes |
+| `%%hostname%%` | Yes | No | No |
+| `%%kube_namespace%%` | No | No | Yes |
+| `%%kube_pod_name%%` | No | No | Yes |
+| `%%kube_pod_uid%%` | No | No | Yes |
+
+See: [Autodiscovery Template Variables](https://docs.datadoghq.com/containers/guide/template_variables/)
+
+### Network and ports
+
+All Agent traffic is outbound over SSL (TCP). No sessions are initiated from Datadog back to the Agent.
+
+**Outbound ports (firewall allowlist):**
+
+| Port | Protocol | Purpose |
+|------|----------|---------|
+| 443 | TCP | Metrics, APM, containers, live processes, logs (HTTP), network monitoring |
+| 123 | UDP | NTP time synchronization |
+
+**Inbound ports (local host only):**
+
+| Port | Protocol | Purpose |
+|------|----------|---------|
+| 5002 | TCP | Agent browser GUI |
+| 8126 | TCP | APM trace receiver (and profiler) |
+| 8125 | UDP | DogStatsD (custom metrics) |
+| 5001 | TCP | IPC API (inter-process communication) |
+| 5000 | TCP | go_expvar server |
+| 6062 | TCP | Process Agent debug endpoints |
+| 6162 | TCP | Process Agent runtime config |
+
+**Domains to allowlist:**
+
+| Service | Domain |
+|---------|--------|
+| Metrics / Agent data | `<VERSION>-app.agent.datadoghq.com` (e.g., `7-31-0-app.agent.datadoghq.com`) |
+| APM traces | `trace.agent.datadoghq.com` |
+| Live containers / processes | `process.datadoghq.com` |
+| Logs (HTTP) | `http-intake.logs.datadoghq.com` |
+| API | `api.datadoghq.com` |
+| Flare | `<VERSION>-flare.agent.datadoghq.com` |
+| Installation | `install.datadoghq.com`, `apt.datadoghq.com`, `yum.datadoghq.com` |
+
+> Adjust domains for your region (e.g., `.datadoghq.eu` for EU).
+
+**Static IP ranges:**
+
+```bash
+# Get all IP ranges for your site
+curl -s https://ip-ranges.datadoghq.com | jq .
+
+# Get IPs for a specific service
+curl -s https://ip-ranges.datadoghq.com/logs.json | jq '.prefixes_ipv4'
+curl -s https://ip-ranges.datadoghq.com/apm.json | jq '.prefixes_ipv4'
+```
+
+**Data buffering when network is unavailable:**
+
+The Agent stores metrics in memory if the network goes down. Configure disk-based buffering for durability:
+
+```yaml
+# In datadog.yaml
+forwarder_retry_queue_payloads_max_size: 15728640    # Max memory buffer (bytes, default ~15MB)
+forwarder_storage_max_size_in_bytes: 52428800         # Enable disk buffer (e.g., 50MB)
+forwarder_storage_path: /opt/datadog-agent/run/transactions_to_retry
+```
+
+See: [Agent Network Traffic](https://docs.datadoghq.com/agent/configuration/network/)
+
+### Other essential settings
+
+```yaml
 # Enable log collection (disabled by default)
 logs_enabled: true
 
