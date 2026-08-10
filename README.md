@@ -55,6 +55,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md) | Resize EBS volumes and grow filesystems (XFS, ext4, LVM) — no downtime required. |
 | [Installing SSM Agent](articles/aws-ssm-agent-install.md) | Install and configure SSM Agent on RHEL, Ubuntu — Session Manager, VPC endpoints, and SSH over SSM. |
 | [JMESPath Query Guide](articles/aws-jmespath-guide.md) | JMESPath query language for AWS CLI — filtering, sorting, functions, and real-world examples. |
+| [EKS Authentication Modes: ConfigMap vs Access Entries](articles/eks-authentication-modes.md) | EKS authentication methods — aws-auth ConfigMap vs API access entries, migration, and best practices. |
 
 ### Virtualization
 

@@ -32,6 +32,7 @@
   - [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md)
   - [Installing SSM Agent](articles/aws-ssm-agent-install.md)
   - [JMESPath Query Guide](articles/aws-jmespath-guide.md)
+  - [EKS Authentication Modes: ConfigMap vs Access Entries](articles/eks-authentication-modes.md)
 
 - Virtualization
   - [Installing KVM](articles/kvm-installation.md)
