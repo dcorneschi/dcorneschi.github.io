@@ -119,6 +119,10 @@
   - [cloud-init: Why tee Output Doesn't Appear in Logs](articles/cloud-init-tee-output-missing.md)
   - [cloud-init: User Management and the gecos Field](articles/cloud-init-users-gecos.md)
 
+- Datadog
+  - [Datadog Agent Cheatsheet](articles/datadog-agent-cheatsheet.md)
+  - [Monitoring Apache Web Server Performance](articles/monitoring-apache-performance.md)
+
 - Terminal & Tools
   - [JSON Query Tools: JMESPath vs jq vs JSONPath](articles/json-query-tools.md)
   - [bat Cheatsheet](articles/bat-cheatsheet.md)
