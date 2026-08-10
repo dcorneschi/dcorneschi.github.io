@@ -775,6 +775,176 @@ cat <<OUTER
 OUTER
 ```
 
+## Real-World Examples
+
+### Rsyslog Configuration (Literal $ Required)
+
+Rsyslog uses `$programname` as part of its own syntax — these must remain literal in the final config file:
+
+```hcl
+variable "app_name" {
+  default = "myapp"
+}
+
+resource "aws_instance" "example" {
+  user_data = <<-EOT
+    #!/bin/bash
+
+    # Single-quoted heredoc prevents bash from expanding $programname
+    cat <<'EOF' > /etc/rsyslog.d/filter.conf
+    if $programname == '${var.app_name}' then stop
+    EOF
+  EOT
+}
+```
+
+Terraform interpolates `${var.app_name}` → `myapp` (because it processes the entire string first). The `<<'EOF'` then prevents bash from touching `$programname`. Result in the file:
+
+```
+if $programname == 'myapp' then stop
+```
+
+### Environment File with Mixed Variables
+
+Some values are known at deploy time (Terraform), others at boot time (bash):
+
+```hcl
+variable "app_version" {
+  default = "v1.2.3"
+}
+
+variable "environment" {
+  default = "production"
+}
+
+resource "aws_instance" "app_server" {
+  user_data = <<-EOT
+    #!/bin/bash
+
+    # Get runtime information
+    INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+    PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
+
+    # Unquoted heredoc — bash expands $INSTANCE_ID and $PRIVATE_IP
+    cat <<EOF > /etc/app/.env
+    # Set at deployment time (Terraform)
+    APP_VERSION=${var.app_version}
+    ENVIRONMENT=${var.environment}
+
+    # Set at boot time (bash)
+    INSTANCE_ID=$INSTANCE_ID
+    PRIVATE_IP=$PRIVATE_IP
+    STARTED_AT=$(date -Iseconds)
+    EOF
+  EOT
+}
+```
+
+Result in `/etc/app/.env`:
+
+```
+APP_VERSION=v1.2.3
+ENVIRONMENT=production
+INSTANCE_ID=i-1234567890abcdef0
+PRIVATE_IP=10.0.1.50
+STARTED_AT=2024-01-17T20:30:00+00:00
+```
+
+### Docker Daemon Configuration (JSON File)
+
+```hcl
+variable "log_max_size" {
+  default = "10m"
+}
+
+variable "log_max_file" {
+  default = "3"
+}
+
+resource "aws_instance" "docker_host" {
+  user_data = <<-EOT
+    #!/bin/bash
+
+    cat <<'EOF' > /etc/docker/daemon.json
+    {
+      "log-driver": "json-file",
+      "log-opts": {
+        "max-size": "${var.log_max_size}",
+        "max-file": "${var.log_max_file}"
+      },
+      "storage-driver": "overlay2"
+    }
+    EOF
+
+    systemctl restart docker
+  EOT
+}
+```
+
+Terraform replaces the variables before the script runs. The `<<'EOF'` ensures no bash expansion happens on the JSON content. Result:
+
+```json
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "3"
+  },
+  "storage-driver": "overlay2"
+}
+```
+
+### EKS Node Bootstrap
+
+```hcl
+variable "cluster_name" {
+  default = "my-eks-cluster"
+}
+
+variable "cluster_endpoint" {
+  default = "https://ABC123.gr7.us-east-1.eks.amazonaws.com"
+}
+
+resource "aws_launch_template" "eks_nodes" {
+  user_data = base64encode(<<-EOT
+    #!/bin/bash
+    set -ex
+
+    # Rsyslog filter — needs literal $ for rsyslog syntax
+    cat <<'RSYSLOG' > /etc/rsyslog.d/00-containerd-filter.conf
+    if $programname == 'containerd' then {
+        if $msg contains 'unable to parse' then {
+            stop
+        }
+    }
+    RSYSLOG
+
+    # Bootstrap EKS node
+    /etc/eks/bootstrap.sh "${var.cluster_name}" \
+      --apiserver-endpoint "${var.cluster_endpoint}"
+  EOT
+  )
+}
+```
+
+## Decision Tree: Which Quoting to Use
+
+```
+Do you need Terraform variables in the generated file?
+│
+├─ YES → Use ${var.name} in the heredoc (Terraform processes it first)
+│   │
+│   └─ Do you also need literal $ characters preserved?
+│       ├─ YES → Use single-quoted inner heredoc: cat <<'EOF'
+│       └─ NO  → Use unquoted inner heredoc: cat <<EOF
+│
+└─ NO
+    │
+    └─ Do you need bash variables expanded in the file?
+        ├─ YES → Use unquoted inner heredoc: cat <<EOF
+        └─ NO  → Use single-quoted inner heredoc: cat <<'EOF'
+```
+
 ## Packer Considerations
 
 Packer's shell provisioner also interprets variables. Similar rules apply:
