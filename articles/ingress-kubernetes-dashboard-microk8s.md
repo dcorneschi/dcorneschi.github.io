@@ -1,3 +1,5 @@
+<img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes" width="150">
+
 How to expose the Kubernetes Dashboard through an Ingress resource on MicroK8s.
 
 ### Overview

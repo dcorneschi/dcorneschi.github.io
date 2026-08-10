@@ -1,3 +1,5 @@
+<img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes" width="150">
+
 # Kubernetes emptyDir Volumes
 
 ## The Basics

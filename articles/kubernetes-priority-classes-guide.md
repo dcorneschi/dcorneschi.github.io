@@ -1,3 +1,5 @@
+<img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes" width="150">
+
 # Kubernetes PriorityClasses — A Practical Guide
 
 ## What Are PriorityClasses?

@@ -1,3 +1,5 @@
+<img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes" width="150">
+
 How to set up NGINX Ingress with MetalLB on MicroK8s for bare-metal load balancing in a homelab.
 
 ### Overview

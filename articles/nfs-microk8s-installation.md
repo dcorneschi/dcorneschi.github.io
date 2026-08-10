@@ -1,3 +1,5 @@
+<img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes" width="150">
+
 How to set up NFS storage for MicroK8s using the NFS CSI driver for persistent volumes in a homelab.
 
 ### Overview

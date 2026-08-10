@@ -1,3 +1,5 @@
+<img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes" width="150">
+
 # Kubernetes imagePullPolicy
 
 The `imagePullPolicy` field controls whether kubelet pulls a container image when launching a pod. It's defined per container in your pod spec.

@@ -1,3 +1,5 @@
+<img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes" width="150">
+
 # Init Containers vs Regular Containers in Kubernetes
 
 ## Overview

@@ -1,3 +1,5 @@
+<img src="/articles/images/kubernetes-logo.svg" alt="Kubernetes" width="150">
+
 ## Introduction
 
 If you're diving into GitOps and Kubernetes, ArgoCD is one of the best tools to start with. It automates application deployment and lifecycle management using Git as the single source of truth. But where do you begin?
