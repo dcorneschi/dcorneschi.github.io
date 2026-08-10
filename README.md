@@ -75,6 +75,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md) | How `terraform init -upgrade` works with version constraints. |
 | [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md) | Difference between `terraform get -update` and `terraform init -upgrade`. |
 | [Terraform Lock File Checksums: zh and h1](articles/terraform-lock-file-checksums.md) | How `zh:` and `h1:` hashes in `.terraform.lock.hcl` work. |
+| [EOF Escaping in Userdata, Terraform, and Shell Scripts](articles/eof-escaping-userdata-terraform.md) | Heredoc quoting, `$${` escaping, templatefile(), and multi-layer variable expansion. |
 
 ### Bash & Shell
 
