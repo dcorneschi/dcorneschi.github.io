@@ -999,50 +999,6 @@ pvck /dev/sdb1                   # Check PV
 vgck vg_data                     # Check VG
 ```
 
-### Comprehensive Monitoring Script
-
-```bash
-#!/bin/bash
-# lvm_health_check.sh
-
-LOG_FILE="/var/log/lvm_health.log"
-ALERT_THRESHOLD=90
-
-echo "$(date): LVM Health Check Starting" >> $LOG_FILE
-
-# Check VG space usage
-echo -e "\n=== Volume Group Usage ===" >> $LOG_FILE
-vgs --noheadings -o vg_name,vg_free_percent | while read vg free_pct; do
-    if (( $(echo "$free_pct < 10" | bc -l) )); then
-        echo "WARNING: VG $vg only has $free_pct% free space" | tee -a $LOG_FILE
-    fi
-done
-
-# Check thin pool usage
-echo -e "\n=== Thin Pool Usage ===" >> $LOG_FILE
-lvs --noheadings -o lv_name,data_percent | while read lv usage; do
-    if [[ "$usage" =~ ^[0-9]+\.[0-9]+$ ]] && (( $(echo "$usage > $ALERT_THRESHOLD" | bc -l) )); then
-        echo "WARNING: Thin pool $lv is ${usage}% full" | tee -a $LOG_FILE
-    fi
-done
-
-# Check for inactive volumes
-echo -e "\n=== Inactive Volumes ===" >> $LOG_FILE
-lvs --noheadings -o lv_name,lv_attr | grep -v 'wi-ao' | \
-while read lv attr; do
-    echo "INFO: Volume $lv is inactive ($attr)" >> $LOG_FILE
-done
-
-# Check PV health
-echo -e "\n=== Physical Volume Health ===" >> $LOG_FILE
-pvs --noheadings -o pv_name,pv_attr | grep -v 'a--' | \
-while read pv attr; do
-    echo "WARNING: PV $pv has issues ($attr)" | tee -a $LOG_FILE
-done
-
-echo "$(date): LVM Health Check Completed" >> $LOG_FILE
-```
-
 ---
 
 ## Performance Tuning
