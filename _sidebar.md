@@ -48,6 +48,7 @@
   - [Terraform Lock File Checksums: zh and h1](articles/terraform-lock-file-checksums.md)
   - [EOF Escaping in Userdata, Terraform, and Shell Scripts](articles/eof-escaping-userdata-terraform.md)
   - [Migrating State Off Terraform Cloud](articles/terraform-migrate-state-off-terraform-cloud.md)
+  - [Terraform tfvars: Variable Definitions Reference](articles/terraform-tfvars-guide.md)
 
 - Bash & Shell
   - [bash Cheatsheet](articles/bash-cheatsheet.md)
