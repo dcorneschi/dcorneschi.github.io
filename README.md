@@ -79,6 +79,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Migrating State Off Terraform Cloud](articles/terraform-migrate-state-off-terraform-cloud.md) | Manual state migration from TFC to local, S3, AzureRM, or GCS backends. |
 | [Terraform tfvars: Variable Definitions Reference](articles/terraform-tfvars-guide.md) | Complete reference for all variable types in `.tfvars` files — strings, lists, maps, objects, and nested structures. |
 | [Terraform Variables: Declaration, Validation, and Usage](articles/terraform-variables-guide.md) | Variable blocks, type constraints, validation rules, usage patterns, dynamic blocks, and complex examples. |
+| [Importing Existing Infrastructure Into Terraform](articles/terraform-import-guide.md) | Step-by-step import workflow, import blocks (1.5+), config generation, modules, for_each, and bulk import. |
 
 ### Bash & Shell
 

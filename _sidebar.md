@@ -50,6 +50,7 @@
   - [Migrating State Off Terraform Cloud](articles/terraform-migrate-state-off-terraform-cloud.md)
   - [Terraform tfvars: Variable Definitions Reference](articles/terraform-tfvars-guide.md)
   - [Terraform Variables: Declaration, Validation, and Usage](articles/terraform-variables-guide.md)
+  - [Importing Existing Infrastructure Into Terraform](articles/terraform-import-guide.md)
 
 - Bash & Shell
   - [bash Cheatsheet](articles/bash-cheatsheet.md)
