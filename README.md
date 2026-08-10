@@ -78,6 +78,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [EOF Escaping in Userdata, Terraform, and Shell Scripts](articles/eof-escaping-userdata-terraform.md) | Heredoc quoting, `$${` escaping, templatefile(), and multi-layer variable expansion. |
 | [Migrating State Off Terraform Cloud](articles/terraform-migrate-state-off-terraform-cloud.md) | Manual state migration from TFC to local, S3, AzureRM, or GCS backends. |
 | [Terraform tfvars: Variable Definitions Reference](articles/terraform-tfvars-guide.md) | Complete reference for all variable types in `.tfvars` files — strings, lists, maps, objects, and nested structures. |
+| [Terraform Variables: Declaration, Validation, and Usage](articles/terraform-variables-guide.md) | Variable blocks, type constraints, validation rules, usage patterns, dynamic blocks, and complex examples. |
 
 ### Bash & Shell
 
