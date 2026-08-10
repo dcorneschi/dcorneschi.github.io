@@ -28,13 +28,15 @@ Comprehensive Terraform reference guide featuring installation instructions acro
 | `terraform init -backend-config="backend.conf"` | Initialize with backend configuration file |
 | `terraform init -backend=false` | Skip backend initialization entirely |
 | `terraform init -upgrade` | Initialize and upgrade providers |
-| `terraform init -upgrade=hashicorp/aws` | Upgrade only specific providers |
-| `terraform init -get-plugins=false` | Initialize without plugins (offline mode) |
 | `terraform init -get=false` | Skip getting/updating modules |
 | `terraform init -reconfigure` | Reconfigure backend ignoring saved configuration |
 | `terraform init -migrate-state` | Migrate state from another backend |
+| `terraform init -force-copy` | Force copying state during migration without prompting (implies -migrate-state) |
+| `terraform init -lockfile=readonly` | Initialize without modifying the lock file |
+| `terraform init -from-module=SOURCE` | Copy a source module into the current directory and initialize |
+| `terraform init -json` | Output in machine-readable JSON format |
 | `terraform init -input=false` | Skip interactive prompts |
-| `terraform init -verify-plugins=false` | Skip plugin signature verification |
+| `terraform init -plugin-dir=PATH` | Force plugin installation from a specific directory only |
 | `terraform init -lock=false` | Don't hold state lock during migration (dangerous) |
 | `terraform init -lock-timeout=120s` | Change state lock timeout |
 
@@ -52,7 +54,7 @@ Comprehensive Terraform reference guide featuring installation instructions acro
 |---------|-------------|
 | `terraform get` | Get modules |
 | `terraform get -update` | Update modules |
-| `terraform graph -type=plan \| grep module` | Show module tree |
+| `terraform graph -type=plan \| grep module` | Filter graph output for module dependencies |
 
 ### Planning & Validation
 
@@ -238,7 +240,7 @@ Comprehensive Terraform reference guide featuring installation instructions acro
 | `terraform graph` | Generate dependency graph |
 | `terraform graph > graph.dot` | Save graph to file |
 | `terraform graph \| dot -Tpng > graph.png` | Convert to PNG (requires Graphviz) |
-| `terraform graph -draw-cycles` | Show resource dependencies |
+| `terraform graph -draw-cycles` | Highlight any cycles in the graph with colored edges (requires -type flag) |
 
 ### Common Flags
 
@@ -263,7 +265,7 @@ Comprehensive Terraform reference guide featuring installation instructions acro
 | Command | Description |
 |---------|-------------|
 | `terraform providers` | Show providers |
-| `terraform providers schema` | Show provider schemas |
+| `terraform providers schema -json` | Show provider schemas (requires -json) |
 | `terraform providers lock` | Lock provider versions |
 | `terraform providers lock -platform=linux_amd64 -platform=darwin_amd64 -platform=windows_amd64` | Pre-populate hashes for multiple platforms |
 | `terraform providers mirror /path/to/mirror` | Mirror providers for offline use |
@@ -284,7 +286,7 @@ Comprehensive Terraform reference guide featuring installation instructions acro
 | Command | Description |
 |---------|-------------|
 | `terraform validate` | Validate syntax (requires terraform init) |
-| `terraform validate -backend=false` | Validate code, skip backend validation |
+| `terraform init -backend=false && terraform validate` | Validate code without backend credentials |
 | `terraform validate -json` | Output in machine-readable JSON format |
 
 ### Utilities
