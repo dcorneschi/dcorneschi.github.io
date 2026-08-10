@@ -170,6 +170,12 @@ Change log level at runtime without restarting:
 
 ```bash
 sudo datadog-agent config set log_level debug
+
+# List all runtime-configurable parameters
+sudo datadog-agent config list-runtime
+
+# Get current value of a setting
+sudo datadog-agent config get log_level
 ```
 
 ## Agent Status & Diagnostics
@@ -191,9 +197,11 @@ This shows:
 
 ### Specific status sections
 
+The output of `status` includes all sections (Collector, Forwarder, DogStatsD, etc.). To filter:
+
 ```bash
-sudo datadog-agent status collector     # Check runner status only
-sudo datadog-agent status forwarder     # Payload submission status
+sudo datadog-agent status | grep -A 30 "Running Checks"   # Check runner info
+sudo datadog-agent status | grep -A 20 "Forwarder"        # Payload submission info
 ```
 
 ### Health check
@@ -205,10 +213,10 @@ sudo datadog-agent health
 ### Configuration dump (resolved values)
 
 ```bash
-# Show the full resolved configuration
+# Print all configurations loaded & resolved of a running agent
 sudo datadog-agent configcheck
 
-# Show only non-default settings
+# Show the complete runtime configuration
 sudo datadog-agent config
 ```
 
@@ -233,8 +241,10 @@ Collects logs, configuration (sanitized), status output, and system info into a 
 ### List all running checks
 
 ```bash
-sudo datadog-agent check --list
+sudo datadog-agent status
 ```
+
+The "Running Checks" section in the output lists all active checks, their run count, metric samples, and execution time.
 
 ### Run a single check (dry run)
 
@@ -382,8 +392,10 @@ process_config:
 ### Process agent status
 
 ```bash
-sudo datadog-agent status process-agent
+sudo datadog-agent status
 ```
+
+The process agent section appears in the standard status output when process collection is enabled.
 
 ## APM (Trace Agent)
 
@@ -477,8 +489,8 @@ sudo datadog-agent status | grep "API Key"
 # Test connectivity to Datadog
 sudo datadog-agent diagnose
 
-# Check forwarder status (look for errors/retries)
-sudo datadog-agent status forwarder
+# Check forwarder status (look for errors/retries in the Forwarder section)
+sudo datadog-agent status | grep -A 20 "Forwarder"
 ```
 
 ### Check not running
@@ -487,8 +499,8 @@ sudo datadog-agent status forwarder
 # Validate check configuration
 sudo datadog-agent configcheck
 
-# Run the check manually with full output
-sudo datadog-agent check <check_name> -l debug
+# Run the check manually with full debug output
+sudo datadog-agent check <check_name> --log-level debug
 ```
 
 ### Permission issues
@@ -513,7 +525,7 @@ sudo systemctl restart datadog-agent
 
 ```bash
 # Check which integrations are consuming resources
-sudo datadog-agent status collector
+sudo datadog-agent status
 
 # Check number of custom metrics
 sudo datadog-agent status | grep "Total Metrics"
@@ -536,6 +548,116 @@ sudo datadog-agent config set log_level info
 # log_level: debug
 ```
 
+## Datadog API — Useful curl Commands
+
+These commands require both an API key and an Application key. Set them as environment variables:
+
+```bash
+export DD_API_KEY="your-api-key"
+export DD_APP_KEY="your-application-key"
+export DD_SITE="https://api.datadoghq.com"   # adjust for your region
+```
+
+### List all dashboards
+
+```bash
+curl -s -X GET "${DD_SITE}/api/v1/dashboard" \
+  -H "DD-API-KEY: ${DD_API_KEY}" \
+  -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" | jq '.dashboards[] | {id, title}'
+```
+
+### List all monitors
+
+```bash
+curl -s -X GET "${DD_SITE}/api/v1/monitor" \
+  -H "DD-API-KEY: ${DD_API_KEY}" \
+  -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" | jq '.[] | {id, name, type, overall_state}'
+```
+
+### List monitors in alert state
+
+```bash
+curl -s -X GET "${DD_SITE}/api/v1/monitor?monitor_tags=&group_states=alert" \
+  -H "DD-API-KEY: ${DD_API_KEY}" \
+  -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" | jq '.[] | {id, name, overall_state}'
+```
+
+### Search hosts
+
+```bash
+# List all hosts
+curl -s -X GET "${DD_SITE}/api/v1/hosts" \
+  -H "DD-API-KEY: ${DD_API_KEY}" \
+  -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" | jq '.host_list[] | {name: .host_name, apps, up: .is_up}'
+
+# Filter by name
+curl -s -X GET "${DD_SITE}/api/v1/hosts?filter=web-prod" \
+  -H "DD-API-KEY: ${DD_API_KEY}" \
+  -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" | jq '.host_list[].host_name'
+```
+
+### List active downtimes
+
+```bash
+curl -s -X GET "${DD_SITE}/api/v2/downtime" \
+  -H "DD-API-KEY: ${DD_API_KEY}" \
+  -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" | jq '.data[] | {id: .id, scope: .attributes.monitor_identifier, message: .attributes.message}'
+```
+
+### Mute a monitor
+
+```bash
+curl -s -X POST "${DD_SITE}/api/v1/monitor/<MONITOR_ID>/mute" \
+  -H "DD-API-KEY: ${DD_API_KEY}" \
+  -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
+  -H "Content-Type: application/json" \
+  -d '{"end": 1700000000}'
+```
+
+### Send a custom event
+
+```bash
+curl -s -X POST "${DD_SITE}/api/v1/events" \
+  -H "DD-API-KEY: ${DD_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Deployment completed",
+    "text": "App v2.1.0 deployed to production",
+    "priority": "normal",
+    "tags": ["env:production", "service:web"],
+    "alert_type": "info"
+  }'
+```
+
+### Query a metric
+
+```bash
+# Get CPU usage for the last hour
+NOW=$(date +%s)
+FROM=$((NOW - 3600))
+
+curl -s -X GET "${DD_SITE}/api/v1/query?from=${FROM}&to=${NOW}&query=avg:system.cpu.user{*}" \
+  -H "DD-API-KEY: ${DD_API_KEY}" \
+  -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" | jq '.series[0].pointlist[-5:]'
+```
+
+### Validate API key
+
+```bash
+curl -s -X GET "${DD_SITE}/api/v1/validate" \
+  -H "DD-API-KEY: ${DD_API_KEY}" | jq .
+```
+
+### API endpoints by region
+
+| Region | Base URL |
+|--------|----------|
+| US1 (default) | `https://api.datadoghq.com` |
+| US3 | `https://api.us3.datadoghq.com` |
+| US5 | `https://api.us5.datadoghq.com` |
+| EU | `https://api.datadoghq.eu` |
+| AP1 | `https://api.ap1.datadoghq.com` |
+
 ## Quick Reference Table
 
 | Task | Command |
@@ -546,7 +668,7 @@ sudo datadog-agent config set log_level info
 | Agent status | `sudo datadog-agent status` |
 | Agent version | `sudo datadog-agent version` |
 | Run a check | `sudo datadog-agent check <name>` |
-| List checks | `sudo datadog-agent check --list` |
+| List checks | `sudo datadog-agent status` (see Running Checks section) |
 | Config validation | `sudo datadog-agent configcheck` |
 | Connectivity test | `sudo datadog-agent diagnose` |
 | Change log level | `sudo datadog-agent config set log_level debug` |
