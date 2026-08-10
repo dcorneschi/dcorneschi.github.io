@@ -61,6 +61,7 @@
   - [Bash Subshells](articles/bash-subshells-guide.md)
   - [Bash Troubleshooting Guide](articles/bash-troubleshooting-guide.md)
   - [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md)
+  - [Cron Cheatsheet](articles/cron-cheatsheet.md)
   - [sed Replace Line Guide](articles/sed-replace-line-guide.md)
   - [Running Multiple Commands with sudo](articles/sudo-multiple-commands.md)
   - [sudoers Guide](articles/sudo-sudoers-guide.md)

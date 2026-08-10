@@ -97,6 +97,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Running Multiple Commands with sudo](articles/sudo-multiple-commands.md) | Subshells, heredocs, logical operators, pipes, and running as a specific user. |
 | [sudoers Guide](articles/sudo-sudoers-guide.md) | Granting access to users, groups, and LDAP; aliases, Defaults, logging, and tips. |
 | [Vim White Spaces](articles/vim-white-spaces.md) | Configuring vim to show white spaces with custom symbols. |
+| [Cron Cheatsheet](articles/cron-cheatsheet.md) | Cron jobs — scheduling syntax, crontab management, environment, logging, locking, email, and scripting patterns. |
 
 ### Linux System Administration
 
