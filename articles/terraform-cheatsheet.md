@@ -916,6 +916,113 @@ resource "aws_instance" "web" {
     ]
   }
 }
+
+# Preconditions and postconditions (Terraform 1.2+)
+resource "aws_instance" "app" {
+  ami           = data.aws_ami.example.id
+  instance_type = var.instance_type
+
+  lifecycle {
+    precondition {
+      condition     = data.aws_ami.example.architecture == "x86_64"
+      error_message = "AMI must be x86_64 architecture."
+    }
+
+    postcondition {
+      condition     = self.public_ip != ""
+      error_message = "Instance must have a public IP."
+    }
+  }
+}
+```
+
+#### Moved Blocks (Refactoring)
+
+```hcl
+# Rename a resource (Terraform 1.1+)
+moved {
+  from = aws_instance.old_name
+  to   = aws_instance.new_name
+}
+
+# Move a resource into a module
+moved {
+  from = aws_instance.example
+  to   = module.compute.aws_instance.example
+}
+
+# Move a resource out of a module
+moved {
+  from = module.compute.aws_instance.example
+  to   = aws_instance.example
+}
+```
+
+#### Check Blocks (Terraform 1.5+)
+
+```hcl
+check "health_check" {
+  data "http" "app" {
+    url = "https://${aws_instance.app.public_ip}:8080/health"
+  }
+
+  assert {
+    condition     = data.http.app.status_code == 200
+    error_message = "Health check failed."
+  }
+}
+```
+
+#### Provisioners
+
+```hcl
+resource "aws_instance" "app" {
+  ami           = data.aws_ami.latest.id
+  instance_type = "t3.micro"
+
+  # File provisioner
+  provisioner "file" {
+    content     = templatefile("${path.module}/templates/app.conf.tpl", {
+      db_host     = aws_db_instance.main.endpoint
+      environment = var.environment
+    })
+    destination = "/tmp/app.conf"
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file(var.private_key_path)
+      host        = self.public_ip
+    }
+  }
+
+  # Remote-exec provisioner
+  provisioner "remote-exec" {
+    inline = [
+      "sudo mv /tmp/app.conf /etc/app/app.conf",
+      "sudo systemctl enable app",
+      "sudo systemctl start app",
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file(var.private_key_path)
+      host        = self.public_ip
+    }
+  }
+}
+
+# Local-exec provisioner (runs on the machine running Terraform)
+resource "null_resource" "ansible" {
+  triggers = {
+    instance_ids = join(",", aws_instance.cluster[*].id)
+  }
+
+  provisioner "local-exec" {
+    command = "ansible-playbook -i ${aws_instance.cluster[0].public_ip}, playbooks/setup.yml"
+  }
+}
 ```
 
 #### for_each vs count
@@ -1243,6 +1350,19 @@ locals {
     for key, value in var.tags : key => value
     if key != "temporary"
   }
+
+  # Flatten nested structures (common pattern for security group rules)
+  security_rules = flatten([
+    for group_name, group in var.security_groups : [
+      for rule in group.rules : {
+        group_name  = group_name
+        from_port   = rule.from_port
+        to_port     = rule.to_port
+        protocol    = rule.protocol
+        cidr_blocks = rule.cidr_blocks
+      }
+    ]
+  ])
 }
 ```
 
