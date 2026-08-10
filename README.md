@@ -81,6 +81,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Terraform tfvars: Variable Definitions Reference](articles/terraform-tfvars-guide.md) | Complete reference for all variable types in `.tfvars` files — strings, lists, maps, objects, and nested structures. |
 | [Terraform Variables: Declaration, Validation, and Usage](articles/terraform-variables-guide.md) | Variable blocks, type constraints, validation rules, usage patterns, dynamic blocks, and complex examples. |
 | [Importing Existing Infrastructure Into Terraform](articles/terraform-import-guide.md) | Step-by-step import workflow, import blocks (1.5+), config generation, modules, for_each, and bulk import. |
+| [Exporting Datadog Monitors to Terraform](articles/exporting-monitors-to-terraform.md) | Export monitors via console or API, convert to HCL with jq, and import into state. |
 
 ### Bash & Shell
 
