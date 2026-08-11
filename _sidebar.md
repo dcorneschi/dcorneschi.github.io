@@ -70,6 +70,7 @@
 - Linux System Administration
   - [Linux File Permissions Guide](articles/linux-file-permissions.md)
   - [User Administration on RHEL](articles/user-administration.md)
+  - [LDAP Client Configuration](articles/ldap-client-configuration.md)
   - [RHEL Releases Overview](articles/rhel-releases-overview.md)
   - [RHEL Boot Modes and Troubleshooting](articles/rhel-boot-troubleshooting.md)
   - [Linux ulimit Guide](articles/linux-ulimit-guide.md)
