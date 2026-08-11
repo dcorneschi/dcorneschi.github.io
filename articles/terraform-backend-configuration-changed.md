@@ -19,7 +19,7 @@ This error means Terraform found an existing `.terraform/terraform.tfstate` file
 
 ## The Two Options
 
-### Option 1: `-migrate-state`
+### Option 1: -migrate-state
 
 ```bash
 terraform init -migrate-state
@@ -43,7 +43,7 @@ This tells Terraform to:
 - Moving from local backend to S3
 - Moving from one Terraform Cloud workspace to another
 
-### Option 2: `-reconfigure`
+### Option 2: -reconfigure
 
 ```bash
 terraform init -reconfigure
