@@ -121,6 +121,9 @@
   - [Extending Partitions with growpart](articles/growpart-extend-partitions.md)
 
 - Networking
+  - [DNS Cheatsheet](articles/dns-cheatsheet.md)
+  - [Setting Up a DNS Server on RHEL 9](articles/dns-server-rhel9.md)
+  - [resolvectl Cheatsheet](articles/resolvectl-cheatsheet.md)
   - [SSH Cheatsheet](articles/ssh-cheatsheet.md)
   - [SSH ControlMaster](articles/ssh-controlmaster.md)
   - [SSH ProxyJump vs ProxyCommand](articles/ssh-proxyjump-vs-proxycommand.md)

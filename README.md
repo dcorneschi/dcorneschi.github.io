@@ -172,6 +172,9 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 
 | Article | Description |
 |---------|--------------|
+| [DNS Cheatsheet](articles/dns-cheatsheet.md) | DNS lookup tools — dig, host, nslookup, getent, resolvectl, record types, and troubleshooting. |
+| [Setting Up a DNS Server on RHEL 9](articles/dns-server-rhel9.md) | BIND DNS server — installation, forward/reverse zones, caching, split-horizon, secondary servers, and SELinux. |
+| [resolvectl Cheatsheet](articles/resolvectl-cheatsheet.md) | systemd-resolved CLI — DNS config, caching, DoT, DNSSEC, search domains, routing domains, and resolv.conf modes. |
 | [SSH Cheatsheet](articles/ssh-cheatsheet.md) | OpenSSH client and server — connections, keys, forwarding, tunnels, and troubleshooting. |
 | [SSH ControlMaster](articles/ssh-controlmaster.md) | SSH connection multiplexing — reuse a single TCP connection for multiple sessions. |
 | [SSH ProxyJump vs ProxyCommand](articles/ssh-proxyjump-vs-proxycommand.md) | Differences between ProxyJump and ProxyCommand for reaching hosts behind bastions. |
