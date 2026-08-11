@@ -1,7 +1,5 @@
 # Linux Kernel Map
 
-<img src="/articles/images/linux-kernel-map.svg" alt="Linux Kernel Map" width="800">
-
 ## Overview
 
 The Linux kernel is a monolithic kernel with modular capabilities. It manages all hardware resources and provides services to user-space programs through system calls. This article maps the major subsystems, their relationships, and how data flows through the kernel.
