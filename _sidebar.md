@@ -44,6 +44,10 @@
   - [Using Cloud qcow2 Images with KVM](articles/kvm-qcow2-cloud-images.md)
   - [Converting VMware VMs to KVM](articles/kvm-convert-vmware-to-kvm.md)
   - [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md)
+  - [Importing OVA/qcow2 into Proxmox](articles/proxmox-import-ova-qcow2.md)
+  - [Troubleshooting cloud-init on Proxmox](articles/proxmox-cloud-init-troubleshooting.md)
+  - [Resize a Partition on Proxmox](articles/proxmox-resize-partition.md)
+  - [QEMU Guest Agent on Proxmox](articles/proxmox-qemu-guest-agent.md)
 
 - Terraform
   - [Terraform Cheatsheet](articles/terraform-cheatsheet.md)
