@@ -198,6 +198,15 @@ hammer repository info --name "My Repo" --product "Custom Software" --organizati
 # List content views
 hammer content-view list --organization "ACME"
 
+# Show detailed content view info (repos, versions, lifecycle environments)
+hammer content-view info --name "RHEL8-CV" --organization "ACME"
+hammer content-view info --id 49
+
+# List all content views with their repositories
+for cv in $(hammer --csv --no-headers content-view list --fields 'Content View ID'); do
+  hammer content-view info --id $cv
+done
+
 # Create a content view
 hammer content-view create \
   --name "RHEL8-CV" \
