@@ -78,6 +78,7 @@
   - [Linux Capabilities](articles/linux-capabilities.md)
   - [Linux System Calls](articles/linux-syscalls.md)
   - [Linux Kernel Map](articles/linux-kernel-map.md)
+  - [Linux SysRq Guide](articles/linux-sysrq-guide.md)
   - [Linux ulimit Guide](articles/linux-ulimit-guide.md)
   - [Remove .DS_Store from Git](articles/remove-ds-store-guide.md)
 

@@ -113,6 +113,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux Capabilities](articles/linux-capabilities.md) | Breaking root privilege into fine-grained units — getcap, setcap, capability sets, systemd integration, and Docker. |
 | [Linux System Calls](articles/linux-syscalls.md) | Syscall interface — how user programs talk to the kernel, tracing with strace, categories, seccomp, and patterns. |
 | [Linux Kernel Map](articles/linux-kernel-map.md) | Kernel subsystems overview — process, memory, VFS, network, drivers, security, source tree, boot process, and tuning. |
+| [Linux SysRq Guide](articles/linux-sysrq-guide.md) | Magic SysRq Key — REISUB safe reboot, emergency commands, debugging a hung system, and serial console usage. |
 | [Linux ulimit Guide](articles/linux-ulimit-guide.md) | Per-process resource limits, limits.conf, systemd directives, sysctl, and troubleshooting. |
 | [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) | Remove and prevent .DS_Store files from being tracked in git. |
 
