@@ -114,6 +114,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux System Calls](articles/linux-syscalls.md) | Syscall interface — how user programs talk to the kernel, tracing with strace, categories, seccomp, and patterns. |
 | [Linux Kernel Map](articles/linux-kernel-map.md) | Kernel subsystems overview — process, memory, VFS, network, drivers, security, source tree, boot process, and tuning. |
 | [Linux SysRq Guide](articles/linux-sysrq-guide.md) | Magic SysRq Key — REISUB safe reboot, emergency commands, debugging a hung system, and serial console usage. |
+| [Hammer CLI Cheatsheet](articles/hammer-cheatsheet.md) | Hammer CLI for Red Hat Satellite/Foreman — hosts, content views, repos, errata, provisioning, and remote execution. |
+| [Installing Foreman with Katello](articles/foreman-katello-installation.md) | Foreman 3.13 + Katello 4.15 on RHEL 9 — prerequisites, installation, content setup, and troubleshooting. |
 | [Linux ulimit Guide](articles/linux-ulimit-guide.md) | Per-process resource limits, limits.conf, systemd directives, sysctl, and troubleshooting. |
 | [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) | Remove and prevent .DS_Store files from being tracked in git. |
 

@@ -79,6 +79,8 @@
   - [Linux System Calls](articles/linux-syscalls.md)
   - [Linux Kernel Map](articles/linux-kernel-map.md)
   - [Linux SysRq Guide](articles/linux-sysrq-guide.md)
+  - [Hammer CLI Cheatsheet](articles/hammer-cheatsheet.md)
+  - [Installing Foreman with Katello](articles/foreman-katello-installation.md)
   - [Linux ulimit Guide](articles/linux-ulimit-guide.md)
   - [Remove .DS_Store from Git](articles/remove-ds-store-guide.md)
 
