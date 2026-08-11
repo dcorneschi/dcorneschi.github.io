@@ -1,5 +1,17 @@
 # KVM / virsh Cheatsheet
 
+## VM States
+
+| State | Description |
+|-------|-------------|
+| `running` | The domain is currently running on a CPU |
+| `idle` | The domain is idle — waiting on I/O or has nothing to do |
+| `paused` | Paused via `virsh suspend` — still consumes memory but not scheduled |
+| `in shutdown` | Shutting down — guest OS notified and stopping gracefully |
+| `shut off` | Not running — fully shut down or not yet started |
+| `crashed` | Ended violently — only if configured not to restart on crash |
+| `pmsuspended` | Suspended by guest power management (e.g., S3 sleep state) |
+
 ## VM Lifecycle
 
 ```bash

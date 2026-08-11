@@ -39,6 +39,9 @@
   - [KVM / virsh Cheatsheet](articles/kvm-cheatsheet.md)
   - [Adding a New Disk in KVM](articles/kvm-add-disk.md)
   - [Enable virsh console](articles/kvm-virsh-console.md)
+  - [Running virt-manager Remotely](articles/virt-manager-remote-display.md)
+  - [Installing KVM Guests](articles/kvm-guest-installation.md)
+  - [Using Cloud qcow2 Images with KVM](articles/kvm-qcow2-cloud-images.md)
   - [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md)
 
 - Terraform
