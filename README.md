@@ -68,6 +68,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Running virt-manager Remotely](articles/virt-manager-remote-display.md) | X11 forwarding for virt-manager — PuTTY/Xming, XQuartz, SSH flags, and troubleshooting. |
 | [Installing KVM Guests](articles/kvm-guest-installation.md) | Creating VMs with virt-install — ISO, kickstart, network install, cloud images, PXE, and automation. |
 | [Using Cloud qcow2 Images with KVM](articles/kvm-qcow2-cloud-images.md) | Deploy pre-built cloud images — virt-customize, cloud-init, password changes, SSH keys, and deployment scripts. |
+| [Converting VMware VMs to KVM](articles/kvm-convert-vmware-to-kvm.md) | virt-v2v — convert from vCenter, OVA, VMDK, Xen, and Hyper-V to KVM with libvirt. |
 | [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md) | Proxmox VE — VM/CT management, storage, networking, clusters, and backups. |
 
 ### Terraform
