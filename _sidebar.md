@@ -80,6 +80,7 @@
   - [Linux Load Average](articles/linux-load-average.md)
   - [Linux I/O Schedulers](articles/linux-io-schedulers.md)
   - [Linux Disk I/O Internals](articles/linux-disk-io-internals.md)
+  - [blktrace Guide](articles/blktrace-guide.md)
   - [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md)
   - [Understanding vmstat Output](articles/understanding-vmstat-output.md)
   - [Understanding iostat -x Output](articles/understanding-iostat-x-output.md)
