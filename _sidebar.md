@@ -73,6 +73,7 @@
   - [LDAP Client Configuration](articles/ldap-client-configuration.md)
   - [RHEL Releases Overview](articles/rhel-releases-overview.md)
   - [RHEL Boot Modes and Troubleshooting](articles/rhel-boot-troubleshooting.md)
+  - [Linux Kernel Panics](articles/linux-kernel-panics.md)
   - [Linux ulimit Guide](articles/linux-ulimit-guide.md)
   - [Remove .DS_Store from Git](articles/remove-ds-store-guide.md)
 
