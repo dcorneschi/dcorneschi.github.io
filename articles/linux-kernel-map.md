@@ -1,6 +1,6 @@
 # Linux Kernel Map
 
-<img src="/articles/images/linux-kernel-map.png" alt="Linux Kernel Map" width="800">
+<img src="/articles/images/linux-kernel-map.svg" alt="Linux Kernel Map" width="800">
 
 ## Overview
 
