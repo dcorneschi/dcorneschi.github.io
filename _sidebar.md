@@ -61,6 +61,7 @@
   - [Terraform Variables: Declaration, Validation, and Usage](articles/terraform-variables-guide.md)
   - [Importing Existing Infrastructure Into Terraform](articles/terraform-import-guide.md)
   - [Exporting Datadog Monitors to Terraform](articles/exporting-monitors-to-terraform.md)
+  - [Terraform Backend Configuration Changed](articles/terraform-backend-configuration-changed.md)
 
 - Bash & Shell
   - [bash Cheatsheet](articles/bash-cheatsheet.md)
