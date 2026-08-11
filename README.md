@@ -116,6 +116,10 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux SysRq Guide](articles/linux-sysrq-guide.md) | Magic SysRq Key — REISUB safe reboot, emergency commands, debugging a hung system, and serial console usage. |
 | [Hammer CLI Cheatsheet](articles/hammer-cheatsheet.md) | Hammer CLI for Red Hat Satellite/Foreman — hosts, content views, repos, errata, provisioning, and remote execution. |
 | [Installing Foreman with Katello](articles/foreman-katello-installation.md) | Foreman 3.13 + Katello 4.15 on RHEL 9 — prerequisites, installation, content setup, and troubleshooting. |
+| [Foreman Remote Execution Setup](articles/foreman-remote-execution.md) | Setting up REX — SSH key distribution, running jobs, custom templates, Ansible integration, and troubleshooting. |
+| [Content Views and Activation Keys Strategy](articles/foreman-content-views-activation-keys.md) | Designing CVs, CCVs, and activation keys — one CV per product, composing with multiple AKs, and update workflows. |
+| [Registering Hosts in Foreman](articles/foreman-host-registration.md) | Registering RHEL and Ubuntu hosts — global registration, subscription-manager, activation keys, capsules, and troubleshooting. |
+| [Installing Satellite from ISO](articles/satellite-installation-iso.md) | Red Hat Satellite 6.16 disconnected install on RHEL 9 — ISO mount, local repos, installer, and content import. |
 | [Linux ulimit Guide](articles/linux-ulimit-guide.md) | Per-process resource limits, limits.conf, systemd directives, sysctl, and troubleshooting. |
 | [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) | Remove and prevent .DS_Store files from being tracked in git. |
 

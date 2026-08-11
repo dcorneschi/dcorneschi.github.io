@@ -81,6 +81,10 @@
   - [Linux SysRq Guide](articles/linux-sysrq-guide.md)
   - [Hammer CLI Cheatsheet](articles/hammer-cheatsheet.md)
   - [Installing Foreman with Katello](articles/foreman-katello-installation.md)
+  - [Foreman Remote Execution Setup](articles/foreman-remote-execution.md)
+  - [Content Views and Activation Keys Strategy](articles/foreman-content-views-activation-keys.md)
+  - [Registering Hosts in Foreman](articles/foreman-host-registration.md)
+  - [Installing Satellite from ISO](articles/satellite-installation-iso.md)
   - [Linux ulimit Guide](articles/linux-ulimit-guide.md)
   - [Remove .DS_Store from Git](articles/remove-ds-store-guide.md)
 
