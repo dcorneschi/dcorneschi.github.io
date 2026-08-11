@@ -79,14 +79,16 @@
   - [Linux System Calls](articles/linux-syscalls.md)
   - [Linux Kernel Map](articles/linux-kernel-map.md)
   - [Linux SysRq Guide](articles/linux-sysrq-guide.md)
+  - [Linux ulimit Guide](articles/linux-ulimit-guide.md)
+  - [Remove .DS_Store from Git](articles/remove-ds-store-guide.md)
+
+- Satellite & Foreman
   - [Hammer CLI Cheatsheet](articles/hammer-cheatsheet.md)
   - [Installing Foreman with Katello](articles/foreman-katello-installation.md)
+  - [Installing Satellite from ISO](articles/satellite-installation-iso.md)
   - [Foreman Remote Execution Setup](articles/foreman-remote-execution.md)
   - [Content Views and Activation Keys Strategy](articles/foreman-content-views-activation-keys.md)
   - [Registering Hosts in Foreman](articles/foreman-host-registration.md)
-  - [Installing Satellite from ISO](articles/satellite-installation-iso.md)
-  - [Linux ulimit Guide](articles/linux-ulimit-guide.md)
-  - [Remove .DS_Store from Git](articles/remove-ds-store-guide.md)
 
 - Linux Performance & I/O
   - [Linux Load Average](articles/linux-load-average.md)
