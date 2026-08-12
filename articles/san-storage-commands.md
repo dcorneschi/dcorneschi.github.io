@@ -495,18 +495,77 @@ udevadm trigger
 ls -la /dev/san/
 ```
 
+## Identify dm-X Devices
+
+```bash
+# Find what a specific dm device maps to
+cat /sys/block/dm-X/dm/name
+
+# Using dmsetup
+dmsetup info -c --noheadings -o name /dev/dm-X
+
+# Find dm-X from a mapper name
+ls -la /dev/mapper/ | grep dm-X
+
+# List all dm devices with their names
+dmsetup info -c --noheadings -o name,major,minor
+
+# All dm devices with their table type
+dmsetup table | column -t
+```
+
+## Map dm-* to LVM/Device Names
+
+```bash
+# Full overview of block devices
+lsblk -o NAME,KNAME,TYPE,SIZE,MOUNTPOINT
+
+# All dm-* symlinks in /dev/mapper
+ls -la /dev/mapper/ | grep dm-
+
+# dm-X → LVM mapping with filesystem and size
+lsblk -p -o NAME,KNAME,MAJ:MIN,FSTYPE,SIZE,MOUNTPOINT | grep -E "dm-|sd|nvme"
+
+# dmsetup targets
+dmsetup ls --target linear
+dmsetup ls --target thin-pool
+dmsetup ls --target thin
+```
+
+## Proxmox Storage
+
+```bash
+# All PVE mapper devices
+ls -la /dev/mapper/pve-*
+
+# Find which VM owns a dm device
+# Output like: pve-vm--100--disk--0 → VM 100, disk 0
+cat /sys/block/dm-X/dm/name
+
+# List all VM disks with thin pool usage
+lvs -o lv_name,lv_size,data_percent pve | grep vm-
+
+# Thin pool overall usage
+lvs -o lv_name,lv_size,data_percent,metadata_percent pve/data
+
+# Proxmox storage status
+pvesm status
+```
+
 ## Identifying Devices: When to Use What
 
 | Tool | Best For |
 |------|----------|
 | `lsscsi` | Quick list of all SCSI devices with vendor/model |
 | `lsblk` | Device tree with mount points and sizes |
+| `dmsetup` | Device-mapper internals, dm-X to LVM/name mapping |
 | `multipath -ll` | Multipath device → path mapping |
 | `ls /dev/disk/by-id/` | Persistent names (WWID-based) |
 | `ls /dev/disk/by-path/` | HBA:target:LUN path mapping |
 | `sg_inq /dev/sdX` | Detailed SCSI inquiry (serial, NAA, pages) |
 | `/lib/udev/scsi_id` | Get WWID for a device |
 | `udevadm info --query=all --name=/dev/sdX` | All udev properties for a device |
+| `pvesm status` | Proxmox storage backend overview |
 
 ## iSCSI (iscsiadm)
 
