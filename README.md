@@ -43,6 +43,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Docker Cheatsheet](articles/docker-cheatsheet.md) | Docker CLI — containers, images, volumes, networks, Dockerfile, and troubleshooting. |
 | [Docker Compose Cheatsheet](articles/docker-compose-cheatsheet.md) | Docker Compose — services, builds, networks, volumes, profiles, overrides, and patterns. |
 | [Docker Compose: ports vs expose](articles/docker-ports-vs-expose.md) | Differences between `ports` and `expose` — when to publish vs keep internal. |
+| [Docker Compose: Running Containers Without Root](articles/docker-compose-non-root.md) | UID/GID mapping, bind mount permissions, image inspection, privileged ports, and security hardening. |
 | [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md) | Mounting Docker config into the runner to avoid rate limiting. |
 | [dbash — Docker Shell Function](articles/docker-dbash-function.md) | Bash function to quickly shell into Docker containers. |
 
@@ -168,6 +169,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 
 | Article | Description |
 |---------|--------------|
+| [Linux /etc/fstab Guide](articles/linux-fstab-guide.md) | Syntax, device identification, filesystem types, mount options (ext4, XFS, NFS, CIFS, tmpfs, swap), and security hardening. |
 | [Multipath Cheatsheet](articles/multipath-cheatsheet.md) | DM-Multipath — setup, configuration, failover, LVM, troubleshooting, and path management. |
 | [EMC PowerPath Cheatsheet](articles/emc-powerpath-cheatsheet.md) | EMC PowerPath — powermt commands, policies, HBA management, and array-specific configuration. |
 | [SAN Storage Commands](articles/san-storage-commands.md) | SCSI scanning, HBA info, Fibre Channel diagnostics, disk mapping, I/O scheduler, and SAR monitoring. |
@@ -201,6 +203,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | Article | Description |
 |---------|--------------|
 | [cloud-init Cheatsheet](articles/cloud-init-cheatsheet.md) | Cross-platform cloud instance initialization — user-data, modules, networking, and debugging. |
+| [cloud-init status: Errors and Failure Modes](articles/cloud-init-status-command.md) | Status command, exit codes, critical vs recoverable errors, per-stage diagnostics, and scripting patterns. |
 | [cloud-init: bootcmd vs runcmd](articles/cloud-init-bootcmd-vs-runcmd.md) | Boot stages, execution timing, frequency differences, and common mistakes. |
 | [cloud-init: Why tee Output Doesn't Appear in Logs](articles/cloud-init-tee-output-missing.md) | How cloud-init's output directive interacts with tee, buffering, and pipes. |
 | [cloud-init: User Management and the gecos Field](articles/cloud-init-users-gecos.md) | Users module, gecos history, all user keys, default user, and common patterns. |
@@ -210,6 +213,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | Article | Description |
 |---------|--------------|
 | [Datadog Agent Cheatsheet](articles/datadog-agent-cheatsheet.md) | Agent installation, service management, configuration, checks, logs, DogStatsD, APM, and troubleshooting. |
+| [Datadog API Reference](articles/datadog-api-reference.md) | Authentication, client libraries, common endpoints (monitors, dashboards, metrics, events), rate limits, and scripting patterns. |
+| [Datadog Dashboards Guide](articles/datadog-dashboards-guide.md) | Dashboard types, widget selection, query patterns, template variables, layout strategies, and best practices. |
 | [Datadog Monitor Notification Variables](articles/datadog-monitor-notification-variables.md) | Conditional variables, attribute/tag variables, template variables, dynamic handles, and advanced notification formatting. |
 | [Datadog Monitor Tagging Best Practices](articles/datadog-monitor-tagging-best-practices.md) | Tagging strategies for monitors — filtering, downtime scheduling, dashboard widgets, SLO organization, and API usage. |
 | [Datadog Monitors Tips & Tricks](articles/datadog-monitors-tips-and-tricks.md) | Hidden settings, anti-flapping, noise reduction, formulas, composite monitors, notification tricks, and API-only options. |

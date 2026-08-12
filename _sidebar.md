@@ -121,6 +121,7 @@
   - [Linux Swap Usage: When Processes Aren't the Culprit](articles/linux-swap-shm-segments.md)
 
 - Linux Storage & Filesystems
+  - [Linux /etc/fstab Guide](articles/linux-fstab-guide.md)
   - [Multipath Cheatsheet](articles/multipath-cheatsheet.md)
   - [EMC PowerPath Cheatsheet](articles/emc-powerpath-cheatsheet.md)
   - [SAN Storage Commands](articles/san-storage-commands.md)
@@ -155,6 +156,8 @@
 
 - Datadog
   - [Datadog Agent Cheatsheet](articles/datadog-agent-cheatsheet.md)
+  - [Datadog API Reference](articles/datadog-api-reference.md)
+  - [Datadog Dashboards Guide](articles/datadog-dashboards-guide.md)
   - [Datadog Monitor Notification Variables](articles/datadog-monitor-notification-variables.md)
   - [Datadog Monitor Tagging Best Practices](articles/datadog-monitor-tagging-best-practices.md)
   - [Datadog Monitors Tips & Tricks](articles/datadog-monitors-tips-and-tricks.md)
