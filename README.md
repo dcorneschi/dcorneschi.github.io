@@ -207,6 +207,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | Article | Description |
 |---------|--------------|
 | [Datadog Agent Cheatsheet](articles/datadog-agent-cheatsheet.md) | Agent installation, service management, configuration, checks, logs, DogStatsD, APM, and troubleshooting. |
+| [Datadog Monitor Notification Variables](articles/datadog-monitor-notification-variables.md) | Conditional variables, attribute/tag variables, template variables, dynamic handles, and advanced notification formatting. |
+| [Datadog Monitor Tagging Best Practices](articles/datadog-monitor-tagging-best-practices.md) | Tagging strategies for monitors — filtering, downtime scheduling, dashboard widgets, SLO organization, and API usage. |
 | [Monitoring Apache Web Server Performance](articles/monitoring-apache-performance.md) | Apache metrics, MPM internals, mod_status, Datadog integration, log collection, and dashboard setup. |
 
 ### Terminal & Tools

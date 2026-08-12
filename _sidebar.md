@@ -150,6 +150,8 @@
 
 - Datadog
   - [Datadog Agent Cheatsheet](articles/datadog-agent-cheatsheet.md)
+  - [Datadog Monitor Notification Variables](articles/datadog-monitor-notification-variables.md)
+  - [Datadog Monitor Tagging Best Practices](articles/datadog-monitor-tagging-best-practices.md)
   - [Monitoring Apache Web Server Performance](articles/monitoring-apache-performance.md)
 
 - Terminal & Tools
