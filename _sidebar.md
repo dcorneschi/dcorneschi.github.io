@@ -23,6 +23,7 @@
   - [Docker Cheatsheet](articles/docker-cheatsheet.md)
   - [Docker Compose Cheatsheet](articles/docker-compose-cheatsheet.md)
   - [Docker Compose: ports vs expose](articles/docker-ports-vs-expose.md)
+  - [Docker Compose: Running Containers Without Root](articles/docker-compose-non-root.md)
   - [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md)
   - [dbash — Docker Shell Function](articles/docker-dbash-function.md)
 
@@ -33,6 +34,7 @@
   - [Installing SSM Agent](articles/aws-ssm-agent-install.md)
   - [JMESPath Query Guide](articles/aws-jmespath-guide.md)
   - [EKS Authentication Modes: ConfigMap vs Access Entries](articles/eks-authentication-modes.md)
+  - [Securing Kubernetes Containers: Security Contexts](articles/eks-security-contexts.md)
 
 - Virtualization
   - [Installing KVM](articles/kvm-installation.md)
@@ -146,6 +148,7 @@
 
 - Cloud-Init
   - [cloud-init Cheatsheet](articles/cloud-init-cheatsheet.md)
+  - [cloud-init status: Errors and Failure Modes](articles/cloud-init-status-command.md)
   - [cloud-init: bootcmd vs runcmd](articles/cloud-init-bootcmd-vs-runcmd.md)
   - [cloud-init: Why tee Output Doesn't Appear in Logs](articles/cloud-init-tee-output-missing.md)
   - [cloud-init: User Management and the gecos Field](articles/cloud-init-users-gecos.md)
