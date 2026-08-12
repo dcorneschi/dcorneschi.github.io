@@ -66,6 +66,8 @@
 - Bash & Shell
   - [bash Cheatsheet](articles/bash-cheatsheet.md)
   - [Bash Essentials Guide](articles/bash-essentials-guide.md)
+  - [Bash Pipelines and Redirections](articles/bash-redirection-operators.md)
+  - [Bash History Guide](articles/bash-history-guide.md)
   - [Bash Test Conditions: \[ \] vs \[\[ \]\]](articles/bash-test-conditions-guide.md)
   - [Bash Subshells](articles/bash-subshells-guide.md)
   - [Bash Troubleshooting Guide](articles/bash-troubleshooting-guide.md)

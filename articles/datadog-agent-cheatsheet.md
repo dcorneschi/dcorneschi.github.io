@@ -861,6 +861,728 @@ curl -s -X GET "${DD_SITE}/api/v1/validate" \
 | EU | `https://api.datadoghq.eu` |
 | AP1 | `https://api.ap1.datadoghq.com` |
 
+## Pup CLI
+
+Pup is Datadog's official CLI — a single Rust binary with 325+ commands across 57 product domains. It replaces the legacy Dogshell tool.
+
+### Installation
+
+```bash
+# macOS/Linux (Homebrew)
+brew tap datadog-labs/pack
+brew install datadog-labs/pack/pup
+
+# Build from source
+git clone https://github.com/DataDog/pup.git && cd pup
+cargo build --release
+cp target/release/pup /usr/local/bin/pup
+```
+
+### Authentication
+
+```bash
+# OAuth2 login (preferred — scoped access, no long-lived keys)
+pup auth login
+
+# Check auth status
+pup auth status
+
+# Test connection
+pup auth test
+
+# Logout
+pup auth logout
+
+# Refresh token
+pup auth refresh
+
+# Login to a specific site
+pup auth login --site datadoghq.eu
+
+# Login with a named org profile (for multi-account)
+pup auth login --org staging-child
+
+# List all stored sessions
+pup auth list
+
+# Fallback: use API keys (set environment variables)
+export DD_API_KEY="your-api-key"
+export DD_APP_KEY="your-app-key"
+export DD_SITE="datadoghq.com"
+```
+
+### Command Structure
+
+```bash
+pup <domain> <action> [options]             # Simple commands
+pup <domain> <subgroup> <action> [options]  # Nested commands
+```
+
+### Global Flags
+
+| Flag | Description |
+|------|-------------|
+| `-o, --output` | Output format: `json`, `yaml`, `table` (default: json) |
+| `--jq` | Filter/transform output with a jq expression |
+| `-y, --yes` | Skip confirmation prompts |
+| `--read-only` | Block all write operations |
+| `--agent` | Enable agent mode (structured JSON output) |
+| `--no-agent` | Disable agent mode |
+| `--verbose` | Enable verbose logging |
+| `--org <org>` | Use a named org profile for multi-account workflows |
+| `--site` | Datadog site (only for `auth login` and `auth status`) |
+| `--config` | Config file path (default: `~/.config/pup/config.yaml`) |
+
+### Monitors
+
+```bash
+# List all monitors
+pup monitors list
+
+# List monitors filtered by tag
+pup monitors list --tags="team:backend"
+pup monitors list --tags="env:production"
+
+# Get a specific monitor
+pup monitors get 12345678
+
+# Search monitors with query
+pup monitors search --query="tag:(service:web-store AND team:backend)"
+
+# Create a monitor from file
+pup monitors create --file=monitor.json
+
+# Update a monitor
+pup monitors update 12345678 --file=monitor.json
+
+# Diff monitor (compare local definition vs remote)
+pup monitors diff 12345678
+
+# Delete a monitor
+pup monitors delete 12345678 --yes
+```
+
+### Logs
+
+```bash
+# Search logs for errors in the last hour
+pup logs search --query="status:error" --from="1h"
+
+# Search logs for a specific service over 7 days
+pup logs search --query="service:api" --from="7d" --storage="flex"
+
+# Search with a specific index
+pup logs query --query="service:api" --index="main,security" --from="1h"
+
+# Aggregate logs
+pup logs aggregate --query="status:error" --from="1h"
+
+# Manage saved views
+pup logs saved-views list
+pup logs saved-views create --file=saved-view.json
+```
+
+### Metrics
+
+```bash
+# Query CPU metrics for the last hour (v2 API — time-series data)
+pup metrics query --query="avg:system.cpu.user{*}" --from="1h"
+
+# Search metrics using classic query syntax (v1 API)
+pup metrics search --query="avg:system.cpu.user{*}" --from="1h"
+
+# List available metrics (with filter)
+pup metrics list --filter="system.*"
+
+# List tags for a metric
+pup metrics tags list system.cpu.user --window-seconds=3600
+
+# Submit time-series data
+pup metrics timeseries --file=request.json
+```
+
+### Dashboards
+
+```bash
+# List all dashboards
+pup dashboards list
+
+# Get a specific dashboard
+pup dashboards get abc-def-123
+
+# Get a live dashboard URL with time range
+pup dashboards url abc-def-123 --from=now-1w --to=now --live=true
+
+# Delete a dashboard
+pup dashboards delete abc-def-123 --yes
+```
+
+### Events
+
+```bash
+# Post a custom event (positional: title, then text)
+pup events post --tags="version:1,application:web" --no_host --alert_type=info \
+  "Deployment completed" "App v2.1.0 deployed to production"
+
+# Search events
+pup events search --query="@user.id:12345"
+
+# List recent events
+pup events list
+
+# Get a specific event
+pup events get <event-id>
+```
+
+### SLOs
+
+```bash
+# List all SLOs
+pup slos list
+
+# Get SLO details
+pup slos get abc-123-def
+
+# Check SLO status
+pup slos status abc-123-def
+
+# Delete an SLO
+pup slos delete abc-123-def --yes
+```
+
+### Infrastructure & Hosts
+
+```bash
+# List hosts
+pup infrastructure hosts list
+
+# Get host details
+pup infrastructure hosts get my-hostname
+
+# Manage host tags
+pup tags list my-hostname
+pup tags get my-hostname
+pup tags add my-hostname --tags="env:prod,team:backend"
+pup tags update my-hostname --tags="env:staging"
+pup tags delete my-hostname
+
+# List containers
+pup containers list
+
+# List container images
+pup containers images list
+
+# List processes
+pup processes list
+```
+
+### Downtime
+
+```bash
+# List active downtimes
+pup downtime list
+
+# Get downtime details
+pup downtime get 12345
+
+# Cancel a downtime
+pup downtime cancel 12345
+```
+
+### Incidents
+
+```bash
+# List incidents
+pup incidents list
+
+# Get incident details
+pup incidents get abc-123
+```
+
+### Synthetics
+
+```bash
+# List synthetic tests
+pup synthetics tests list
+
+# List available locations
+pup synthetics locations list
+
+# List test suites
+pup synthetics suites search
+```
+
+### Security
+
+```bash
+# List security rules
+pup security rules list
+
+# List security signals
+pup security signals list
+
+# List security findings
+pup security findings list
+
+# List content packs
+pup security content-packs list
+
+# Audit logs
+pup audit-logs list
+pup audit-logs search --query="@action:monitor.modified"
+```
+
+### APM & Traces
+
+```bash
+# List APM services
+pup apm services list
+
+# Get service stats
+pup apm services stats my-service
+
+# List service operations
+pup apm services operations my-service
+
+# List service resources
+pup apm services resources my-service
+
+# List service dependencies
+pup apm dependencies list
+
+# Trace metrics (span-based metric definitions)
+pup traces metrics list
+pup traces metrics get <metric-id>
+```
+
+### On-Call
+
+```bash
+# List on-call teams
+pup on-call teams list
+
+# Get team details
+pup on-call teams get <team-id>
+
+# List pages (newest first)
+pup on-call pages list
+
+# Get a specific page
+pup on-call pages get <page-id>
+
+# Create a page
+pup on-call pages create --file=page.json
+```
+
+### CI/CD
+
+```bash
+# List CI pipelines
+pup cicd pipelines list
+
+# List CI events
+pup cicd events list
+
+# List test results
+pup cicd tests list
+
+# List flaky tests
+pup cicd flaky-tests list
+
+# DORA metrics
+pup cicd dora list
+```
+
+### Database Monitoring
+
+```bash
+# Search DBM query samples
+pup dbm samples search --query="dbm_type:activity service:orders env:prod" --from="1h" --limit=10
+```
+
+### Runbooks
+
+```bash
+# List available runbooks
+pup runbooks list
+
+# Inspect a runbook's steps
+pup runbooks describe incident-triage
+
+# Run a runbook with variables
+pup runbooks run deploy-service --arg SERVICE=payments --arg VERSION=1.2.3
+
+# Dry-run (show steps without executing)
+pup runbooks run deploy-service --dry-run
+
+# Import a runbook from file
+pup runbooks import ./my-runbook.yaml
+
+# Validate a runbook file
+pup runbooks validate ./my-runbook.yaml
+```
+
+### Workflows
+
+```bash
+# Get a workflow
+pup workflows get <workflow-id>
+
+# Create a workflow from file
+pup workflows create --file=workflow.json
+
+# Run a workflow
+pup workflows run <workflow-id>
+
+# List workflow instances
+pup workflows instances list <workflow-id>
+
+# Diff workflow (compare local vs remote)
+pup workflows diff <workflow-id>
+```
+
+### Key & User Management
+
+```bash
+# List API keys
+pup api-keys list
+
+# Create an API key
+pup api-keys create --name="my-new-key"
+
+# List application keys
+pup app-keys list
+
+# List users
+pup users list
+
+# List organizations
+pup organizations list
+```
+
+### Skills (AI Agent Integration)
+
+```bash
+# List available skills and agents
+pup skills list
+
+# Install skills for a specific platform
+pup skills install claude
+pup skills install cursor
+pup skills install codex
+
+# Install for all platforms
+pup skills install all
+
+# Install project-local (instead of user-global)
+pup skills install claude --project
+
+# Install a specific skill by name
+pup skills install claude --name dd-monitors
+```
+
+### Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `DD_ACCESS_TOKEN` | Bearer token for stateless auth (highest priority) |
+| `DD_API_KEY` | Datadog API key (optional if using OAuth2) |
+| `DD_APP_KEY` | Datadog application key (optional if using OAuth2) |
+| `DD_SITE` | Datadog site (default: `datadoghq.com`) |
+| `DD_AUTO_APPROVE` | Auto-approve destructive operations (`true`/`false`) |
+| `DD_TOKEN_STORAGE` | Token storage backend (`keychain` or `file`) |
+| `FORCE_AGENT_MODE` | Force agent mode for AI agent workflows (`1`/`true`) |
+
+### Using --jq for Filtering
+
+```bash
+# Extract only monitor names
+pup monitors list --jq '.[].name'
+
+# Monitor names and IDs as a table
+pup monitors list --jq '.[] | {name, id, overall_state}' -o table
+
+# Filter monitors by name pattern
+pup monitors list --jq '.[] | select(.name | endswith("prod"))' -o table
+
+# Count error logs
+pup logs search --query="status:error" --jq '.data | length'
+
+# Get just host names
+pup infrastructure hosts list --jq '.[].host_name'
+
+# Combine jq with table output
+pup slos list --jq '.[] | select(.name | contains("api"))' -o table
+
+# Get monitor IDs only (useful for scripting)
+pup monitors list --tags="team:backend" --jq '.[].id'
+
+# Extract names and states for alerting monitors
+pup monitors list --jq '.[] | select(.overall_state == "Alert") | {name, id}'
+```
+
+### Service Catalog
+
+```bash
+# List services in the catalog
+pup service-catalog list
+
+# Get service details
+pup service-catalog get my-service
+
+# IDP agent commands (Service Catalog agent access)
+pup idp assist my-service     # Full context: owner, on-call, health, dependencies
+pup idp find "payment"        # Search entities by name (defaults to kind:service)
+pup idp owner my-service      # Ownership + on-call responders
+pup idp deps my-service       # Upstream/downstream dependencies
+pup idp register ./service.datadog.yaml  # Register a service definition
+```
+
+## Dogshell (Legacy — Deprecated)
+
+Dogshell is the legacy Python CLI bundled with `datadogpy`. It has been replaced by Pup CLI but still works for basic operations.
+
+### Installation
+
+```bash
+pip install datadog
+```
+
+### Configuration
+
+Create `~/.dogrc`:
+
+```ini
+[Connection]
+apikey = MY_API_KEY
+appkey = MY_APP_KEY
+api_host = https://api.datadoghq.com
+```
+
+Or run any `dog` command — it prompts for credentials on first use.
+
+### Metrics
+
+```bash
+# Post a metric
+dog metric post test_metric 1.0 --tags "env:test,service:web"
+
+# Post multiple tags
+dog metric post cpu.usage 85.5 --tags "host:web-01,env:production,team:backend"
+```
+
+### Events
+
+```bash
+# Post an event
+dog event post "Deployment started" "Deploying version 2.1.0 to production" \
+  --tags "env:production,service:web" --type "deploy"
+```
+
+### Monitors
+
+```bash
+# List all monitors
+dog monitor show_all
+
+# Show a specific monitor
+dog monitor show <MONITOR_ID>
+
+# Mute a monitor
+dog monitor mute <MONITOR_ID>
+
+# Unmute a monitor
+dog monitor unmute <MONITOR_ID>
+
+# Mute all monitors
+dog monitor mute_all
+```
+
+### Service Checks
+
+```bash
+# Submit a service check
+dog service_check check my_app.health 0 --tags "env:production"
+# Status: 0=OK, 1=WARNING, 2=CRITICAL, 3=UNKNOWN
+```
+
+### Downtimes
+
+```bash
+# Schedule a downtime
+dog downtime post 'env:production' --start $(date +%s) --end $(($(date +%s) + 3600))
+```
+
+### Available Commands
+
+```bash
+dog -h                # Full list of commands
+dog metric -h         # Metric subcommands
+dog event -h          # Event subcommands
+dog monitor -h        # Monitor subcommands
+dog downtime -h       # Downtime subcommands
+dog service_check -h  # Service check subcommands
+dog tag -h            # Tag subcommands
+dog host -h           # Host subcommands
+dog search -h         # Search subcommands
+dog comment -h        # Comment subcommands
+```
+
+## Dogwrap
+
+Dogwrap wraps shell commands and generates Datadog events based on their exit code. Useful for monitoring cron jobs, batch scripts, and one-off commands.
+
+### Installation
+
+```bash
+pip install datadog
+```
+
+### Basic Usage
+
+```bash
+dogwrap -n "<EVENT_TITLE>" -k <DATADOG_API_KEY> "<COMMAND>"
+```
+
+### Send Events on Errors Only
+
+```bash
+# Post an event only if the command exits non-zero
+dogwrap -n "DB Vacuum" -k $DD_API_KEY --submit_mode errors \
+  "psql -c 'vacuum verbose my_table' 2>&1"
+```
+
+### Send Events on Every Run
+
+```bash
+# Post an event for every execution (success or failure)
+dogwrap -n "Nightly Backup" -k $DD_API_KEY --submit_mode all \
+  "/usr/local/bin/backup.sh"
+```
+
+### Use with Cron
+
+```bash
+# crontab entry — wrap a cron job to get Datadog events
+0 0 * * * dogwrap -n "Vacuum mytable" -k $DD_API_KEY --submit_mode errors "psql -c 'vacuum verbose my_table' 2>&1 >> /var/log/postgres_vacuums.log"
+```
+
+### Target a Specific Site
+
+```bash
+# Send to EU site
+dogwrap -n "Backup" -k $DD_API_KEY -s eu --submit_mode all "/usr/local/bin/backup.sh"
+
+# Available sites: us3, us5, eu, ap1
+```
+
+### Submit Modes
+
+| Mode | Sends Event When |
+|------|------------------|
+| `errors` | Command exits with non-zero code |
+| `all` | Every run, regardless of exit code |
+
+## DogStatsD Shell Usage
+
+Send metrics, events, and service checks directly from the shell via UDP to the DogStatsD daemon (port 8125).
+
+### Datagram Format
+
+```
+<METRIC_NAME>:<VALUE>|<TYPE>|@<SAMPLE_RATE>|#<TAG_KEY_1>:<TAG_VALUE_1>,<TAG_2>
+```
+
+### Metric Types
+
+| Type | Code | Description | Example |
+|------|------|-------------|---------|
+| Count | `c` | Increment/decrement a counter | `page.views:1\|c` |
+| Gauge | `g` | Record a value at a point in time | `fuel.level:0.5\|g` |
+| Histogram | `h` | Track distribution of values | `request.time:320\|h` |
+| Distribution | `d` | Server-side histogram | `page.views:15\|d` |
+| Timer | `ms` | Execution time (alias for histogram) | `db.query:12\|ms` |
+| Set | `s` | Count unique elements | `users.uniques:1234\|s` |
+
+### Send Metrics via Shell
+
+```bash
+# Counter — increment page views
+echo "page.views:1|c|#env:production,service:web" | nc -u -w1 127.0.0.1 8125
+
+# Gauge — record current queue depth
+echo "queue.depth:42|g|#env:production" | nc -u -w1 127.0.0.1 8125
+
+# Histogram — record request duration
+echo "request.duration:320|h|#service:api,env:prod" | nc -u -w1 127.0.0.1 8125
+
+# Distribution — record page load time
+echo "page.load:1.5|d|#env:production" | nc -u -w1 127.0.0.1 8125
+
+# Set — track unique visitors
+echo "users.uniques:user123|s|#env:production" | nc -u -w1 127.0.0.1 8125
+
+# Counter with sample rate (50%)
+echo "requests:1|c|@0.5|#env:prod,country:us" | nc -u -w1 127.0.0.1 8125
+```
+
+### Value Packing (v1.1 — Agent 6.25+/7.25+)
+
+Send multiple values in a single datagram for histograms and distributions:
+
+```bash
+# Multiple values separated by colons
+echo "page.views:1:2:32|d|#env:prod" | nc -u -w1 127.0.0.1 8125
+echo "request.time:120:340:250|h|@0.5|#service:api" | nc -u -w1 127.0.0.1 8125
+```
+
+### Send Events via DogStatsD
+
+Format: `_e{<TITLE_LENGTH>,<TEXT_LENGTH>}:<TITLE>|<TEXT>|d:<TIMESTAMP>|h:<HOSTNAME>|p:<PRIORITY>|t:<ALERT_TYPE>|#<TAGS>`
+
+```bash
+# Send an error event
+echo '_e{21,36}:An exception occurred|Cannot parse CSV file from 10.0.0.17|t:warning|#err_type:bad_file' | nc -u -w1 127.0.0.1 8125
+
+# Event with newline in text
+echo '_e{21,42}:An exception occurred|Cannot parse JSON request:\\n{"foo: "bar"}|p:low|#err_type:bad_request' | nc -u -w1 127.0.0.1 8125
+
+# Deployment event
+echo '_e{19,28}:Deployment complete|App v2.1.0 deployed to prod|t:info|#env:prod,service:web' | nc -u -w1 127.0.0.1 8125
+```
+
+### Send Service Checks via DogStatsD
+
+Format: `_sc|<NAME>|<STATUS>|d:<TIMESTAMP>|h:<HOSTNAME>|#<TAGS>|m:<MESSAGE>`
+
+Status codes: `0` = OK, `1` = WARNING, `2` = CRITICAL, `3` = UNKNOWN
+
+```bash
+# Service check — OK
+echo '_sc|Redis connection|0|#env:prod|m:Connection successful' | nc -u -w1 127.0.0.1 8125
+
+# Service check — CRITICAL
+echo '_sc|Redis connection|2|#env:dev|m:Redis connection timed out after 10s' | nc -u -w1 127.0.0.1 8125
+
+# Service check — WARNING with timestamp
+echo "_sc|Disk space|1|d:$(date +%s)|#host:web-01|m:Disk at 85% capacity" | nc -u -w1 127.0.0.1 8125
+```
+
+### DogStatsD over Unix Socket
+
+If configured to use UDS instead of UDP:
+
+```bash
+# Send via Unix socket
+echo "page.views:1|c|#env:prod" | socat - UNIX-CONNECT:/var/run/datadog/dsd.socket
+```
+
+Configure in `datadog.yaml`:
+
+```yaml
+dogstatsd_socket: /var/run/datadog/dsd.socket
+```
+
 ## Quick Reference Table
 
 | Task | Command |
@@ -878,3 +1600,12 @@ curl -s -X GET "${DD_SITE}/api/v1/validate" \
 | View agent logs | `sudo tail -f /var/log/datadog/agent.log` |
 | Send flare | `sudo datadog-agent flare <case-id>` |
 | Show hostname | `sudo datadog-agent hostname` |
+| Pup: login | `pup auth login` |
+| Pup: list monitors | `pup monitors list --tags="env:production"` |
+| Pup: search logs | `pup logs search --query="status:error" --from="1h"` |
+| Pup: query metrics | `pup metrics query --query="avg:system.cpu.user{*}" --from="1h"` |
+| Pup: list hosts | `pup infrastructure hosts list` |
+| Pup: run runbook | `pup runbooks run <name> --arg KEY=VALUE` |
+| Dogshell: post metric | `dog metric post my_metric 1.0 --tags "env:test"` |
+| Dogwrap: wrap command | `dogwrap -n "Title" -k $DD_API_KEY --submit_mode errors "cmd"` |
+| DogStatsD: send counter | `echo "metric:1\|c\|#tag:val" \| nc -u -w1 127.0.0.1 8125` |
