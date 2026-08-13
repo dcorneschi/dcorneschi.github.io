@@ -577,6 +577,56 @@ provisioner "shell" {
 }
 ```
 
+### Understanding execute_command
+
+`execute_command` controls how Packer runs provisioner scripts on the target machine. It uses Go template syntax:
+
+```hcl
+execute_command = "sudo -S env {{ .Vars }} {{ .Path }}"
+```
+
+**Template variables:**
+- `{{ .Vars }}` — replaced with environment variables at runtime (e.g., `HOME=/root USER=root DEBIAN_FRONTEND=noninteractive`)
+- `{{ .Path }}` — replaced with the path to the uploaded script (e.g., `/tmp/packer-shell123456.sh`)
+
+**After substitution, the command becomes:**
+```bash
+sudo -S env HOME=/root USER=root DEBIAN_FRONTEND=noninteractive /tmp/packer-shell123456.sh
+```
+
+**Flags explained:**
+- `sudo` — run as root
+- `-S` — read password from stdin (allows automated/non-interactive execution)
+- `-E` — preserve environment variables (alternative to `env`)
+- `env` — set environment variables before the script runs
+
+**Common patterns:**
+
+```hcl
+# Default (no elevation)
+execute_command = "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}"
+
+# Run as root with sudo (most common)
+execute_command = "sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
+
+# Root with environment preserved
+execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
+
+# Root with explicit env command
+execute_command = "sudo -S env {{ .Vars }} {{ .Path }}"
+
+# With bash instead of sh
+execute_command = "sudo -S bash -c '{{ .Vars }} {{ .Path }}'"
+
+# Run as a specific user
+execute_command = "sudo -u deploy {{ .Vars }} {{ .Path }}"
+
+# echo password for sudo -S (when SSH user has a password)
+execute_command = "echo 'packer' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
+```
+
+> **When to customize:** Override `execute_command` when the default (`chmod +x {{.Path}}; {{.Vars}} {{.Path}}`) doesn't work — typically because the script needs root privileges and the SSH user isn't root.
+
 ### File Provisioner
 
 ```hcl
