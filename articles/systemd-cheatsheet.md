@@ -602,6 +602,82 @@ systemctl restart systemd-journald
 journalctl -b -u systemd-journald
 ```
 
+### Restart a service and immediately tail its logs
+
+```bash
+systemctl restart myapp && journalctl -u myapp -f
+```
+
+### Watch a service status in a loop
+
+```bash
+watch -n 2 systemctl status myapp
+```
+
+### Safe conditional reload (only if active — good for scripts)
+
+```bash
+systemctl is-active --quiet myapp && systemctl reload myapp
+```
+
+### Find which unit owns a PID by process name
+
+```bash
+systemctl status $(pgrep -f myapp | head -1)
+```
+
+### Bulk-restart all services matching a pattern
+
+```bash
+systemctl list-units --type=service --state=running --no-legend \
+  | awk '{print $1}' | grep '^worker-' | xargs -I{} systemctl restart {}
+```
+
+### Run a one-off command with cgroup isolation and a specific user
+
+```bash
+systemd-run --scope --uid=myuser /usr/bin/myapp
+```
+
+### Diff unit file changes before and after daemon-reload
+
+```bash
+systemctl cat myapp > /tmp/before.unit
+systemctl daemon-reload
+systemctl cat myapp > /tmp/after.unit
+diff /tmp/before.unit /tmp/after.unit
+```
+
+### Grep logs for errors in the last 24h
+
+```bash
+journalctl -u myapp --since "24 hours ago" -p err
+```
+
+### Watch logs from multiple services at once
+
+```bash
+journalctl -u nginx -u php-fpm -f
+```
+
+### Export logs for a unit to a plain text file
+
+```bash
+journalctl -u myapp --since "2026-08-01" > myapp-aug.log
+```
+
+### Check journal disk usage and trim
+
+```bash
+journalctl --disk-usage && journalctl --vacuum-size=200M
+```
+
+### List units sorted by memory (alternative to systemd-cgtop)
+
+```bash
+systemctl status '*' 2>/dev/null | grep -B5 Memory | grep -E 'Memory|●'
+```
+
 ### Monitor system resource usage by cgroup
 
 ```bash
