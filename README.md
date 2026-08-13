@@ -117,6 +117,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 
 | Article | Description |
 |---------|--------------|
+| [systemd Cheatsheet](articles/systemd-cheatsheet.md) | systemctl commands, unit files, service types, timers, targets, boot analysis, and recipes. |
+| [journalctl Cheatsheet](articles/journalctl-cheatsheet.md) | systemd journal — viewing, filtering, grep, output formats, disk management, and troubleshooting recipes. |
 | [Linux File Permissions Guide](articles/linux-file-permissions.md) | Permissions, ownership, umask, SUID/SGID, sticky bit, and ACLs. |
 | [User Administration on RHEL](articles/user-administration.md) | User and group management — UIDs, password hashing, PAM, and chage. |
 | [LDAP Client Configuration](articles/ldap-client-configuration.md) | Configuring LDAP authentication on RHEL 5–10 and Ubuntu 22.04/24.04 — SSSD, authconfig, authselect, TLS, and Active Directory. |

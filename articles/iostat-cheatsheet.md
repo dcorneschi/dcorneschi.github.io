@@ -196,7 +196,7 @@ Write latency is fine (1.1ms) but flush latency is 22ms and climbing. Every data
 | `aqu-sz` | Average queue length — how many requests were waiting or in flight. Sustained > 1 means requests are queuing; > 10 means the device is buried. (Older versions: `avgqu-sz`) |
 | `%util` | Percentage of wall time the device had at least one request in flight. **Lies on modern SSD/NVMe** — see warning below. |
 
-## The `%util` Warning
+## The %util Warning
 
 `%util` was designed when a disk could service one request at a time (single spinning platter, one head, one seek). On that hardware, 100% meant truly saturated.
 

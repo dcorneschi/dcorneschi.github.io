@@ -82,6 +82,8 @@
   - [Vim White Spaces](articles/vim-white-spaces.md)
 
 - Linux System Administration
+  - [systemd Cheatsheet](articles/systemd-cheatsheet.md)
+  - [journalctl Cheatsheet](articles/journalctl-cheatsheet.md)
   - [Linux File Permissions Guide](articles/linux-file-permissions.md)
   - [User Administration on RHEL](articles/user-administration.md)
   - [LDAP Client Configuration](articles/ldap-client-configuration.md)

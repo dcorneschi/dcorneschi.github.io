@@ -28,7 +28,13 @@ vmstat 1 5
 
 This outputs 5 samples at 1-second intervals. Ignore the first line and focus on lines 2-5 for current activity.
 
-To skip the first line entirely in scripts:
+To skip the first line entirely, use the `-y` flag (suppresses the since-boot row):
+
+```bash
+vmstat -y 1 5
+```
+
+Or in scripts where `-y` isn't available:
 
 ```bash
 vmstat 1 | tail -n +3
@@ -46,8 +52,14 @@ vmstat 1
 # 2-second intervals, 10 samples
 vmstat 2 10
 
+# Skip the since-boot first row (-y flag)
+vmstat -y 2 5
+
 # Display timestamps with each line
 vmstat -t 1
+
+# Print header only once (useful when piping to less or a file)
+vmstat -n 1
 
 # Display in megabytes instead of kilobytes
 vmstat -S M 1
@@ -396,6 +408,14 @@ Time the virtual CPU waited while the hypervisor was servicing another virtual p
 - Indicates the host is overcommitted — your VM's CPU time is being "stolen" by other VMs
 - Non-zero `st` means your VM is not getting all the CPU time it requests
 - Sustained `st > 5-10%` typically indicates noisy neighbors or an undersized host
+
+#### `gu` — Guest Time (newer kernels)
+
+Time spent running KVM guest code (on hypervisor hosts only).
+
+- Only appears on newer kernels that support this counter
+- Shows what percentage of CPU time is being consumed by KVM virtual machines on this host
+- On non-hypervisor systems, this column is always 0 or absent
 
 ## Common Diagnostic Patterns
 
