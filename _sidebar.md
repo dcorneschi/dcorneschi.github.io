@@ -17,6 +17,7 @@
   - [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md)
   - [Helm Cheatsheet](articles/helm-cheatsheet.md)
   - [crictl Cheatsheet](articles/crictl-cheatsheet.md)
+  - [Kubernetes Schema Validation](articles/kubernetes-schema-validation.md)
   - [k9s Cheatsheet](articles/k9s-cheatsheet.md)
 
 - Docker
