@@ -111,6 +111,7 @@
   - [blktrace Guide](articles/blktrace-guide.md)
   - [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md)
   - [Understanding vmstat Output](articles/understanding-vmstat-output.md)
+  - [iostat Cheatsheet](articles/iostat-cheatsheet.md)
   - [Understanding iostat -x Output](articles/understanding-iostat-x-output.md)
   - [iotop Cheatsheet](articles/iotop-cheatsheet.md)
   - [ps Cheatsheet](articles/ps-cheatsheet.md)
