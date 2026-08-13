@@ -300,6 +300,128 @@ sar -dp -f /var/log/sysstat/sa$(date -d yesterday +%d)
 
 `iostat` is not ideal for scripting alerts — the output format has shifted between versions. For long-term archives use `sar` (same sysstat package, designed for historical storage). For JSON dashboards use `iostat -o JSON`. For per-process I/O (which `iostat` deliberately doesn't show), use `iotop` or `pidstat -d`.
 
+## Performance Thresholds (General Guidelines)
+
+| Metric | Good | Investigate | Critical |
+|--------|------|-------------|----------|
+| `%iowait` | < 5% | > 10% | > 30% |
+| `%util` (HDD) | < 80% | > 90% | > 98% |
+| `%util` (SSD/NVMe) | Unreliable — check `aqu-sz` instead | — | — |
+| `aqu-sz` | < 2 | > 5 | > 10 |
+| `r_await` (SSD) | < 5ms | > 10ms | > 50ms |
+| `r_await` (HDD) | < 20ms | > 50ms | > 100ms |
+| `w_await` (SSD) | < 5ms | > 10ms | > 50ms |
+| `w_await` (HDD) | < 20ms | > 50ms | > 100ms |
+
+> **Remember:** For NVMe/SSDs, `%util` approaching 100% does NOT mean saturated. Trust `aqu-sz` and `*_await` for modern storage.
+
+## Automation Scripts
+
+### Disk Health Check
+
+```bash
+#!/bin/bash
+echo "=== Disk I/O Health Check ==="
+echo "Date: $(date)"
+echo ""
+
+iostat -x 1 5 | awk '
+BEGIN {print "Device", "Avg_Util%", "Avg_Await_ms", "Status"}
+/^[s,h,v,n]/ {
+    device=$1
+    util+=$NF
+    await+=$10
+    count++
+    if (count==5) {
+        avg_util=util/5
+        avg_await=await/5
+        status="OK"
+        if (avg_util>80 || avg_await>20) status="WARNING"
+        if (avg_util>95 || avg_await>50) status="CRITICAL"
+        printf "%-10s %.2f %.2f %s\n", device, avg_util, avg_await, status
+        util=0; await=0; count=0
+    }
+}' | column -t
+```
+
+### Alert on High I/O Wait
+
+```bash
+#!/bin/bash
+THRESHOLD=10
+while true; do
+    IOWAIT=$(iostat -c 1 2 | awk '/avg-cpu/ {getline; print $4}' | tail -1)
+    if (( $(echo "$IOWAIT > $THRESHOLD" | bc -l) )); then
+        echo "$(date): High I/O wait: ${IOWAIT}%"
+    fi
+    sleep 10
+done
+```
+
+### Continuous Dashboard
+
+```bash
+#!/bin/bash
+while true; do
+    clear
+    echo "=== I/O Statistics — $(date) ==="
+    iostat -xmt 1 2 | tail -n +4
+    sleep 5
+done
+```
+
+### Log to File with Timestamps
+
+```bash
+# Record baseline for 10 minutes (60 samples at 10s interval)
+iostat -xmt 10 60 > iostat_baseline_$(hostname)_$(date +%Y%m%d).txt &
+
+# Peak hour monitoring
+iostat -xmt 60 > iostat_peak_$(date +%Y%m%d_%H%M).log &
+```
+
+### Monitor Multiple Disks Side-by-Side
+
+```bash
+watch -n 2 'iostat -x sda sdb nvme0n1 | grep -E "^(Device|sd|nvme)"'
+```
+
+## Troubleshooting iostat Itself
+
+| Issue | Fix |
+|-------|-----|
+| `command not found` | Install: `apt install sysstat` or `dnf install sysstat` |
+| No stats / empty output | Enable sysstat: `systemctl enable --now sysstat` |
+| Permission denied | Run with `sudo` (rarely needed — only for some kernel stats) |
+| Only shows since-boot averages | Add an interval: `iostat -x 1` or use `-y` to skip first report |
+| Device names are `dm-0`, `dm-1` | Use `-N` to show LVM names, or check `lsblk` for mapping |
+| macOS: not available | Install via Homebrew: `brew install sysstat` (limited functionality) |
+
+## Related Tools
+
+| Tool | Focus | Install |
+|------|-------|---------|
+| `iotop` | Per-process I/O (requires root) | `apt install iotop` / `dnf install iotop` |
+| `vmstat` | General system — memory, swap, basic I/O | Built-in (procps) |
+| `sar -d` | Historical disk stats (same source as iostat) | sysstat package |
+| `pidstat -d` | Per-process I/O (no root needed) | sysstat package |
+| `dstat` | All-in-one (CPU, disk, net) in columns | `apt install dstat` / `dnf install dstat` |
+| `blktrace` | Block-layer tracing (deep debugging) | `apt install blktrace` / `dnf install blktrace` |
+| `nfsiostat` | NFS I/O stats (not shown by iostat) | sysstat package |
+
+## Additional Options
+
+| Flag | Description |
+|------|-------------|
+| `-j ID` | Display persistent device names (by-id) |
+| `-j UUID` | Display persistent device names (by-uuid) |
+| `-j PATH` | Display persistent device names (by-path) |
+| `--human` | Auto-scaled human-readable units |
+| `-o JSON` | Output in JSON format |
+| `-g <name> <devs>` | Group devices and show combined summary |
+| `-s` | Short (narrow) output format |
+| `--dec={0,1,2}` | Number of decimal places to use |
+
 ## See Also
 
 - [Understanding iostat -x Output](articles/understanding-iostat-x-output.md) — deep-dive into every field, formulas, stall patterns, and `blktrace` correlation
