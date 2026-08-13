@@ -839,7 +839,7 @@ The wrapper sources `.bashrc` (which defines your functions) before executing wh
 
 > **Note:** Option 2 sources user-controlled files as root. Only use it if you trust the contents of that `.bashrc` — a malicious or accidentally modified `.bashrc` would execute as root.
 
-### Use `sudo -v` to Refresh the Timestamp
+### Use sudo -v to Refresh the Timestamp
 
 Extends the sudo credential cache without running a command. Useful in scripts that need sudo later but want to authenticate upfront:
 
@@ -849,7 +849,7 @@ sudo -v    # refresh (or establish) the cached credential
 sudo systemctl restart myapp
 ```
 
-### Use `sudo -k` to Invalidate the Timestamp
+### Use sudo -k to Invalidate the Timestamp
 
 Forces the next `sudo` call to re-authenticate immediately:
 
@@ -857,7 +857,7 @@ Forces the next `sudo` call to re-authenticate immediately:
 sudo -k
 ```
 
-### `sudo -n` for Non-Interactive Scripts
+### sudo -n for Non-Interactive Scripts
 
 `-n` (non-interactive) prevents sudo from prompting for a password. If a password would normally be required, the command fails immediately with an error instead of hanging:
 
@@ -867,7 +867,7 @@ sudo -n systemctl reload nginx
 
 Useful in scripts where you want to fail fast rather than block waiting for input. Combine with `NOPASSWD` in sudoers for the commands the script needs.
 
-### `sudo -b` to Background a Command
+### sudo -b to Background a Command
 
 Runs the command in the background and returns the prompt immediately:
 
@@ -875,7 +875,7 @@ Runs the command in the background and returns the prompt immediately:
 sudo -b /opt/scripts/long-running-job.sh
 ```
 
-### `sudo !!` — Re-run Last Command with sudo
+### sudo !! — Re-run Last Command with sudo
 
 A shell shortcut that expands `!!` to the previous command:
 
