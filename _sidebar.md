@@ -126,9 +126,11 @@
 
 - Linux Storage & Filesystems
   - [Linux /etc/fstab Guide](articles/linux-fstab-guide.md)
+  - [iSCSI Cheatsheet](articles/iscsi-cheatsheet.md)
   - [Multipath Cheatsheet](articles/multipath-cheatsheet.md)
   - [EMC PowerPath Cheatsheet](articles/emc-powerpath-cheatsheet.md)
   - [SAN Storage Commands](articles/san-storage-commands.md)
+  - [Fibre Channel Error Statistics](articles/fc-statistics-guide.md)
   - [Linux Storage Stack](articles/linux-storage-stack.md)
   - [fdisk Cheatsheet](articles/fdisk-cheatsheet.md)
   - [LVM Cheatsheet](articles/lvm-cheatsheet.md)

@@ -174,9 +174,11 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | Article | Description |
 |---------|--------------|
 | [Linux /etc/fstab Guide](articles/linux-fstab-guide.md) | Syntax, device identification, filesystem types, mount options (ext4, XFS, NFS, CIFS, tmpfs, swap), and security hardening. |
+| [iSCSI Cheatsheet](articles/iscsi-cheatsheet.md) | iSCSI initiator and target — discovery, login, CHAP, multipath, targetcli, performance tuning, and troubleshooting. |
 | [Multipath Cheatsheet](articles/multipath-cheatsheet.md) | DM-Multipath — setup, configuration, failover, LVM, troubleshooting, and path management. |
 | [EMC PowerPath Cheatsheet](articles/emc-powerpath-cheatsheet.md) | EMC PowerPath — powermt commands, policies, HBA management, and array-specific configuration. |
 | [SAN Storage Commands](articles/san-storage-commands.md) | SCSI scanning, HBA info, Fibre Channel diagnostics, disk mapping, I/O scheduler, and SAR monitoring. |
+| [Fibre Channel Error Statistics](articles/fc-statistics-guide.md) | FC HBA error counters in sysfs — CRC, tx word, link failure, loss of sync/signal, monitoring scripts, and troubleshooting. |
 | [Linux Storage Stack](articles/linux-storage-stack.md) | VFS, filesystems, page cache, block layer, device mapper, SCSI/NVMe — layers, tools, and tuning. |
 | [fdisk Cheatsheet](articles/fdisk-cheatsheet.md) | Disk partitioning — fdisk, gdisk, parted, sgdisk, sfdisk, mkfs, and LVM setup. |
 | [LVM Cheatsheet](articles/lvm-cheatsheet.md) | Logical Volume Manager — PVs, VGs, LVs, snapshots, thin provisioning, RAID, cache, and troubleshooting. |
