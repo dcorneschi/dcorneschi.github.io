@@ -69,6 +69,14 @@
   - [Exporting Datadog Monitors to Terraform](articles/exporting-monitors-to-terraform.md)
   - [Terraform Backend Configuration Changed](articles/terraform-backend-configuration-changed.md)
 
+- Ansible
+  - [Ansible Ad-Hoc Commands](articles/ansible-adhoc-cheatsheet.md)
+  - [Ansible Cheatsheet](articles/ansible-cheatsheet.md)
+  - [Ansible Inventory Guide](articles/ansible-inventory-guide.md)
+  - [Ansible Run Command Modules](articles/ansible-shell-command-modules.md)
+  - [Ansible Sudo: Ubuntu vs RHEL](articles/ansible-sudo-ubuntu-vs-rhel.md)
+  - [Ansible Vault: Storing Sudo Passwords](articles/ansible-vault-become-pass.md)
+
 - Bash & Shell
   - [bash Cheatsheet](articles/bash-cheatsheet.md)
   - [Korn Shell (ksh) Cheatsheet](articles/ksh-cheatsheet.md)

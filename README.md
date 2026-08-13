@@ -98,6 +98,17 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Exporting Datadog Monitors to Terraform](articles/exporting-monitors-to-terraform.md) | Export monitors via console or API, convert to HCL with jq, and import into state. |
 | [Terraform Backend Configuration Changed](articles/terraform-backend-configuration-changed.md) | Understanding -migrate-state vs -reconfigure — when to use each, .terraform/terraform.tfstate explained. |
 
+### Ansible
+
+| Article | Description |
+|---------|--------------|
+| [Ansible Ad-Hoc Commands](articles/ansible-adhoc-cheatsheet.md) | One-off remote execution — modules, patterns, packages, services, files, users, facts, and recipes. |
+| [Ansible Cheatsheet](articles/ansible-cheatsheet.md) | Playbooks, inventory, variables, roles, vault, templates, handlers, loops, and project layout. |
+| [Ansible Inventory Guide](articles/ansible-inventory-guide.md) | INI/YAML formats, groups, ranges, become, SSH, cloud, Windows, environments, and vault integration. |
+| [Ansible Run Command Modules](articles/ansible-shell-command-modules.md) | command vs shell vs raw vs script — when to use each, error handling, and idempotency patterns. |
+| [Ansible Sudo: Ubuntu vs RHEL](articles/ansible-sudo-ubuntu-vs-rhel.md) | Why become fails on RHEL — sudo/wheel groups, timestamp_timeout, passwordless setup, and mixed environments. |
+| [Ansible Vault: Storing Sudo Passwords](articles/ansible-vault-become-pass.md) | Step-by-step vault setup for become_pass — create, reference, directory layout, vault IDs, and troubleshooting. |
+
 ### Bash & Shell
 
 | Article | Description |
