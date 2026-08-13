@@ -101,12 +101,15 @@
   - [apt vs apt-get](articles/apt-vs-apt-get.md)
   - [DEBIAN_FRONTEND for Scripts](articles/debian-frontend-noninteractive.md)
   - [Linux File Permissions Guide](articles/linux-file-permissions.md)
+  - [/bin/false vs /sbin/nologin](articles/bin-false-vs-nologin.md)
+  - [Linux User Quotas](articles/linux-user-quotas.md)
   - [User Administration on RHEL](articles/user-administration.md)
   - [LDAP Client Configuration](articles/ldap-client-configuration.md)
   - [RHEL Releases Overview](articles/rhel-releases-overview.md)
   - [Timezone Configuration](articles/timezone-configuration.md)
   - [subscription-manager Cheatsheet](articles/subscription-manager-cheatsheet.md)
   - [RHEL Boot Modes and Troubleshooting](articles/rhel-boot-troubleshooting.md)
+  - [GRUB2 Cheatsheet](articles/grub-cheatsheet.md)
   - [initramfs vs initrd](articles/initramfs-vs-initrd.md)
   - [Rebuild initramfs in RHEL](articles/rebuild-initramfs-rhel.md)
   - [chroot Guide](articles/chroot-guide.md)
@@ -160,6 +163,7 @@
   - [XFS Internals: Superblock and Addressing](articles/xfs-internals-superblock.md)
   - [ext4 Journal Modes](articles/ext4-journal-modes.md)
   - [Extending Partitions with growpart](articles/growpart-extend-partitions.md)
+  - [Disk Health & Maintenance](articles/disk-health-maintenance.md)
 
 - Networking
   - [DNS Cheatsheet](articles/dns-cheatsheet.md)

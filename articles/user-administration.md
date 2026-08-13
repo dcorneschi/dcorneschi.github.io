@@ -501,3 +501,229 @@ update-crypto-policies --set FUTURE
 | SSH default key | RSA | RSA | RSA | ed25519 | ed25519 |
 | /usr Merge | No | No | Yes | Yes | Yes |
 | Crypto policies | No | No | Yes | Yes | Yes (stricter) |
+
+## Querying Users by UID Range
+
+```bash
+# Show all users with UID 1-499 (system users)
+awk -F: '$3 >= 1 && $3 <= 499 {printf "%-15s UID: %4d Shell: %s\n", $1, $3, $7}' /etc/passwd
+
+# Show regular users (UID 1000+)
+awk -F: '$3 >= 1000 {print $1 ": " $3}' /etc/passwd
+
+# System users with login shells (potential security issue)
+awk -F: '$3 < 1000 && $7 !~ /nologin|false/ {print $1, $3, $7}' /etc/passwd
+
+# Find users without home directories
+awk -F: '{if(system("test -d " $6) != 0) print $1 " - missing: " $6}' /etc/passwd
+
+# Check for duplicate UIDs
+awk -F: '{count[$3]++} END {for(uid in count) if(count[uid] > 1) print "UID " uid " used " count[uid] " times"}' /etc/passwd
+
+# Users not logged in for 30+ days
+lastlog -b 30
+
+# Users with no password set
+awk -F: '($2 == "" || $2 == "!") {print $1}' /etc/shadow
+```
+
+## Batch User Creation (Script Method)
+
+Alternative to `newusers` — create multiple users from a custom file:
+
+```bash
+# Format: username:UID:GID:comment:home:shell
+cat > users.txt << EOF
+appuser1:501:501:Application User 1:/opt/app1:/bin/bash
+appuser2:502:502:Application User 2:/opt/app2:/bin/bash
+dbuser:503:503:Database Service:/var/lib/db:/sbin/nologin
+EOF
+
+# Process the file
+while IFS=: read -r user uid gid comment home shell; do
+    sudo groupadd -g "$gid" "$user" 2>/dev/null
+    sudo useradd -u "$uid" -g "$gid" -c "$comment" -d "$home" -s "$shell" -m "$user"
+    echo "Created user: $user (UID: $uid)"
+done < users.txt
+```
+
+## Password Quality (pam_pwquality)
+
+Configure password complexity in `/etc/security/pwquality.conf`:
+
+```bash
+# RHEL 8+ / Ubuntu 20.04+
+sudo vi /etc/security/pwquality.conf
+
+# Key settings:
+minlen = 12          # Minimum password length
+minclass = 3         # Minimum number of character classes (upper, lower, digit, special)
+maxrepeat = 2        # Maximum consecutive identical characters
+dcredit = -1         # Require at least 1 digit
+ucredit = -1         # Require at least 1 uppercase
+lcredit = -1         # Require at least 1 lowercase
+ocredit = -1         # Require at least 1 special character
+```
+
+```bash
+# Install (Ubuntu)
+sudo apt install libpam-pwquality
+
+# Install (RHEL — included by default)
+sudo dnf install libpwquality
+```
+
+## User Quotas
+
+```bash
+# Enable quotas on a filesystem
+sudo mount -o remount,usrquota,grpquota /home
+
+# Or add to /etc/fstab:
+# /dev/sda2  /home  ext4  defaults,usrquota,grpquota  0  2
+
+# Initialize quota database
+sudo quotacheck -cum /home
+sudo quotaon /home
+
+# Set user quota (blocks: soft=1GB, hard=1.2GB; inodes: unlimited)
+sudo setquota -u username 1000000 1200000 0 0 /home
+
+# View user quota
+quota -u username
+sudo repquota /home
+
+# Edit quota interactively
+sudo edquota -u username
+
+# Set grace period for soft limits
+sudo edquota -t
+```
+
+## Auditing User Activity
+
+```bash
+# Check sudo access for a user
+sudo -l -U username
+
+# View login history
+last username
+lastlog -u username
+
+# View failed login attempts
+sudo grep "Failed password" /var/log/secure        # RHEL
+sudo grep "Failed password" /var/log/auth.log      # Ubuntu
+
+# Using auditd (RHEL)
+sudo aureport --auth                    # Authentication report
+sudo ausearch -ua username              # Search by user
+sudo ausearch -m USER_LOGIN             # Login events
+
+# Find files owned by a specific UID
+find / -uid 250 -ls 2>/dev/null
+
+# Find files with specific permissions (e.g., world-writable)
+find / -perm -o+w -type f 2>/dev/null
+
+# Check file details
+stat /path/to/file
+```
+
+## Service Account with systemd
+
+Create a proper service account with a matching systemd unit:
+
+```bash
+# Create service account
+sudo groupadd -g 300 webservice
+sudo useradd -r -u 300 -g webservice -s /sbin/nologin -M -c "Web Service Account" webservice
+
+# Set up directories
+sudo mkdir -p /opt/webservice
+sudo chown webservice:webservice /opt/webservice
+sudo chmod 750 /opt/webservice
+
+# Create systemd service running as the service user
+sudo tee /etc/systemd/system/webservice.service > /dev/null << EOF
+[Unit]
+Description=Web Service
+After=network.target
+
+[Service]
+Type=simple
+User=webservice
+Group=webservice
+WorkingDirectory=/opt/webservice
+ExecStart=/opt/webservice/start.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now webservice
+```
+
+## UID Migration
+
+Move a user to a different UID (e.g., from system range to regular):
+
+```bash
+OLD_UID=500
+NEW_UID=1500
+USERNAME="developer"
+
+# 1. Create user with new UID (or modify existing)
+sudo usermod -u $NEW_UID $USERNAME
+
+# 2. Update group if needed
+sudo groupmod -g $NEW_UID $USERNAME
+
+# 3. Fix file ownership across the system
+sudo find / -uid $OLD_UID -exec chown $NEW_UID {} \; 2>/dev/null
+sudo find / -gid $OLD_UID -exec chgrp $NEW_UID {} \; 2>/dev/null
+
+# 4. Fix home directory
+sudo chown -R $USERNAME:$USERNAME /home/$USERNAME
+```
+
+## User Audit Script
+
+```bash
+#!/bin/bash
+# user-audit.sh — comprehensive user account audit
+
+echo "=== User Audit Report $(date) ==="
+
+echo -e "\n--- System Users (UID 1-999) with Login Shells ---"
+awk -F: '$3 >= 1 && $3 < 1000 && $7 !~ /nologin|false/ {printf "%-15s UID:%-5d Shell:%s\n", $1, $3, $7}' /etc/passwd
+
+echo -e "\n--- Users with No Password Set ---"
+sudo awk -F: '($2 == "" || $2 == "!" || $2 == "!!") {print $1}' /etc/shadow
+
+echo -e "\n--- Users Not Logged In for 30+ Days ---"
+lastlog -b 30 | grep -v "Never logged in" | tail -n +2
+
+echo -e "\n--- Locked Accounts ---"
+sudo awk -F: '$2 ~ /^!/ && $3 >= 1000 {print $1}' /etc/shadow
+
+echo -e "\n--- Duplicate UIDs ---"
+awk -F: '{count[$3]++; users[$3]=users[$3] " " $1} END {for(uid in count) if(count[uid] > 1) print "UID " uid ":" users[uid]}' /etc/passwd
+
+echo -e "\n--- Users in sudo/wheel Group ---"
+getent group sudo wheel 2>/dev/null | cut -d: -f4
+```
+
+## Security Checklist
+
+- [ ] No system accounts (UID < 1000) have login shells (except root)
+- [ ] No accounts have empty passwords
+- [ ] Password aging is configured (`chage -l`)
+- [ ] Failed login lockout is enabled (faillock)
+- [ ] Unused accounts are locked or removed
+- [ ] Service accounts use `/sbin/nologin`
+- [ ] sudo access is limited and documented
+- [ ] Home directory permissions are 700 or 750
+- [ ] No duplicate UIDs exist
+- [ ] User quotas are set where appropriate

@@ -139,12 +139,15 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [apt vs apt-get](articles/apt-vs-apt-get.md) | When to use each — command mapping, behavioral differences, output stability, and scripting guidelines. |
 | [DEBIAN_FRONTEND for Scripts](articles/debian-frontend-noninteractive.md) | Non-interactive installs — debconf frontends, dpkg config options, preseeding, needrestart, Docker, and CI/CD patterns. |
 | [Linux File Permissions Guide](articles/linux-file-permissions.md) | Permissions, ownership, umask, SUID/SGID, sticky bit, and ACLs. |
+| [/bin/false vs /sbin/nologin](articles/bin-false-vs-nologin.md) | Login shell differences — behavior, custom messages, /etc/nologin, path variations, and when to use each. |
+| [Linux User Quotas](articles/linux-user-quotas.md) | Disk quotas — ext4/XFS setup, setquota, edquota, grace periods, project quotas, warnquota, and troubleshooting. |
 | [User Administration on RHEL](articles/user-administration.md) | User and group management — UIDs, password hashing, PAM, and chage. |
 | [LDAP Client Configuration](articles/ldap-client-configuration.md) | Configuring LDAP authentication on RHEL 5–10 and Ubuntu 22.04/24.04 — SSSD, authconfig, authselect, TLS, and Active Directory. |
 | [RHEL Releases Overview](articles/rhel-releases-overview.md) | RHEL major releases (2.1–10) — features, lifecycle, and upgrade paths. |
 | [Timezone Configuration](articles/timezone-configuration.md) | timedatectl, NTP, hardware clock, per-process TZ, cloud-init, Docker, and troubleshooting. |
 | [subscription-manager Cheatsheet](articles/subscription-manager-cheatsheet.md) | RHEL subscriptions — register, attach, repos, release lock, Satellite, SCA, and troubleshooting. |
 | [RHEL Boot Modes and Troubleshooting](articles/rhel-boot-troubleshooting.md) | Boot modes, rescue/emergency targets, and recovery techniques. |
+| [GRUB2 Cheatsheet](articles/grub-cheatsheet.md) | grubby, grub2-mkconfig, kernel args, default entry, password, BLS, serial console, and rescue. |
 | [initramfs vs initrd](articles/initramfs-vs-initrd.md) | Early boot filesystem — differences, dracut, update-initramfs, inspection, rebuild, and troubleshooting. |
 | [Rebuild initramfs in RHEL](articles/rebuild-initramfs-rhel.md) | Step-by-step rebuild across RHEL 3–10 — dracut, mkinitrd, rescue mode, backups, and verification. |
 | [chroot Guide](articles/chroot-guide.md) | Change root environment — system recovery, virtual mounts, LVM/LUKS rescue, package builds, and escape limitations. |
@@ -211,6 +214,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [XFS Internals: Superblock and Addressing](articles/xfs-internals-superblock.md) | XFS superblock structure, allocation groups, and block/inode addressing schemes. |
 | [ext4 Journal Modes](articles/ext4-journal-modes.md) | Journal modes (ordered, writeback, journal), configuration, commit intervals, and barriers. |
 | [Extending Partitions with growpart](articles/growpart-extend-partitions.md) | Extend partitions online on cloud/VM instances — AWS, Azure, GCP, LVM, and troubleshooting. |
+| [Disk Health & Maintenance](articles/disk-health-maintenance.md) | SMART monitoring, bad sectors, performance testing, secure wiping, disk cloning, SSD tuning, and emergency commands. |
 
 ### Networking
 
