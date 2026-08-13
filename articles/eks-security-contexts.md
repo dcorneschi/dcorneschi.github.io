@@ -105,29 +105,29 @@ At their core, container platforms are just orchestration layers on top of three
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                          Container Processes (user space)                            │
+│                          Container Processes (user space)                           │
 │                                                                                     │
-│  ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐              │
-│  │   Container A    │    │   Container B    │    │   Container C    │              │
-│  │  nginx (UID 101) │    │  python (UID 1000)│    │  java (UID 1001) │              │
-│  │  /var/www, eth0  │    │  /app, eth0      │    │  /opt/app, eth0  │              │
-│  └────────┬─────────┘    └────────┬─────────┘    └────────┬─────────┘              │
+│  ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐               │
+│  │   Container A    │    │   Container B    │    │   Container C    │               │
+│  │  nginx (UID 101) │    │ python (UID 1000)│    │  java (UID 1001) │               │
+│  │  /var/www, eth0  │    │  /app, eth0      │    │  /opt/app, eth0  │               │
+│  └────────┬─────────┘    └────────┬─────────┘    └────────┬─────────┘               │
 │           │                       │                       │                         │
 ├───────────┼───────────────────────┼───────────────────────┼─────────────────────────┤
 │           ▼                       ▼                       ▼                         │
 │  Control Groups (cgroups) — limit how much a process can consume                    │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────┐  │
-│  │CPU limit │ │Mem limit │ │I/O bw    │ │PIDs limit│ │Net class │ │Device access│  │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘ └────────────┘  │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────┐    │
+│  │CPU limit │ │Mem limit │ │I/O bw    │ │PIDs limit│ │Net class │ │Deviceaccess│    │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘ └────────────┘    │
 ├─────────────────────────────────────────────────────────────────────────────────────┤
 │  Namespaces — isolate what a process can see                                        │
-│  ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌──────┐ ┌───────┐ ┌──────┐            │
-│  │ PID │ │ NET │ │ MNT │ │ UTS │ │ IPC │ │ USER │ │CGROUP │ │ TIME │            │
-│  └─────┘ └─────┘ └─────┘ └─────┘ └─────┘ └──────┘ └───────┘ └──────┘            │
+│  ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌──────┐ ┌───────┐ ┌──────┐                │
+│  │ PID │ │ NET │ │ MNT │ │ UTS │ │ IPC │ │ USER │ │CGROUP │ │ TIME │                │
+│  └─────┘ └─────┘ └─────┘ └─────┘ └─────┘ └──────┘ └───────┘ └──────┘                │
 ├─────────────────────────────────────────────────────────────────────────────────────┤
 │  Syscall boundary (open, read, write, socket, clone, mount, ...)                    │
 ├─────────────────────────────────────────────────────────────────────────────────────┤
-│                              Linux Kernel                                            │
+│                              Linux Kernel                                           │
 │  Syscall Interface  │  VFS / Block Layer  │  Network Stack  │  Memory Management    │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 
@@ -169,30 +169,30 @@ From the container's perspective, the process is root. But from the host's persp
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                         UID Mapping: Host vs Container                               │
+│                         UID Mapping: Host vs Container                              │
 ├─────────────────────────────────┬───────────────────────────────────────────────────┤
 │                                 │                                                   │
 │  WITHOUT User Namespace         │  WITH User Namespace                              │
 │  (default behavior)             │  (UID remapping enabled)                          │
 │                                 │                                                   │
-│  ┌───────────────────────────┐  │  ┌───────────────────────────┐                   │
-│  │ Container                 │  │  │ Container                 │                   │
-│  │  app runs as UID 0       │  │  │  app runs as UID 0       │                   │
-│  │  (root inside)            │  │  │  (thinks it's root)       │                   │
-│  └─────────────┬─────────────┘  │  └─────────────┬─────────────┘                   │
-│                │                 │                │                                  │
-│                │ UID 0 = UID 0   │                │ UID 0 → UID 100000              │
-│                ▼                 │                ▼                                  │
-│  ┌───────────────────────────┐  │  ┌───────────────────────────┐                   │
-│  │ Host                      │  │  │ Host                      │                   │
-│  │  REAL ROOT on host!       │  │  │  Unprivileged user        │                   │
-│  │  ⚠ Container escape =    │  │  │  ✓ Container escape =     │                   │
-│  │    full host compromise   │  │  │    limited damage          │                   │
-│  └───────────────────────────┘  │  └───────────────────────────┘                   │
+│  ┌───────────────────────────┐  │  ┌───────────────────────────┐                    │
+│  │ Container                 │  │  │ Container                 │                    │
+│  │  app runs as UID 0        │  │  │  app runs as UID 0        │                    │
+│  │  (root inside)            │  │  │  (thinks it's root)       │                    │
+│  └─────────────┬─────────────┘  │  └─────────────┬─────────────┘                    │
+│                │                │                │                                  │
+│                │ UID 0 = UID 0  │                │ UID 0 → UID 100000               │
+│                ▼                │                ▼                                  │
+│  ┌───────────────────────────┐  │  ┌───────────────────────────┐                    │
+│  │ Host                      │  │  │ Host                      │                    │
+│  │  REAL ROOT on host!       │  │  │  Unprivileged user        │                    │
+│  │  ⚠ Container escape =     │  │  │  ✓ Container escape =     │                    │
+│  │    full host compromise   │  │  │    limited damage         │                    │ 
+│  └───────────────────────────┘  │  └───────────────────────────┘                    │
 │                                 │                                                   │
 ├─────────────────────────────────┴───────────────────────────────────────────────────┤
 │                                                                                     │
-│  Kubernetes securityContext settings:                                                │
+│  Kubernetes securityContext settings:                                               │
 │                                                                                     │
 │    runAsUser: 1000        → Forces specific non-root UID                            │
 │    runAsNonRoot: true     → Blocks UID 0 at admission time                          │
@@ -318,7 +318,7 @@ Linux Capabilities: From Privileged to Fully Locked Down
   │              │  │KILL, MKNOD   │  │              │  │              │  │            │
   │              │  │FOWNER, FSETID│  │              │  │              │  │            │
   ├──────────────┤  ├──────────────┤  ├──────────────┤  ├──────────────┤  ├────────────┤
-  │ ⚠ NEVER use │  │ Too many for │  │ Right-sized  │  │ Most apps    │  │ PSS        │
+  │ ⚠ NEVER use  │  │ Too many for │  │ Right-sized  │  │ Most apps    │  │ PSS        │
   │ unless CNI/  │  │ most apps    │  │ privileges   │  │ work here    │  │ Restricted │
   │ storage drv  │  │              │  │              │  │              │  │            │
   └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘  └────────────┘
@@ -1296,7 +1296,7 @@ Each layer blocks a different class of attack. An attacker must bypass ALL of th
 │ Blocks: visibility into other containers, resource exhaustion                       │
 └─────────────────────────────────────────────────────────────────────────────────────┘
        ▲                                                                        ▲
-       │                    attacker must breach ALL layers                      │
+       │                    attacker must breach ALL layers                     │
   CLUSTER-WIDE                                                            PER-CONTAINER
   (admission)                                                            (kernel-level)
 ```
