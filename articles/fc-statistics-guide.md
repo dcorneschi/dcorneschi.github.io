@@ -402,6 +402,69 @@ If errors persist after reseating cables and cleaning connectors:
 | `/sys/class/fc_remote_ports/rport-H:B-R/dev_loss_tmo` | Seconds before device removal |
 | `/sys/class/fc_remote_ports/rport-H:B-R/fast_io_fail_tmo` | Seconds before I/O fails |
 
+## Temporarily Disable/Enable an HBA Port
+
+You can unbind and rebind a PCI device (HBA or NIC) from its driver without rebooting. This is useful for isolating a faulty port during troubleshooting or forcing a full driver re-initialization.
+
+```bash
+# 1. Identify the PCI device and its driver
+lspci -v | grep -A2 "Fibre Channel"
+#   86:00.0 Fibre Channel: Emulex Corporation ...
+#           Kernel driver in use: lpfc
+
+# Or use sysfs
+basename $(readlink -f /sys/class/fc_host/host0/device/driver)
+# lpfc
+
+# 2. Get the full PCI address (domain:bus:device.function)
+# From lspci output, prefix with domain (usually 0000:)
+# Example: 86:00.0 → 0000:86:00.0
+
+# 3. Unbind the port from its driver (disables it)
+echo "0000:86:00.0" > /sys/bus/pci/drivers/lpfc/unbind
+
+# 4. Rebind the port (re-enables it)
+echo "0000:86:00.0" > /sys/bus/pci/drivers/lpfc/bind
+```
+
+> **Warning:** Ensure no active I/O or mounted filesystems depend on paths through this port before unbinding. If using multipath, verify other paths are active first.
+
+### Find PCI Address for an FC Host
+
+```bash
+# Map fc_host to PCI address
+readlink /sys/class/fc_host/host0/device
+# ../../0000:86:00.0
+
+# Or extract just the PCI address
+basename $(readlink /sys/class/fc_host/host0/device/device 2>/dev/null) 2>/dev/null
+# If that doesn't work, parse from the device path:
+readlink -f /sys/class/fc_host/host0/device | grep -oP '\d{4}:\d{2}:\d{2}\.\d'
+
+# Show all FC HBAs with their PCI addresses and drivers
+for host in /sys/class/fc_host/host*; do
+    hname=$(basename "$host")
+    pci=$(basename $(readlink "$host/device") 2>/dev/null)
+    drv=$(basename $(readlink -f "$host/device/driver") 2>/dev/null)
+    echo "$hname  PCI=$pci  Driver=$drv"
+done
+```
+
+### Same Technique for NICs
+
+```bash
+# Find NIC driver and PCI address
+ethtool -i eth0 | grep -E "driver|bus-info"
+#   driver: ixgbe
+#   bus-info: 0000:03:00.0
+
+# Unbind
+echo "0000:03:00.0" > /sys/bus/pci/drivers/ixgbe/unbind
+
+# Rebind
+echo "0000:03:00.0" > /sys/bus/pci/drivers/ixgbe/bind
+```
+
 ## Best Practices
 
 1. **Baseline after fresh boot** — record all counters shortly after boot as your reference point
