@@ -85,6 +85,10 @@
 - Linux System Administration
   - [systemd Cheatsheet](articles/systemd-cheatsheet.md)
   - [journalctl Cheatsheet](articles/journalctl-cheatsheet.md)
+  - [dpkg Cheatsheet](articles/dpkg-cheatsheet.md)
+  - [apt Cheatsheet](articles/apt-cheatsheet.md)
+  - [apt vs apt-get](articles/apt-vs-apt-get.md)
+  - [DEBIAN_FRONTEND for Scripts](articles/debian-frontend-noninteractive.md)
   - [Linux File Permissions Guide](articles/linux-file-permissions.md)
   - [User Administration on RHEL](articles/user-administration.md)
   - [LDAP Client Configuration](articles/ldap-client-configuration.md)
