@@ -922,7 +922,7 @@ Security Context Decision Flowchart
 ════════════════════════════════════
 
                     ┌─────────────────────┐
-                    │  New Pod Deployment  │
+                    │  New Pod Deployment │
                     └──────────┬──────────┘
                                │
                                ▼
