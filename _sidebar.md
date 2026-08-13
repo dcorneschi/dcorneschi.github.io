@@ -38,6 +38,7 @@
   - [Securing Kubernetes Containers: Security Contexts](articles/eks-security-contexts.md)
 
 - Virtualization
+  - [Vagrant Cheatsheet](articles/vagrant-cheatsheet.md)
   - [Installing KVM](articles/kvm-installation.md)
   - [KVM / virsh Cheatsheet](articles/kvm-cheatsheet.md)
   - [Adding a New Disk in KVM](articles/kvm-add-disk.md)
