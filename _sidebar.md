@@ -54,6 +54,7 @@
 
 - Terraform
   - [Terraform Cheatsheet](articles/terraform-cheatsheet.md)
+  - [Packer Cheatsheet](articles/packer-cheatsheet.md)
   - [terraform.tfstate vs .terraform/terraform.tfstate](articles/terraform-tfstate-vs-terraform-directory-state.md)
   - [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md)
   - [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md)

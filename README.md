@@ -83,6 +83,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | Article | Description |
 |---------|--------------|
 | [Terraform Cheatsheet](articles/terraform-cheatsheet.md) | IaC tool — core commands, state management, and workspaces. |
+| [Packer Cheatsheet](articles/packer-cheatsheet.md) | Machine image builder — install, HCL2 templates, builders (AWS, Proxmox, QEMU, Docker), provisioners, post-processors, data sources, and CI/CD patterns. |
 | [terraform.tfstate vs .terraform/terraform.tfstate](articles/terraform-tfstate-vs-terraform-directory-state.md) | Difference between `terraform.tfstate` and `.terraform/terraform.tfstate`. |
 | [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md) | How `terraform init -upgrade` works with version constraints. |
 | [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md) | Difference between `terraform get -update` and `terraform init -upgrade`. |
