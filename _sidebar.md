@@ -71,6 +71,7 @@
 
 - Bash & Shell
   - [bash Cheatsheet](articles/bash-cheatsheet.md)
+  - [Korn Shell (ksh) Cheatsheet](articles/ksh-cheatsheet.md)
   - [Bash Essentials Guide](articles/bash-essentials-guide.md)
   - [Bash Pipelines and Redirections](articles/bash-redirection-operators.md)
   - [Bash History Guide](articles/bash-history-guide.md)

@@ -103,6 +103,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | Article | Description |
 |---------|--------------|
 | [bash Cheatsheet](articles/bash-cheatsheet.md) | GNU Bourne Again SHell — quoting, escaping, variables, loops, and built-ins. |
+| [Korn Shell (ksh) Cheatsheet](articles/ksh-cheatsheet.md) | ksh88/ksh93 — history (fc/r), editing modes, variables, arrays, functions, and differences from bash. |
 | [Bash Essentials Guide](articles/bash-essentials-guide.md) | Shell sessions, environment variables, quoting, history, prompt customization, and shortcuts. |
 | [Bash Pipelines and Redirections](articles/bash-redirection-operators.md) | File descriptors, redirection operators, pipes, here-documents, process substitution, custom file descriptors, and advanced techniques. |
 | [Bash History Guide](articles/bash-history-guide.md) | Command history — event designators, word designators, modifiers, Ctrl+R search, fc, configuration, and sharing across sessions. |

@@ -564,6 +564,25 @@ sudo apt-mark hold package-name
 # Find packages with security updates available
 apt list --upgradeable 2>/dev/null | grep -i security
 
+# Show all versions of upgradeable packages
+apt list --upgradeable -a
+
+# Filter upgradeable by security and updates repos
+apt list --upgradeable 2>/dev/null | grep -E "(security|updates)"
+
+# Check which security repositories are configured
+apt-cache policy | grep -A1 security
+
+# View security-related changelog entries for a package
+apt-get changelog package-name | grep -i security
+
+# Search for packages with security updates (aptitude)
+aptitude search '~U~Asecurity'
+
+# Show upgradeable packages with versions (requires apt-show-versions)
+sudo apt install apt-show-versions
+apt-show-versions -u
+
 # Count installed packages
 apt list --installed 2>/dev/null | wc -l
 
