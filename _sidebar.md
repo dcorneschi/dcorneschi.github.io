@@ -37,6 +37,7 @@
   - [JMESPath Query Guide](articles/aws-jmespath-guide.md)
   - [EKS Authentication Modes: ConfigMap vs Access Entries](articles/eks-authentication-modes.md)
   - [Securing Kubernetes Containers: Security Contexts](articles/eks-security-contexts.md)
+  - [EKS Node Groups: With and Without Launch Templates](articles/eks-nodegroups-launch-templates.md)
 
 - Virtualization
   - [Vagrant Cheatsheet](articles/vagrant-cheatsheet.md)
