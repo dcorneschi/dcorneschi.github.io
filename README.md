@@ -128,6 +128,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [User Administration on RHEL](articles/user-administration.md) | User and group management — UIDs, password hashing, PAM, and chage. |
 | [LDAP Client Configuration](articles/ldap-client-configuration.md) | Configuring LDAP authentication on RHEL 5–10 and Ubuntu 22.04/24.04 — SSSD, authconfig, authselect, TLS, and Active Directory. |
 | [RHEL Releases Overview](articles/rhel-releases-overview.md) | RHEL major releases (2.1–10) — features, lifecycle, and upgrade paths. |
+| [Timezone Configuration](articles/timezone-configuration.md) | timedatectl, NTP, hardware clock, per-process TZ, cloud-init, Docker, and troubleshooting. |
 | [RHEL Boot Modes and Troubleshooting](articles/rhel-boot-troubleshooting.md) | Boot modes, rescue/emergency targets, and recovery techniques. |
 | [Linux Kernel Panics](articles/linux-kernel-panics.md) | Hard panics (Aieee!) and soft panics (Oops) — causes, interpretation, kdump, crash analysis, and prevention. |
 | [Why Processes in D State Can't Be Killed](articles/linux-processes-d-state.md) | Uninterruptible sleep explained — why kill -9 fails, diagnosing stuck processes, NFS hangs, and TASK_KILLABLE. |

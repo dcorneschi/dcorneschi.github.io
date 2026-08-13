@@ -93,6 +93,7 @@
   - [User Administration on RHEL](articles/user-administration.md)
   - [LDAP Client Configuration](articles/ldap-client-configuration.md)
   - [RHEL Releases Overview](articles/rhel-releases-overview.md)
+  - [Timezone Configuration](articles/timezone-configuration.md)
   - [RHEL Boot Modes and Troubleshooting](articles/rhel-boot-troubleshooting.md)
   - [Linux Kernel Panics](articles/linux-kernel-panics.md)
   - [Why Processes in D State Can't Be Killed](articles/linux-processes-d-state.md)
