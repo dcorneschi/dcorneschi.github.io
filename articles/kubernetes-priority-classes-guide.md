@@ -264,7 +264,7 @@ Scheduler evaluates nodes:
 ```
 
 
-## The `preemptionPolicy` Field
+## The preemptionPolicy Field
 
 Two options:
 
@@ -288,7 +288,7 @@ description: "Important batch jobs that should not preempt production workloads"
 ```
 
 
-## The `globalDefault` Field
+## The globalDefault Field
 
 Setting `globalDefault: true` on a PriorityClass makes it the default for all Pods that don't specify a `priorityClassName`. Only one PriorityClass can be the global default.
 
@@ -328,7 +328,7 @@ If your monitoring stack (Prometheus, Grafana) doesn't have a high PriorityClass
 
 If everything is `production-high`, nothing is. The scheduler can't make meaningful preemption decisions when all pods have equal priority.
 
-### 4. Not using `preemptionPolicy: Never` for batch
+### 4. Not using preemptionPolicy: Never for batch
 
 Batch jobs with `PreemptLowerPriority` will evict your lower-priority running services. Unless the batch job is truly more important than the running service, use `Never`.
 
@@ -392,7 +392,7 @@ These are two separate mechanisms:
 
 A `Guaranteed` pod with low priority won't be preempted by kubelet eviction before a `BestEffort` pod, but it *will* be preempted by the scheduler if a higher-priority pod needs the resources.
 
-### 8. Ignoring `nominatedNodeName` behavior
+### 8. Ignoring nominatedNodeName behavior
 
 When a pod triggers preemption, its `status.nominatedNodeName` is set to the target node. However, the pod is **not guaranteed** to land on that node:
 
