@@ -18,6 +18,7 @@
   - [Helm Cheatsheet](articles/helm-cheatsheet.md)
   - [crictl Cheatsheet](articles/crictl-cheatsheet.md)
   - [Kubernetes Schema Validation](articles/kubernetes-schema-validation.md)
+  - [Kubernetes Pod Anti-Affinity](articles/kubernetes-pod-anti-affinity.md)
   - [k9s Cheatsheet](articles/k9s-cheatsheet.md)
 
 - Docker
