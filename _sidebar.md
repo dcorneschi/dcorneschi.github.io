@@ -31,14 +31,20 @@
 
 - AWS
   - [AWS CLI Installation](articles/aws-cli-install.md)
+  - [aws configure Cheatsheet](articles/aws-configure-cheatsheet.md)
   - [EC2 Cheatsheet](articles/aws-ec2-cheatsheet.md)
   - [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md)
   - [EC2 fstab: Why Device Names Change on Nitro](articles/aws-ec2-fstab-labels.md)
   - [Installing SSM Agent](articles/aws-ssm-agent-install.md)
   - [JMESPath Query Guide](articles/aws-jmespath-guide.md)
   - [EKS Authentication Modes: ConfigMap vs Access Entries](articles/eks-authentication-modes.md)
+  - [EKS Access Entries Guide](articles/eks-access-entries.md)
+  - [EKS aws-auth ConfigMap Guide](articles/eks-aws-auth-configmap.md)
   - [Securing Kubernetes Containers: Security Contexts](articles/eks-security-contexts.md)
   - [EKS Node Groups: With and Without Launch Templates](articles/eks-nodegroups-launch-templates.md)
+
+- Azure
+  - [Azure VM Instance Types & Free Tier](articles/azure-vm-instance-types-free-tier.md)
 
 - Virtualization
   - [Vagrant Cheatsheet](articles/vagrant-cheatsheet.md)
@@ -195,6 +201,7 @@
   - [Datadog Monitor Notification Variables](articles/datadog-monitor-notification-variables.md)
   - [Datadog Monitor Tagging Best Practices](articles/datadog-monitor-tagging-best-practices.md)
   - [Datadog Monitors Tips & Tricks](articles/datadog-monitors-tips-and-tricks.md)
+  - [Datadog Monitor Scoping](articles/datadog-monitor-scoping.md)
   - [Monitoring Apache Web Server Performance](articles/monitoring-apache-performance.md)
 
 - Terminal & Tools
