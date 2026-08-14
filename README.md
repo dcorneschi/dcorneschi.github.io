@@ -36,6 +36,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [crictl Cheatsheet](articles/crictl-cheatsheet.md) | CLI for inspecting and debugging container runtimes at the CRI level. |
 | [Kubernetes Schema Validation](articles/kubernetes-schema-validation.md) | Validating K8s manifests — yamllint, kubeconform, kubectl dry-run (client vs server), pluto, and CI/CD strategies. |
 | [k9s Cheatsheet](articles/k9s-cheatsheet.md) | Terminal UI for navigating and managing Kubernetes clusters. |
+| [Node Selectors in Kubernetes](articles/kubernetes-node-selectors.md) | nodeSelector, node affinity, built-in labels, taints, scheduling constraints, and combining strategies. |
+| [Kubernetes Scheduling Deep Dive](articles/kubernetes-scheduling-deep-dive.md) | Full scheduling pipeline — filtering, scoring, preemption, PriorityClasses, topology spread, QoS, NUMA, PDBs, and debugging. |
 
 ### Docker
 
