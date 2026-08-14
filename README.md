@@ -56,6 +56,9 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [EC2 Cheatsheet](articles/aws-ec2-cheatsheet.md) | AWS EC2 — instances, AMIs, security groups, EBS, Elastic IPs, metadata, and CLI patterns. |
 | [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md) | Resize EBS volumes and grow filesystems (XFS, ext4, LVM) — no downtime required. |
 | [EC2 Instance Metadata Service (IMDS)](articles/aws-ec2-metadata.md) | IMDS endpoint, IMDSv1 vs IMDSv2, ec2-metadata script, IAM credentials, tags, spot notices, and configuration. |
+| [EC2 vs ELB Health Checks](articles/aws-ec2-vs-elb-health-checks.md) | EC2 status checks vs ELB health checks — what each monitors, how they interact with Auto Scaling, and self-healing patterns. |
+| [EBS Cheatsheet](articles/aws-ebs-cheatsheet.md) | EBS volume types, create/attach/resize, snapshots, DLM lifecycle policies, encryption, multi-attach, performance tuning, and monitoring. |
+| [Unattached EBS Volumes: Detection and Monitoring](articles/aws-ebs-unattached-volumes.md) | Finding orphaned volumes, cost estimation, safe cleanup workflow, CloudWatch idle detection, AWS Config rules, Lambda automation, and prevention. |
 | [EC2 fstab: Why Device Names Change on Nitro](articles/aws-ec2-fstab-labels.md) | NVMe device reordering, using LABEL/UUID in fstab, cloud-init provisioning, and instance store volumes. |
 | [Installing SSM Agent](articles/aws-ssm-agent-install.md) | Install and configure SSM Agent on RHEL, Ubuntu — Session Manager, VPC endpoints, and SSH over SSM. |
 | [JMESPath Query Guide](articles/aws-jmespath-guide.md) | JMESPath query language for AWS CLI — filtering, sorting, functions, and real-world examples. |
