@@ -864,6 +864,146 @@ EKS can assign individual security groups to pods (not just nodes):
 | Slow `kubectl` | API server under load | Check inflight requests, enable APF |
 | Cluster upgrade stuck | Webhook blocking API server | Check ValidatingWebhookConfigurations |
 
+## EKS Auto Mode
+
+EKS Auto Mode (2024+) is a fully managed data plane where AWS manages nodes, scaling, and updates — similar to GKE Autopilot:
+
+| Feature | Standard Mode | Auto Mode |
+|---------|--------------|-----------|
+| Node management | You (node groups, ASGs) | AWS |
+| Scaling | Karpenter or CA (you deploy) | Built-in (Karpenter-based) |
+| AMI updates | You trigger rolling updates | Automatic |
+| OS patching | You manage | AWS manages |
+| Billing | EC2 per-instance | Per-pod compute charges |
+| GPU support | Yes | Yes |
+| DaemonSets | Yes | Limited |
+| Privileged containers | Yes | Restricted |
+
+```sh
+# Create an Auto Mode cluster
+aws eks create-cluster --name my-cluster \
+  --compute-config enabled=true,nodePools=["general-purpose","system"] \
+  --kubernetes-network-config elasticLoadBalancing=enabled \
+  --storage-config blockStorage=enabled
+
+# Or enable on existing cluster
+aws eks update-cluster-config --name <cluster> \
+  --compute-config enabled=true
+```
+
+Auto Mode is best for teams that want minimal operational burden and are willing to accept restrictions on workload types (similar to Fargate but with more flexibility).
+
+## Karpenter vs Cluster Autoscaler
+
+Both solve node scaling, but they work fundamentally differently:
+
+| Feature | Cluster Autoscaler (CA) | Karpenter |
+|---------|------------------------|-----------|
+| Scaling unit | Node Group (ASG) | Individual nodes |
+| Instance selection | Fixed per node group | Dynamic (picks optimal from all types) |
+| Scaling speed | 2-5 minutes (ASG scale-out) | 30-60 seconds (direct EC2 API) |
+| Consolidation | No (only scale-down of empty nodes) | Yes (replaces underutilized nodes) |
+| Spot management | Per node group | Automatic mixed (spot + on-demand) |
+| Disruption handling | Basic (respects PDB) | Advanced (drift, consolidation, expiry) |
+| Configuration | Per-ASG annotations | NodePool + EC2NodeClass CRDs |
+| Multi-AZ awareness | Via ASG config | Built-in topology spread |
+| GPU/accelerator | Separate node groups | Dynamic provisioning based on pod requests |
+| Maintained by | Kubernetes SIG | AWS (open source) |
+
+### When to Use Each
+
+**Use Cluster Autoscaler when:**
+- Simple, predictable workloads with few instance types
+- You need node groups for organizational reasons (teams, environments)
+- You're on AKS or GKE (Karpenter is EKS-only currently)
+
+**Use Karpenter when:**
+- You want fastest possible scaling (sub-minute)
+- Mixed instance types and Spot optimization matter
+- Workloads have diverse resource requirements (GPU, high-memory, ARM)
+- You want automatic bin-packing and cost optimization
+- You're running on EKS
+
+### Karpenter Quick Start
+
+```sh
+# Install Karpenter (Helm)
+helm install karpenter oci://public.ecr.aws/karpenter/karpenter \
+  --namespace kube-system \
+  --set clusterName=<cluster> \
+  --set clusterEndpoint=$(aws eks describe-cluster --name <cluster> --query "cluster.endpoint" --output text)
+```
+
+```yaml
+# NodePool: what Karpenter can provision
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: default
+spec:
+  template:
+    spec:
+      requirements:
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["on-demand", "spot"]
+        - key: node.kubernetes.io/instance-type
+          operator: In
+          values: ["m5.large", "m5.xlarge", "m5.2xlarge", "c5.large", "c5.xlarge"]
+        - key: topology.kubernetes.io/zone
+          operator: In
+          values: ["us-east-1a", "us-east-1b", "us-east-1c"]
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        name: default
+  limits:
+    cpu: "1000"
+    memory: 1000Gi
+  disruption:
+    consolidationPolicy: WhenEmptyOrUnderutilized
+    consolidateAfter: 1m
+---
+# EC2NodeClass: how nodes are configured
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: default
+spec:
+  amiSelectorTerms:
+    - alias: al2023@latest
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: <cluster>
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: <cluster>
+  role: KarpenterNodeRole-<cluster>
+```
+
+### Karpenter vs CA: Scaling Timeline
+
+```
+Pod goes Pending:
+
+Cluster Autoscaler:
+  T+0s   Pod pending
+  T+30s  CA detects pending pod (scan interval)
+  T+35s  CA decides to scale ASG
+  T+40s  ASG launches instance
+  T+120s Instance boots, joins cluster
+  T+150s Pod scheduled
+  Total: ~2.5 minutes
+
+Karpenter:
+  T+0s   Pod pending
+  T+1s   Karpenter detects pending pod (immediate watch)
+  T+2s   Karpenter calls EC2 RunInstances directly
+  T+60s  Instance boots, joins cluster
+  T+65s  Pod scheduled
+  Total: ~1 minute
+```
+
 ## Limits to Be Aware Of
 
 ### Hard Limits
