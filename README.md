@@ -216,6 +216,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [XFS Internals: Superblock and Addressing](articles/xfs-internals-superblock.md) | XFS superblock structure, allocation groups, and block/inode addressing schemes. |
 | [ext4 Journal Modes](articles/ext4-journal-modes.md) | Journal modes (ordered, writeback, journal), configuration, commit intervals, and barriers. |
 | [Extending Partitions with growpart](articles/growpart-extend-partitions.md) | Extend partitions online on cloud/VM instances — AWS, Azure, GCP, LVM, and troubleshooting. |
+| [Extend a SAN LUN Online with Multipath and GFS2](articles/linux-extend-lun-multipath-gfs2.md) | Expanding a SAN-attached LUN on a Linux cluster — SCSI rescan, multipath resize, LVM extend, and GFS2 grow without downtime. |
+| [GFS2 & RHEL Cluster Cheatsheet](articles/gfs2-cluster-cheatsheet.md) | GFS2 and RHEL cluster management — cman, ccs, fencing, DLM, service management, filesystem operations, and troubleshooting. |
 | [Disk Health & Maintenance](articles/disk-health-maintenance.md) | SMART monitoring, bad sectors, performance testing, secure wiping, disk cloning, SSD tuning, and emergency commands. |
 
 ### Networking

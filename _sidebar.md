@@ -172,6 +172,8 @@
   - [XFS Internals: Superblock and Addressing](articles/xfs-internals-superblock.md)
   - [ext4 Journal Modes](articles/ext4-journal-modes.md)
   - [Extending Partitions with growpart](articles/growpart-extend-partitions.md)
+  - [Extend a SAN LUN Online with Multipath and GFS2](articles/linux-extend-lun-multipath-gfs2.md)
+  - [GFS2 & RHEL Cluster Cheatsheet](articles/gfs2-cluster-cheatsheet.md)
   - [Disk Health & Maintenance](articles/disk-health-maintenance.md)
 
 - Networking
