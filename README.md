@@ -111,7 +111,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Ansible Sudo: Ubuntu vs RHEL](articles/ansible-sudo-ubuntu-vs-rhel.md) | Why become fails on RHEL — sudo/wheel groups, timestamp_timeout, passwordless setup, and mixed environments. |
 | [Ansible Vault: Storing Sudo Passwords](articles/ansible-vault-become-pass.md) | Step-by-step vault setup for become_pass — create, reference, directory layout, vault IDs, and troubleshooting. |
 
-### Bash & Shell
+### Bash and Shell
 
 | Article | Description |
 |---------|--------------|
@@ -162,7 +162,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux ulimit Guide](articles/linux-ulimit-guide.md) | Per-process resource limits, limits.conf, systemd directives, sysctl, and troubleshooting. |
 | [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) | Remove and prevent .DS_Store files from being tracked in git. |
 
-### Satellite & Foreman
+### Satellite and Foreman
 
 | Article | Description |
 |---------|--------------|
@@ -173,7 +173,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Content Views and Activation Keys Strategy](articles/foreman-content-views-activation-keys.md) | Designing CVs, CCVs, and activation keys — one CV per product, composing with multiple AKs, and update workflows. |
 | [Registering Hosts in Foreman](articles/foreman-host-registration.md) | Registering RHEL and Ubuntu hosts — global registration, subscription-manager, activation keys, capsules, and troubleshooting. |
 
-### Linux Performance & I/O
+### Linux Performance and IO
 
 | Article | Description |
 |---------|--------------|
@@ -198,7 +198,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux Memory: RSS, VSZ, and Why RSS Alone Is Misleading](articles/linux-memory-rss-vsz.md) | Virtual memory, RSS vs VSZ, shared pages, and accurate memory measurement. |
 | [Linux Swap Usage: When Processes Aren't the Culprit](articles/linux-swap-shm-segments.md) | Why per-process swap doesn't add up — SHM segments, `/proc/sysvipc/shm`, and Oracle SGA. |
 
-### Linux Storage & Filesystems
+### Linux Storage and Filesystems
 
 | Article | Description |
 |---------|--------------|
@@ -258,7 +258,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Datadog Monitors Tips & Tricks](articles/datadog-monitors-tips-and-tricks.md) | Hidden settings, anti-flapping, noise reduction, formulas, composite monitors, notification tricks, and API-only options. |
 | [Monitoring Apache Web Server Performance](articles/monitoring-apache-performance.md) | Apache metrics, MPM internals, mod_status, Datadog integration, log collection, and dashboard setup. |
 
-### Terminal & Tools
+### Terminal and Tools
 
 | Article | Description |
 |---------|--------------|
