@@ -105,6 +105,31 @@ scp guestvm1.ova root@kvm-host:/var/tmp/
 
 > **Note:** `.ova` files are uncompressed `.tar` archives. You can inspect their content with `tar tf guestvm1.ova`.
 
+### Export from ESXi Web UI
+
+If exporting directly from the ESXi host interface:
+
+1. Go to **Virtual Machines** → select the VM → **Actions** → **Export**
+2. This downloads an `.ovf` file and one or more `.vmdk` files
+3. Copy both files to the KVM server
+4. Create an OVA archive from the exported files:
+
+```sh
+tar -cvf vm03.ova vm03.ovf disk-1.vmdk
+```
+
+### Define a Libvirt Pool for Converted VMs
+
+Create a dedicated storage pool for converted machines:
+
+```sh
+mkdir -p /kvm-pool/esx
+virsh pool-define-as ESX --type dir --target /kvm-pool/esx
+virsh pool-start ESX
+virsh pool-autostart ESX
+virsh pool-list
+```
+
 ### Convert the OVA
 
 ```bash
@@ -113,6 +138,35 @@ virt-v2v -i ova /var/tmp/guestvm1.ova -of qcow2
 
 # Convert from OVF folder (exported as "Folder of files")
 virt-v2v -i ova /path/to/ovf-folder/ -of qcow2
+
+# Convert and output to a specific libvirt pool
+virt-v2v -i ova vm03.ova -o libvirt -of qcow2 -os ESX
+```
+
+Example output:
+
+```
+[   0.0] Opening the source -i ova vm03.ova
+virt-v2v: warning: making OVA directory public readable to work around
+libvirt bug https://bugzilla.redhat.com/1045069
+[  66.7] Creating an overlay to protect the source from being modified
+[  67.0] Opening the overlay
+[  71.3] Inspecting the overlay
+[  86.2] Checking for sufficient free disk space in the guest
+[  86.2] Estimating space required on target for each disk
+[  86.2] Converting CentOS release 6.10 (Final) to run on KVM
+virt-v2v: This guest has virtio drivers installed.
+[ 140.6] Mapping filesystem data to avoid copying unused and blank areas
+[ 141.0] Closing the overlay
+[ 141.3] Assigning disks to buses
+[ 141.3] Checking if the guest needs BIOS or UEFI to boot
+[ 141.3] Initializing the target -o libvirt -os ESX
+[ 141.3] Copying disk 1/1 to /kvm-pool/esx/vm03-sda (qcow2)
+(100.00/100%)
+[ 319.2] Creating output metadata
+Pool ESX refreshed
+Domain vm03 defined from /tmp/v2vlibvirta2d6b9.xml
+[ 319.3] Finishing off
 ```
 
 ### For Windows VMs (Requires virtio-win)
@@ -129,9 +183,188 @@ The `virtio-win` package provides Windows VirtIO drivers that are injected durin
 
 ## Converting from VMware via SSH (ESXi Direct)
 
-```bash
-# Connect directly to ESXi host via SSH
-virt-v2v -ic esx://root@esxi.example.com "guestvm1" -ip /tmp/esxi-pass
+When you don't have vCenter and need to connect directly to an ESXi host, there are two methods:
+
+### Method 1: SSH to VMX File (No Proprietary Software)
+
+This uses SSH to access the VMX and VMDK files directly on the ESXi datastore:
+
+```sh
+# Import using SSH transport (recommended for ESXi without vCenter)
+virt-v2v -i vmx -it ssh \
+  -ip /tmp/esxi-pass \
+  "ssh://root@esxi.example.com/vmfs/volumes/datastore1/guestvm1/guestvm1.vmx"
+
+# Output to a specific directory
+virt-v2v -i vmx -it ssh \
+  -ip /tmp/esxi-pass \
+  "ssh://root@esxi.example.com/vmfs/volumes/datastore1/guestvm1/guestvm1.vmx" \
+  -o local -os /var/lib/libvirt/images/
+```
+
+> **Note:** The SSH method does not work with guests that have snapshots. Collapse snapshots first or use the VDDK method.
+
+### Method 2: VDDK Library (Fastest, Proprietary)
+
+If you have VMware's VDDK (VixDiskLib), this is the fastest method:
+
+```sh
+# Using VDDK with ESXi direct
+virt-v2v \
+  -ic "esx://root@esxi.example.com?no_verify=1" \
+  -it vddk \
+  -io vddk-libdir=/path/to/vmware-vix-disklib-distrib \
+  -ip /tmp/esxi-pass \
+  "guestvm1" \
+  -o local -os /var/lib/libvirt/images/
+
+# Using VDDK with vCenter
+virt-v2v \
+  -ic "vpx://root@vcenter.example.com/Datacenter/esxi?no_verify=1" \
+  -it vddk \
+  -io vddk-libdir=/path/to/vmware-vix-disklib-distrib \
+  -ip /tmp/esxi-pass \
+  "guestvm1" \
+  -o local -os /var/lib/libvirt/images/
+```
+
+### ESXi Direct Methods: Comparison
+
+| Method | URI | Speed | Requirements |
+|--------|-----|-------|--------------|
+| `-i vmx -it ssh` | `ssh://root@esxi/vmfs/...` | Medium | SSH access, no snapshots |
+| `-ic esx:// -it vddk` | `esx://root@esxi` | Fast | VDDK library (proprietary) |
+| `-ic vpx://` (vCenter) | `vpx://user@vcenter/DC/esxi` | Slow | vCenter ≥ 5.0 |
+| `-i ova` | Local file | Medium | OVA export from VMware |
+
+### ESXi Direct: Prerequisites
+
+- SSH must be enabled on the ESXi host (Host → Manage → Services → SSH → Start)
+- The VM must be powered off
+- The user must have access to the datastore containing the VM's disks
+- Port 443 (HTTPS) and port 22 (SSH) must be open from the conversion host to ESXi
+
+### ESXi Direct: Step-by-Step
+
+```sh
+# 1. Enable SSH on ESXi (via DCUI or vSphere Client)
+#    Host → Manage → Services → TSM-SSH → Start
+
+# 2. Create password file
+echo "ESXiRootPassword" > /tmp/esxi-pass
+chmod 600 /tmp/esxi-pass
+
+# 3. Power off the VM on ESXi
+ssh root@esxi.example.com "vim-cmd vmsvc/power.off \$(vim-cmd vmsvc/getallvms | grep guestvm1 | awk '{print \$1}')"
+
+# 4. Find the VMX path on the ESXi datastore
+ssh root@esxi.example.com "find /vmfs/volumes/ -name 'guestvm1.vmx'"
+# Output: /vmfs/volumes/datastore1/guestvm1/guestvm1.vmx
+
+# 5. Convert using SSH transport
+virt-v2v -i vmx -it ssh \
+  -ip /tmp/esxi-pass \
+  "ssh://root@esxi.example.com/vmfs/volumes/datastore1/guestvm1/guestvm1.vmx" \
+  -o local -os /var/lib/libvirt/images/ \
+  -of qcow2
+
+# 6. Clean up
+rm -f /tmp/esxi-pass
+
+# 7. Verify
+virsh list --all
+virsh start guestvm1
+```
+
+### ESXi Direct: Finding the VMX Path
+
+The SSH method requires the full path to the VMX file on the ESXi datastore:
+
+```sh
+# List all VMs and their VMX paths
+ssh root@esxi.example.com "vim-cmd vmsvc/getallvms"
+
+# Output:
+# Vmid  Name          File                                         Guest OS      Version
+# 1     guestvm1      [datastore1] guestvm1/guestvm1.vmx           rhel8_64Guest  vmx-19
+# 2     webserver     [datastore1] webserver/webserver.vmx          ubuntu64Guest  vmx-19
+
+# Find a specific VMX file
+ssh root@esxi.example.com "find /vmfs/volumes/ -name '*.vmx' | grep guestvm1"
+# /vmfs/volumes/datastore1/guestvm1/guestvm1.vmx
+```
+
+The VMX path in the URI must be percent-encoded for spaces:
+
+```sh
+# If the path contains spaces:
+# /vmfs/volumes/datastore1/my guest/my guest.vmx
+# becomes:
+"ssh://root@esxi.example.com/vmfs/volumes/datastore1/my%20guest/my%20guest.vmx"
+```
+
+### ESXi vs vCenter: When to Use Each
+
+| Method | Use When |
+|--------|----------|
+| `vpx://` (vCenter) | Enterprise environments, multiple ESXi hosts, centralized management |
+| `esx://` (ESXi direct) | No vCenter available, standalone ESXi, small environments, lab/homelab |
+
+### ESXi Direct: Troubleshooting
+
+```sh
+# Test SSH access
+ssh root@esxi.example.com "hostname"
+
+# Test connectivity to ESXi HTTPS (needed for VDDK method)
+curl -k https://esxi.example.com/
+
+# Check if VM is powered off
+ssh root@esxi.example.com "vim-cmd vmsvc/power.getstate \$(vim-cmd vmsvc/getallvms | grep guestvm1 | awk '{print \$1}')"
+
+# Find all VMX files on the host
+ssh root@esxi.example.com "find /vmfs/volumes/ -name '*.vmx'"
+
+# If conversion is slow, check network
+iperf3 -c esxi.example.com
+
+# Debug mode (SSH method)
+virt-v2v -v -x -i vmx -it ssh \
+  -ip /tmp/esxi-pass \
+  "ssh://root@esxi.example.com/vmfs/volumes/datastore1/guestvm1/guestvm1.vmx"
+```
+
+### ESXi Direct: Batch Conversion
+
+```sh
+#!/bin/bash
+set -euo pipefail
+
+ESXI_HOST="esxi.example.com"
+PASS_FILE="/tmp/esxi-pass"
+OUTPUT_DIR="/var/lib/libvirt/images"
+DATASTORE="datastore1"
+VMS=("vm1" "vm2" "vm3")
+
+for VM in "${VMS[@]}"; do
+  echo "=== Converting $VM ==="
+
+  # Power off (ignore error if already off)
+  ssh root@$ESXI_HOST "vim-cmd vmsvc/power.off \$(vim-cmd vmsvc/getallvms | grep '$VM' | awk '{print \$1}')" 2>/dev/null || true
+  sleep 5
+
+  # Convert via SSH
+  virt-v2v -i vmx -it ssh \
+    -ip "$PASS_FILE" \
+    "ssh://root@${ESXI_HOST}/vmfs/volumes/${DATASTORE}/${VM}/${VM}.vmx" \
+    -o local -os "$OUTPUT_DIR" \
+    -of qcow2
+
+  echo "$VM conversion complete."
+done
+
+echo "All conversions finished."
+virsh list --all
 ```
 
 ## Output Options
@@ -218,6 +451,57 @@ virsh start guestvm1
 
 # Connect to console
 virsh console guestvm1
+```
+
+### Modify Network Configuration
+
+Edit the VM and set the correct bridge interface:
+
+```sh
+virsh edit guestvm1
+```
+
+Change the `<source bridge>` line to match your host bridge:
+
+```xml
+    <interface type='bridge'>
+      <mac address='52:54:00:8d:b7:c3'/>
+      <source bridge='br0'/>
+      <model type='virtio'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
+    </interface>
+```
+
+### Start the VM
+
+```sh
+virsh start guestvm1
+```
+
+### Post-Conversion OS Cleanup
+
+After booting the converted VM for the first time, fix network and hardware references:
+
+```sh
+# Remove MAC address binding from network scripts (RHEL/CentOS 6/7)
+# Comment or remove the HWADDR line in:
+vi /etc/sysconfig/network-scripts/ifcfg-eth0
+
+# Remove persistent network udev rules (prevents NIC renaming issues)
+rm -f /etc/udev/rules.d/70-persistent-net.rules
+
+# Reboot to pick up changes
+reboot
+```
+
+For RHEL/CentOS 8+ and Ubuntu (using NetworkManager or netplan), the MAC address is usually not hardcoded in config files, but verify with:
+
+```sh
+# Check for MAC references in NetworkManager connections
+grep -r "mac-address" /etc/NetworkManager/system-connections/
+
+# Remove VMware tools if present
+yum remove -y open-vm-tools || dnf remove -y open-vm-tools
 ```
 
 ### Verify Functionality
@@ -325,8 +609,19 @@ virt-v2v -ic vpx://user@vcenter.example.com/DC/esxi?no_verify=1 "vmname"
 # Convert with password file
 virt-v2v -ic vpx://user@vcenter.example.com/DC/esxi "vmname" -ip /tmp/pass
 
+# Convert from ESXi via SSH (no vCenter, no VDDK)
+virt-v2v -i vmx -it ssh -ip /tmp/pass \
+  "ssh://root@esxi/vmfs/volumes/datastore1/vmname/vmname.vmx"
+
+# Convert from ESXi via VDDK (fastest, requires proprietary lib)
+virt-v2v -ic "esx://root@esxi?no_verify=1" -it vddk \
+  -io vddk-libdir=/path/to/vddk -ip /tmp/pass "vmname"
+
 # Convert from OVA
 virt-v2v -i ova /path/to/vm.ova
+
+# Convert from OVA to specific libvirt pool
+virt-v2v -i ova vm.ova -o libvirt -of qcow2 -os poolname
 
 # Convert from disk image (VMDK, VHD, VHDX)
 virt-v2v -i disk /path/to/disk.vmdk

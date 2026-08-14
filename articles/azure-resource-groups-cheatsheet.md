@@ -240,3 +240,55 @@ az group list --query "[].name" -o tsv | while read -r rg; do
   echo "$rg: $count"
 done
 ```
+
+
+## Using jq with Resource Group Commands
+
+### Resource Group Analysis
+
+```sh
+# Get resource groups with key details
+az group list --output json | jq '.[] | {name, location, provisioningState, tags}'
+
+# Count resource groups by location
+az group list --output json | jq 'group_by(.location) | map({location: .[0].location, count: length})'
+
+# Find resource groups with specific tags
+az group list --output json | jq '.[] | select(.tags.environment == "production")'
+
+# Count resources by type within a resource group
+az resource list --resource-group <rg> --output json | jq 'group_by(.type) | map({type: .[0].type, count: length})'
+
+# Quick resource count by type across subscription
+az resource list --output json | jq 'group_by(.type) | map({type: .[0].type, count: length}) | sort_by(.count) | reverse'
+
+# Get resource groups with most resources
+az resource list --output json | jq 'group_by(.resourceGroup) | map({resourceGroup: .[0].resourceGroup, count: length}) | sort_by(.count) | reverse | .[0:10]'
+```
+
+### Tag Governance
+
+```sh
+# Find untagged resources
+az resource list --output json | jq '.[] | select(.tags == null or (.tags | length == 0)) | {name, type, resourceGroup}'
+
+# Tag coverage by resource type
+az resource list --output json | jq 'group_by(.type) | map({
+  type: .[0].type,
+  count: length,
+  tagged_pct: (([.[] | select(.tags != null and (.tags | length > 0))] | length) / length * 100 | round)
+})'
+
+# Most common tags
+az resource list --output json | jq '[.[].tags // {} | to_entries[]] | group_by(.key) | map({tag: .[0].key, usage_count: length}) | sort_by(.usage_count) | reverse'
+```
+
+### Resource Distribution
+
+```sh
+# Find all resources in a specific location
+az resource list --output json | jq --arg location "eastus" '.[] | select(.location == $location) | {name, type, resourceGroup}'
+
+# Find resources created today
+az resource list --output json | jq --arg today "$(date +%Y-%m-%d)" '.[] | select(.createdTime | startswith($today)) | {name, type, resourceGroup}'
+```

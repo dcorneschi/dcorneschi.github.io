@@ -474,3 +474,51 @@ az network vnet list --query "[].{VNet:name, Subnets:subnets[].{Name:name, Prefi
 # Check if a specific port is reachable from a VM
 az network watcher test-ip-flow --vm <vm-name> -g <rg> --direction Inbound --protocol Tcp --local "10.0.1.4:3306" --remote "203.0.113.5:*"
 ```
+
+
+## Using jq with Networking Commands
+
+### Virtual Networks
+
+```sh
+# Get VNet details with subnets
+az network vnet list --output json | jq '.[] | {name, resourceGroup, location, addressSpace: .addressSpace.addressPrefixes, subnets: [.subnets[].name]}'
+
+# Find VNets with specific address space
+az network vnet list --output json | jq '.[] | select(.addressSpace.addressPrefixes[] | contains("10.0")) | {name, addressSpace: .addressSpace.addressPrefixes}'
+
+# Get subnet details including NSG associations
+az network vnet subnet list --resource-group <rg> --vnet-name <vnet> --output json | jq '.[] | {name, addressPrefix, nsg: (.networkSecurityGroup.id // "none" | split("/")[-1])}'
+```
+
+### NSG Rules Analysis
+
+```sh
+# Get NSG rules in a readable format
+az network nsg rule list --resource-group <rg> --nsg-name <nsg> --output json | jq '.[] | {name, priority, direction, access, protocol, sourcePortRange, destinationPortRange}'
+
+# Find rules allowing SSH or RDP from anywhere
+az network nsg rule list --resource-group <rg> --nsg-name <nsg> --output json | jq '.[] | select((.destinationPortRange == "22" or .destinationPortRange == "3389") and .sourceAddressPrefix == "*") | {name, access, port: .destinationPortRange}'
+
+# Get NSG associations (subnets and NICs)
+az network nsg show --resource-group <rg> --name <nsg> --output json | jq '{name, subnets: [.subnets[].id | split("/")[-1]], nics: [.networkInterfaces[].id | split("/")[-1]]}'
+
+# List all NSG rules allowing SSH from anywhere (across all NSGs)
+az network nsg list --output json | jq '.[].securityRules[] | select(.destinationPortRange == "22" and .sourceAddressPrefix == "*" and .access == "Allow") | {nsg: .id | split("/")[-3], rule: .name, priority}'
+```
+
+### Public IPs and Load Balancers
+
+```sh
+# List public IPs with allocation details
+az network public-ip list --output json | jq '.[] | {name, resourceGroup, ipAddress, allocationMethod, sku: .sku.name}'
+
+# Find unassigned public IPs (wasting money)
+az network public-ip list --output json | jq '.[] | select(.ipConfiguration == null) | {name, ipAddress, resourceGroup}'
+
+# Get load balancer backend pools
+az network lb show --resource-group <rg> --name <lb> --output json | jq '.backendAddressPools[] | {name, backends: [.backendIpConfigurations[].id | split("/")[-3]]}'
+
+# Load balancer frontend IPs
+az network lb list --output json | jq '.[] | {name, resourceGroup, sku: .sku.name, frontendIPs: [.frontendIpConfigurations[].name]}'
+```

@@ -254,3 +254,175 @@ az resource list --resource-group <rg> --query "[].id" --output tsv
 # Check which regions support a VM size
 az vm list-skus --size Standard_D2s_v3 --query "[].{Location:locationInfo[0].location, Zones:locationInfo[0].zones}" --output table
 ```
+
+
+## Using jq with Azure CLI
+
+Azure CLI outputs JSON by default, making it ideal for piping to `jq` for advanced filtering and transformation.
+
+### Authentication and Account Info with jq
+
+```sh
+# List accounts with key fields
+az account list --output json | jq '.[] | {name, id, isDefault, state, user: .user.name}'
+
+# Show current account details
+az account show --output json | jq '{name, id, state, user: .user.name, tenant: .tenantId}'
+```
+
+### Configuration with jq
+
+```sh
+# Show current configuration as key-value pairs
+az configure --list-defaults | jq 'from_entries'
+```
+
+### Advanced jq Patterns
+
+```sh
+# Multi-resource inventory in a single pass
+{
+  echo '{"resource_groups":'; az group list --output json;
+  echo ',"virtual_machines":'; az vm list --output json;
+  echo ',"storage_accounts":'; az storage account list --output json;
+  echo '}';
+} | jq '{
+  summary: {
+    resource_groups: .resource_groups | length,
+    virtual_machines: .virtual_machines | length,
+    storage_accounts: .storage_accounts | length,
+    locations: ([.resource_groups[].location, .virtual_machines[].location, .storage_accounts[].location] | unique)
+  }
+}'
+
+# Cross-service resource mapping
+az vm list --show-details --output json | jq 'map({
+  name,
+  resourceGroup,
+  location,
+  size,
+  powerState,
+  networking: {
+    hasPublicIp: (.publicIps != null and .publicIps != ""),
+    privateIp: .privateIps
+  },
+  storage: {
+    osDiskType: (.storageProfile.osDisk.managedDisk.storageAccountType // "unknown"),
+    dataDiskCount: (.storageProfile.dataDisks | length)
+  },
+  tags: (.tags // {})
+}) | group_by(.resourceGroup) | map({
+  resourceGroup: .[0].resourceGroup,
+  vmCount: length,
+  totalDataDisks: [.[].storage.dataDiskCount] | add,
+  powerStates: group_by(.powerState) | map({state: .[0].powerState, count: length})
+})'
+
+# Generate cleanup script for unused resources
+{
+  echo '{"public_ips":'; az network public-ip list --output json;
+  echo ',"nics":'; az network nic list --output json;
+  echo ',"disks":'; az disk list --output json;
+} | jq -r '
+  [
+    (.public_ips[] | select(.ipConfiguration == null) | "az network public-ip delete --resource-group \(.resourceGroup) --name \(.name)"),
+    (.nics[] | select(.virtualMachine == null) | "az network nic delete --resource-group \(.resourceGroup) --name \(.name)"),
+    (.disks[] | select(.managedBy == null) | "az disk delete --resource-group \(.resourceGroup) --name \(.name)")
+  ][]
+'
+
+# Resource dependency mapping
+az vm list --output json | jq 'map({
+  name,
+  resourceGroup,
+  dependencies: {
+    nics: [.networkProfile.networkInterfaces[].id | split("/")[-1]],
+    disks: ([.storageProfile.osDisk.name] + [.storageProfile.dataDisks[].name]),
+    location
+  }
+}) | group_by(.resourceGroup) | map({
+  resourceGroup: .[0].resourceGroup,
+  vms: map({name, dependencies}),
+  shared_dependencies: {
+    total_nics: [.[].dependencies.nics[]] | length,
+    total_disks: [.[].dependencies.disks[]] | length
+  }
+})'
+
+# Generate ARM template parameters from existing resources
+az vm list --output json | jq 'map({
+  vmName: .name,
+  vmSize: .hardwareProfile.vmSize,
+  location: .location,
+  resourceGroup: .resourceGroup,
+  osType: .storageProfile.osDisk.osType
+}) | {
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualMachines": {
+      "value": .
+    }
+  }
+}'
+```
+
+### Tag Analysis and Governance
+
+```sh
+# Tag governance report
+az resource list --output json | jq '{
+  tag_analysis: {
+    total_resources: length,
+    tagged_resources: [.[] | select(.tags != null and (.tags | length > 0))] | length,
+    untagged_resources: [.[] | select(.tags == null or (.tags | length == 0))] | length,
+    common_tags: (
+      [.[].tags // {} | to_entries[]] |
+      group_by(.key) |
+      map({tag: .[0].key, usage_count: length}) |
+      sort_by(.usage_count) |
+      reverse
+    )
+  }
+}'
+```
+
+### Security and Compliance Analysis
+
+```sh
+# Security compliance report
+{
+  echo '{"vms":'; az vm list --show-details --output json;
+  echo ',"storage_accounts":'; az storage account list --output json;
+} | jq '{
+  security_summary: {
+    vms_without_public_ip: [.vms[] | select(.publicIps == null or .publicIps == "")] | length,
+    vms_with_public_ip: [.vms[] | select(.publicIps != null and .publicIps != "")] | length,
+    storage_https_only: [.storage_accounts[] | select(.enableHttpsTrafficOnly == true)] | length,
+    storage_public_access_disabled: [.storage_accounts[] | select(.allowBlobPublicAccess == false)] | length
+  },
+  recommendations: [
+    (.vms[] | select(.publicIps != null and .publicIps != "") | "VM \(.name) has public IP - consider using bastion"),
+    (.storage_accounts[] | select(.allowBlobPublicAccess != false) | "Storage \(.name) allows public blob access")
+  ]
+}'
+```
+
+### Performance Tips for jq with Azure CLI
+
+- Use `--query` (JMESPath) to pre-filter on the server side, then `jq` for complex transforms
+- Cache resource lists in variables for multiple jq operations: `VMS=$(az vm list --output json)`
+- Use `jq -c` for compact output when piping to other commands
+- Combine multiple `az` commands with `{}` grouping for cross-resource analysis
+- Use `jq -e` for conditional checks in scripts (exits non-zero if output is false/null)
+
+```sh
+# Pre-filter with --query, then transform with jq
+az resource list --query "[?location=='eastus']" --output json | jq '.[].type' | sort | uniq -c
+
+# Error handling in scripts
+az vm list --output json 2>/dev/null | jq -e '.[] | select(.powerState == "VM running")' || echo "No running VMs found"
+
+# Conditional processing
+az vm list --output json | jq 'if length > 0 then map(select(.location == "eastus")) else "No VMs found" end'
+```

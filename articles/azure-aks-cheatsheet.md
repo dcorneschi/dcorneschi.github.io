@@ -455,3 +455,45 @@ az aks list --query "[?powerState.code=='Stopped'].{Name:name, RG:resourceGroup}
 # Run a quick diagnostic without kubectl
 az aks command invoke --resource-group <rg> --name <cluster-name> --command "kubectl top nodes && kubectl get pods -A | grep -v Running"
 ```
+
+
+## Using jq with AKS Commands
+
+### Cluster Details
+
+```sh
+# Get cluster summary
+az aks list --output json | jq '.[] | {name, resourceGroup, location, kubernetesVersion, nodeResourceGroup, dnsPrefix}'
+
+# Find clusters by Kubernetes version
+az aks list --output json | jq '.[] | select(.kubernetesVersion | startswith("1.29")) | {name, version: .kubernetesVersion, resourceGroup}'
+
+# Get available Kubernetes versions
+az aks get-versions --location eastus --output json | jq '.orchestrators[] | {kubernetesVersion, isPreview}'
+```
+
+### Node Pool Analysis
+
+```sh
+# Get node pool details
+az aks show --resource-group <rg> --name <cluster> --output json | jq '.agentPoolProfiles[] | {name, count, vmSize, osType, mode}'
+
+# Get autoscaler settings per pool
+az aks show --resource-group <rg> --name <cluster> --output json | jq '.agentPoolProfiles[] | {name, enableAutoScaling, minCount, maxCount, count}'
+
+# Node pool listing with all details
+az aks nodepool list --resource-group <rg> --cluster-name <cluster> --output json | jq '.[] | {name, count, vmSize, mode, osType, orchestratorVersion}'
+```
+
+### Addons and Network Config
+
+```sh
+# Get enabled addons
+az aks show --resource-group <rg> --name <cluster> --output json | jq '.addonProfiles | to_entries[] | select(.value.enabled == true) | .key'
+
+# Get network configuration
+az aks show --resource-group <rg> --name <cluster> --output json | jq '.networkProfile | {networkPlugin, serviceCidr, dnsServiceIP, podCidr}'
+
+# Get identity configuration
+az aks show --resource-group <rg> --name <cluster> --output json | jq '{identity: .identity.type, servicePrincipal: .servicePrincipalProfile.clientId}'
+```

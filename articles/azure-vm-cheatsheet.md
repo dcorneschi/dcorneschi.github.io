@@ -377,3 +377,72 @@ az vm list --query "[?tags==null || length(keys(tags))==\`0\`].{Name:name, RG:re
 # Restart all VMs matching a name pattern
 az vm list --query "[?contains(name, 'web')].id" -o tsv | xargs az vm restart --ids
 ```
+
+
+## Using jq with VM Commands
+
+### Listing and Filtering VMs
+
+```sh
+# Get VM names, sizes, and resource groups
+az vm list --output json | jq '.[] | {name, resourceGroup, location, vmSize: .hardwareProfile.vmSize}'
+
+# Get VMs with power state and IPs
+az vm list --show-details --output json | jq '.[] | {name, resourceGroup, powerState, publicIps, privateIps}'
+
+# Count VMs by size
+az vm list --output json | jq 'group_by(.hardwareProfile.vmSize) | map({size: .[0].hardwareProfile.vmSize, count: length})'
+
+# Count VMs by location
+az vm list --output json | jq 'group_by(.location) | map({location: .[0].location, count: length})'
+
+# Find VMs without public IPs
+az vm list --show-details --output json | jq '.[] | select(.publicIps == null or .publicIps == "") | {name, resourceGroup, privateIps}'
+
+# Find VMs by OS type
+az vm list --output json | jq '.[] | select(.storageProfile.osDisk.osType == "Linux") | {name, osType: .storageProfile.osDisk.osType}'
+```
+
+### VM Details and Configuration
+
+```sh
+# Extract network configuration
+az vm show --resource-group <rg> --name <vm> --output json | jq '.networkProfile.networkInterfaces[] | {id, primary}'
+
+# Get disk information
+az vm show --resource-group <rg> --name <vm> --output json | jq '.storageProfile | {osDisk: .osDisk.name, dataDisks: [.dataDisks[].name]}'
+
+# Get VM extensions
+az vm show --resource-group <rg> --name <vm> --output json | jq '.resources[] | {name, publisher, type: .typeHandlerVersion}'
+
+# Power state summary grouped by state
+az vm list --show-details --output json | jq 'group_by(.powerState) | map({state: .[0].powerState, count: length})'
+```
+
+### VM Sizes and Capacity
+
+```sh
+# List VM sizes with specs
+az vm list-sizes --location eastus --output json | jq '.[] | {name, numberOfCores, memoryInMB, maxDataDiskCount}'
+
+# Find high-CPU sizes (more than 8 cores)
+az vm list-sizes --location eastus --output json | jq '.[] | select(.numberOfCores > 8) | {name, cores: .numberOfCores, memory: .memoryInMB}'
+
+# Check subscription VM quota usage
+az vm usage list --location eastus --output json | jq '.[] | select(.currentValue > (.limit * 0.8)) | {name: .name.value, usage: "\(.currentValue)/\(.limit)"}'
+```
+
+### Cost Optimization with jq
+
+```sh
+# Find stopped VMs (potential cost savings)
+az vm list --show-details --output json | jq '.[] | select(.powerState != "VM running") | {name, resourceGroup, size, powerState}'
+
+# Cost optimization analysis
+az vm list --show-details --output json | jq '{
+  total_vms: length,
+  running: [.[] | select(.powerState == "VM running")] | length,
+  stopped: [.[] | select(.powerState != "VM running")] | length,
+  optimization: [.[] | select(.powerState != "VM running") | {name, suggestion: "Deallocate or delete to save costs"}]
+}'
+```

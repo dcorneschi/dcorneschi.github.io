@@ -507,3 +507,45 @@ az storage account list --query "[].{Name:name, SKU:sku.name, Kind:kind, Locatio
 # Quickly check if a storage account allows public blob access
 az storage account show --name <account-name> --query allowBlobPublicAccess --output tsv
 ```
+
+
+## Using jq with Storage Commands
+
+### Storage Account Analysis
+
+```sh
+# Get storage accounts with access tiers and SKU
+az storage account list --output json | jq '.[] | {name, resourceGroup, location, sku: .sku.name, accessTier, kind}'
+
+# Find Premium storage accounts
+az storage account list --output json | jq '.[] | select(.sku.tier == "Premium") | {name, sku: .sku.name, location}'
+
+# Check security settings
+az storage account list --output json | jq '.[] | {name, allowBlobPublicAccess, minimumTlsVersion, publicNetworkAccess}'
+
+# Get storage account keys
+az storage account keys list --resource-group <rg> --account-name <account> --output json | jq '.[] | {keyName, permissions}'
+```
+
+### Blob Analysis with jq
+
+```sh
+# List blobs with metadata
+az storage blob list --container-name <container> --account-name <account> --output json | jq '.[] | {name, lastModified, size: .properties.contentLength, contentType: .properties.contentType}'
+
+# Find large blobs (over 1GB)
+az storage blob list --container-name <container> --account-name <account> --output json | jq '.[] | select(.properties.contentLength > 1073741824) | {name, sizeGB: (.properties.contentLength / 1073741824 * 100 | floor / 100)}'
+
+# Group blobs by content type with total size
+az storage blob list --container-name <container> --account-name <account> --output json | jq 'group_by(.properties.contentType) | map({contentType: .[0].properties.contentType, count: length, totalSizeMB: ([.[].properties.contentLength] | add / 1048576 | floor)})'
+
+# List containers with public access status
+az storage container list --account-name <account> --output json | jq '.[] | {name, lastModified, publicAccess}'
+```
+
+### Storage Account Usage
+
+```sh
+# Get storage account usage in a region
+az storage account show-usage --location eastus --output json | jq '.[] | {name: .name.value, currentValue, limit, unit}'
+```
