@@ -62,6 +62,18 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Securing Kubernetes Containers: Security Contexts](articles/eks-security-contexts.md) | Linux kernel primitives, security contexts, capabilities, seccomp, AppArmor, and production hardening. |
 | [EKS Node Groups: With and Without Launch Templates](articles/eks-nodegroups-launch-templates.md) | Managed node groups — when you need a launch template, what EKS manages automatically, custom AMIs, and Terraform examples. |
 
+### Azure
+
+| Article | Description |
+|---------|--------------|
+| [Azure CLI Cheatsheet](articles/azure-cli-cheatsheet.md) | Azure CLI — installation, authentication, configuration, output formats, JMESPath queries, resource groups, and extensions. |
+| [Azure Resource Groups Cheatsheet](articles/azure-resource-groups-cheatsheet.md) | Resource groups — create, list, tags, locks, RBAC, move resources, export templates, and deployment history. |
+| [Azure Networking Cheatsheet](articles/azure-networking-cheatsheet.md) | Azure networking — VNets, subnets, NSGs, public IPs, NICs, peering, DNS, load balancers, and troubleshooting. |
+| [Azure Storage Cheatsheet](articles/azure-storage-cheatsheet.md) | Azure Storage — blob containers, upload/download, SAS tokens, access tiers, file shares, managed disks, lifecycle policies, and AzCopy. |
+| [Azure VM Management Cheatsheet](articles/azure-vm-cheatsheet.md) | Azure VMs — create, power management, disks, networking, resize, images, run commands, extensions, snapshots, and tags. |
+| [AKS Cheatsheet](articles/azure-aks-cheatsheet.md) | Azure Kubernetes Service — cluster lifecycle, node pools, scaling, autoscaler, ACR integration, addons, RBAC, and troubleshooting. |
+| [Azure VM Instance Types and Free Tier](articles/azure-vm-instance-types-free-tier.md) | Azure VM sizes, free tier eligibility, and instance type selection. |
+
 ### Virtualization
 
 | Article | Description |
