@@ -233,6 +233,87 @@ aws dlm create-lifecycle-policy \
 aws dlm get-lifecycle-policies --output table
 ```
 
+### Snapshot Lock
+
+Lock snapshots to prevent deletion for compliance and data retention. No extra charge.
+
+| Mode | Behavior |
+|------|----------|
+| Governance | Locked against deletion by all users. IAM users with proper permissions can extend/shorten duration, delete lock, or change to Compliance mode. |
+| Compliance | Locked against deletion by root and all IAM users. After a cooling-off period (up to 72 hours), the lock cannot be removed until it expires. Duration can be extended but not shortened. |
+
+```bash
+# Lock a snapshot in governance mode (1 year)
+aws ec2 lock-snapshot --snapshot-id snap-0abc123 \
+  --lock-mode governance --lock-duration 365
+
+# Lock a snapshot in compliance mode (5 years, 24h cooling-off)
+aws ec2 lock-snapshot --snapshot-id snap-0abc123 \
+  --lock-mode compliance --lock-duration 1825 \
+  --cool-off-period 24
+
+# Unlock a governance-mode snapshot
+aws ec2 unlock-snapshot --snapshot-id snap-0abc123
+
+# Describe locked snapshots
+aws ec2 describe-locked-snapshots
+
+# Describe lock status for a specific snapshot
+aws ec2 describe-locked-snapshots --snapshot-ids snap-0abc123
+```
+
+Notes:
+- Locked snapshots can still be shared, copied, or archived
+- If using customer-managed KMS keys, ensure the key remains valid for the lock duration
+- AWS Backup independently manages retention — locking Backup-created snapshots is not recommended
+
+### Multi-Region Snapshot and Volume Queries
+
+```bash
+# Find snapshots older than 1 month across all regions
+for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[RegionName]'); do
+  echo "$REGION"
+  aws ec2 describe-snapshots --owner-ids self --region $REGION \
+    --query "Snapshots[?(StartTime<='$(date --date='-1 month' '+%Y-%m-%d')')].{ID:SnapshotId,Time:StartTime,Details:Description}" \
+    --output table
+done
+
+# Find publicly shared snapshots across all regions
+for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[RegionName]'); do
+  echo "$REGION:"
+  for snap in $(aws ec2 describe-snapshots --owner self --output text --region $REGION --query 'Snapshots[*].SnapshotId'); do
+    aws ec2 describe-snapshot-attribute --snapshot-id $snap --region $REGION \
+      --output text --attribute createVolumePermission \
+      --query '[SnapshotId,CreateVolumePermissions[?Group == `all`]]'
+  done
+done
+
+# Find unattached volumes across all regions
+for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[RegionName]'); do
+  echo "$REGION"
+  aws ec2 describe-volumes --filter "Name=status,Values=available" --region $REGION \
+    --query 'Volumes[*].{VolumeID:VolumeId,Size:Size,Type:VolumeType,AZ:AvailabilityZone}' \
+    --output table
+done
+
+# Find volumes in error state across all regions
+for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[RegionName]'); do
+  echo "$REGION"
+  aws ec2 describe-volumes --filter "Name=status,Values=error" --region $REGION \
+    --query 'Volumes[*].{VolumeID:VolumeId,Size:Size,Type:VolumeType,AZ:AvailabilityZone}' \
+    --output table
+done
+
+# Find volumes currently being modified (optimizing) across all regions
+for REGION in $(aws ec2 describe-regions --output text --query 'Regions[].[RegionName]'); do
+  echo "$REGION"
+  aws ec2 describe-volumes-modifications --region $REGION \
+    --filter 'Name=modification-state,Values=optimizing' \
+    --query 'VolumesModifications[].{VolumeID:VolumeId,TargetSize:TargetSize,OriginalSize:OriginalSize,Progress:Progress}' \
+    --output table
+done
+```
+
 ## Encryption
 
 ```sh

@@ -75,6 +75,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [EC2 Instance Metadata Service (IMDS)](articles/aws-ec2-metadata.md) | IMDS endpoint, IMDSv1 vs IMDSv2, ec2-metadata script, IAM credentials, tags, spot notices, and configuration. |
 | [EC2 vs ELB Health Checks](articles/aws-ec2-vs-elb-health-checks.md) | EC2 status checks vs ELB health checks — what each monitors, how they interact with Auto Scaling, and self-healing patterns. |
 | [EBS Cheatsheet](articles/aws-ebs-cheatsheet.md) | EBS volume types, create/attach/resize, snapshots, DLM lifecycle policies, encryption, multi-attach, performance tuning, and monitoring. |
+| [S3 Cheatsheet](articles/aws-s3-cheatsheet.md) | S3 CLI — buckets, objects, sync, presigned URLs, lifecycle, storage classes, versioning, encryption, and performance tuning. |
 | [Unattached EBS Volumes: Detection and Monitoring](articles/aws-ebs-unattached-volumes.md) | Finding orphaned volumes, cost estimation, safe cleanup workflow, CloudWatch idle detection, AWS Config rules, Lambda automation, and prevention. |
 | [EC2 fstab: Why Device Names Change on Nitro](articles/aws-ec2-fstab-labels.md) | NVMe device reordering, using LABEL/UUID in fstab, cloud-init provisioning, and instance store volumes. |
 | [Installing SSM Agent](articles/aws-ssm-agent-install.md) | Install and configure SSM Agent on RHEL, Ubuntu — Session Manager, VPC endpoints, and SSH over SSM. |
@@ -196,9 +197,14 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [User Administration on RHEL](articles/user-administration.md) | User and group management — UIDs, password hashing, PAM, and chage. |
 | [LDAP Client Configuration](articles/ldap-client-configuration.md) | Configuring LDAP authentication on RHEL 5–10 and Ubuntu 22.04/24.04 — SSSD, authconfig, authselect, TLS, and Active Directory. |
 | [Configure Samba](articles/samba-configuration.md) | Samba file server on RHEL 6–10 and Ubuntu — anonymous/authenticated shares, SELinux, AD membership, client access, and troubleshooting. |
+| [MySQL LDAP Authentication](articles/mysql-ldap-authentication.md) | MySQL PAM authentication with SSSD and LDAP — tarball install, PAM plugin, SSSD config, TLS certificates, and troubleshooting. |
+| [Installing MediaWiki on RHEL](articles/mediawiki-installation-rhel.md) | MediaWiki with Apache, PHP 7.4, and MariaDB on RHEL 8/9 — packages, database, SELinux, firewall, and deployment. |
+| [Installing MariaDB](articles/mariadb-installation.md) | MariaDB on RHEL 7–10 and Ubuntu — installation, hardening, user management, backup/restore, and troubleshooting. |
 | [RHEL Releases Overview](articles/rhel-releases-overview.md) | RHEL major releases (2.1–10) — features, lifecycle, and upgrade paths. |
 | [Timezone Configuration](articles/timezone-configuration.md) | timedatectl, NTP, hardware clock, per-process TZ, cloud-init, Docker, and troubleshooting. |
 | [subscription-manager Cheatsheet](articles/subscription-manager-cheatsheet.md) | RHEL subscriptions — register, attach, repos, release lock, Satellite, SCA, and troubleshooting. |
+| [dnf / yum Cheatsheet](articles/dnf-yum-cheatsheet.md) | Package management on RHEL 7–10 — install, update, repos, modules, groups, history, versionlock, and troubleshooting. |
+| [RPM Cheatsheet](articles/rpm-cheatsheet.md) | RPM commands — install, query, verify, signatures, custom query formats, database management, and rpm2cpio. |
 | [RHEL Boot Modes and Troubleshooting](articles/rhel-boot-troubleshooting.md) | Boot modes, rescue/emergency targets, and recovery techniques. |
 | [GRUB2 Cheatsheet](articles/grub-cheatsheet.md) | grubby, grub2-mkconfig, kernel args, default entry, password, BLS, serial console, and rescue. |
 | [initramfs vs initrd](articles/initramfs-vs-initrd.md) | Early boot filesystem — differences, dracut, update-initramfs, inspection, rebuild, and troubleshooting. |
@@ -286,6 +292,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [SSH Convert Keys](articles/ssh-convert-keys.md) | Convert between OpenSSH, PuTTY PPK, PEM, PKCS#8, DER, and SSH.com key formats. |
 | [SSH Remote Script Execution](articles/ssh-remote-script-execution.md) | Tools for running scripts on remote hosts — SSH, pssh, pdsh, Ansible, Fabric, and more. |
 | [ss Cheatsheet](articles/ss-cheatsheet.md) | Socket statistics — inspecting TCP/UDP connections and states. |
+| [VNC Cheatsheet](articles/vnc-cheatsheet.md) | TigerVNC on RHEL 6–10 and Ubuntu — installation, configuration, service management, SSH tunnels, one-liners, and troubleshooting. |
 
 ### Cloud-Init
 
