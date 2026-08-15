@@ -161,6 +161,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Ansible Run Command Modules](articles/ansible-shell-command-modules.md) | command vs shell vs raw vs script — when to use each, error handling, and idempotency patterns. |
 | [Ansible Sudo: Ubuntu vs RHEL](articles/ansible-sudo-ubuntu-vs-rhel.md) | Why become fails on RHEL — sudo/wheel groups, timestamp_timeout, passwordless setup, and mixed environments. |
 | [Ansible Vault: Storing Sudo Passwords](articles/ansible-vault-become-pass.md) | Step-by-step vault setup for become_pass — create, reference, directory layout, vault IDs, and troubleshooting. |
+| [Ansible Python Interpreter](articles/ansible-python-interpreter.md) | Fixing Python interpreter discovery warnings and errors — `ansible_python_interpreter`, auto-discovery, and per-host/group configuration. |
 
 ### Bash and Shell
 

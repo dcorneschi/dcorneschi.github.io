@@ -279,6 +279,21 @@ aws eks describe-addon-versions --addon-name vpc-cni \
 
 # All available add-ons
 aws eks describe-addon-versions --query "addons[].addonName" --output table
+
+# List all add-ons with latest version for a specific Kubernetes version
+aws eks describe-addon-versions --kubernetes-version 1.34 \
+  --query 'addons[*].{Name:addonName,Latest:addonVersions[0].addonVersion}' \
+  --region us-east-1 --output table
+
+# List all add-ons with latest and default version
+aws eks describe-addon-versions --kubernetes-version 1.34 \
+  --query 'addons[*].{Name:addonName, Latest:addonVersions[0].addonVersion, DefaultVersion:addonVersions[?compatibilities[?defaultVersion==`true`]].addonVersion|[0]}' \
+  --region us-east-1 --output table
+
+# List only specific add-ons with versions
+aws eks describe-addon-versions --kubernetes-version 1.34 \
+  --query 'addons[?contains(`["vpc-cni","coredns","kube-proxy","aws-ebs-csi-driver","aws-efs-csi-driver","eks-pod-identity-agent"]`, addonName)].{Name:addonName, Latest:addonVersions[0].addonVersion, Default:addonVersions[?compatibilities[?defaultVersion==`true`]].addonVersion|[0]}' \
+  --region us-east-1 --output table
 ```
 
 ### Create an Add-on
