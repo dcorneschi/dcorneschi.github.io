@@ -511,11 +511,97 @@ kubectl delete pod,service baz foo
 # Delete by label
 kubectl delete pods,services -l name=myLabel
 
+# Delete with multiple label conditions
+kubectl delete pods -l app=myapp,version=v1
+
 # Delete all in namespace
 kubectl -n my-ns delete pod,svc --all
 
 # Delete by pattern (awk)
 kubectl get pods --no-headers | awk '/pattern1|pattern2/{print $1}' | xargs kubectl delete pod
+
+# Delete by regex pattern
+kubectl get pods -o name | grep -E "pod/test-[0-9]+" | xargs kubectl delete
+```
+
+### Delete by Status
+
+```sh
+# Delete all failed pods
+kubectl delete pods --field-selector=status.phase=Failed --all-namespaces
+
+# Delete succeeded pods (completed jobs)
+kubectl delete pods --field-selector=status.phase=Succeeded --all-namespaces
+
+# Delete evicted pods
+kubectl get pods -A --field-selector=status.phase=Failed | grep Evicted | awk '{print $2 " -n " $1}' | xargs -I {} kubectl delete pod {}
+
+# Delete pods on a specific node
+kubectl delete pods --field-selector=spec.nodeName=worker-1
+```
+
+### Delete by Advanced Filtering
+
+```sh
+# Delete pods with high restart count (>5)
+kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.status.containerStatuses[0].restartCount}{"\n"}{end}' | \
+  awk '$2 > 5 {print $1}' | xargs kubectl delete pod
+
+# Delete pods with specific container image
+kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.spec.containers[0].image}{"\n"}{end}' | \
+  grep "nginx:1.14" | awk '{print $1}' | xargs kubectl delete pod
+
+# Delete pods created before a specific date
+kubectl get pods -o json | jq -r '.items[] | select(.metadata.creationTimestamp < "2024-01-01T00:00:00Z") | .metadata.name' | \
+  xargs kubectl delete pod
+
+# Delete pods with specific annotation
+kubectl get pods -o json | jq -r '.items[] | select(.metadata.annotations["delete-me"] == "true") | .metadata.name' | \
+  xargs kubectl delete pod
+```
+
+### Graceful vs Force Deletion
+
+```sh
+# Standard graceful (30s default)
+kubectl delete pods -l app=myapp
+
+# Custom grace period
+kubectl delete pods -l app=myapp --grace-period=60
+
+# Immediate force delete (use with caution)
+kubectl delete pods -l app=myapp --force --grace-period=0
+
+# Force delete stuck Terminating pods
+kubectl get pods | grep Terminating | awk '{print $1}' | xargs kubectl delete pod --force --grace-period=0
+```
+
+### Safe Deletion Practices
+
+```sh
+# Always dry-run first
+kubectl delete pods -l app=myapp --dry-run=client
+
+# Check what you're about to delete
+kubectl get pods -l app=myapp -o wide
+
+# Check if pods are managed by a controller (they'll be recreated)
+kubectl get pods -l app=myapp -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.metadata.ownerReferences[0].kind}{"\n"}{end}'
+# If owned by ReplicaSet/Deployment → delete the deployment instead
+```
+
+### Cleanup Script
+
+```sh
+#!/bin/bash
+# Quick pod cleanup script
+echo "Deleting failed pods..."
+kubectl delete pods --field-selector=status.phase=Failed -A
+echo "Deleting succeeded pods..."
+kubectl delete pods --field-selector=status.phase=Succeeded -A
+echo "Deleting evicted pods..."
+kubectl get pods -A --field-selector=status.phase=Failed | grep Evicted | awk '{print $2 " -n " $1}' | xargs -I {} kubectl delete pod {}
+echo "Done."
 ```
 
 ## Interacting with Deployments and Services
