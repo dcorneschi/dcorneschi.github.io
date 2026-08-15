@@ -448,6 +448,18 @@ helm upgrade metrics-server metrics-server/metrics-server --reset-then-reuse-val
 - If you run `helm upgrade` **without** `--set`/`-f`, `--reuse-values` is used by default
 - If you run `helm upgrade` **with** `--set`/`-f`, `--reset-values` is used by default
 
+**Workaround for new chart version + preserve values + pick up new defaults:**
+
+```bash
+# Save current values
+helm get values my-release -o yaml > prev-values.yaml
+
+# Upgrade with saved values as base (gets new chart defaults + your overrides)
+helm upgrade my-release my-chart -f prev-values.yaml --set newKey=newValue
+```
+
+This is what `--reset-then-reuse-values` was designed to simplify (Helm 3.14+).
+
 ### Multiple Values Files
 
 ```bash

@@ -48,8 +48,11 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Kubernetes Control Plane API Commands](articles/kubernetes-api-commands.md) | Direct API server access — kubectl raw, curl with tokens, API discovery, health endpoints, metrics, and debugging. |
 | [kubectl Cheatsheet](articles/kubectl-cheatsheet.md) | kubectl commands — nodes, pods, deployments, services, events, logs, performance, RBAC, custom-columns, and one-liners. |
 | [Kubernetes Field Selectors](articles/kubernetes-field-selectors.md) | --field-selector — supported fields per resource type, operators, practical examples, and limitations. |
+| [kubectl logs Guide](articles/kubectl-logs-guide.md) | Pod log retrieval — follow, tail, timestamps, previous, multi-container, labels, debug bundles, and troubleshooting. |
+| [Kubernetes Log Locations by Distribution](articles/kubernetes-log-locations.md) | Log file paths across MicroK8s, kubeadm, K3s, kind, k3d, minikube, EKS, GKE, AKS — containers, kubelet, control plane, and runtime. |
 | [Kubernetes Jobs and CronJobs](articles/kubernetes-jobs-cronjobs.md) | Jobs and CronJobs — commands, cron syntax, concurrency policies, CrashLoopBackOff fix, and auto-cleanup. |
 | [EKS Port Communication](articles/eks-port-communication.md) | Control plane to worker node ports — kubelet API, kube-proxy, security group rules, and communication flows. |
+| [EKS Node Lifecycle During Updates](articles/eks-node-lifecycle-during-updates.md) | Node state progression during rolling updates — cordon, drain, eviction API, PDBs, ASG integration, and timing. |
 
 ### Docker
 

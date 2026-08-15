@@ -789,3 +789,226 @@ cluster-name = "my-cluster"
 api-server = "https://XXXX.gr7.us-east-1.eks.amazonaws.com"
 cluster-certificate = "LS0tLS1CR..."
 ```
+
+
+## Node Pressure Conditions (Quick Checks)
+
+```sh
+# Memory pressure across all nodes
+kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.conditions[?(@.type=="MemoryPressure")].status}{"\n"}{end}'
+
+# Disk pressure
+kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.conditions[?(@.type=="DiskPressure")].status}{"\n"}{end}'
+
+# PID pressure
+kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.conditions[?(@.type=="PIDPressure")].status}{"\n"}{end}'
+
+# All conditions at once
+kubectl get nodes -o custom-columns=NAME:.metadata.name,READY:.status.conditions[3].status,MEM:.status.conditions[0].status,DISK:.status.conditions[1].status,PID:.status.conditions[2].status
+```
+
+## Check OOM Kills on a Node
+
+```sh
+# Using kubectl debug (no SSH needed)
+kubectl debug node/<node-name> -it --image=alpine -- sh -c "dmesg | grep -i 'killed process\|out of memory'"
+
+# Check disk usage
+kubectl debug node/<node-name> -it --image=alpine -- sh -c "df -h"
+
+# Check container log disk usage
+kubectl debug node/<node-name> -it --image=alpine -- sh -c "du -sh /var/log/containers/"
+```
+
+## Check Kubelet Certificate Expiration
+
+```sh
+# From inside the node (SSH or kubectl debug)
+kubectl debug node/<node-name> -it --image=alpine -- sh
+
+# Inside:
+openssl x509 -in /var/lib/kubelet/pki/kubelet-client-current.pem -text -noout | grep -A2 "Validity"
+
+# If expired: remove and restart kubelet
+rm /var/lib/kubelet/pki/kubelet-client*
+systemctl restart kubelet
+```
+
+## Container Runtime Deep Dive
+
+```sh
+# Access node
+kubectl debug node/<node-name> -it --image=alpine -- sh
+
+# Inside:
+# Check containerd config
+cat /etc/containerd/config.toml
+
+# Container resource usage stats
+crictl stats
+
+# Inspect a specific container
+crictl inspect <container-id>
+
+# Check for failed/exited containers
+crictl ps -a --state exited
+```
+
+## Network Stack Analysis
+
+```sh
+# From inside a node (kubectl debug or SSH):
+
+# Check network interfaces
+ip addr show
+ip route show
+
+# Check iptables rules (kube-proxy)
+iptables -L -n -v | head -50
+iptables -t nat -L -n -v | head -50
+
+# Monitor traffic to API server
+tcpdump -i eth0 host <api-server-ip> -c 20
+```
+
+## QoS Class Distribution
+
+```sh
+# Check which QoS class each pod has (affects eviction order)
+kubectl get pods -A -o custom-columns=NAME:.metadata.name,NS:.metadata.namespace,QOS:.status.qosClass
+
+# Count by QoS class
+kubectl get pods -A -o jsonpath='{range .items[*]}{.status.qosClass}{"\n"}{end}' | sort | uniq -c
+```
+
+BestEffort pods are evicted first under memory pressure. If most pods are BestEffort (no requests/limits), they'll be killed randomly.
+
+## Emergency: Cluster Recovery
+
+```sh
+# 1. Quick assessment
+kubectl cluster-info
+kubectl get nodes
+kubectl get pods -A --field-selector status.phase!=Running | grep -v Completed
+
+# 2. Cordon failing nodes (stop scheduling)
+kubectl cordon <node-name>
+
+# 3. Drain safely
+kubectl drain <node-name> --ignore-daemonsets --delete-emptydir-data
+
+# 4. If ASG-managed, terminate and let ASG replace
+aws ec2 terminate-instances --instance-ids <id>
+
+# 5. Or increase capacity first
+aws autoscaling set-desired-capacity \
+  --auto-scaling-group-name <asg-name> \
+  --desired-capacity <higher-count>
+```
+
+## Emergency: Backup Critical Data
+
+```sh
+# Before replacing nodes, backup cluster state
+kubectl get all -A -o yaml > cluster-backup.yaml
+kubectl get pv,pvc -A -o yaml > storage-backup.yaml
+kubectl get secrets,configmaps -A -o yaml > config-backup.yaml
+```
+
+## When to Escalate
+
+Contact AWS Support when:
+
+- Multiple nodes failing simultaneously across AZs
+- API server becomes unresponsive
+- Persistent storage issues affecting data integrity
+- Network connectivity issues affecting entire cluster
+- IAM/Security issues preventing all node registration
+- EKS control plane showing degraded status in AWS console
+
+
+## VPC CNI (aws-node) Troubleshooting
+
+### VPC CNI Log Location
+
+```sh
+# On the node (via SSH or kubectl debug):
+ls /var/log/aws-routed-eni/
+# ipamd.log.*    — IP address management daemon logs
+# plugin.log.*   — CNI plugin invocation logs
+```
+
+### ipamD Debugging Endpoints
+
+From inside the node, query the local ipamD API:
+
+```sh
+# Get ENI and IP allocation info
+curl http://localhost:61679/v1/enis | python3 -m json.tool
+# Shows: AssignedIPs, ENIIPPools, TotalIPs, each IP's assignment status
+
+# Get pod-to-IP mapping
+curl http://localhost:61679/v1/pods | python3 -m json.tool
+# Shows: which pod has which IP on which ENI
+
+# Get ipamD metrics (Prometheus format)
+curl http://localhost:61678/metrics
+# Key metrics:
+# awscni_assigned_ip_addresses — IPs currently assigned to pods
+# awscni_eni_allocated — ENIs currently attached
+# awscni_eni_max — maximum ENIs for this instance type
+```
+
+### Collect Support Bundle
+
+```sh
+# Run the built-in support script (on the node)
+/opt/cni/bin/aws-cni-support.sh
+# Generates: /var/log/eks_<instance-id>_<date>.tar.gz
+```
+
+### Pods Stuck in ContainerCreating (IP Exhaustion)
+
+If pods stay in `ContainerCreating`, the subnet may be out of IPs:
+
+```sh
+# Check subnet available IPs
+aws ec2 describe-subnets --subnet-ids <subnet-id> \
+  --query "Subnets[0].AvailableIpAddressCount" --output text
+
+# Check how many IPs the node has allocated
+curl -s http://localhost:61679/v1/enis | python3 -c "import sys,json; d=json.load(sys.stdin); print(f'Assigned: {d[\"AssignedIPs\"]}, Total: {d[\"TotalIPs\"]}')"
+```
+
+Fix: Add more subnets, use larger CIDRs, or enable prefix delegation (`ENABLE_PREFIX_DELEGATION=true`).
+
+### Large Cluster: EC2 API Throttling During Burst Scaling
+
+When scaling from 0 to many pods simultaneously, all nodes' ipamD tries to allocate ENIs at once. EC2 API throttling causes some nodes to back off exponentially, leaving pods in `ContainerCreating`.
+
+Mitigation: Set a higher `WARM_ENI_TARGET` (default 1) to pre-allocate ENIs before pods arrive:
+
+```sh
+kubectl set env daemonset aws-node -n kube-system WARM_ENI_TARGET=2
+```
+
+### FORWARD Policy Issue (Non-EKS AMIs)
+
+If pods can't ping each other on custom AMIs, check if iptables FORWARD is set to DROP:
+
+```sh
+iptables -L FORWARD -n
+# If Policy is DROP:
+iptables -P FORWARD ACCEPT
+```
+
+EKS-optimized AMIs set this automatically. Custom AMIs need it added to the bootstrap script.
+
+### Known Issues
+
+| Issue | Symptom | Fix |
+|-------|---------|-----|
+| `systemd-udev` MAC change (Ubuntu 22.04+) | Pod connectivity breaks after ENI setup | Set `MACAddressPolicy=none` in `/usr/lib/systemd/network/99-default.link` |
+| `NetworkManager-cloud-setup` (RHEL 8+) | Pod networking breaks (routing table 30200/30400 present) | Disable `nm-cloud-setup.service` |
+| nftables incompatibility | IPAMD errors on RHEL 8+/Ubuntu 21+ | Set `ENABLE_NFTABLES=true` (v1.12.1+) or upgrade to v1.13.1+ (auto-detected) |
+| Missing `ENABLE_IPv4` env var (v1.10+) | aws-node crashes with nil pointer dereference | Apply the full manifest from the release, not just the image update |

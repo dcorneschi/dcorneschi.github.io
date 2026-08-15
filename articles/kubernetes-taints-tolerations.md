@@ -7,8 +7,35 @@ Taints repel pods from nodes. Tolerations allow pods through. Together they cont
 ```
 kubectl taint nodes <node> <key>=<value>:<effect>
                            ↑     ↑       ↑
-                         KEY   VALUE   EFFECT
+                       REQUIRED  OPTIONAL  REQUIRED
 ```
+
+### All Valid Syntax Combinations
+
+```sh
+# Key + Value + Effect (full taint)
+kubectl taint nodes node1 workload=database:NoSchedule
+
+# Key + Empty Value + Effect
+kubectl taint nodes node1 maintenance=:NoSchedule
+
+# Key + Effect (no value shorthand — most common for boolean taints)
+kubectl taint nodes node1 maintenance:NoSchedule
+
+# ❌ Key only (INVALID — no effect)
+kubectl taint nodes node1 maintenance
+# Error: at least one taint update is required
+
+# ❌ Effect only (INVALID — no key)
+kubectl taint nodes node1 :NoSchedule
+# Error: invalid taint spec
+```
+
+| Field | Required | Rules |
+|-------|:--------:|-------|
+| **Key** | Yes | Must start with letter/number, max 253 chars, can have DNS prefix |
+| **Value** | No | Defaults to empty string if omitted, max 63 chars |
+| **Effect** | Yes | Must be `NoSchedule`, `PreferNoSchedule`, or `NoExecute` |
 
 ## Taint Effects
 
@@ -143,6 +170,27 @@ spec:
 ```
 
 Matches any taint with key `workload` and effect `NoSchedule`, regardless of value.
+
+### Matching Taints Without Values
+
+For taints with no value (e.g., `maintenance:NoSchedule`), you can match with either:
+
+```yaml
+# Option 1: Equal with empty string
+tolerations:
+  - key: "maintenance"
+    operator: "Equal"
+    value: ""              # Empty string matches no-value taints
+    effect: "NoSchedule"
+
+# Option 2: Exists (matches any value including empty)
+tolerations:
+  - key: "maintenance"
+    operator: "Exists"
+    effect: "NoSchedule"
+```
+
+`Exists` is simpler and works whether the taint has a value or not.
 
 ### Tolerate All Effects for a Key
 
