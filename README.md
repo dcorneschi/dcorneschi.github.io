@@ -39,6 +39,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Node Selectors in Kubernetes](articles/kubernetes-node-selectors.md) | nodeSelector, node affinity, built-in labels, taints, scheduling constraints, and combining strategies. |
 | [Node Affinity in Kubernetes](articles/kubernetes-node-affinity.md) | Required and preferred rules, operators (In, NotIn, Exists, Gt, Lt), weight scoring, combining with taints, and troubleshooting. |
 | [Kubernetes Scheduling Deep Dive](articles/kubernetes-scheduling-deep-dive.md) | Full scheduling pipeline — filtering, scoring, preemption, PriorityClasses, topology spread, QoS, NUMA, PDBs, and debugging. |
+| [LimitRange and ResourceQuota](articles/kubernetes-limitrange-resourcequota.md) | Namespace resource controls — default limits, per-pod constraints, namespace quotas, scoping by priority class, and enforcement. |
+| [Kubernetes Pod Conditions Flow](articles/kubernetes-pod-conditions-flow.md) | Pod lifecycle conditions — PodScheduled, Initialized, ContainersReady, Ready, readiness gates, and troubleshooting stuck pods. |
 
 ### Docker
 

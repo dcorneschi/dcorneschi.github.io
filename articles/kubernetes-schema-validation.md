@@ -263,6 +263,43 @@ spec:
 
 Server mode reveals what the cluster would actually create — useful for understanding defaults, debugging unexpected behavior, and seeing mutations from admission webhooks.
 
+### Understanding Server-Applied Defaults: RollingUpdate Strategy
+
+One of the most common defaults server mode reveals is the Deployment strategy:
+
+```yaml
+strategy:
+  rollingUpdate:
+    maxSurge: 25%
+    maxUnavailable: 25%
+  type: RollingUpdate
+```
+
+These are applied by Kubernetes when you don't declare a strategy explicitly.
+
+**`maxSurge: 25%`** — Maximum pods that can be created ABOVE the desired count during an update.
+
+**`maxUnavailable: 25%`** — Maximum pods that can be UNAVAILABLE during an update.
+
+Percentages are rounded up. Example with 6 replicas (25% of 6 = 1.5 → rounds to 2):
+
+```
+Update flow (6 replicas, maxSurge=2, maxUnavailable=2):
+
+1. Start: 6 old pods running
+2. Create 2 new pods → 8 total (maxSurge allows 6+2)
+3. New pods ready → terminate 2 old pods → 6 total
+4. Create 2 more new pods → 8 total
+5. Ready → terminate 2 old → 6 total
+6. Create 2 final new pods → 8 total
+7. Ready → terminate last 2 old → 6 new pods running
+
+Minimum available at any time: 4 pods (6 - maxUnavailable 2)
+Maximum total at any time: 8 pods (6 + maxSurge 2)
+```
+
+Key takeaway: `--dry-run=client` won't show these defaults, `--dry-run=server` will — this is one of the primary reasons to use server mode.
+
 ---
 
 ## Benchmark Speed Test
