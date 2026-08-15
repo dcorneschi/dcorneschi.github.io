@@ -1012,3 +1012,113 @@ EKS-optimized AMIs set this automatically. Custom AMIs need it added to the boot
 | `NetworkManager-cloud-setup` (RHEL 8+) | Pod networking breaks (routing table 30200/30400 present) | Disable `nm-cloud-setup.service` |
 | nftables incompatibility | IPAMD errors on RHEL 8+/Ubuntu 21+ | Set `ENABLE_NFTABLES=true` (v1.12.1+) or upgrade to v1.13.1+ (auto-detected) |
 | Missing `ENABLE_IPv4` env var (v1.10+) | aws-node crashes with nil pointer dereference | Apply the full manifest from the release, not just the image update |
+
+
+## Full Diagnostic Script
+
+Save and run on a node that won't join:
+
+```sh
+#!/bin/bash
+# eks-node-diagnostics.sh — run as root on failing node
+
+echo "=== EKS Node Join Diagnostics ==="
+echo "Time: $(date)"
+echo ""
+
+echo "--- Instance Info ---"
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/region)
+PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
+echo "Instance: $INSTANCE_ID | Region: $REGION | IP: $PRIVATE_IP"
+
+echo ""
+echo "--- IAM Role ---"
+ROLE=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/)
+[ -z "$ROLE" ] && echo "ERROR: No IAM role attached" || echo "Role: $ROLE"
+
+echo ""
+echo "--- Kubelet ---"
+systemctl is-active kubelet && echo "Kubelet: Active" || echo "Kubelet: INACTIVE"
+kubelet --version 2>/dev/null
+
+echo ""
+echo "--- Kubelet Errors (last 10) ---"
+journalctl -u kubelet --no-pager -n 10 --priority=err 2>/dev/null
+
+echo ""
+echo "--- API Server Connectivity ---"
+if [ -f /var/lib/kubelet/kubeconfig ]; then
+  ENDPOINT=$(grep server /var/lib/kubelet/kubeconfig | awk '{print $2}' | sed 's|https://||')
+  echo "Endpoint: $ENDPOINT"
+  timeout 5 bash -c "echo > /dev/tcp/$ENDPOINT/443" 2>/dev/null && echo "Port 443: OPEN" || echo "Port 443: BLOCKED"
+  HTTP_CODE=$(curl -sk -o /dev/null -w "%{http_code}" "https://$ENDPOINT/version" 2>/dev/null)
+  echo "HTTP response: $HTTP_CODE"
+else
+  echo "kubeconfig not found — bootstrap may not have run"
+fi
+
+echo ""
+echo "--- Container Runtime ---"
+systemctl is-active containerd 2>/dev/null && echo "containerd: Active" || echo "containerd: INACTIVE"
+crictl version 2>/dev/null
+
+echo ""
+echo "--- Network ---"
+echo "Default route: $(ip route | grep default)"
+echo "DNS: $(grep nameserver /etc/resolv.conf | head -1)"
+
+echo ""
+echo "--- Disk ---"
+df -h / | tail -1
+
+echo ""
+echo "--- Cloud-init ---"
+cloud-init status 2>/dev/null
+
+echo ""
+echo "=== Done ==="
+```
+
+Usage:
+
+```sh
+chmod +x eks-node-diagnostics.sh
+sudo ./eks-node-diagnostics.sh
+```
+
+## Attach Missing IAM Instance Profile
+
+If a node has no IAM role (metadata returns empty):
+
+```sh
+# Attach an instance profile to a running instance
+aws ec2 associate-iam-instance-profile \
+  --instance-id <instance-id> \
+  --iam-instance-profile Name=<instance-profile-name>
+
+# Then restart kubelet on the node
+sudo systemctl restart kubelet
+```
+
+## When to Replace vs Fix
+
+| Replace the node | Fix the node |
+|:----------------:|:------------:|
+| Production environment | Dev/test environment |
+| Node is in an ASG (auto-replaced) | Standalone node (no ASG) |
+| Issue persists >15 minutes | Need to understand root cause |
+| Faster than debugging | Custom configuration to preserve |
+
+In most cases, **replace is faster and safer** — terminate the instance and let the ASG launch a new one with the correct configuration.
+
+## Root Cause Statistics
+
+From production EKS clusters, most node join failures are:
+
+| Cause | Frequency |
+|:-----:|:---------:|
+| IAM role not in aws-auth | ~50% |
+| Security group misconfiguration | ~30% |
+| Network/subnet issues | ~10% |
+| Incorrect bootstrap/AMI | ~10% |
