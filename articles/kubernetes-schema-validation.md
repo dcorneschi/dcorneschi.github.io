@@ -187,6 +187,82 @@ Pluto doesn't validate schema — it only checks API version deprecations. Use i
 
 **Conclusion:** Client mode is almost useless — it misses most obvious misconfigurations and still requires a cluster connection. Server mode catches everything but is significantly slower, especially with many files.
 
+### Output Comparison Example
+
+The key difference in output — server mode shows all defaulted fields that would be applied:
+
+**`--dry-run=client` output** (minimal, your YAML as-is):
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx-container
+        ports:
+        - containerPort: 80
+```
+
+**`--dry-run=server` output** (full object with all server-applied defaults):
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: "2025-01-15T14:35:44Z"
+  generation: 1
+  name: nginx-deployment
+  namespace: default
+  uid: 95669a87-3895-4fd0-977e-e48915290cc2
+spec:
+  progressDeadlineSeconds: 600          # defaulted
+  replicas: 3
+  revisionHistoryLimit: 10              # defaulted
+  selector:
+    matchLabels:
+      app: nginx
+  strategy:                             # defaulted
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:latest
+        imagePullPolicy: Always         # defaulted
+        name: nginx-container
+        ports:
+        - containerPort: 80
+          protocol: TCP                 # defaulted
+        resources: {}                   # defaulted
+        terminationMessagePath: /dev/termination-log     # defaulted
+        terminationMessagePolicy: File                   # defaulted
+      dnsPolicy: ClusterFirst           # defaulted
+      restartPolicy: Always             # defaulted
+      schedulerName: default-scheduler  # defaulted
+      securityContext: {}               # defaulted
+      terminationGracePeriodSeconds: 30 # defaulted
+```
+
+Server mode reveals what the cluster would actually create — useful for understanding defaults, debugging unexpected behavior, and seeing mutations from admission webhooks.
+
 ---
 
 ## Benchmark Speed Test

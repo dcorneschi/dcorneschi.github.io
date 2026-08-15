@@ -37,6 +37,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Kubernetes Schema Validation](articles/kubernetes-schema-validation.md) | Validating K8s manifests — yamllint, kubeconform, kubectl dry-run (client vs server), pluto, and CI/CD strategies. |
 | [k9s Cheatsheet](articles/k9s-cheatsheet.md) | Terminal UI for navigating and managing Kubernetes clusters. |
 | [Node Selectors in Kubernetes](articles/kubernetes-node-selectors.md) | nodeSelector, node affinity, built-in labels, taints, scheduling constraints, and combining strategies. |
+| [Node Affinity in Kubernetes](articles/kubernetes-node-affinity.md) | Required and preferred rules, operators (In, NotIn, Exists, Gt, Lt), weight scoring, combining with taints, and troubleshooting. |
 | [Kubernetes Scheduling Deep Dive](articles/kubernetes-scheduling-deep-dive.md) | Full scheduling pipeline — filtering, scoring, preemption, PriorityClasses, topology spread, QoS, NUMA, PDBs, and debugging. |
 
 ### Docker
@@ -68,6 +69,18 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Securing Kubernetes Containers: Security Contexts](articles/eks-security-contexts.md) | Linux kernel primitives, security contexts, capabilities, seccomp, AppArmor, and production hardening. |
 | [EKS Node Groups: With and Without Launch Templates](articles/eks-nodegroups-launch-templates.md) | Managed node groups — when you need a launch template, what EKS manages automatically, custom AMIs, and Terraform examples. |
 | [EKS Architecture Deep Dive](articles/eks-architecture-deep-dive.md) | EKS internals — control plane, etcd, cross-account ENIs, VPC CNI, authentication flow, API endpoint access, add-ons, upgrade process, and limits. |
+| [eksctl Cheatsheet](articles/eksctl-cheatsheet.md) | eksctl CLI — cluster lifecycle, node groups, scaling, labels, IAM service accounts, OIDC, add-ons, Fargate, and identity mappings. |
+| [Creating an EKS Cluster with eksctl](articles/eks-cluster-with-eksctl.md) | Step-by-step guide — prerequisites, ClusterConfig YAML, managed node groups, IRSA, add-ons, private clusters, and production-ready examples. |
+| [EKS Auto Mode](articles/eks-auto-mode.md) | Fully managed data plane — what AWS handles, Auto vs Standard comparison, node pools, security model, networking, storage, and migration. |
+| [AWS CLI EKS Commands](articles/aws-eks-cli-cheatsheet.md) | All `aws eks` commands — clusters, node groups, add-ons, access entries, Pod Identity, Fargate, updates, tokens, and waiters. |
+| [EKS Node Not Joining Cluster](articles/eks-node-not-joining-troubleshooting.md) | Troubleshooting nodes that fail to join — IAM, security groups, networking, kubelet, bootstrap, and step-by-step diagnosis. |
+| [EKS Node Monitoring](articles/eks-node-monitoring.md) | Node health monitoring — CloudWatch metrics, node conditions, node-problem-detector, Prometheus, alerts, and capacity planning. |
+| [Why aws-auth Looks Different on Different Clusters](articles/eks-aws-auth-why-different.md) | How aws-auth ConfigMap is created, why fields vary, cluster creator access, Access Entries migration, and common mistakes. |
+| [aws-auth ConfigMap Technical Details](articles/eks-aws-auth-technical-details.md) | How EKS authenticates IAM identities — token format, aws-iam-authenticator webhook, STS flow, edge cases, and debugging. |
+| [Validating cloud-init on EKS Nodes](articles/eks-cloud-init-validation.md) | Verifying cloud-init completion — status checks, log files, bootstrap validation, common failures, and fleet monitoring. |
+| [Cluster Autoscaler Restarts Troubleshooting](articles/eks-cluster-autoscaler-restarts.md) | Diagnosing "Service Unavailable" restarts — API server overload, AWS throttling, probe tuning, and monitoring. |
+| [HAProxy on EKS with NLB](articles/eks-haproxy-nlb.md) | Deploying HAProxy with NLB — architecture, AWS LB Controller, ip target type, TLS options, health checks, and annotations reference. |
+| [EKS Node Health and Auto-Repair](articles/eks-node-health-auto-repair.md) | Node health monitoring, auto-repair mechanisms, Node Problem Detector, NTH, Karpenter disruption, and self-healing patterns. |
 | [EKS vs AKS vs GKE](articles/eks-vs-aks-vs-gke.md) | Managed Kubernetes compared — control plane, networking, IAM, node management, upgrades, security, and when to choose which. |
 | [Karpenter Guide](articles/karpenter-guide.md) | Intelligent node scaling for EKS — cost savings over CA, NodePool/EC2NodeClass config, Spot management, consolidation, GPU, migration, and monitoring. |
 

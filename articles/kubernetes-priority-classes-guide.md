@@ -306,6 +306,25 @@ description: "Default priority for all workloads"
 **Recommendation:** Consider setting `production-low` or a similar mid-tier as the global default so that pods without explicit priority aren't sitting at 0.
 
 
+## When to Use Priority and Preemption vs Other Strategies
+
+| Strategy | Best For | How It Differs |
+|----------|----------|----------------|
+| **Priority and Preemption** | Ensuring critical workloads always get resources, even under contention | Operates at scheduling time — reorders the queue and evicts lower-priority pods |
+| **Horizontal Pod Autoscaler (HPA)** | Scaling replicas based on observed metrics (CPU, memory, custom) | Adds or removes pod replicas — doesn't affect scheduling order or evict other pods |
+| **Vertical Pod Autoscaler (VPA)** | Right-sizing resource requests for individual pods | Adjusts requests/limits over time — doesn't prioritize one workload over another |
+| **Cluster Autoscaler / Karpenter** | Adding or removing nodes based on pending pod demand | Grows the cluster instead of reshuffling what's already running |
+| **Resource Quotas and Limits** | Capping resource consumption per namespace | Prevents overconsumption but doesn't express relative importance between workloads |
+
+Priority and Preemption shines in three scenarios:
+
+- **Strict SLA workloads** — Services that must stay running regardless of cluster pressure (payment processing, auth, real-time APIs)
+- **Resource-scarce environments** — Clusters where adding more nodes isn't an option and you need to guarantee resources for what matters most
+- **Dynamic workload mixes** — Environments where batch jobs, dev workloads, and production services share the same cluster
+
+In practice, these strategies complement each other. Use Cluster Autoscaler/Karpenter to grow capacity, HPA to scale within that capacity, and Priority and Preemption as the safety net that protects critical workloads when everything else is saturated.
+
+
 ## Common Pitfalls
 
 ### 1. Values too close to system classes

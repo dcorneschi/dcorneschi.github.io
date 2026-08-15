@@ -652,6 +652,94 @@ aws eks describe-cluster --name <cluster> \
 aws eks describe-update --name <cluster> --update-id <update-id>
 ```
 
+## Control Plane Patching: The Rolling Update Mechanism
+
+### API Server Patching
+
+AWS uses a rolling replacement strategy for API server instances:
+
+1. **Preparation** — New API server instances are launched with the patched version across different AZs
+2. **Gradual Replacement** — During patching, kube-apiserver instances are replaced, resulting in different IP addresses returned when resolving the cluster endpoint FQDN. Old instances remain available during transition. DNS propagates new IPs (TTL = 60 seconds).
+3. **Completion** — Once all new instances are healthy, old instances are terminated. The cluster endpoint remains stable via the NLB.
+
+### etcd Patching
+
+etcd is updated separately with extra care:
+
+1. **Quorum Maintenance** — Always maintains minimum 3 instances across AZs (quorum = 2)
+2. **Leader Election** — Elects a new leader if the current leader is being patched
+3. **Data Replication** — Ensures no data loss during patching
+4. **Incremental** — One instance at a time to maintain cluster stability
+
+### Potential Brief Disruptions During Patching
+
+The operation is zero-downtime for the API endpoint but briefly disrupts webhook calls. Controllers with aggressive timeouts may need retries.
+
+| Issue | Cause | Duration |
+|-------|-------|----------|
+| Webhook timeouts | Admission controllers briefly unreachable | Seconds |
+| DNS serving stale IPs | Client-side DNS caches | Up to 60s (TTL) |
+| Connection resets | Long-lived connections interrupted | Instant |
+| API server temporarily unresponsive | During instance cutover | 1-5 seconds |
+
+### Mitigation Strategies
+
+- Implement client-side retry logic in applications and controllers
+- Set appropriate timeouts for API calls (not too aggressive)
+- Don't cache cluster endpoint IPs — always use DNS resolution
+- Handle reconnection scenarios gracefully in custom operators
+- Use exponential backoff in custom controllers
+
+### Timeline
+
+- **Patch detection**: AWS notifies via service announcements
+- **Automatic application**: Platform versions applied within AWS-determined maintenance windows
+- **Typical duration**: 10-15 minutes for patch application
+- **Worker node patching**: Separate process, you control the timing
+
+## Control Plane vs Worker Node Patching
+
+| Aspect | Control Plane | Worker Nodes |
+|--------|:-------------:|:------------:|
+| Responsibility | AWS managed | Your responsibility |
+| Automatic | Yes (platform patches) | No (you trigger AMI updates) |
+| Downtime | Zero-downtime (rolling) | Requires planning (rolling update) |
+| Your action | Monitor notifications | Trigger upgrades |
+| Version control | You choose K8s version only | You choose node AMI + K8s version |
+| Scheduling | AWS-managed windows | Your schedule |
+| Rollback | Not possible | Not possible (replace with old version) |
+| PDB respected | N/A (no pods on control plane) | Yes (during node rolling update) |
+
+### What AWS Does Automatically
+
+- Monitors control plane load and scales API server instances
+- Patches operating system security updates on control plane
+- Replaces unhealthy control plane instances
+- Manages etcd backups and replication
+- Applies Kubernetes security patches (within platform version)
+- Maintains API server availability via NLB
+- Handles DNS/networking transitions during patching
+
+### What You Must Do
+
+**For platform version updates (patches):**
+- No action required — patches apply automatically
+- Monitor for brief webhook timeouts during the window
+- Be aware of DNS TTL (60s) for API server endpoint
+
+**For Kubernetes version upgrades (e.g., 1.29 → 1.30):**
+- Initiate the upgrade manually
+- Upgrade worker nodes separately afterward
+- Update add-ons (CoreDNS, VPC CNI, kube-proxy) to compatible versions
+- Test in staging first — upgrades cannot be rolled back
+
+### Important Notes
+
+- **No rollback**: Control plane version cannot be downgraded once upgraded
+- **Minimum support**: Always maintain within supported Kubernetes versions (standard or extended support)
+- **Network assumptions**: Requires sufficient IP addresses in cluster subnets for new API server ENIs
+- **Stateful applications**: May experience brief connectivity hiccups during patching — design for resilience
+
 ## Pricing: What You're Actually Paying For
 
 | Component | Cost | Notes |
