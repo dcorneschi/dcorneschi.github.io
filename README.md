@@ -34,13 +34,22 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md) | NFS CSI driver on MicroK8s for persistent volumes. |
 | [Helm Cheatsheet](articles/helm-cheatsheet.md) | Package manager for Kubernetes — repos, installs, upgrades, and rollbacks. |
 | [crictl Cheatsheet](articles/crictl-cheatsheet.md) | CLI for inspecting and debugging container runtimes at the CRI level. |
+| [ctr Cheatsheet (containerd)](articles/ctr-cheatsheet.md) | containerd CLI — images, containers, tasks, namespaces, snapshots, and Kubernetes debugging. |
 | [Kubernetes Schema Validation](articles/kubernetes-schema-validation.md) | Validating K8s manifests — yamllint, kubeconform, kubectl dry-run (client vs server), pluto, and CI/CD strategies. |
 | [k9s Cheatsheet](articles/k9s-cheatsheet.md) | Terminal UI for navigating and managing Kubernetes clusters. |
 | [Node Selectors in Kubernetes](articles/kubernetes-node-selectors.md) | nodeSelector, node affinity, built-in labels, taints, scheduling constraints, and combining strategies. |
 | [Node Affinity in Kubernetes](articles/kubernetes-node-affinity.md) | Required and preferred rules, operators (In, NotIn, Exists, Gt, Lt), weight scoring, combining with taints, and troubleshooting. |
+| [Kubernetes Taints and Tolerations](articles/kubernetes-taints-tolerations.md) | Taint effects, keys, values, toleration operators, real-world patterns, removal, monitoring, and validation rules. |
 | [Kubernetes Scheduling Deep Dive](articles/kubernetes-scheduling-deep-dive.md) | Full scheduling pipeline — filtering, scoring, preemption, PriorityClasses, topology spread, QoS, NUMA, PDBs, and debugging. |
 | [LimitRange and ResourceQuota](articles/kubernetes-limitrange-resourcequota.md) | Namespace resource controls — default limits, per-pod constraints, namespace quotas, scoping by priority class, and enforcement. |
 | [Kubernetes Pod Conditions Flow](articles/kubernetes-pod-conditions-flow.md) | Pod lifecycle conditions — PodScheduled, Initialized, ContainersReady, Ready, readiness gates, and troubleshooting stuck pods. |
+| [Kubernetes Pod Commands](articles/kubernetes-pod-commands.md) | command vs args — Docker ENTRYPOINT/CMD mapping, YAML syntax styles, shell vs exec form, and signal handling. |
+| [Fix DaemonSet Scheduling on EKS](articles/eks-daemonset-scheduling-fix.md) | DaemonSet pods stuck Pending — diagnosis, PriorityClass fix, resource reservation, eviction, and prevention strategies. |
+| [Kubernetes Control Plane API Commands](articles/kubernetes-api-commands.md) | Direct API server access — kubectl raw, curl with tokens, API discovery, health endpoints, metrics, and debugging. |
+| [kubectl Cheatsheet](articles/kubectl-cheatsheet.md) | kubectl commands — nodes, pods, deployments, services, events, logs, performance, RBAC, custom-columns, and one-liners. |
+| [Kubernetes Field Selectors](articles/kubernetes-field-selectors.md) | --field-selector — supported fields per resource type, operators, practical examples, and limitations. |
+| [Kubernetes Jobs and CronJobs](articles/kubernetes-jobs-cronjobs.md) | Jobs and CronJobs — commands, cron syntax, concurrency policies, CrashLoopBackOff fix, and auto-cleanup. |
+| [EKS Port Communication](articles/eks-port-communication.md) | Control plane to worker node ports — kubelet API, kube-proxy, security group rules, and communication flows. |
 
 ### Docker
 

@@ -120,6 +120,99 @@ Once feasible nodes are identified, scoring ranks them. Common scoring plugins:
 
 Scores are normalized (0-100), multiplied by plugin weights, and summed. The node with the highest total wins.
 
+### How Scoring Works: The Math
+
+```
+Final Score = ∑ (Plugin Score × Plugin Weight)
+```
+
+**NodeResourcesFit:**
+```
+Score = (Available CPU + Available Memory) / (Total CPU + Total Memory) × 100
+```
+
+**ImageLocality:**
+```
+Score = (Image size already present / Total image size) × 100
+```
+
+**BalancedResourceAllocation:**
+```
+Score = 100 - |CPU Usage% - Memory Usage%| × 10
+```
+
+Example:
+- Node A: 60% CPU, 65% Memory → Score: 95 (well balanced)
+- Node B: 80% CPU, 40% Memory → Score: 60 (imbalanced)
+- Node A wins on this plugin
+
+If multiple nodes have the same final score, the scheduler picks one randomly.
+
+### Performance Optimization: percentageOfNodesToScore
+
+For large clusters, the scheduler doesn't evaluate every node:
+
+| Cluster Size | Default % Evaluated |
+|:------------:|:-------------------:|
+| < 100 nodes | 50% |
+| 100-5000 nodes | Scales linearly from 50% to 10% |
+| > 5000 nodes | 5% |
+
+The scheduler iterates nodes in round-robin across zones and stops once it finds enough feasible nodes. You can override this in the scheduler config:
+
+```yaml
+apiVersion: kubescheduler.config.k8s.io/v1
+kind: KubeSchedulerConfiguration
+percentageOfNodesToScore: 30
+```
+
+### Custom Scoring Configuration
+
+Customize which plugins are active and their weights:
+
+```yaml
+apiVersion: kubescheduler.config.k8s.io/v1
+kind: KubeSchedulerConfiguration
+profiles:
+  - schedulerName: custom-scheduler
+    pluginConfig:
+      - name: NodeResourcesFit
+        args:
+          scoringStrategy:
+            type: LeastAllocated
+            resources:
+              - name: cpu
+                weight: 3    # CPU 3x more important than memory
+              - name: memory
+                weight: 1
+```
+
+Scoring strategies:
+- **LeastAllocated** — prefer nodes with most free resources (spread)
+- **MostAllocated** — prefer nodes with least free resources (bin-pack)
+- **RequestedToCapacityRatio** — custom curve
+
+### The Binding Cycle
+
+After scoring selects a node:
+
+1. **Reserve** — temporarily claim resources on the selected node
+2. **Permit** — approve or delay (for gang scheduling, etc.)
+3. **Pre-Bind** — volume binding, storage prep
+4. **Bind** — write `spec.nodeName` to the pod object in etcd
+5. **Post-Bind** — cleanup, logging
+
+If binding fails (e.g., another pod claimed the resources), the scheduler falls back to the next highest-scoring node.
+
+### Topology Keys Reference
+
+| Topology Key | Scope | Use Case |
+|--------------|-------|----------|
+| `kubernetes.io/hostname` | Individual nodes | Spread across different nodes |
+| `topology.kubernetes.io/zone` | Availability zones | Distribute across AZs |
+| `topology.kubernetes.io/region` | Geographic regions | Multi-region deployments |
+| `node.kubernetes.io/instance-type` | Instance types | Hardware-specific placement |
+
 ## Preemption: When No Node Is Available
 
 If filtering produces zero feasible nodes and the pending pod has a PriorityClass, the scheduler can **preempt** lower-priority pods:

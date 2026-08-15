@@ -809,3 +809,99 @@ kubectl config get-contexts
 kubectl -n kube-system annotate deployment.apps/cluster-autoscaler \
   cluster-autoscaler.kubernetes.io/safe-to-evict="false"
 ```
+
+
+## Taint Effect Naming: AWS API vs kubectl
+
+AWS and Kubernetes use different naming conventions for the same taint effects:
+
+| kubectl Effect | AWS API Effect | Description |
+|----------------|----------------|-------------|
+| `NoSchedule` | `NO_SCHEDULE` | Prevents new pods from scheduling |
+| `NoExecute` | `NO_EXECUTE` | Prevents scheduling + evicts existing pods |
+| `PreferNoSchedule` | `PREFER_NO_SCHEDULE` | Soft preference against scheduling |
+
+**AWS API** (uppercase snake_case) — used in: AWS CLI, CloudFormation, Terraform `aws_eks_node_group`
+
+**kubectl** (PascalCase) — used in: kubectl commands, Kubernetes YAML manifests
+
+Both create identical taints — just different input formats.
+
+### AWS CLI Taint Examples
+
+```sh
+# Create node group with taint (AWS format)
+aws eks create-nodegroup --cluster-name <cluster> --nodegroup-name gpu-nodes \
+  --subnets subnet-aaa subnet-bbb \
+  --node-role <role-arn> \
+  --instance-types g5.xlarge \
+  --scaling-config minSize=0,maxSize=4,desiredSize=1 \
+  --taints "key=nvidia.com/gpu,value=true,effect=NO_SCHEDULE"
+
+# Multiple taints
+aws eks create-nodegroup --cluster-name <cluster> --nodegroup-name spot-nodes \
+  --subnets subnet-aaa subnet-bbb \
+  --node-role <role-arn> \
+  --instance-types m5.large m5a.large \
+  --capacity-type SPOT \
+  --scaling-config minSize=0,maxSize=10,desiredSize=3 \
+  --taints "key=spot-instance,value=true,effect=PREFER_NO_SCHEDULE" \
+           "key=workload,value=batch,effect=NO_SCHEDULE"
+```
+
+### Update Taints on Existing Node Group
+
+```sh
+# Add or update taints
+aws eks update-nodegroup-config --cluster-name <cluster> --nodegroup-name <ng> \
+  --taints 'addOrUpdateTaints=[{key=workload,value=database,effect=NO_SCHEDULE}]'
+
+# Remove taints
+aws eks update-nodegroup-config --cluster-name <cluster> --nodegroup-name <ng> \
+  --taints 'removeTaints=[{key=workload,effect=NO_SCHEDULE}]'
+
+# Multiple taint operations
+aws eks update-nodegroup-config --cluster-name <cluster> --nodegroup-name <ng> \
+  --taints 'addOrUpdateTaints=[{key=environment,value=production,effect=NO_SCHEDULE},{key=workload,value=critical,effect=PREFER_NO_SCHEDULE}]'
+```
+
+### Same Taint, Different Syntax
+
+```sh
+# AWS CLI (at node group creation)
+aws eks create-nodegroup --taints "key=maintenance,value=scheduled,effect=NO_SCHEDULE" ...
+
+# kubectl (on existing node)
+kubectl taint nodes <node-name> maintenance=scheduled:NoSchedule
+
+# Both result in:
+# kubectl describe node <node> | grep Taints
+# Taints: maintenance=scheduled:NoSchedule
+```
+
+### Terraform
+
+```hcl
+resource "aws_eks_node_group" "gpu" {
+  # ...
+  taint {
+    key    = "nvidia.com/gpu"
+    value  = "true"
+    effect = "NO_SCHEDULE"    # AWS API format, NOT kubectl format
+  }
+}
+```
+
+### Common Mistakes
+
+```sh
+# ❌ Wrong — kubectl format in AWS CLI
+aws eks create-nodegroup --taints "key=test,value=true,effect=NoSchedule"
+# Error: Invalid effect value
+
+# ❌ Wrong — lowercase
+aws eks create-nodegroup --taints "key=test,value=true,effect=no_schedule"
+
+# ✅ Correct — uppercase snake_case
+aws eks create-nodegroup --taints "key=test,value=true,effect=NO_SCHEDULE"
+```
