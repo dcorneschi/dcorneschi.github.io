@@ -822,3 +822,370 @@ dnf mark install package_name
 # Mark a package as a dependency (eligible for autoremove)
 dnf mark remove package_name
 ```
+
+
+---
+
+## Advanced DNF Operations
+
+### Custom Repository Creation
+
+```bash
+# Create custom repository
+createrepo /path/to/repo/directory
+createrepo --update /path/to/repo      # Update existing repo
+createrepo_c /path/to/repo             # Fast C implementation
+
+# Create repository with metadata
+createrepo --database /path/to/repo
+createrepo --checksum sha256 /path/to/repo
+createrepo --workers 4 /path/to/repo   # Parallel processing
+
+# Add GPG signing
+gpg --detach-sign --armor repodata/repomd.xml
+```
+
+### Repository Mirroring
+
+```bash
+# Sync repository with rsync
+rsync -avH --delete source/ destination/
+
+# Mirror with reposync
+reposync --download-metadata --repo=reponame
+reposync -g -l -d -m --repoid=fedora
+reposync --newest-only --delete       # Keep only latest versions
+
+# Create local mirror
+reposync --arch=x86_64 --downloadcomps --download-metadata
+```
+
+### DNF Plugins and Extensions
+
+#### Core Plugins
+
+```bash
+dnf install dnf-plugins-core          # Essential plugins
+
+# Configuration Manager
+dnf config-manager --set-enabled repo
+dnf config-manager --set-disabled repo
+dnf config-manager --dump             # Show all configuration
+
+# Download plugin
+dnf download --resolve package_name   # Download with dependencies
+
+# Needs-restarting plugin
+dnf needs-restarting                  # Check what needs restart
+dnf needs-restarting -r               # Check if reboot needed
+dnf needs-restarting -s               # Show services needing restart
+```
+
+#### Additional Plugins
+
+```bash
+# Automatic updates
+dnf install dnf-automatic
+systemctl enable --now dnf-automatic.timer
+
+# System upgrade
+dnf install dnf-plugin-system-upgrade
+dnf system-upgrade download --releasever=39
+dnf system-upgrade reboot
+
+# Show leaves (packages with no dependents)
+dnf install dnf-plugin-leaves
+dnf leaves
+
+# Tracer plugin for restart detection
+dnf install dnf-plugin-tracer
+dnf tracer
+```
+
+### Package Building and Development
+
+```bash
+# Build dependencies
+dnf builddep package.spec             # Install build dependencies
+dnf builddep --srpm package.src.rpm   # From source RPM
+
+# Development tools
+dnf group install "C Development Tools and Libraries"
+dnf group install "RPM Development Tools"
+
+# Mock build environment
+dnf install mock
+usermod -a -G mock $USER
+mock -r fedora-39-x86_64 package.src.rpm
+```
+
+### Advanced Querying
+
+```bash
+# Complex repoquery operations
+dnf repoquery --whatdepends package   # Reverse dependencies
+dnf repoquery --tree package          # Dependency tree
+dnf repoquery --duplicated             # Duplicate packages
+dnf repoquery --unsatisfied            # Unsatisfied dependencies
+
+# Query with formats
+dnf repoquery --queryformat "%{name}-%{version}-%{release}.%{arch}"
+dnf repoquery --qf "%{name}: %{summary}" '*kernel*'
+
+# Advanced filtering
+dnf repoquery --arch x86_64 --latest-limit 1
+dnf repoquery --repo fedora --arch noarch
+```
+
+---
+
+## Enterprise and Automation
+
+### Ansible Integration
+
+```yaml
+# Ansible DNF module examples
+- name: Install packages
+  dnf:
+    name: 
+      - httpd
+      - nginx
+    state: present
+
+- name: Update all packages
+  dnf:
+    name: "*"
+    state: latest
+
+- name: Install from specific repo
+  dnf:
+    name: package_name
+    enablerepo: epel
+    disablerepo: "*"
+```
+
+### Scripting and Automation
+
+```bash
+# Batch operations
+echo "package1 package2 package3" | xargs dnf install -y
+
+# Conditional installations
+if ! dnf list installed package_name &>/dev/null; then
+    dnf install -y package_name
+fi
+
+# Mass repository management
+for repo in repo1 repo2 repo3; do
+    dnf config-manager --enable $repo
+done
+
+# Update with logging
+dnf update -y 2>&1 | tee /var/log/dnf-update-$(date +%Y%m%d).log
+```
+
+### Container and Image Management
+
+```bash
+# DNF in containers
+dnf install --installroot=/mnt/chroot package_name
+dnf --installroot=/opt/myroot makecache
+
+# Minimal installations
+dnf install --setopt=install_weak_deps=False package_name
+dnf group install --exclude=package_name "group_name"
+
+# Image building preparation
+dnf clean all
+rm -rf /var/cache/dnf/*
+rm -rf /var/log/dnf.*
+```
+
+---
+
+## Performance Optimization
+
+### Parallel Operations
+
+```bash
+# Configuration for performance
+echo "max_parallel_downloads=10" >> /etc/dnf/dnf.conf
+echo "fastestmirror=True" >> /etc/dnf/dnf.conf
+echo "deltarpm=False" >> /etc/dnf/dnf.conf  # Disable for speed
+
+# Metadata optimization
+dnf makecache --timer                  # Background cache update
+dnf config-manager --set-disabled '*'  # Disable all repos
+dnf config-manager --set-enabled base updates  # Enable only needed
+```
+
+### Large-scale Operations
+
+```bash
+# Batch package operations
+dnf shell << EOF
+repo enable epel
+install package1 package2 package3
+update
+run
+EOF
+
+# Transaction batching
+dnf mark install package1 package2
+dnf mark remove package3
+dnf resolve  # Preview changes
+dnf transaction run
+```
+
+---
+
+## Security and Compliance
+
+### Security-focused Operations
+
+```bash
+# Security updates only
+dnf update --security --sec-severity Critical
+dnf update --security --cve CVE-2023-1234
+
+# Security advisories
+dnf updateinfo list --security
+dnf updateinfo info FEDORA-2023-abc123
+
+# Package verification
+rpm -Va                               # Verify all packages
+```
+
+### GPG and Trust Management
+
+```bash
+# GPG key management
+rpm --import /path/to/RPM-GPG-KEY
+rpm -qa gpg-pubkey*                   # List imported keys
+rpm --checksig package.rpm            # Verify package signature
+
+# Repository trust levels
+dnf config-manager --save --setopt=repo.gpgcheck=1
+dnf config-manager --save --setopt=repo.repo_gpgcheck=1
+```
+
+---
+
+## Advanced Troubleshooting and Debugging
+
+### Advanced Debugging
+
+```bash
+# Debug mode
+dnf -vvv install package_name         # Very verbose output
+dnf --debuglevel=10 update            # Maximum debug level
+
+# Dependency resolution debugging
+dnf debug-dump                        # Create debug dump
+dnf --best --allowerasing install package
+dnf --nobest install package          # Allow suboptimal solutions
+
+# Repository debugging
+dnf repolist -v                       # Verbose repository info
+dnf config-manager --dump             # Show all configuration
+```
+
+### Recovery Operations
+
+```bash
+# Fix broken RPM database
+rpm --rebuilddb
+rpm -qa | sort > /tmp/packages.list
+
+# Downgrade operations
+dnf history info                      # Find transaction ID
+dnf history rollback 42               # Rollback to transaction 42
+dnf downgrade package_name            # Downgrade specific package
+
+# Force operations
+dnf reinstall --allowerasing package
+dnf remove --noautoremove package     # Keep dependencies
+```
+
+---
+
+## Custom DNF Aliases
+
+```bash
+# Useful aliases
+alias dnfi='dnf info'
+alias dnfs='dnf search'
+alias dnfu='dnf update'
+alias dnfr='dnf remove'
+alias dnfl='dnf list'
+
+# Complex aliases
+alias dnf-cleanup='dnf autoremove -y && dnf clean all'
+alias dnf-security='dnf update --security'
+alias dnf-leaves='dnf repoquery --installed --qf "%{name}" --whatrequires "*" | sort -u | comm -23 <(dnf repoquery --installed --qf "%{name}" | sort) -'
+```
+
+---
+
+## Integration with Other Tools
+
+### SystemD Integration
+
+```bash
+# DNF timers
+systemctl list-timers dnf-*
+systemctl status dnf-makecache.timer
+systemctl enable dnf-automatic-install.timer
+```
+
+```ini
+# Custom systemd service
+[Unit]
+Description=Custom DNF Update
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/dnf update -y
+ExecStartPost=/usr/bin/needs-restarting -r
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### Log Analysis
+
+```bash
+# DNF logs analysis
+grep -E "(Install|Update|Erase)" /var/log/dnf.log
+journalctl -u dnf-automatic
+journalctl _COMM=dnf
+
+# Parse transaction logs
+awk '/Transaction Summary:/{flag=1} flag && /^$/{flag=0} flag' /var/log/dnf.log
+```
+
+---
+
+## Tips and Best Practices
+
+1. **Always update before installing**: `dnf update && dnf install package`
+2. **Use autoremove regularly**: Keep system clean with `dnf autoremove`
+3. **Check updates before applying**: Use `dnf check-update` first
+4. **Use groups for bulk installations**: More efficient than individual packages
+5. **Enable only needed repositories**: Keep security and performance optimal
+6. **Regular cache cleanup**: Use `dnf clean all` periodically
+7. **Check history before major changes**: Use `dnf history` to understand system state
+8. **Use exclusions carefully**: Avoid breaking dependencies with `--exclude`
+9. **Use DNF shell for complex operations**: Batch multiple commands efficiently
+10. **Implement security-first updates**: Use `--security` flag for critical updates
+11. **Monitor package leaves**: Regular cleanup with `dnf leaves`
+12. **Automate with systemd timers**: Don't rely on cron for package management
+13. **Use mock for safe building**: Never build packages as root
+14. **Implement proper logging**: Track all package changes for auditing
+15. **Test in containers first**: Validate complex operations in isolated environments
+16. **Use configuration management**: Ansible/Puppet for reproducible setups
+17. **Regular database maintenance**: Periodic `rpm --rebuilddb`
+18. **Monitor repository health**: Check for failed mirrors and slow repos
+19. **Implement staged rollouts**: Test updates on subset before full deployment
+20. **Use pinning carefully**: Pin critical packages to prevent unwanted updates

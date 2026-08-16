@@ -294,6 +294,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [SSH Generate Keys](articles/ssh-keygen-guide.md) | Generate Ed25519, RSA, and ECDSA keys — passphrases, options, FIDO2, and security hardening. |
 | [SSH Convert Keys](articles/ssh-convert-keys.md) | Convert between OpenSSH, PuTTY PPK, PEM, PKCS#8, DER, and SSH.com key formats. |
 | [SSH Remote Script Execution](articles/ssh-remote-script-execution.md) | Tools for running scripts on remote hosts — SSH, pssh, pdsh, Ansible, Fabric, and more. |
+| [ip Command Cheatsheet](articles/ip-command-cheatsheet.md) | iproute2 ip command — addresses, links, routes, neighbours, multicast, and net-tools migration. |
 | [ss Cheatsheet](articles/ss-cheatsheet.md) | Socket statistics — inspecting TCP/UDP connections and states. |
 | [VNC Cheatsheet](articles/vnc-cheatsheet.md) | TigerVNC on RHEL 6–10 and Ubuntu — installation, configuration, service management, SSH tunnels, one-liners, and troubleshooting. |
 
