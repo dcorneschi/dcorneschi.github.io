@@ -53,6 +53,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Kubernetes Jobs and CronJobs](articles/kubernetes-jobs-cronjobs.md) | Jobs and CronJobs — commands, cron syntax, concurrency policies, CrashLoopBackOff fix, and auto-cleanup. |
 | [EKS Port Communication](articles/eks-port-communication.md) | Control plane to worker node ports — kubelet API, kube-proxy, security group rules, and communication flows. |
 | [EKS Node Lifecycle During Updates](articles/eks-node-lifecycle-during-updates.md) | Node state progression during rolling updates — cordon, drain, eviction API, PDBs, ASG integration, and timing. |
+| [Kubernetes Cluster Setup with kubeadm](articles/kubeadm-cluster-setup.md) | Step-by-step kubeadm cluster setup — CRI-O, Calico CNI, metrics server, node joins, validation, upgrades, and troubleshooting. |
 
 ### Docker
 
@@ -64,6 +65,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Docker Compose: Running Containers Without Root](articles/docker-compose-non-root.md) | UID/GID mapping, bind mount permissions, image inspection, privileged ports, and security hardening. |
 | [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md) | Mounting Docker config into the runner to avoid rate limiting. |
 | [dbash — Docker Shell Function](articles/docker-dbash-function.md) | Bash function to quickly shell into Docker containers. |
+| [Building Docker Images with Dockerfile](articles/docker-build-image-guide.md) | Dockerfile instructions, build commands, tagging, multi-stage builds, heredoc syntax, CMD vs ENTRYPOINT, and best practices. |
 
 ### AWS
 
