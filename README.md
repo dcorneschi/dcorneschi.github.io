@@ -164,6 +164,9 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Ansible Sudo: Ubuntu vs RHEL](articles/ansible-sudo-ubuntu-vs-rhel.md) | Why become fails on RHEL — sudo/wheel groups, timestamp_timeout, passwordless setup, and mixed environments. |
 | [Ansible Vault: Storing Sudo Passwords](articles/ansible-vault-become-pass.md) | Step-by-step vault setup for become_pass — create, reference, directory layout, vault IDs, and troubleshooting. |
 | [Ansible Python Interpreter](articles/ansible-python-interpreter.md) | Fixing Python interpreter discovery warnings and errors — `ansible_python_interpreter`, auto-discovery, and per-host/group configuration. |
+| [Ansible Ad-Hoc Commands vs Playbooks](articles/ansible-adhoc-vs-playbooks.md) | Why ad-hoc is faster, when playbooks win, side-by-side comparison, performance tips, and decision flowchart. |
+| [Ansible: Editing Files and Creating Scripts](articles/ansible-file-editing-creation.md) | copy, template, lineinfile, blockinfile, replace — creating, editing, and deploying files on remote servers. |
+| [Ansible Configuration: ansible.cfg Guide](articles/ansible-cfg-guide.md) | Config file precedence, global vs local, all sections and options, SSH tuning, fact caching, and production examples. |
 
 ### Bash and Shell
 
@@ -307,6 +310,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [cloud-init: bootcmd vs runcmd](articles/cloud-init-bootcmd-vs-runcmd.md) | Boot stages, execution timing, frequency differences, and common mistakes. |
 | [cloud-init: Why tee Output Doesn't Appear in Logs](articles/cloud-init-tee-output-missing.md) | How cloud-init's output directive interacts with tee, buffering, and pipes. |
 | [cloud-init: User Management and the gecos Field](articles/cloud-init-users-gecos.md) | Users module, gecos history, all user keys, default user, and common patterns. |
+| [cloud-init: Different Ways to Create Files on a Server](articles/cloud-init-write-files.md) | write_files module, runcmd redirects, bootcmd, shell scripts, Jinja templates, and encoding options. |
 
 ### Datadog
 

@@ -1,6 +1,8 @@
+# Configuring sysstat for Performance Monitoring
+
 When you need to understand what your Linux server has been doing over the past few hours (or days), sysstat is the tool you reach for. It collects, reports, and archives system activity information including CPU, memory, disk I/O, and network statistics. Think of it as a flight recorder for your server.
 
-This guide covers installation and configuration on both Ubuntu 22.04 LTS (Jammy) and Ubuntu 24.04 LTS (Noble).
+This guide covers installation and configuration on Ubuntu 22.04/24.04 LTS and RHEL/CentOS 6–10.
 
 ## What sysstat Provides
 
@@ -160,5 +162,99 @@ Each daily data file is typically 2-5 MB depending on the number of CPUs, disks,
 - Server with many interfaces/disks: ~140 MB
 
 If you're using a 1-minute collection interval, files will be roughly 10x larger than the default 10-minute interval.
+
+## RHEL / CentOS Configuration (6–10)
+
+### Installation
+
+| RHEL Version | Command |
+|--------------|---------|
+| RHEL 6 | `sudo yum install sysstat -y` |
+| RHEL 7 | `sudo yum install sysstat -y` |
+| RHEL 8 | `sudo dnf install sysstat -y` |
+| RHEL 9 | `sudo dnf install sysstat -y` |
+| RHEL 10 | `sudo dnf install sysstat -y` |
+
+Enable and start sysstat:
+
+```bash
+sudo systemctl enable sysstat
+sudo systemctl start sysstat
+```
+
+### RHEL 6: Cron-Based Collection
+
+RHEL 6 uses cron instead of systemd timers. The collection interval is configured in `/etc/cron.d/sysstat`.
+
+#### Change interval to 1 minute
+
+```bash
+sudo sed -i 's|^\*/10|*/1|' /etc/cron.d/sysstat
+```
+
+This changes `*/10 * * * *` to `*/1 * * * *`.
+
+#### Set retention to 28 days
+
+```bash
+sudo sed -i 's/^HISTORY=.*/HISTORY=28/' /etc/sysstat/sysstat
+```
+
+#### Restart crond
+
+```bash
+sudo service crond restart
+```
+
+### RHEL 7–10: systemd Timer Collection
+
+RHEL 7 and later use `sysstat-collect.timer` (same mechanism as Ubuntu). The default interval is 10 minutes.
+
+#### Step 1: Create a timer override for 1-minute collection
+
+```bash
+sudo mkdir -p /etc/systemd/system/sysstat-collect.timer.d
+
+echo -e "[Timer]\nOnCalendar=\nOnCalendar=*:00/1" | sudo tee /etc/systemd/system/sysstat-collect.timer.d/override.conf
+```
+
+The first `OnCalendar=` clears the default 10-minute schedule. The second sets it to every 1 minute.
+
+#### Step 2: Set retention to 28 days
+
+```bash
+sudo sed -i 's/^HISTORY=.*/HISTORY=28/' /etc/sysstat/sysstat
+```
+
+#### Step 3: Reload and restart
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart sysstat-collect.timer
+```
+
+#### Step 4: Verify
+
+```bash
+systemctl list-timers sysstat-collect.timer
+```
+
+Wait a couple of minutes, then confirm data is being collected every minute:
+
+```bash
+sar
+```
+
+### RHEL Configuration File Location
+
+| RHEL Version | Config File |
+|--------------|-------------|
+| RHEL 6 | `/etc/sysconfig/sysstat` |
+| RHEL 7 | `/etc/sysstat/sysstat` |
+| RHEL 8 | `/etc/sysstat/sysstat` |
+| RHEL 9 | `/etc/sysstat/sysstat` |
+| RHEL 10 | `/etc/sysstat/sysstat` |
+
+> **Note:** On RHEL 6, the config file is at `/etc/sysconfig/sysstat` and the retention variable is `HISTORY`. On RHEL 7+, it moved to `/etc/sysstat/sysstat` but the variable name stays the same.
 
 
