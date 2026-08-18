@@ -66,6 +66,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md) | Mounting Docker config into the runner to avoid rate limiting. |
 | [dbash — Docker Shell Function](articles/docker-dbash-function.md) | Bash function to quickly shell into Docker containers. |
 | [Building Docker Images with Dockerfile](articles/docker-build-image-guide.md) | Dockerfile instructions, build commands, tagging, multi-stage builds, heredoc syntax, CMD vs ENTRYPOINT, and best practices. |
+| [Docker Swarm Cheatsheet](articles/docker-swarm-cheatsheet.md) | Swarm clustering — init, nodes, services, scaling, rolling updates, networks, secrets, configs, stacks, HA, and backups. |
+| [Docker Swarm Storage](articles/docker-swarm-storage.md) | Swarm storage strategies — NFS server/client, GlusterFS, Ceph, Docker NFS volumes, stack examples, backups, and monitoring. |
 
 ### AWS
 
@@ -126,6 +128,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Running virt-manager Remotely](articles/virt-manager-remote-display.md) | X11 forwarding for virt-manager — PuTTY/Xming, XQuartz, SSH flags, and troubleshooting. |
 | [Installing KVM Guests](articles/kvm-guest-installation.md) | Creating VMs with virt-install — ISO, kickstart, network install, cloud images, PXE, and automation. |
 | [Using Cloud qcow2 Images with KVM](articles/kvm-qcow2-cloud-images.md) | Deploy pre-built cloud images — virt-customize, cloud-init, password changes, SSH keys, and deployment scripts. |
+| [Enable SSH Password Auth in Ubuntu Cloud Images](articles/ubuntu-cloud-image-ssh-password.md) | virt-edit and virt-customize to enable password authentication — Ubuntu 20.04 vs 22.04/24.04 config paths, scripts, and verification. |
 | [Converting VMware VMs to KVM](articles/kvm-convert-vmware-to-kvm.md) | virt-v2v — convert from vCenter, OVA, VMDK, Xen, and Hyper-V to KVM with libvirt. |
 | [KVM libguestfs Tools](articles/kvm-libguestfs-tools.md) | virt-edit, virt-cat, virt-customize, virt-sysprep, guestfish — accessing and modifying VM disk images offline. |
 | [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md) | Proxmox VE — VM/CT management, storage, networking, clusters, and backups. |
@@ -186,6 +189,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [sudoers Guide](articles/sudo-sudoers-guide.md) | Granting access to users, groups, and LDAP; aliases, Defaults, logging, and tips. |
 | [Vim White Spaces](articles/vim-white-spaces.md) | Configuring vim to show white spaces with custom symbols. |
 | [Cron Cheatsheet](articles/cron-cheatsheet.md) | Cron jobs — scheduling syntax, crontab management, environment, logging, locking, email, and scripting patterns. |
+| [Bash Aliases and Functions](articles/bash-aliases-functions.md) | Productivity aliases for git, Docker, Kubernetes, systemd, networking, and utility shell functions (extract, mkcd, backup). |
 
 ### Linux System Administration
 
@@ -205,6 +209,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Configure Samba](articles/samba-configuration.md) | Samba file server on RHEL 6–10 and Ubuntu — anonymous/authenticated shares, SELinux, AD membership, client access, and troubleshooting. |
 | [MySQL LDAP Authentication](articles/mysql-ldap-authentication.md) | MySQL PAM authentication with SSSD and LDAP — tarball install, PAM plugin, SSSD config, TLS certificates, and troubleshooting. |
 | [Installing MediaWiki on RHEL](articles/mediawiki-installation-rhel.md) | MediaWiki with Apache, PHP 7.4, and MariaDB on RHEL 8/9 — packages, database, SELinux, firewall, and deployment. |
+| [Installing DokuWiki on RHEL](articles/dokuwiki-installation-rhel.md) | DokuWiki with Apache and PHP on RHEL 8/9 — packages, mod_rewrite, SELinux, .htaccess, and web installer. |
+| [Protect SSH with fail2ban](articles/fail2ban-ssh-protection.md) | fail2ban on RHEL and Ubuntu — installation, SSH jail, whitelisting, incremental bans, email alerts, and troubleshooting. |
 | [Installing MariaDB](articles/mariadb-installation.md) | MariaDB on RHEL 7–10 and Ubuntu — installation, hardening, user management, backup/restore, and troubleshooting. |
 | [RHEL Releases Overview](articles/rhel-releases-overview.md) | RHEL major releases (2.1–10) — features, lifecycle, and upgrade paths. |
 | [Timezone Configuration](articles/timezone-configuration.md) | timedatectl, NTP, hardware clock, per-process TZ, cloud-init, Docker, and troubleshooting. |
@@ -245,6 +251,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux Disk I/O Internals](articles/linux-disk-io-internals.md) | Page cache, standard I/O, direct I/O, mmap, block alignment, and write durability. |
 | [blktrace Guide](articles/blktrace-guide.md) | Block layer I/O tracing — capturing events, parsing output, latency analysis with btt, and diagnosing disk performance. |
 | [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md) | Installing and configuring sysstat on Ubuntu with systemd timers. |
+| [sysstat / sar Cheatsheet](articles/sysstat-sar-cheatsheet.md) | System Activity Reporter — CPU, memory, disk, network monitoring, historical analysis, sadf output formats, and alerting. |
 | [Understanding vmstat Output](articles/understanding-vmstat-output.md) | Understanding vmstat output — CPU, memory, I/O, and process scheduling diagnostics. |
 | [iostat Cheatsheet](articles/iostat-cheatsheet.md) | Block device I/O statistics — IOPS, throughput, latency, queue depth, and saturation patterns. |
 | [Understanding iostat -x Output](articles/understanding-iostat-x-output.md) | Extended block device I/O statistics — granular disk performance monitoring. |
@@ -297,6 +304,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [SSH Generate Keys](articles/ssh-keygen-guide.md) | Generate Ed25519, RSA, and ECDSA keys — passphrases, options, FIDO2, and security hardening. |
 | [SSH Convert Keys](articles/ssh-convert-keys.md) | Convert between OpenSSH, PuTTY PPK, PEM, PKCS#8, DER, and SSH.com key formats. |
 | [SSH Remote Script Execution](articles/ssh-remote-script-execution.md) | Tools for running scripts on remote hosts — SSH, pssh, pdsh, Ansible, Fabric, and more. |
+| [SSH Remote Sudo Execution](articles/ssh-remote-sudo-execution.md) | Running privileged commands remotely — `sudo -S`, password automation, NOPASSWD, expect, and security practices. |
+| [SSH Heredoc Variable Expansion](articles/ssh-heredoc-variables.md) | Heredocs over SSH — local vs remote expansion, quoted/unquoted EOF, nested heredocs, envsubst, and CI/CD patterns. |
 | [ip Command Cheatsheet](articles/ip-command-cheatsheet.md) | iproute2 ip command — addresses, links, routes, neighbours, multicast, and net-tools migration. |
 | [ss Cheatsheet](articles/ss-cheatsheet.md) | Socket statistics — inspecting TCP/UDP connections and states. |
 | [VNC Cheatsheet](articles/vnc-cheatsheet.md) | TigerVNC on RHEL 6–10 and Ubuntu — installation, configuration, service management, SSH tunnels, one-liners, and troubleshooting. |
