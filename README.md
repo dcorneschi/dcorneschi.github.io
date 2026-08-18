@@ -190,6 +190,11 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Vim White Spaces](articles/vim-white-spaces.md) | Configuring vim to show white spaces with custom symbols. |
 | [Cron Cheatsheet](articles/cron-cheatsheet.md) | Cron jobs — scheduling syntax, crontab management, environment, logging, locking, email, and scripting patterns. |
 | [Bash Aliases and Functions](articles/bash-aliases-functions.md) | Productivity aliases for git, Docker, Kubernetes, systemd, networking, and utility shell functions (extract, mkcd, backup). |
+| [awk Cheatsheet](articles/awk-cheatsheet.md) | Pattern scanning and text processing — fields, separators, regex, arithmetic, BEGIN/END, and one-liners. |
+| [Print Column Numbers for Any Command Output](articles/awk-print-column-numbers.md) | Generic awk one-liner to identify column positions — examples with iotop, ps, df, ss, free, and top. |
+| [sed Cheatsheet](articles/sed-cheatsheet.md) | Stream editor — substitution, deletion, insertion, addressing, capture groups, hold space, and one-liners. |
+| [Vim Search and Replace](articles/vim-search-replace.md) | Vim substitution — ranges, flags, regex, capture groups, expression replacements, magic modes, and multi-file operations. |
+| [Display Tabs and Whitespace in Files](articles/display-tabs-whitespace.md) | Revealing invisible characters — cat -A, grep, sed, vim :set list, hexdump, expand/unexpand, and conversion one-liners. |
 
 ### Linux System Administration
 
@@ -197,6 +202,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 |---------|--------------|
 | [systemd Cheatsheet](articles/systemd-cheatsheet.md) | systemctl commands, unit files, service types, timers, targets, boot analysis, and recipes. |
 | [journalctl Cheatsheet](articles/journalctl-cheatsheet.md) | systemd journal — viewing, filtering, grep, output formats, disk management, and troubleshooting recipes. |
+| [Enable Persistent systemd Journal Logging](articles/systemd-journal-persistent-logging.md) | Persistent journal on RHEL 7–10 — mkdir vs Storage=persistent, journalctl --flush, retention, and rotation. |
 | [dpkg Cheatsheet](articles/dpkg-cheatsheet.md) | Debian package manager — install, remove, query, verify, hold, diversions, alternatives, and .deb creation. |
 | [apt Cheatsheet](articles/apt-cheatsheet.md) | APT package management — install, upgrade, repositories, pinning, cache, proxy, offline installs, and automation. |
 | [apt vs apt-get](articles/apt-vs-apt-get.md) | When to use each — command mapping, behavioral differences, output stability, and scripting guidelines. |
@@ -211,6 +217,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Installing MediaWiki on RHEL](articles/mediawiki-installation-rhel.md) | MediaWiki with Apache, PHP 7.4, and MariaDB on RHEL 8/9 — packages, database, SELinux, firewall, and deployment. |
 | [Installing DokuWiki on RHEL](articles/dokuwiki-installation-rhel.md) | DokuWiki with Apache and PHP on RHEL 8/9 — packages, mod_rewrite, SELinux, .htaccess, and web installer. |
 | [Protect SSH with fail2ban](articles/fail2ban-ssh-protection.md) | fail2ban on RHEL and Ubuntu — installation, SSH jail, whitelisting, incremental bans, email alerts, and troubleshooting. |
+| [ReaR Backup Guide](articles/rear-backup-guide.md) | Relax-and-Recover — disaster recovery ISOs, NFS/CIFS/USB/rsync targets, incremental backups, recovery process, and scheduling. |
+| [Veeam Agent for Linux](articles/veeam-agent-linux.md) | Veeam backup agent — installation, jobs, volume/file-level restore, NFS server setup, dd+ssh imaging, and command reference. |
 | [Installing MariaDB](articles/mariadb-installation.md) | MariaDB on RHEL 7–10 and Ubuntu — installation, hardening, user management, backup/restore, and troubleshooting. |
 | [RHEL Releases Overview](articles/rhel-releases-overview.md) | RHEL major releases (2.1–10) — features, lifecycle, and upgrade paths. |
 | [Timezone Configuration](articles/timezone-configuration.md) | timedatectl, NTP, hardware clock, per-process TZ, cloud-init, Docker, and troubleshooting. |
@@ -230,6 +238,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux SysRq Guide](articles/linux-sysrq-guide.md) | Magic SysRq Key — REISUB safe reboot, emergency commands, debugging a hung system, and serial console usage. |
 | [Linux ulimit Guide](articles/linux-ulimit-guide.md) | Per-process resource limits, limits.conf, systemd directives, sysctl, and troubleshooting. |
 | [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) | Remove and prevent .DS_Store files from being tracked in git. |
+| [LD_LIBRARY_PATH and Shared Libraries](articles/linux-ld-library-path.md) | Dynamic linker search order, LD_LIBRARY_PATH usage and risks, ldconfig, compiling in $HOME, and best practices. |
 
 ### Satellite and Foreman
 
@@ -247,6 +256,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | Article | Description |
 |---------|--------------|
 | [Linux Load Average](articles/linux-load-average.md) | What load average actually measures on Linux, how to interpret it, and common misconceptions. |
+| [Linux CPU Steal Time](articles/linux-cpu-steal.md) | %steal in VMs — what it means, detection one-liners, RHEL/Ubuntu specifics, causes, cloud/on-prem remediation, and alerting. |
 | [Linux I/O Schedulers](articles/linux-io-schedulers.md) | I/O schedulers (noop, deadline, cfq, mq-deadline, bfq, kyber), tuning, and per-distro defaults. |
 | [Linux Disk I/O Internals](articles/linux-disk-io-internals.md) | Page cache, standard I/O, direct I/O, mmap, block alignment, and write durability. |
 | [blktrace Guide](articles/blktrace-guide.md) | Block layer I/O tracing — capturing events, parsing output, latency analysis with btt, and diagnosing disk performance. |
@@ -344,6 +354,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Kitty Cheatsheet](articles/kitty-cheatsheet.md) | GPU-accelerated terminal emulator — tabs, windows, and layouts. |
 | [JetBrains Mono Font](articles/jetbrains-mono-font.md) | Free monospaced font designed for terminals and code editors. |
 | [PuTTY Default Settings](articles/putty-default-settings.md) | Font, bell, colors, window size, and scrollback — settings to apply after a fresh Windows install. |
+| [rclone Cheatsheet](articles/rclone-cheatsheet.md) | Cloud storage CLI — copy, sync, mount, encrypt, serve, filtering, backup patterns, and 70+ backends. |
 
 ### Windows
 

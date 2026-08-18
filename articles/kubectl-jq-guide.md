@@ -296,6 +296,22 @@ echo "| Pod | Status | Node |" && echo "|-----|--------|------|" && \
 kubectl get pods -n <namespace> -o json | jq -r '.items[] | "| \(.metadata.name) | \(.status.phase) | \(.spec.nodeName) |"'
 ```
 
+### Multiple Fields on One Line
+
+```bash
+# Print multiple fields (one value per line, interleaved)
+aws ssm get-parameters --names /path/to/param | jq -r '.Parameters[] | .Value, .LastModifiedDate'
+
+# As an array (shows brackets)
+aws ssm get-parameters --names /path/to/param | jq -r '.Parameters[] | [.Value, .LastModifiedDate]'
+
+# Join fields with a separator
+aws ssm get-parameters --names /path/to/param | jq -r '.Parameters[] | [.Value, .LastModifiedDate] | join(" ")'
+
+# Tab-separated using paste (pairs alternating lines)
+aws ssm get-parameters --names /path/to/param | jq -r '.Parameters[] | .Value, .LastModifiedDate' | paste - -
+```
+
 ### JSON Output (Reshaped)
 
 ```bash
