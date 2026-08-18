@@ -2,6 +2,29 @@
 
 `nmcli` is the command-line client for NetworkManager. It controls network connections, devices, Wi-Fi, VPNs, and DNS on RHEL 7+, CentOS, Fedora, and Ubuntu systems running NetworkManager.
 
+## Packages and History
+
+```bash
+# nmcli is part of the NetworkManager package
+# nmtui (text UI) is in NetworkManager-tui
+sudo yum install NetworkManager NetworkManager-tui    # RHEL 7
+sudo dnf install NetworkManager NetworkManager-tui    # RHEL 8+
+
+sudo systemctl enable --now NetworkManager
+```
+
+| RHEL Version | NetworkManager Status |
+|--------------|----------------------|
+| RHEL 6 | Introduced (optional) |
+| RHEL 7 | Optional (network-scripts still default) |
+| RHEL 8 | Default network management |
+| RHEL 9+ | Only option (ifcfg deprecated, keyfile format) |
+
+Three ways to manage connections:
+- `nmcli` — command line (scriptable, this cheatsheet)
+- `nmtui` — text UI (interactive, menu-driven)
+- `nm-connection-editor` — graphical UI
+
 ## General Status
 
 ```bash
@@ -138,9 +161,34 @@ sudo nmcli connection add con-name "team0-port1" ifname eth0 type team-slave mas
 sudo nmcli connection add con-name "team0-port2" ifname eth1 type team-slave master team0
 ```
 
+### Inspect Teams and Bridges
+
+```bash
+# View teaming port status
+teamnl team0 ports
+
+# View teaming state (active runner, link watches)
+teamdctl team0 state dump
+
+# View teaming configuration (JSON)
+teamdctl team0 config dump
+
+# Show bridge configuration via nmcli
+nmcli -f bridge connection show br0
+
+# Show bridge status (brief)
+brctl show br0
+
+# Show bridge forwarding table
+brctl showmacs br0
+```
+
 ### Modify Connections
 
 ```bash
+# Rename a connection
+sudo nmcli connection modify "Wired connection 3" con-name ens3
+
 # Change IP address
 sudo nmcli connection modify ens192 ipv4.addresses 192.168.1.20/24
 
@@ -165,6 +213,9 @@ sudo nmcli connection modify ens192 -ipv4.dns "9.9.9.9"
 # Set DNS search domain
 sudo nmcli connection modify ens192 ipv4.dns-search "example.com,internal.lan"
 
+# Set DNS options (rotate servers, timeout)
+sudo nmcli connection modify ens192 ipv4.dns-options "rotate,timeout:1"
+
 # Switch from DHCP to static
 sudo nmcli connection modify ens192 ipv4.method manual ipv4.addresses 192.168.1.10/24 ipv4.gateway 192.168.1.1
 
@@ -186,6 +237,8 @@ sudo nmcli connection modify ens192 connection.autoconnect no
 
 # Set MTU
 sudo nmcli connection modify ens192 ethernet.mtu 9000
+# Alternative property name (same effect)
+sudo nmcli connection modify ens192 802-3-ethernet.mtu 9000
 
 # Set MAC address (cloning)
 sudo nmcli connection modify ens192 ethernet.cloned-mac-address "AA:BB:CC:DD:EE:FF"
@@ -316,18 +369,19 @@ sudo nmcli connection modify ens192 ipv4.ignore-auto-dns no
 ## Proxy
 
 ```bash
-# Set HTTP proxy for a connection
+# Set proxy via PAC URL
 sudo nmcli connection modify ens192 proxy.method auto
 sudo nmcli connection modify ens192 proxy.pac-url "http://proxy.example.com/proxy.pac"
 
-# Set manual proxy
-sudo nmcli connection modify ens192 proxy.method manual
-sudo nmcli connection modify ens192 proxy.http "http://proxy.example.com:8080"
-sudo nmcli connection modify ens192 proxy.https "http://proxy.example.com:8080"
+# Set proxy via inline PAC script
+sudo nmcli connection modify ens192 proxy.method auto
+sudo nmcli connection modify ens192 proxy.pac-script "function FindProxyForURL(url,host) { return \"PROXY proxy.example.com:8080\"; }"
 
 # Remove proxy settings
 sudo nmcli connection modify ens192 proxy.method none
 ```
+
+Note: NetworkManager proxy support is limited to PAC (Proxy Auto-Configuration). For manual HTTP/HTTPS proxy, configure via environment variables or `/etc/environment` instead.
 
 ## Output Formatting
 
@@ -417,9 +471,6 @@ nmcli device status | grep eth0
 
 # Check connection file syntax
 sudo nmcli connection load /etc/NetworkManager/system-connections/ens192.nmconnection
-
-# Show what changed vs running config
-nmcli device reapply eth0 --dry-run 2>&1 || true
 
 # Force connection re-read
 sudo nmcli connection reload && sudo nmcli connection up ens192
