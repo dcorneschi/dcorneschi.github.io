@@ -76,6 +76,15 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [AWS CLI Installation](articles/aws-cli-install.md) | Install AWS CLI v2 on RHEL, Ubuntu, macOS — configuration, profiles, auto-completion, and Docker. |
 | [AWS STS Assume Role with MFA](articles/aws-sts-assume-role.md) | Temporary credentials via AssumeRole — MFA enforcement, session scripts, named profiles, duration, and role chaining. |
 | [Assume an IAM Role via CLI (Step by Step)](articles/aws-assume-role-cli-walkthrough.md) | Full walkthrough — create user, policy, trust policy, role, assume it, export credentials, and named profile alternative. |
+| [AWS IAM Concepts Guide](articles/aws-iam-concepts-guide.md) | IAM fundamentals — roles, policy types, evaluation logic, Identity Center (SSO), federation, permission boundaries, and root vs admin. |
+| [AWS IAM CLI Cheatsheet](articles/aws-iam-cheatsheet.md) | All `aws iam` and `aws sts` commands — users, groups, roles, policies, access keys, MFA, simulation, and audit one-liners. |
+| [ECS Cluster Architecture](articles/ecs-architecture-guide.md) | ECS internals — Fargate vs EC2, task definitions, services, networking, auto scaling, capacity providers, ECS Exec, and CLI commands. |
+| [AWS EFS Cheatsheet](articles/aws-efs-cheatsheet.md) | Elastic File System — create, mount, access points, security, performance modes, lifecycle, ECS/EKS/Lambda integration, and monitoring. |
+| [AWS Lightsail Cheatsheet](articles/aws-lightsail-cheatsheet.md) | Simplified compute — instances, static IPs, firewall, snapshots, disks, databases, load balancers, containers, DNS, and export to EC2. |
+| [AWS Load Balancer Cheatsheet](articles/aws-elb-cheatsheet.md) | ALB, NLB, CLB — create, target groups, listeners, routing rules, health checks, SSL, access logs, WAF, and common patterns. |
+| [AWS VPC Cheatsheet](articles/aws-vpc-cheatsheet.md) | VPC — subnets, route tables, IGW, NAT, security groups, NACLs, endpoints, peering, Transit Gateway, and flow logs. |
+| [AWS Route 53 Cheatsheet](articles/aws-route53-cheatsheet.md) | DNS — hosted zones, record types, routing policies, health checks, failover, DNSSEC, resolver, and domain registration. |
+| [AWS ECR Cheatsheet](articles/aws-ecr-cheatsheet.md) | Container registry — push/pull, scanning, lifecycle policies, replication, pull-through cache, and repository policies. |
 | [EC2 Cheatsheet](articles/aws-ec2-cheatsheet.md) | AWS EC2 — instances, AMIs, security groups, EBS, Elastic IPs, metadata, and CLI patterns. |
 | [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md) | Resize EBS volumes and grow filesystems (XFS, ext4, LVM) — no downtime required. |
 | [EC2 Instance Metadata Service (IMDS)](articles/aws-ec2-metadata.md) | IMDS endpoint, IMDSv1 vs IMDSv2, ec2-metadata script, IAM credentials, tags, spot notices, and configuration. |
