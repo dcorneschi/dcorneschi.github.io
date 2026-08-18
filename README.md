@@ -250,6 +250,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux ulimit Guide](articles/linux-ulimit-guide.md) | Per-process resource limits, limits.conf, systemd directives, sysctl, and troubleshooting. |
 | [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) | Remove and prevent .DS_Store files from being tracked in git. |
 | [LD_LIBRARY_PATH and Shared Libraries](articles/linux-ld-library-path.md) | Dynamic linker search order, LD_LIBRARY_PATH usage and risks, ldconfig, compiling in $HOME, and best practices. |
+| [sosreport Guide](articles/sosreport-guide.md) | sos utility — generating reports, plugins, targeted collection, sos collect for clusters, obfuscation, xsos analysis, and uploading to Red Hat. |
+| [RHEL Post-Installation Steps](articles/rhel-post-installation.md) | Essential post-install tasks for RHEL 7–10 — registration, networking, SSH, firewall, SELinux, storage, kdump, Insights, and version differences. |
 
 ### Satellite and Foreman
 
@@ -261,6 +263,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Foreman Remote Execution Setup](articles/foreman-remote-execution.md) | Setting up REX — SSH key distribution, running jobs, custom templates, Ansible integration, and troubleshooting. |
 | [Content Views and Activation Keys Strategy](articles/foreman-content-views-activation-keys.md) | Designing CVs, CCVs, and activation keys — one CV per product, composing with multiple AKs, and update workflows. |
 | [Registering Hosts in Foreman](articles/foreman-host-registration.md) | Registering RHEL and Ubuntu hosts — global registration, subscription-manager, activation keys, capsules, and troubleshooting. |
+| [Red Hat Insights](articles/red-hat-insights.md) | Insights client — registration, data collection, configuration, proxy, scheduling, tags, Satellite integration, and troubleshooting. |
 
 ### Linux Performance and IO
 
@@ -330,6 +333,14 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [ip Command Cheatsheet](articles/ip-command-cheatsheet.md) | iproute2 ip command — addresses, links, routes, neighbours, multicast, and net-tools migration. |
 | [ss Cheatsheet](articles/ss-cheatsheet.md) | Socket statistics — inspecting TCP/UDP connections and states. |
 | [VNC Cheatsheet](articles/vnc-cheatsheet.md) | TigerVNC on RHEL 6–10 and Ubuntu — installation, configuration, service management, SSH tunnels, one-liners, and troubleshooting. |
+| [tcpdump Cheatsheet](articles/tcpdump-cheatsheet.md) | Packet capture and analysis — filters by host, port, protocol, TCP flags, pcap files, advanced byte offsets, and troubleshooting recipes. |
+| [Diagnosing Packet Loss with mtr](articles/mtr-packet-loss-guide.md) | Passive and active packet loss detection — mtr hop-by-hop analysis, interpreting output, TCP/UDP probes, diagnostic workflow, and complementary tools. |
+| [netstat Cheatsheet](articles/netstat-cheatsheet.md) | Network connections, listening ports, routing tables, interface statistics, connection states, one-liners, automation scripts, and ss migration. |
+| [/proc/net Cheatsheet](articles/proc-net-cheatsheet.md) | Kernel network statistics — sockstat, /proc/net/tcp decoding, SNMP counters, retransmit rates, interface drops, conntrack, ARP, routing, and tuning parameters. |
+| [Ephemeral Ports vs Conntrack Max](articles/ephemeral-ports-vs-conntrack.md) | Two separate connection limits — scope, symptoms, diagnosis, fixes, and why TIME_WAIT monitoring is often misleading. |
+| [/proc/net/sockstat Explained](articles/proc-net-sockstat-explained.md) | Socket summary fields, orphan sockets, TCP memory pressure, "Out of socket memory" diagnosis, kernel shift penalty, and monitoring scripts. |
+| [Monitor Interface Traffic](articles/monitor-interface-traffic.md) | Real-time RX/TX monitoring — sar, ip, ifstat, nload, iftop, vnstat, bmon, ethtool, dstat, and PPS one-liners. |
+| [nmcli Cheatsheet](articles/nmcli-cheatsheet.md) | NetworkManager CLI — connections, devices, static/DHCP, VLANs, bonds, bridges, Wi-Fi, DNS, routes, keyfiles, and scripting one-liners. |
 
 ### Cloud-Init
 
