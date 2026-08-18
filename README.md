@@ -74,6 +74,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | Article | Description |
 |---------|--------------|
 | [AWS CLI Installation](articles/aws-cli-install.md) | Install AWS CLI v2 on RHEL, Ubuntu, macOS — configuration, profiles, auto-completion, and Docker. |
+| [AWS STS Assume Role with MFA](articles/aws-sts-assume-role.md) | Temporary credentials via AssumeRole — MFA enforcement, session scripts, named profiles, duration, and role chaining. |
+| [Assume an IAM Role via CLI (Step by Step)](articles/aws-assume-role-cli-walkthrough.md) | Full walkthrough — create user, policy, trust policy, role, assume it, export credentials, and named profile alternative. |
 | [EC2 Cheatsheet](articles/aws-ec2-cheatsheet.md) | AWS EC2 — instances, AMIs, security groups, EBS, Elastic IPs, metadata, and CLI patterns. |
 | [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md) | Resize EBS volumes and grow filesystems (XFS, ext4, LVM) — no downtime required. |
 | [EC2 Instance Metadata Service (IMDS)](articles/aws-ec2-metadata.md) | IMDS endpoint, IMDSv1 vs IMDSv2, ec2-metadata script, IAM credentials, tags, spot notices, and configuration. |
@@ -361,6 +363,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | Article | Description |
 |---------|--------------|
 | [Windows Battery Report](articles/windows-battery-report.md) | Using the built-in `powercfg` tool to check battery health, usage, and degradation. |
+| [Windows Tips and Commands](articles/windows-tips-commands.md) | Useful commands — perfmon, winsat, diskpart, Test-NetConnection, hosts file, resmon, gpupdate, and Java config. |
+| [Outlook Instant Search Syntax](articles/outlook-search-syntax.md) | Search query syntax — operators, from/to/cc, attachments, dates, size filters, flags, calendar, and contacts. |
 
 ## About
 
