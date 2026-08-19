@@ -298,6 +298,9 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 |---------|--------------|
 | [Linux /etc/fstab Guide](articles/linux-fstab-guide.md) | Syntax, device identification, filesystem types, mount options (ext4, XFS, NFS, CIFS, tmpfs, swap), and security hardening. |
 | [iSCSI Cheatsheet](articles/iscsi-cheatsheet.md) | iSCSI initiator and target — discovery, login, CHAP, multipath, targetcli, performance tuning, and troubleshooting. |
+| [Linux NFS Cheatsheet](articles/linux-nfs-cheatsheet.md) | NFS server and client — exports, mounting, fstab, autofs, NFSv4, security, performance tuning, and troubleshooting. |
+| [Linux NFS Troubleshooting](articles/linux-nfs-troubleshooting.md) | NFS error messages, diagnostic procedures, performance bottlenecks, authentication issues, log analysis, and emergency recovery. |
+| [NFS Performance Testing and Monitoring](articles/nfs-performance-testing.md) | NFS read performance testing — dd, iostat, iotop, nfsstat, inotify, iperf3, benchmark scripts, and Docker Swarm considerations. |
 | [Multipath Cheatsheet](articles/multipath-cheatsheet.md) | DM-Multipath — setup, configuration, failover, LVM, troubleshooting, and path management. |
 | [EMC PowerPath Cheatsheet](articles/emc-powerpath-cheatsheet.md) | EMC PowerPath — powermt commands, policies, HBA management, and array-specific configuration. |
 | [SAN Storage Commands](articles/san-storage-commands.md) | SCSI scanning, HBA info, Fibre Channel diagnostics, disk mapping, I/O scheduler, and SAR monitoring. |
