@@ -238,48 +238,10 @@ alias ffi='find . -iname'
 ## Git
 
 ```bash
-# Status and log
-alias gs='git status -sb'
-alias gl='git --no-pager log --oneline --graph --decorate -n 30'
-alias gll='git --no-pager log --oneline --graph --decorate'
-alias gd='git --no-pager diff'
-alias gds='git diff --staged'
-
-# Add/commit/push/pull
-alias ga='git add'
-alias gaa='git add -A'
-alias gc='git commit'
-alias gcm='git commit -m'
-alias gca='git commit -a'
-alias gcam='git commit -a -m'
-alias gamend='git commit --amend'
-alias gp='git push'
-alias gpo='git push -u origin HEAD'
-alias gpl='git pull --ff-only'
-alias gf='git fetch'
-
-# Branching
-alias gb='git branch'
-alias gba='git branch -a'
-alias gbd='git branch -d'
-alias gco='git checkout'
-alias gcb='git checkout -b'
-alias gsw='git switch'
-alias gswn='git switch -c'
-alias gcur='git rev-parse --abbrev-ref HEAD'
-
-# Stash and clean
-alias gst='git stash'
-alias gstp='git stash pop'
-alias gsl='git stash list'
-alias gclean='git clean -xdf'
-
-# Rebase helpers
-alias grc='git rebase --continue'
-alias gra='git rebase --abort'
-
-# Show files ignored by git
-alias gignored='git ls-files -i --exclude-standard'
+# Git
+function gp() {
+  git add -A && git commit -m "${1:-update}" && git push
+}
 ```
 
 ## Docker
@@ -298,89 +260,28 @@ if command -v docker >/dev/null 2>&1; then
 fi
 ```
 
+```bash
+# Function to enter container bash
+dbash() {
+    if [ $# -eq 1 ]; then
+        if docker exec "$1" which bash >/dev/null 2>&1; then
+            docker exec -it "$1" bash
+        else
+            docker exec -it "$1" sh
+        fi
+    else
+        echo "Usage: dbash <container_name_or_id>"
+    fi
+}
+```
+
 ## Kubernetes
 
 ```bash
 if command -v kubectl >/dev/null 2>&1; then
   alias k='kubectl'
-  alias kg='kubectl get'
-  alias kd='kubectl describe'
-  alias kdel='kubectl delete'
-  alias kgp='kubectl get pods -A -o wide'
-  alias kgs='kubectl get svc -A'
-  alias kns='kubectl config set-context --current --namespace'
-  alias kctx='kubectl config get-contexts'
-  alias kcc='kubectl config current-context'
-  alias kcu='kubectl config use-context'
-fi
-```
-
-## Node.js and Package Managers
-
-```bash
-if command -v npm >/dev/null 2>&1; then
-  alias ni='npm install'
-  alias nid='npm install --save-dev'
-  alias nig='npm install -g'
-  alias nrd='npm run dev'
-  alias nrb='npm run build'
-  alias nrt='npm test'
-  alias ns='npm start'
-fi
-
-if command -v yarn >/dev/null 2>&1; then
-  alias y='yarn'
-  alias yd='yarn dev'
-  alias yb='yarn build'
-  alias yt='yarn test'
-fi
-
-if command -v pnpm >/dev/null 2>&1; then
-  alias p='pnpm'
-  alias pd='pnpm dev'
-  alias pb='pnpm build'
-  alias pt='pnpm test'
-fi
-```
-
-## Python
-
-```bash
-if command -v python3 >/dev/null 2>&1 || command -v python >/dev/null 2>&1; then
-  alias py='python3 2>/dev/null || python'
-  alias pipu='python3 -m pip install --upgrade pip'
-
-  # Create virtualenv
-  mkvenv() { python3 -m venv "${1:-.venv}"; }
-
-  # Activate virtualenv (tries common paths and Windows)
-  vact() {
-    if [ -n "$1" ]; then
-      source "$1/bin/activate" 2>/dev/null || source "$1/Scripts/activate" 2>/dev/null
-    else
-      source venv/bin/activate 2>/dev/null || \
-      source .venv/bin/activate 2>/dev/null || \
-      source venv/Scripts/activate 2>/dev/null || \
-      source .venv/Scripts/activate 2>/dev/null
-    fi
-  }
-fi
-```
-
-## Rust and Go
-
-```bash
-if command -v cargo >/dev/null 2>&1; then
-  alias cb='cargo build'
-  alias cr='cargo run'
-  alias ct='cargo test'
-  alias cc='cargo check'
-fi
-
-if command -v go >/dev/null 2>&1; then
-  alias gbld='go build ./...'
-  alias gtest='go test ./...'
-  alias gtidy='go mod tidy'
+  alias kcontexts='kubectl config get-contexts'
+  alias kctx='kubectl config use-context'
 fi
 ```
 
