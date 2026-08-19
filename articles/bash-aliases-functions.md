@@ -244,6 +244,21 @@ function gp() {
 }
 ```
 
+```bash
+# Simple function to update all Git repositories in current directory
+update_all_repos() {
+    echo "Updating all Git repositories in current directory..."
+    for i in */.git; do
+        if [[ -d "$i" ]]; then
+            repo_name=$(basename "$(dirname "$i")")
+            echo "Updating: $repo_name"
+            (cd "$(dirname "$i")" && git pull)
+        fi
+    done
+    echo "Done!"
+}
+```
+
 ## Docker
 
 ```bash
