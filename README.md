@@ -166,6 +166,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Importing Existing Infrastructure Into Terraform](articles/terraform-import-guide.md) | Step-by-step import workflow, import blocks (1.5+), config generation, modules, for_each, and bulk import. |
 | [Exporting Datadog Monitors to Terraform](articles/exporting-monitors-to-terraform.md) | Export monitors via console or API, convert to HCL with jq, and import into state. |
 | [Terraform Backend Configuration Changed](articles/terraform-backend-configuration-changed.md) | Understanding -migrate-state vs -reconfigure — when to use each, .terraform/terraform.tfstate explained. |
+| [Terraform Conditional Expressions](articles/terraform-conditional-expressions.md) | Ternary syntax, count/for_each toggles, dynamic blocks, null handling, coalesce, can/try guards, validations, and preconditions. |
 
 ### Ansible
 
