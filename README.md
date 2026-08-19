@@ -112,6 +112,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [HAProxy on EKS with NLB](articles/eks-haproxy-nlb.md) | Deploying HAProxy with NLB — architecture, AWS LB Controller, ip target type, TLS options, health checks, and annotations reference. |
 | [EKS Node Health and Auto-Repair](articles/eks-node-health-auto-repair.md) | Node health monitoring, auto-repair mechanisms, Node Problem Detector, NTH, Karpenter disruption, and self-healing patterns. |
 | [EKS vs AKS vs GKE](articles/eks-vs-aks-vs-gke.md) | Managed Kubernetes compared — control plane, networking, IAM, node management, upgrades, security, and when to choose which. |
+| [EKS Node Group Rolling Updates](articles/eks-node-group-rolling-updates.md) | How EKS recycles nodes during managed node group updates — surge-based rolling strategy, launch template versioning, and node replacement sequence. |
+| [EKS EC2 Tags vs Node Selectors](articles/eks-ec2-tags-vs-node-selectors.md) | The two layers of EKS self-managed nodes — EC2 tags vs Kubernetes labels, why draining is instance-based, and bridging AWS and K8s identifiers. |
 | [Karpenter Guide](articles/karpenter-guide.md) | Intelligent node scaling for EKS — cost savings over CA, NodePool/EC2NodeClass config, Spot management, consolidation, GPU, migration, and monitoring. |
 
 ### Azure
