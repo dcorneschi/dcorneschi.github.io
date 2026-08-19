@@ -785,3 +785,84 @@ Sensitive variables:
 6. **Use `optional()` for object attributes** — reduces required boilerplate in tfvars
 7. **Use `locals` for computed values** — keep variable declarations simple
 8. **Use `try()` for safe access** — handle missing or optional nested attributes
+
+### Naming Conventions
+
+```hcl
+# Good — descriptive, consistent, uses underscores
+variable "vpc_cidr_block" { type = string }
+variable "enable_monitoring" { type = bool }
+variable "allowed_ingress_ports" { type = list(number) }
+variable "instance_count" { type = number }
+
+# Bad — abbreviations, unclear, inconsistent
+variable "vpc_cb" { type = string }       # Unclear abbreviation
+variable "flag1" { type = bool }          # Not descriptive
+variable "Ports" { type = list(number) }  # Uppercase
+```
+
+### Bool Negation Pattern
+
+```hcl
+variable "public_access" {
+  type        = bool
+  description = "Allow public access to resources"
+  default     = false
+}
+
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket = aws_s3_bucket.example.id
+
+  block_public_acls       = !var.public_access
+  block_public_policy     = !var.public_access
+  ignore_public_acls      = !var.public_access
+  restrict_public_buckets = !var.public_access
+}
+# Result: public_access=false → all blocks enabled (secure default)
+#         public_access=true  → all blocks disabled
+```
+
+### Cross-Field Validation
+
+```hcl
+variable "scaling_config" {
+  type = object({
+    min_size         = number
+    max_size         = number
+    desired_capacity = number
+  })
+
+  validation {
+    condition = (
+      var.scaling_config.min_size <= var.scaling_config.desired_capacity &&
+      var.scaling_config.desired_capacity <= var.scaling_config.max_size
+    )
+    error_message = "Must satisfy: min_size <= desired_capacity <= max_size."
+  }
+}
+```
+
+### Default Value Patterns
+
+```hcl
+# Use null for optional computed values
+variable "custom_domain" {
+  type    = string
+  default = null
+}
+
+locals {
+  domain_name = var.custom_domain != null ? var.custom_domain : "${random_id.suffix.hex}.example.com"
+}
+
+# Use empty collections for optional lists/maps
+variable "additional_tags" {
+  type    = map(string)
+  default = {}
+}
+
+variable "extra_security_groups" {
+  type    = list(string)
+  default = []
+}
+```

@@ -627,6 +627,35 @@ execute_command = "echo 'packer' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
 
 > **When to customize:** Override `execute_command` when the default (`chmod +x {{.Path}}; {{.Vars}} {{.Path}}`) doesn't work — typically because the script needs root privileges and the SSH user isn't root.
 
+### Are {{ .Vars }} and {{ .Path }} Mandatory?
+
+`{{ .Path }}` is essential when using `script` or `scripts` — without it, Packer doesn't know which uploaded script to execute. `{{ .Vars }}` is only needed if you pass `environment_vars` to the provisioner.
+
+```hcl
+# Minimal — just the script (no env vars needed)
+provisioner "shell" {
+  execute_command = "sudo bash {{ .Path }}"
+  script          = "scripts/01-install-common.sh"
+}
+
+# With environment variables flowing through
+provisioner "shell" {
+  execute_command  = "sudo bash -c '{{ .Vars }} {{ .Path }}'"
+  script           = "scripts/01-install-common.sh"
+  environment_vars = [
+    "DEBIAN_FRONTEND=noninteractive",
+    "APP_VERSION=2.1.0",
+  ]
+}
+
+# No execute_command at all — Packer uses its default
+provisioner "shell" {
+  inline = ["sudo apt-get update", "sudo apt-get install -y curl"]
+}
+```
+
+If you omit `execute_command` entirely, Packer uses its built-in default which includes both `{{ .Vars }}` and `{{ .Path }}`.
+
 ### File Provisioner
 
 ```hcl

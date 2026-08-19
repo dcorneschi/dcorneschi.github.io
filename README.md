@@ -167,6 +167,18 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Exporting Datadog Monitors to Terraform](articles/exporting-monitors-to-terraform.md) | Export monitors via console or API, convert to HCL with jq, and import into state. |
 | [Terraform Backend Configuration Changed](articles/terraform-backend-configuration-changed.md) | Understanding -migrate-state vs -reconfigure — when to use each, .terraform/terraform.tfstate explained. |
 | [Terraform Conditional Expressions](articles/terraform-conditional-expressions.md) | Ternary syntax, count/for_each toggles, dynamic blocks, null handling, coalesce, can/try guards, validations, and preconditions. |
+| [Terraform Provisioners Guide](articles/terraform-provisioners-guide.md) | local-exec, remote-exec, file provisioner, connection blocks, null_resource, terraform_data, triggers, destroy-time provisioners, and practical examples. |
+| [Terraform Outputs Guide](articles/terraform-outputs-guide.md) | Output declarations, types, sensitive values, module outputs, remote state, CLI commands, preconditions, and patterns. |
+| [Managing DNS with Terraform and BIND](articles/terraform-bind-dns-management.md) | DNS provider with RFC 2136, TSIG authentication, A/CNAME/PTR/MX/SRV records, VM fleet DNS, Kubernetes services, split DNS, and BIND troubleshooting. |
+| [Terraform JSON, One-Liners, and Tips](articles/terraform-json-tips-tricks.md) | jq recipes, terraform output/show/state one-liners, plan JSON parsing, console, debugging, CI/CD patterns, file generation, and workflow shortcuts. |
+| [Terraform Troubleshooting](articles/terraform-troubleshooting.md) | Common errors and fixes, state lock/drift/recovery, provider issues, debugging, performance, lifecycle gotchas, and emergency commands. |
+| [Terraform Debugging Guide](articles/terraform-debugging-guide.md) | Verbose logging (TF_LOG levels), common error patterns with symptoms and solutions, API tracing, crash logs, and systematic debugging checklist. |
+| [Terraform Heredoc: EOT vs EOF](articles/terraform-heredoc-eot-eof.md) | Heredoc syntax, `<<` vs `<<-` indentation, interpolation, escaping `$${}`, template directives, common patterns, and mistakes to avoid. |
+| [Terraform toset() and for_each Guide](articles/terraform-toset-foreach-guide.md) | toset() deduplication, each.key vs each.value, sets vs maps, practical for_each patterns for SGs, EKS node groups, S3, RDS, and type conversions. |
+| [Escaping $ in Terraform Userdata](articles/terraform-userdata-dollar-escaping.md) | Dollar sign escaping in heredocs (`$$`), templatefile() approach, cloud-init YAML, multipart userdata, debugging, and common patterns. |
+| [Terraform Lifecycle Guide](articles/terraform-lifecycle-guide.md) | create_before_destroy, prevent_destroy, ignore_changes, replace_triggered_by, precondition/postcondition, and common patterns. |
+| [Terraform Config Drift Detection](articles/terraform-drift-detection.md) | Detecting drift with plan/refresh-only, automated CI/CD checks, JSON parsing, resolving strategies, prevention, and scheduled reconciliation. |
+| [Terraform UserData Base64 Encoding/Decoding](articles/terraform-userdata-base64.md) | user_data vs user_data_base64, decoding from state/CLI/IMDS, launch templates, multipart MIME, hash behavior, and debugging failures. |
 
 ### Ansible
 
@@ -207,6 +219,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [sed Cheatsheet](articles/sed-cheatsheet.md) | Stream editor — substitution, deletion, insertion, addressing, capture groups, hold space, and one-liners. |
 | [Vim Search and Replace](articles/vim-search-replace.md) | Vim substitution — ranges, flags, regex, capture groups, expression replacements, magic modes, and multi-file operations. |
 | [Display Tabs and Whitespace in Files](articles/display-tabs-whitespace.md) | Revealing invisible characters — cat -A, grep, sed, vim :set list, hexdump, expand/unexpand, and conversion one-liners. |
+| [ShellCheck Guide](articles/shellcheck-guide.md) | Static analysis for shell scripts — installation, common warnings with fixes, directives, .shellcheckrc, CI/CD integration, and editor setup. |
 
 ### Linux System Administration
 

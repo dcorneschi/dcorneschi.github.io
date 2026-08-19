@@ -221,6 +221,33 @@ resource "aws_cloudwatch_metric_alarm" "cpu" {
 }
 ```
 
+### Conditional Image Download
+
+A practical example — only download a resource when a toggle variable is enabled:
+
+```hcl
+variable "ubuntu_image_manage_download" {
+  description = "Whether to manage Ubuntu image download"
+  type        = bool
+  default     = false
+}
+
+resource "null_resource" "download_ubuntu_image" {
+  count = var.ubuntu_image_manage_download ? 1 : 0
+
+  provisioner "local-exec" {
+    command = "wget https://releases.ubuntu.com/22.04/ubuntu-22.04.5-desktop-amd64.iso -P /var/lib/libvirt/images/"
+  }
+}
+# Result: set ubuntu_image_manage_download = true to trigger the download
+#         set to false (default) and the resource is completely skipped
+```
+
+**What `count = var.ubuntu_image_manage_download ? 1 : 0` does:**
+- Uses Terraform's ternary operator (`condition ? true_value : false_value`)
+- If `var.ubuntu_image_manage_download` is `true`, the resource count is set to `1` (resource will be created)
+- If `var.ubuntu_image_manage_download` is `false`, the resource count is set to `0` (resource will NOT be created)
+
 ## Complex Conditions with Functions
 
 Use `length()`, `contains()`, and other functions in conditions.
