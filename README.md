@@ -280,6 +280,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Content Views and Activation Keys Strategy](articles/foreman-content-views-activation-keys.md) | Designing CVs, CCVs, and activation keys — one CV per product, composing with multiple AKs, and update workflows. |
 | [Registering Hosts in Foreman](articles/foreman-host-registration.md) | Registering RHEL and Ubuntu hosts — global registration, subscription-manager, activation keys, capsules, and troubleshooting. |
 | [Red Hat Insights](articles/red-hat-insights.md) | Insights client — registration, data collection, configuration, proxy, scheduling, tags, Satellite integration, and troubleshooting. |
+| [Satellite Remote Execution Setup](articles/satellite-remote-execution-setup.md) | Configuring content hosts for REX — SSH key distribution, test jobs, package and errata installation via Satellite GUI. |
 
 ### Linux Performance and IO
 
