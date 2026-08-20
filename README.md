@@ -78,8 +78,10 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [AWS Login: Simplified Developer Access](articles/aws-login-command.md) | `aws login` command — browser-based auth, temporary credentials, profiles, federated sign-in, remote servers, IAM policies, and CloudTrail logging. |
 | [AWS STS Assume Role with MFA](articles/aws-sts-assume-role.md) | Temporary credentials via AssumeRole — MFA enforcement, session scripts, named profiles, duration, and role chaining. |
 | [Assume an IAM Role via CLI (Step by Step)](articles/aws-assume-role-cli-walkthrough.md) | Full walkthrough — create user, policy, trust policy, role, assume it, export credentials, and named profile alternative. |
+| [AWS AssumeRole Concepts](articles/aws-assume-role-concepts.md) | AssumeRole fundamentals — trust policies, cross-account access, role chaining, session duration, CLI profiles, CloudTrail, and best practices. |
 | [AWS IAM Concepts Guide](articles/aws-iam-concepts-guide.md) | IAM fundamentals — roles, policy types, evaluation logic, Identity Center (SSO), federation, permission boundaries, and root vs admin. |
 | [AWS IAM CLI Cheatsheet](articles/aws-iam-cheatsheet.md) | All `aws iam` and `aws sts` commands — users, groups, roles, policies, access keys, MFA, simulation, and audit one-liners. |
+| [AWS IAM Role Users Audit](articles/aws-iam-role-users-audit.md) | Find who can assume a role — trust policies, policy scanning, CloudTrail, SAML/LDAP federation, Identity Center, and audit scripts. |
 | [ECS Cluster Architecture](articles/ecs-architecture-guide.md) | ECS internals — Fargate vs EC2, task definitions, services, networking, auto scaling, capacity providers, ECS Exec, and CLI commands. |
 | [AWS EFS Cheatsheet](articles/aws-efs-cheatsheet.md) | Elastic File System — create, mount, access points, security, performance modes, lifecycle, ECS/EKS/Lambda integration, and monitoring. |
 | [AWS Lightsail Cheatsheet](articles/aws-lightsail-cheatsheet.md) | Simplified compute — instances, static IPs, firewall, snapshots, disks, databases, load balancers, containers, DNS, and export to EC2. |
@@ -109,6 +111,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [EKS Node Groups: With and Without Launch Templates](articles/eks-nodegroups-launch-templates.md) | Managed node groups — when you need a launch template, what EKS manages automatically, custom AMIs, and Terraform examples. |
 | [EKS AMI Comparison: Ubuntu vs Ubuntu Pro vs Amazon Linux](articles/eks-ubuntu-ami-comparison.md) | EKS worker node AMIs — Ubuntu EKS, Ubuntu Pro EKS, AL2023, Bottlerocket, feature comparison, security, FIPS, livepatching, and decision guide. |
 | [EKS Architecture Deep Dive](articles/eks-architecture-deep-dive.md) | EKS internals — control plane, etcd, cross-account ENIs, VPC CNI, authentication flow, API endpoint access, add-ons, upgrade process, and limits. |
+| [EKS VPC CNI: IPAMD Guide](articles/eks-vpc-cni-ipamd-guide.md) | VPC CNI internals — IPAMD architecture, port 50051 gRPC, health probes, IP pool tuning, metrics, ENI management, and troubleshooting. |
+| [EKS VPC CNI Proxy Configuration](articles/eks-vpc-cni-proxy-configuration.md) | Proxy settings for aws-node — NO_PROXY rules, critical endpoints, private vs public EKS endpoints, Terraform, ConfigMap, and troubleshooting. |
 | [eksctl Cheatsheet](articles/eksctl-cheatsheet.md) | eksctl CLI — cluster lifecycle, node groups, scaling, labels, IAM service accounts, OIDC, add-ons, Fargate, and identity mappings. |
 | [Creating an EKS Cluster with eksctl](articles/eks-cluster-with-eksctl.md) | Step-by-step guide — prerequisites, ClusterConfig YAML, managed node groups, IRSA, add-ons, private clusters, and production-ready examples. |
 | [EKS Auto Mode](articles/eks-auto-mode.md) | Fully managed data plane — what AWS handles, Auto vs Standard comparison, node pools, security model, networking, storage, and migration. |

@@ -444,19 +444,34 @@ aws ec2 describe-route-tables --filters Name=route.vpc-peering-connection-id,Val
 ### Running Out of IPs
 
 ```bash
-# Check available IPs per subnet
+# Check available IPs per subnet (count only)
 aws ec2 describe-subnets --subnet-ids subnet-xxx \
-    --query 'Subnets[].AvailableIpAddressCount'
+    --query 'Subnets[].{CIDR:CidrBlock,AvailableIPs:AvailableIpAddressCount}'
 
-# Options:
+# describe-network-interfaces is the single source of truth for used IPs
+# Check who owns a specific IP
+aws ec2 describe-network-interfaces \
+    --filters "Name=addresses.private-ip-address,Values=10.0.1.42"
+
+# List ALL used IPs in a subnet
+aws ec2 describe-network-interfaces \
+    --filters "Name=subnet-id,Values=subnet-xxx" \
+    --query "NetworkInterfaces[].PrivateIpAddresses[].PrivateIpAddress" \
+    --output table
+
+# Find unused ENIs (available for cleanup)
+aws ec2 describe-network-interfaces \
+    --filters Name=status,Values=available \
+    --query 'NetworkInterfaces[].NetworkInterfaceId'
+
+# Options to free IPs:
 # 1. Add secondary CIDR
 # 2. Create larger subnets
 # 3. Use prefix delegation (EKS VPC CNI)
 # 4. Clean up unused ENIs
-aws ec2 describe-network-interfaces \
-    --filters Name=status,Values=available \
-    --query 'NetworkInterfaces[].NetworkInterfaceId'
 ```
+
+> **Note:** An IP remains "in use" by an ENI even if the instance is stopped — it stays allocated until the ENI is deleted or the IP is explicitly unassigned. EKS pods, Lambda in VPC, RDS, ELBs, and NAT Gateways all consume IPs via ENIs.
 
 ## IPv4 Subnet Reference Table
 
