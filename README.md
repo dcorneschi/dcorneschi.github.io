@@ -68,6 +68,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Building Docker Images with Dockerfile](articles/docker-build-image-guide.md) | Dockerfile instructions, build commands, tagging, multi-stage builds, heredoc syntax, CMD vs ENTRYPOINT, and best practices. |
 | [Docker Swarm Cheatsheet](articles/docker-swarm-cheatsheet.md) | Swarm clustering — init, nodes, services, scaling, rolling updates, networks, secrets, configs, stacks, HA, and backups. |
 | [Docker Swarm Storage](articles/docker-swarm-storage.md) | Swarm storage strategies — NFS server/client, GlusterFS, Ceph, Docker NFS volumes, stack examples, backups, and monitoring. |
+| [Installing Podman on RHEL 7–10](articles/podman-installation-rhel.md) | Podman installation across RHEL versions — rootless setup, registries, storage, Docker migration, Quadlet, systemd integration, and troubleshooting. |
 
 ### AWS
 
@@ -86,6 +87,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [AWS VPC Cheatsheet](articles/aws-vpc-cheatsheet.md) | VPC — subnets, route tables, IGW, NAT, security groups, NACLs, endpoints, peering, Transit Gateway, and flow logs. |
 | [AWS Route 53 Cheatsheet](articles/aws-route53-cheatsheet.md) | DNS — hosted zones, record types, routing policies, health checks, failover, DNSSEC, resolver, and domain registration. |
 | [AWS ECR Cheatsheet](articles/aws-ecr-cheatsheet.md) | Container registry — push/pull, scanning, lifecycle policies, replication, pull-through cache, and repository policies. |
+| [Pulling Images from ECR with ctr and Docker](articles/ecr-pull-with-ctr-docker.md) | ECR authentication — pulling images with ctr, Docker, crictl, nerdctl, token refresh, and troubleshooting. |
 | [EC2 Cheatsheet](articles/aws-ec2-cheatsheet.md) | AWS EC2 — instances, AMIs, security groups, EBS, Elastic IPs, metadata, and CLI patterns. |
 | [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md) | Resize EBS volumes and grow filesystems (XFS, ext4, LVM) — no downtime required. |
 | [EC2 Instance Metadata Service (IMDS)](articles/aws-ec2-metadata.md) | IMDS endpoint, IMDSv1 vs IMDSv2, ec2-metadata script, IAM credentials, tags, spot notices, and configuration. |
@@ -99,6 +101,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [EKS Authentication Modes: ConfigMap vs Access Entries](articles/eks-authentication-modes.md) | EKS authentication methods — aws-auth ConfigMap vs API access entries, migration, and best practices. |
 | [Securing Kubernetes Containers: Security Contexts](articles/eks-security-contexts.md) | Linux kernel primitives, security contexts, capabilities, seccomp, AppArmor, and production hardening. |
 | [EKS Node Groups: With and Without Launch Templates](articles/eks-nodegroups-launch-templates.md) | Managed node groups — when you need a launch template, what EKS manages automatically, custom AMIs, and Terraform examples. |
+| [EKS AMI Comparison: Ubuntu vs Ubuntu Pro vs Amazon Linux](articles/eks-ubuntu-ami-comparison.md) | EKS worker node AMIs — Ubuntu EKS, Ubuntu Pro EKS, AL2023, Bottlerocket, feature comparison, security, FIPS, livepatching, and decision guide. |
 | [EKS Architecture Deep Dive](articles/eks-architecture-deep-dive.md) | EKS internals — control plane, etcd, cross-account ENIs, VPC CNI, authentication flow, API endpoint access, add-ons, upgrade process, and limits. |
 | [eksctl Cheatsheet](articles/eksctl-cheatsheet.md) | eksctl CLI — cluster lifecycle, node groups, scaling, labels, IAM service accounts, OIDC, add-ons, Fargate, and identity mappings. |
 | [Creating an EKS Cluster with eksctl](articles/eks-cluster-with-eksctl.md) | Step-by-step guide — prerequisites, ClusterConfig YAML, managed node groups, IRSA, add-ons, private clusters, and production-ready examples. |
@@ -129,6 +132,13 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [AKS Cheatsheet](articles/azure-aks-cheatsheet.md) | Azure Kubernetes Service — cluster lifecycle, node pools, scaling, autoscaler, ACR integration, addons, RBAC, and troubleshooting. |
 | [Azure Key Vault, Monitoring, IAM, and App Services](articles/azure-keyvault-monitoring-iam-cheatsheet.md) | Key Vault secrets/keys, monitoring metrics/alerts, Log Analytics, cost optimization, RBAC, managed identities, and App Service management. |
 | [Azure VM Instance Types and Free Tier](articles/azure-vm-instance-types-free-tier.md) | Azure VM sizes, free tier eligibility, and instance type selection. |
+
+### GCP
+
+| Article | Description |
+|---------|--------------|
+| [GCP Compute Engine with jq Cheatsheet](articles/gcloud-compute-jq-cheatsheet.md) | gcloud compute instances — create, list, filter, network info, disks, metadata, bulk operations, and advanced jq queries for reporting. |
+| [gcloud CLI Cheatsheet](articles/gcloud-cheatsheet.md) | Google Cloud CLI — auth, projects, compute, storage, Cloud Functions, Cloud Run, GKE, Cloud SQL, IAM, networking, logging, and billing. |
 
 ### Virtualization
 
@@ -208,6 +218,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Bash Pipelines and Redirections](articles/bash-redirection-operators.md) | File descriptors, redirection operators, pipes, here-documents, process substitution, custom file descriptors, and advanced techniques. |
 | [Bash History Guide](articles/bash-history-guide.md) | Command history — event designators, word designators, modifiers, Ctrl+R search, fc, configuration, and sharing across sessions. |
 | [Bash Test Conditions: \[ \] vs \[\[ \]\]](articles/bash-test-conditions-guide.md) | Differences between `test`, `[ ]`, and `[[ ]]` — pattern matching, regex, and file tests. |
+| [Bash Single vs Double Brackets](articles/bash-single-vs-double-brackets.md) | `[ ]` vs `[[ ]]` in depth — word splitting, globbing, pattern matching, regex, logical operators, pitfalls, and best practices. |
 | [Bash Subshells](articles/bash-subshells-guide.md) | How subshells work, the pipeline variable problem, isolation patterns, and performance tips. |
 | [Bash Troubleshooting Guide](articles/bash-troubleshooting-guide.md) | Bash debugging — `set -x`, `set -euo pipefail`, PS4, and tracing. |
 | [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md) | Installing a newer bash on macOS (ships with outdated 3.2.x). |
@@ -217,6 +228,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Vim White Spaces](articles/vim-white-spaces.md) | Configuring vim to show white spaces with custom symbols. |
 | [Cron Cheatsheet](articles/cron-cheatsheet.md) | Cron jobs — scheduling syntax, crontab management, environment, logging, locking, email, and scripting patterns. |
 | [Bash Aliases and Functions](articles/bash-aliases-functions.md) | Productivity aliases for git, Docker, Kubernetes, systemd, networking, and utility shell functions (extract, mkcd, backup). |
+| [Bash Read Builtin](articles/bash-read-builtin.md) | `read` command examples — prompts, silent input, timeouts, arrays, file reading patterns, delimiters, validation loops, and process substitution. |
 | [awk Cheatsheet](articles/awk-cheatsheet.md) | Pattern scanning and text processing — fields, separators, regex, arithmetic, BEGIN/END, and one-liners. |
 | [Print Column Numbers for Any Command Output](articles/awk-print-column-numbers.md) | Generic awk one-liner to identify column positions — examples with iotop, ps, df, ss, free, and top. |
 | [sed Cheatsheet](articles/sed-cheatsheet.md) | Stream editor — substitution, deletion, insertion, addressing, capture groups, hold space, and one-liners. |
@@ -234,6 +246,12 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [dpkg Cheatsheet](articles/dpkg-cheatsheet.md) | Debian package manager — install, remove, query, verify, hold, diversions, alternatives, and .deb creation. |
 | [apt Cheatsheet](articles/apt-cheatsheet.md) | APT package management — install, upgrade, repositories, pinning, cache, proxy, offline installs, and automation. |
 | [apt vs apt-get](articles/apt-vs-apt-get.md) | When to use each — command mapping, behavioral differences, output stability, and scripting guidelines. |
+| [Aptitude Cheatsheet](articles/aptitude-cheatsheet.md) | Aptitude package manager — install, search patterns, TUI, dependency resolution, holds, marks, and comparison with apt. |
+| [debsums Cheatsheet](articles/debsums-cheatsheet.md) | Package integrity verification — MD5 checksums, detecting tampered files, security audits, cron jobs, and reinstalling corrupted packages. |
+| [Snap Cheatsheet](articles/snap-cheatsheet.md) | Snap package manager — install, channels, updates, services, interfaces, confinement, disk management, and removing snapd. |
+| [Ubuntu Repositories Guide](articles/ubuntu-repositories-guide.md) | Main, Universe, Restricted, Multiverse — what's in each, security coverage, sources.list, PPAs, ESM, and package pinning. |
+| [Finding Old Package Versions on Ubuntu](articles/ubuntu-old-package-versions.md) | Why repos don't keep all versions, Launchpad archive, archive pool, downloading old .debs, version pinning, and local caching. |
+| [Fixing apt Lock Held Errors](articles/apt-lock-held-fix.md) | "Could not get lock" troubleshooting — causes, lock file locations, unattended-upgrades, safe removal, prevention, and noninteractive timeout. |
 | [DEBIAN_FRONTEND for Scripts](articles/debian-frontend-noninteractive.md) | Non-interactive installs — debconf frontends, dpkg config options, preseeding, needrestart, Docker, and CI/CD patterns. |
 | [Linux File Permissions Guide](articles/linux-file-permissions.md) | Permissions, ownership, umask, SUID/SGID, sticky bit, and ACLs. |
 | [/bin/false vs /sbin/nologin](articles/bin-false-vs-nologin.md) | Login shell differences — behavior, custom messages, /etc/nologin, path variations, and when to use each. |
@@ -361,6 +379,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [/proc/net/sockstat Explained](articles/proc-net-sockstat-explained.md) | Socket summary fields, orphan sockets, TCP memory pressure, "Out of socket memory" diagnosis, kernel shift penalty, and monitoring scripts. |
 | [Monitor Interface Traffic](articles/monitor-interface-traffic.md) | Real-time RX/TX monitoring — sar, ip, ifstat, nload, iftop, vnstat, bmon, ethtool, dstat, and PPS one-liners. |
 | [nmcli Cheatsheet](articles/nmcli-cheatsheet.md) | NetworkManager CLI — connections, devices, static/DHCP, VLANs, bonds, bridges, Wi-Fi, DNS, routes, keyfiles, and scripting one-liners. |
+| [UFW Cheatsheet](articles/ufw-cheatsheet.md) | Ubuntu firewall — allow/deny/reject rules, rate limiting, logging, application profiles, NAT, common service configs, and troubleshooting. |
 
 ### Cloud-Init
 

@@ -185,6 +185,64 @@ apt-cache showsrc package-name
 apt-cache dump | head -50
 ```
 
+## Check if a Package is in a Repo
+
+### rmadison (Query Archive Directly)
+
+```bash
+# Install rmadison (part of devscripts)
+sudo apt install devscripts
+
+# Query the Ubuntu archive for all published versions
+rmadison snapd
+
+# Output shows versions across all suites/pockets:
+#  snapd | 2.45.1+20.04 | focal          | source, amd64, arm64, ...
+#  snapd | 2.70+20.04   | focal-updates  | source, amd64, arm64, ...
+#  snapd | 2.70+20.04   | focal-security | source, amd64, arm64, ...
+
+# Query a specific suite
+rmadison -s noble snapd
+
+# Query for a specific architecture
+rmadison -a amd64 snapd
+```
+
+`rmadison` is the most direct method — it queries the archive server-side regardless of local apt state.
+
+### apt-get changelog
+
+```bash
+# View changelog (sometimes has entries when release notes don't)
+apt-get changelog package-name
+```
+
+### Web Resources
+
+```bash
+# Launchpad Package Tracker (authoritative source)
+# https://launchpad.net/ubuntu/+source/<package-name>
+
+# Ubuntu Packages Search
+# https://packages.ubuntu.com/<package-name>
+
+# For a specific release:
+# https://packages.ubuntu.com/<codename>/<package-name>
+```
+
+### Typical Verification Workflow
+
+```bash
+# 1. Confirm package is in the archive and which pocket
+rmadison package-name
+
+# 2. Confirm your system can see it
+sudo apt update && apt-cache policy package-name
+
+# 3. Check Launchpad for build/publish timestamps (web)
+# https://launchpad.net/ubuntu/+source/<package-name>
+```
+
 ## apt-get Commands
 
 ```bash
