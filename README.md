@@ -264,6 +264,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux User Quotas](articles/linux-user-quotas.md) | Disk quotas — ext4/XFS setup, setquota, edquota, grace periods, project quotas, warnquota, and troubleshooting. |
 | [User Administration on RHEL](articles/user-administration.md) | User and group management — UIDs, password hashing, PAM, and chage. |
 | [LDAP Client Configuration](articles/ldap-client-configuration.md) | Configuring LDAP authentication on RHEL 5–10 and Ubuntu 22.04/24.04 — SSSD, authconfig, authselect, TLS, and Active Directory. |
+| [NSCD and SSSD Guide](articles/nscd-sssd-guide.md) | Name service caching — NSCD config, SSSD with AD/LDAP/IPA, realm join, cache management, offline login, PAM, and troubleshooting. |
 | [Configure Samba](articles/samba-configuration.md) | Samba file server on RHEL 6–10 and Ubuntu — anonymous/authenticated shares, SELinux, AD membership, client access, and troubleshooting. |
 | [MySQL LDAP Authentication](articles/mysql-ldap-authentication.md) | MySQL PAM authentication with SSSD and LDAP — tarball install, PAM plugin, SSSD config, TLS certificates, and troubleshooting. |
 | [Installing MediaWiki on RHEL](articles/mediawiki-installation-rhel.md) | MediaWiki with Apache, PHP 7.4, and MariaDB on RHEL 8/9 — packages, database, SELinux, firewall, and deployment. |
@@ -325,6 +326,11 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [ps Cheatsheet](articles/ps-cheatsheet.md) | Process status — listing, filtering, and inspecting running processes. |
 | [top Cheatsheet](articles/top-cheatsheet.md) | Interactive process viewer — CPU, memory, sorting, filtering, and batch mode. |
 | [free Cheatsheet](articles/free-cheatsheet.md) | Memory usage — free, top, /proc/meminfo, vmstat, and per-process memory. |
+| [Performance Co-Pilot (PCP) Cheatsheet](articles/pcp-cheatsheet.md) | PCP monitoring framework — installation, PMDAs, live metrics, archives, pmrep, pmval, atop/htop, PMIE alerts, Grafana, and process monitoring. |
+| [Installing Nagios Core from Source](articles/nagios-installation-source.md) | Nagios on RHEL 9 and Ubuntu — prerequisites, compile, plugins, Apache config, firewall, host definitions, HTTPS, upgrades, and troubleshooting. |
+| [Nagios check_by_ssh Guide](articles/nagios-check-by-ssh.md) | Remote checks via SSH — examples, command definitions, SSH options, ControlMaster, sudo wrappers, security, and comparison with NRPE. |
+| [Nagios check_http Guide](articles/nagios-check-http-guide.md) | HTTP/HTTPS monitoring — options, virtual hosts, SNI/Traefik routing, certificate checks, curl fallbacks, and troubleshooting. |
+| [Installing Cacti from Source](articles/cacti-installation-source.md) | Cacti on RHEL 9 and Ubuntu — Apache, MariaDB, PHP, RRDTool, Spine, Composer, SNMP, systemd poller, and troubleshooting. |
 
 ### Linux Memory
 
@@ -385,6 +391,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Ephemeral Ports vs Conntrack Max](articles/ephemeral-ports-vs-conntrack.md) | Two separate connection limits — scope, symptoms, diagnosis, fixes, and why TIME_WAIT monitoring is often misleading. |
 | [/proc/net/sockstat Explained](articles/proc-net-sockstat-explained.md) | Socket summary fields, orphan sockets, TCP memory pressure, "Out of socket memory" diagnosis, kernel shift penalty, and monitoring scripts. |
 | [Monitor Interface Traffic](articles/monitor-interface-traffic.md) | Real-time RX/TX monitoring — sar, ip, ifstat, nload, iftop, vnstat, bmon, ethtool, dstat, and PPS one-liners. |
+| [NetHogs Cheatsheet](articles/nethogs-cheatsheet.md) | Per-process network bandwidth monitoring — interactive keys, tracemode, scripting, filtering, and comparison with iftop/nload. |
 | [nmcli Cheatsheet](articles/nmcli-cheatsheet.md) | NetworkManager CLI — connections, devices, static/DHCP, VLANs, bonds, bridges, Wi-Fi, DNS, routes, keyfiles, and scripting one-liners. |
 | [UFW Cheatsheet](articles/ufw-cheatsheet.md) | Ubuntu firewall — allow/deny/reject rules, rate limiting, logging, application profiles, NAT, common service configs, and troubleshooting. |
 
