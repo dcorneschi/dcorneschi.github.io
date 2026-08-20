@@ -74,6 +74,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | Article | Description |
 |---------|--------------|
 | [AWS CLI Installation](articles/aws-cli-install.md) | Install AWS CLI v2 on RHEL, Ubuntu, macOS — configuration, profiles, auto-completion, and Docker. |
+| [AWS Login: Simplified Developer Access](articles/aws-login-command.md) | `aws login` command — browser-based auth, temporary credentials, profiles, federated sign-in, remote servers, IAM policies, and CloudTrail logging. |
 | [AWS STS Assume Role with MFA](articles/aws-sts-assume-role.md) | Temporary credentials via AssumeRole — MFA enforcement, session scripts, named profiles, duration, and role chaining. |
 | [Assume an IAM Role via CLI (Step by Step)](articles/aws-assume-role-cli-walkthrough.md) | Full walkthrough — create user, policy, trust policy, role, assume it, export credentials, and named profile alternative. |
 | [AWS IAM Concepts Guide](articles/aws-iam-concepts-guide.md) | IAM fundamentals — roles, policy types, evaluation logic, Identity Center (SSO), federation, permission boundaries, and root vs admin. |
