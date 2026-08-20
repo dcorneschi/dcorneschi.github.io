@@ -306,7 +306,7 @@ aws sts get-caller-identity
 | `aws sts assume-role` | Temporary (manual refresh) | Medium — requires role trust policy | Cross-account access, elevated privileges |
 | Instance profile (EC2/ECS) | Temporary (auto-rotated) | None on the instance | Workloads running on AWS |
 
-### Key Differences: `aws login` vs `aws sso login`
+### Key Differences: aws login vs aws sso login
 
 | Feature | `aws login` | `aws sso login` |
 |---------|-------------|-----------------|
