@@ -170,6 +170,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Troubleshooting cloud-init on Proxmox](articles/proxmox-cloud-init-troubleshooting.md) | cloud-init debugging — datasource issues, network config, SSH keys, custom snippets, and template preparation. |
 | [Resize a Partition on Proxmox](articles/proxmox-resize-partition.md) | Growing a VM disk — qm resize, growpart, LVM extend, ext4/XFS expansion, and online resize. |
 | [QEMU Guest Agent on Proxmox](articles/proxmox-qemu-guest-agent.md) | Why the guest agent matters — consistent backups, IP display, remote commands, file transfer, and fstrim. |
+| [VirtualBox CLI Cheatsheet](articles/virtualbox-cheatsheet.md) | VBoxManage commands — VM lifecycle, storage, networking, port forwarding, snapshots, cloning, import/export, guest control, and shared folders. |
 
 ### Terraform
 
@@ -264,6 +265,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Fixing apt Lock Held Errors](articles/apt-lock-held-fix.md) | "Could not get lock" troubleshooting — causes, lock file locations, unattended-upgrades, safe removal, prevention, and noninteractive timeout. |
 | [DEBIAN_FRONTEND for Scripts](articles/debian-frontend-noninteractive.md) | Non-interactive installs — debconf frontends, dpkg config options, preseeding, needrestart, Docker, and CI/CD patterns. |
 | [Linux File Permissions Guide](articles/linux-file-permissions.md) | Permissions, ownership, umask, SUID/SGID, sticky bit, and ACLs. |
+| [SELinux Cheatsheet](articles/selinux-cheatsheet.md) | SELinux administration — modes, contexts, booleans, port labels, troubleshooting denials, policy modules, containers, and relabeling. |
+| [Linux Audit (auditd) Cheatsheet](articles/auditd-cheatsheet.md) | Audit system — auditctl rules, file watches, syscall monitoring, ausearch, aureport, compliance rules (PCI-DSS, CIS), and log management. |
 | [/bin/false vs /sbin/nologin](articles/bin-false-vs-nologin.md) | Login shell differences — behavior, custom messages, /etc/nologin, path variations, and when to use each. |
 | [Linux User Quotas](articles/linux-user-quotas.md) | Disk quotas — ext4/XFS setup, setquota, edquota, grace periods, project quotas, warnquota, and troubleshooting. |
 | [User Administration on RHEL](articles/user-administration.md) | User and group management — UIDs, password hashing, PAM, and chage. |
@@ -287,6 +290,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [initramfs vs initrd](articles/initramfs-vs-initrd.md) | Early boot filesystem — differences, dracut, update-initramfs, inspection, rebuild, and troubleshooting. |
 | [Rebuild initramfs in RHEL](articles/rebuild-initramfs-rhel.md) | Step-by-step rebuild across RHEL 3–10 — dracut, mkinitrd, rescue mode, backups, and verification. |
 | [chroot Guide](articles/chroot-guide.md) | Change root environment — system recovery, virtual mounts, LVM/LUKS rescue, package builds, and escape limitations. |
+| [Chroot SFTP Setup](articles/chroot-sftp-setup.md) | Restricted SFTP — jail users to directories, sshd Match blocks, directory permissions, SSH keys, logging, SELinux, and troubleshooting. |
 | [Linux Kernel Panics](articles/linux-kernel-panics.md) | Hard panics (Aieee!) and soft panics (Oops) — causes, interpretation, kdump, crash analysis, and prevention. |
 | [Why Processes in D State Can't Be Killed](articles/linux-processes-d-state.md) | Uninterruptible sleep explained — why kill -9 fails, diagnosing stuck processes, NFS hangs, and TASK_KILLABLE. |
 | [Linux Capabilities](articles/linux-capabilities.md) | Breaking root privilege into fine-grained units — getcap, setcap, capability sets, systemd integration, and Docker. |
@@ -398,6 +402,10 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [NetHogs Cheatsheet](articles/nethogs-cheatsheet.md) | Per-process network bandwidth monitoring — interactive keys, tracemode, scripting, filtering, and comparison with iftop/nload. |
 | [nmcli Cheatsheet](articles/nmcli-cheatsheet.md) | NetworkManager CLI — connections, devices, static/DHCP, VLANs, bonds, bridges, Wi-Fi, DNS, routes, keyfiles, and scripting one-liners. |
 | [UFW Cheatsheet](articles/ufw-cheatsheet.md) | Ubuntu firewall — allow/deny/reject rules, rate limiting, logging, application profiles, NAT, common service configs, and troubleshooting. |
+| [FirewallD Cheatsheet](articles/firewalld-cheatsheet.md) | RHEL/CentOS firewall — zones, services, ports, rich rules, port forwarding, masquerading, IPSets, direct rules, and troubleshooting. |
+| [iptables and FirewallD Rules Guide](articles/iptables-firewalld-rules-guide.md) | Firewall rule methods — iptables CLI, save/restore, FirewallD XML, nftables, persistence, scripting, and translation between tools. |
+| [SNI and TLS Certificates Guide](articles/sni-certificates-guide.md) | Server Name Indication — how SNI works, certificate types, Nginx/Apache/Traefik/HAProxy config, Let's Encrypt, testing with openssl, and troubleshooting. |
+| [Nmap Cheatsheet](articles/nmap-cheatsheet.md) | Network scanning — host discovery, port scans, service/OS detection, NSE scripts, timing, evasion, output formats, and practical examples. |
 
 ### Cloud-Init
 
