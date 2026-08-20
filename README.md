@@ -85,6 +85,11 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [AWS Lightsail Cheatsheet](articles/aws-lightsail-cheatsheet.md) | Simplified compute — instances, static IPs, firewall, snapshots, disks, databases, load balancers, containers, DNS, and export to EC2. |
 | [AWS Load Balancer Cheatsheet](articles/aws-elb-cheatsheet.md) | ALB, NLB, CLB — create, target groups, listeners, routing rules, health checks, SSL, access logs, WAF, and common patterns. |
 | [AWS VPC Cheatsheet](articles/aws-vpc-cheatsheet.md) | VPC — subnets, route tables, IGW, NAT, security groups, NACLs, endpoints, peering, Transit Gateway, and flow logs. |
+| [AWS VPC Design Guide](articles/aws-vpc-design-guide.md) | VPC architecture — CIDR planning, subnet strategies, EKS networking, Transit Gateway, peering, NAT patterns, security design, and cost optimization. |
+| [AWS CloudFormation Cheatsheet](articles/aws-cloudformation-cheatsheet.md) | CloudFormation CLI — create, update, delete stacks, change sets, drift detection, stack sets, imports, policies, deploy, and troubleshooting. |
+| [AWS API Throttling Guide](articles/aws-api-throttling-guide.md) | API rate limits — token bucket algorithm, EC2 limits, error codes, Terraform fixes, CloudTrail detection, Service Quotas, and limit increases. |
+| [AWS Well-Architected Framework](articles/aws-well-architected-framework.md) | Six pillars — operational excellence, security, reliability, performance efficiency, cost optimization, sustainability, reviews, and lenses. |
+| [AWS Migration 7 R's](articles/aws-migration-7rs.md) | Cloud migration strategies — retire, retain, rehost, relocate, repurchase, replatform, refactor, decision flow, and AWS services for each. |
 | [AWS Route 53 Cheatsheet](articles/aws-route53-cheatsheet.md) | DNS — hosted zones, record types, routing policies, health checks, failover, DNSSEC, resolver, and domain registration. |
 | [AWS ECR Cheatsheet](articles/aws-ecr-cheatsheet.md) | Container registry — push/pull, scanning, lifecycle policies, replication, pull-through cache, and repository policies. |
 | [Pulling Images from ECR with ctr and Docker](articles/ecr-pull-with-ctr-docker.md) | ECR authentication — pulling images with ctr, Docker, crictl, nerdctl, token refresh, and troubleshooting. |
@@ -98,6 +103,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [EC2 fstab: Why Device Names Change on Nitro](articles/aws-ec2-fstab-labels.md) | NVMe device reordering, using LABEL/UUID in fstab, cloud-init provisioning, and instance store volumes. |
 | [Installing SSM Agent](articles/aws-ssm-agent-install.md) | Install and configure SSM Agent on RHEL, Ubuntu — Session Manager, VPC endpoints, and SSH over SSM. |
 | [JMESPath Query Guide](articles/aws-jmespath-guide.md) | JMESPath query language for AWS CLI — filtering, sorting, functions, and real-world examples. |
+| [AWS CLI Tag Filtering with Variables](articles/aws-cli-tag-filtering-variables.md) | Shell variables in tag filters — substitution, arrays, functions, loops, JMESPath, validation, and debugging. |
 | [EKS Authentication Modes: ConfigMap vs Access Entries](articles/eks-authentication-modes.md) | EKS authentication methods — aws-auth ConfigMap vs API access entries, migration, and best practices. |
 | [Securing Kubernetes Containers: Security Contexts](articles/eks-security-contexts.md) | Linux kernel primitives, security contexts, capabilities, seccomp, AppArmor, and production hardening. |
 | [EKS Node Groups: With and Without Launch Templates](articles/eks-nodegroups-launch-templates.md) | Managed node groups — when you need a launch template, what EKS manages automatically, custom AMIs, and Terraform examples. |
@@ -326,6 +332,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 |---------|--------------|
 | [Linux Memory: RSS, VSZ, and Why RSS Alone Is Misleading](articles/linux-memory-rss-vsz.md) | Virtual memory, RSS vs VSZ, shared pages, and accurate memory measurement. |
 | [Linux Swap Usage: When Processes Aren't the Culprit](articles/linux-swap-shm-segments.md) | Why per-process swap doesn't add up — SHM segments, `/proc/sysvipc/shm`, and Oracle SGA. |
+| [Linux Swap Management](articles/linux-swap-management.md) | Swap files and partitions — create, resize, swappiness tuning, priority, encryption, monitoring, Btrfs, Kubernetes, and sizing guidelines. |
 
 ### Linux Storage and Filesystems
 
