@@ -68,6 +68,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Building Docker Images with Dockerfile](articles/docker-build-image-guide.md) | Dockerfile instructions, build commands, tagging, multi-stage builds, heredoc syntax, CMD vs ENTRYPOINT, and best practices. |
 | [Docker Swarm Cheatsheet](articles/docker-swarm-cheatsheet.md) | Swarm clustering — init, nodes, services, scaling, rolling updates, networks, secrets, configs, stacks, HA, and backups. |
 | [Docker Swarm Storage](articles/docker-swarm-storage.md) | Swarm storage strategies — NFS server/client, GlusterFS, Ceph, Docker NFS volumes, stack examples, backups, and monitoring. |
+| [Docker Overlay2 Storage Driver](articles/docker-overlay2-storage.md) | Overlay2 internals — LowerDir, UpperDir, MergedDir, copy-on-write, layer inspection, disk usage, configuration, and troubleshooting. |
 | [Installing Podman on RHEL 7–10](articles/podman-installation-rhel.md) | Podman installation across RHEL versions — rootless setup, registries, storage, Docker migration, Quadlet, systemd integration, and troubleshooting. |
 
 ### AWS
@@ -267,6 +268,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux File Permissions Guide](articles/linux-file-permissions.md) | Permissions, ownership, umask, SUID/SGID, sticky bit, and ACLs. |
 | [SELinux Cheatsheet](articles/selinux-cheatsheet.md) | SELinux administration — modes, contexts, booleans, port labels, troubleshooting denials, policy modules, containers, and relabeling. |
 | [Linux Audit (auditd) Cheatsheet](articles/auditd-cheatsheet.md) | Audit system — auditctl rules, file watches, syscall monitoring, ausearch, aureport, compliance rules (PCI-DSS, CIS), and log management. |
+| [psacct / acct Cheatsheet](articles/psacct-cheatsheet.md) | Process accounting — lastcomm, ac, sa, accton, tracking user commands, login times, resource usage, and security investigations. |
 | [/bin/false vs /sbin/nologin](articles/bin-false-vs-nologin.md) | Login shell differences — behavior, custom messages, /etc/nologin, path variations, and when to use each. |
 | [Linux User Quotas](articles/linux-user-quotas.md) | Disk quotas — ext4/XFS setup, setquota, edquota, grace periods, project quotas, warnquota, and troubleshooting. |
 | [User Administration on RHEL](articles/user-administration.md) | User and group management — UIDs, password hashing, PAM, and chage. |
@@ -445,6 +447,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [PuTTY Default Settings](articles/putty-default-settings.md) | Font, bell, colors, window size, and scrollback — settings to apply after a fresh Windows install. |
 | [rclone Cheatsheet](articles/rclone-cheatsheet.md) | Cloud storage CLI — copy, sync, mount, encrypt, serve, filtering, backup patterns, and 70+ backends. |
 | [Homebrew Cheatsheet](articles/homebrew-cheatsheet.md) | macOS package manager — install, update, services, taps, Brewfile, casks, versions, and cleanup. |
+| [lssh Cheatsheet](articles/lssh-cheatsheet.md) | SSH connection manager — TUI host picker, parallel execution, mux workspaces, file transfer, cloud inventory, and monitoring. |
 
 ### Windows
 
