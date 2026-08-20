@@ -416,7 +416,7 @@ unset AWS_SESSION_TOKEN
 
 ## See Also
 
-- [AWS CLI Installation](aws-cli-install.md) — Install AWS CLI v2
-- [AWS IAM CLI Cheatsheet](aws-iam-cheatsheet.md) — IAM user and role management
-- [AWS STS Assume Role](aws-sts-assume-role.md) — Temporary credentials via AssumeRole
-- [AWS IAM Concepts Guide](aws-iam-concepts-guide.md) — IAM fundamentals and Identity Center
+- [AWS CLI Installation](articles/aws-cli-install.md) — Install AWS CLI v2
+- [AWS IAM CLI Cheatsheet](articles/aws-iam-cheatsheet.md) — IAM user and role management
+- [AWS STS Assume Role](articles/aws-sts-assume-role.md) — Temporary credentials via AssumeRole
+- [AWS IAM Concepts Guide](articles/aws-iam-concepts-guide.md) — IAM fundamentals and Identity Center
