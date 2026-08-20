@@ -405,6 +405,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [cloud-init: Why tee Output Doesn't Appear in Logs](articles/cloud-init-tee-output-missing.md) | How cloud-init's output directive interacts with tee, buffering, and pipes. |
 | [cloud-init: User Management and the gecos Field](articles/cloud-init-users-gecos.md) | Users module, gecos history, all user keys, default user, and common patterns. |
 | [cloud-init: Different Ways to Create Files on a Server](articles/cloud-init-write-files.md) | write_files module, runcmd redirects, bootcmd, shell scripts, Jinja templates, and encoding options. |
+| [Cloud-Init Run Modes and Frequencies](articles/cloud-init-run-modes.md) | Module frequencies — per_once, per_instance, per_always, cloud-init-per, semaphores, script directories, and re-running modules. |
+| [Cloud-Init Heredoc and Logging Guide](articles/cloud-init-heredoc-logging-guide.md) | Heredocs in user data, output redirection, structured logging, write_files patterns, debugging, and common YAML pitfalls. |
 
 ### Datadog
 

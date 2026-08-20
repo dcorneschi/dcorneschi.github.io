@@ -209,14 +209,81 @@ virt-customize -a vm.qcow2 \
   --ssh-inject root:file:~/.ssh/id_ed25519.pub \
   --selinux-relabel
 
-# First boot script
+# First boot script (from file)
 virt-customize -a vm.qcow2 --firstboot /tmp/setup.sh
+
+# First boot commands (inline)
+virt-customize -a vm.qcow2 \
+  --firstboot-command "useradd -m -s /bin/bash -G sudo deploy" \
+  --firstboot-command "echo 'deploy:temppass' | chpasswd" \
+  --firstboot-command "chage -d 0 deploy"
 
 # Delete a user
 virt-customize -a vm.qcow2 --run-command 'userdel -r olduser'
 
 # Timezone
 virt-customize -a vm.qcow2 --timezone Europe/Amsterdam
+```
+
+### Adding Users with Passwords
+
+```sh
+# Add user and set password (plaintext — use for dev/lab only)
+virt-customize -a vm.qcow2 \
+  --run-command "useradd -m -s /bin/bash -G sudo john" \
+  --password john:password:mysecretpassword
+
+# Add user with encrypted password (production)
+password_hash=$(openssl passwd -6 "your_password")
+virt-customize -a vm.qcow2 \
+  --run-command "useradd -m -s /bin/bash -p '$password_hash' -G sudo john"
+
+# Add multiple users in one command
+virt-customize -a vm.qcow2 \
+  --run-command "useradd -m -s /bin/bash -G sudo admin" \
+  --password admin:password:adminpass \
+  --run-command "useradd -m -s /bin/bash developer" \
+  --password developer:password:devpass \
+  --run-command "useradd -m -s /bin/bash -G sudo,docker ops" \
+  --password ops:password:opspass
+
+# Advanced user setup (full name, groups, SSH dir)
+virt-customize -a vm.qcow2 \
+  --run-command "useradd -m -s /bin/bash -c 'John Doe' -G sudo,adm,dialout john" \
+  --password john:password:secretpass \
+  --run-command "mkdir -p /home/john/.ssh" \
+  --run-command "chown john:john /home/john/.ssh" \
+  --run-command "chmod 700 /home/john/.ssh"
+
+# Force password change on first login
+virt-customize -a vm.qcow2 \
+  --run-command "useradd -m -s /bin/bash -G sudo newuser" \
+  --password newuser:password:temppass \
+  --run-command "chage -d 0 newuser"
+
+# Modify existing user
+virt-customize -a vm.qcow2 --password existinguser:password:newpassword
+virt-customize -a vm.qcow2 --run-command "usermod -aG sudo existinguser"
+virt-customize -a vm.qcow2 --run-command "usermod -s /bin/zsh existinguser"
+```
+
+### Verify User Changes
+
+```sh
+# Check user in /etc/passwd
+virt-cat -a vm.qcow2 /etc/passwd | grep john
+
+# Check password hash exists in /etc/shadow
+virt-cat -a vm.qcow2 /etc/shadow | grep john
+
+# Check group membership
+virt-cat -a vm.qcow2 /etc/group | grep sudo
+
+# List home directories
+virt-ls -a vm.qcow2 /home/
+
+# List all regular users (UID >= 1000)
+virt-cat -a vm.qcow2 /etc/passwd | awk -F: '$3>=1000 {print $1, $3, $7}'
 ```
 
 ## virt-sysprep — Prepare an Image as a Template
