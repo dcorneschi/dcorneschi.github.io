@@ -6,11 +6,11 @@ HAProxy defines a session as being composed of two connections: one from the cli
 
 ## Metrics
 
-### `haproxy.frontend.session.current`
+### haproxy.frontend.session.current
 
 The number of active sessions on the frontend right now. This represents how many client connections are currently established **to** HAProxy. Each client TCP connection (or HTTP request in HTTP mode) that's been accepted counts as a frontend session.
 
-### `haproxy.backend.session.current`
+### haproxy.backend.session.current
 
 The number of active sessions on the backend right now. This represents how many connections HAProxy currently has open **to** your backend servers. It's the sum across all servers in that backend.
 

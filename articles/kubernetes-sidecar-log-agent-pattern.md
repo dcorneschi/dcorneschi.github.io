@@ -30,7 +30,7 @@ This adds a sidecar container (`log-agent` running Fluentd) alongside the main a
 - The `log-agent` sidecar reads from that same path via the shared volume.
 - Fluentd then forwards/processes those logs to a central logging system.
 
-## Why `emptyDir`?
+## Why emptyDir?
 
 `emptyDir` is used because the logs are transient — they only need to exist long enough for Fluentd to read and forward them. There's no need to persist them beyond the Pod's lifetime.
 

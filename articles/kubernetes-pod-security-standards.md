@@ -192,7 +192,7 @@ kubectl label namespace production \
   --overwrite
 ```
 
-## A Pod That Passes `restricted`
+## A Pod That Passes restricted
 
 ```yaml
 apiVersion: v1
@@ -234,7 +234,7 @@ spec:
     emptyDir: {}
 ```
 
-## A Pod That Fails `restricted` (and Why)
+## A Pod That Fails restricted (and Why)
 
 ```yaml
 apiVersion: v1
@@ -297,7 +297,7 @@ Violations:
 
 A common source of confusion is how `runAsNonRoot` behaves depending on whether the container image was built with a non-root user.
 
-### Image built with non-root user (e.g., `USER appuser`)
+### Image built with non-root user (e.g., USER appuser)
 
 If the image already defines a non-root user and you set `runAsNonRoot: true` without specifying `runAsUser`, the container runs as the image's built-in user:
 
