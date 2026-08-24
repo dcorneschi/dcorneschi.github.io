@@ -86,6 +86,18 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Cluster Autoscaler Scale-Up Troubleshooting](articles/kubernetes-cluster-autoscaler-scale-up-troubleshooting.md) | Why scale-up fails — capacity estimation, DaemonSet overhead, overprovisioning, expanders, and debugging commands. |
 | [EKS Traffic Flow: ALB → HAProxy → Pods](articles/eks-traffic-flow-alb-haproxy-pods.md) | End-to-end request path, IP vs instance mode, security groups, timeouts, cross-AZ traffic, and deployment errors. |
 | [Maximum Packets Per Second (PPS) Reference](articles/network-max-pps-reference.md) | Theoretical PPS by link speed, formula, real-world Linux limits, and NIC diagnostics. |
+| [Kubernetes allowPrivilegeEscalation Explained](articles/kubernetes-allowprivilegeescalation.md) | What allowPrivilegeEscalation does, how it prevents setuid/setgid escalation, and hardened security context examples. |
+| [EKS aws-auth ConfigMap Guide](articles/eks-aws-auth-configmap-guide.md) | Managing aws-auth — adding IAM roles, recovery from broken ConfigMap, validation, and migration to EKS Access Entries. |
+| [ArgoCD Access Methods on EKS](articles/argocd-access-methods-eks.md) | Exposing ArgoCD UI — port-forward, LoadBalancer, ALB Ingress, NGINX passthrough, gRPC access, SSO, and Helm chart handling. |
+| [Cluster Autoscaler vs Karpenter for EKS](articles/eks-cluster-autoscaler-vs-karpenter.md) | Architecture comparison, scale-up/down behavior, configuration, Spot handling, cost optimization, and migration guide. |
+| [Cluster Autoscaler on EKS](articles/eks-cluster-autoscaler-setup.md) | IAM setup, Helm installation, ASG tags, expander strategies, overprovisioning, testing, and troubleshooting. |
+| [Kustomize vs Helm](articles/kustomize-vs-helm.md) | Comparison — templating vs patching, release management, array merge gotcha, when to use each, and combining both. |
+| [Kustomize Cheatsheet](articles/kustomize-cheatsheet.md) | Commands, overlays, patch types, generators, one-liners, components, tips, and common mistakes. |
+| [Fix Cluster Autoscaler on Hetzner Cloud](articles/hetzner-cluster-autoscaler-fix.md) | Empty nodeConfigs crash fix — creating proper HCLOUD_CLUSTER_CONFIG with node pool definitions. |
+| [EKS Cluster IAM Roles Setup](articles/eks-cluster-iam-roles-setup.md) | Required IAM roles and policies — cluster role, worker node role, creation methods (eksctl, CLI, Terraform), and add-on permissions. |
+| [Kubernetes Pods vs Deployments](articles/kubernetes-pods-vs-deployments.md) | Pod vs Deployment relationship, self-healing, scaling, rolling updates, rollback, and when to use each controller type. |
+| [Uncordon Disabled Nodes in Kubernetes](articles/kubernetes-uncordon-disabled-nodes.md) | Finding and re-enabling cordoned nodes — causes, bulk uncordon, failed drain recovery, and monitoring. |
+| [VPA and HPA Metrics Collection](articles/kubernetes-vpa-hpa-metrics-collection.md) | Metrics pipeline — metrics-server, Prometheus Adapter, custom/external metrics, how HPA and VPA collect and interpret data differently. |
 
 ### CKA Practice
 

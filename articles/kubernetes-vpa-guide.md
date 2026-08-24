@@ -394,6 +394,7 @@ spec:
 5. **History window** — VPA needs time to collect data (default: 8 days lookback). Recommendations may be inaccurate in the first hours.
 6. **OOM before VPA reacts** — If memory usage spikes faster than VPA can react, pods get OOMKilled. Set `minAllowed.memory` high enough for startup peaks.
 7. **Limits ratio** — With `controlledValues: RequestsAndLimits`, VPA maintains the original requests-to-limits ratio. If your ratio was wrong initially, VPA perpetuates it.
+8. **Single replica won't be evicted** — The VPA Updater won't evict your only pod (replicas: 1) to avoid application downtime. You must have at least 2 replicas for automatic updates to work, or manually delete the pod to trigger the new resource values.
 
 ## Useful Commands
 

@@ -146,6 +146,12 @@ kubectl get pods -A -o json | jq -r '.items[] | select(.status.containerStatuses
 # Pods per node (count)
 kubectl get pods -A -o json | jq '.items | group_by(.spec.nodeName) | map({"nodeName": .[0].spec.nodeName, "count": length}) | sort_by(.count)'
 
+# Pods per namespace (count)
+kubectl get pods -A --no-headers | awk '{print $1}' | sort | uniq -c | awk '{print $2, $1}'
+
+# Pods per namespace (with column alignment)
+kubectl get pods -A --no-headers | awk '{print $1}' | sort | uniq -c | awk 'BEGIN {printf "%-30s %s\n", "NAMESPACE", "PODS"} {printf "%-30s %s\n", $2, $1}'
+
 # Delete pods by name pattern
 kubectl get pods --no-headers | grep "node-debugger" | awk '{print $1}' | xargs kubectl delete pod
 ```
