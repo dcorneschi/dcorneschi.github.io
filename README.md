@@ -54,6 +54,9 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [EKS Port Communication](articles/eks-port-communication.md) | Control plane to worker node ports — kubelet API, kube-proxy, security group rules, and communication flows. |
 | [EKS Node Lifecycle During Updates](articles/eks-node-lifecycle-during-updates.md) | Node state progression during rolling updates — cordon, drain, eviction API, PDBs, ASG integration, and timing. |
 | [Kubernetes Cluster Setup with kubeadm](articles/kubeadm-cluster-setup.md) | Step-by-step kubeadm cluster setup — CRI-O, Calico CNI, metrics server, node joins, validation, upgrades, and troubleshooting. |
+| [HPA with scaleDown Behavior](articles/kubernetes-hpa-scaledown-behavior.md) | HPA scaling behavior — scale-down policies, stabilization windows, tolerance, multi-metric scaling, and disabling auto scale-down. |
+| [Ingress](articles/kubernetes-ingress-guide.md) | Ingress resources — routing, TLS termination, IngressClass, nginx annotations, controller setup, and common mistakes. |
+| [HAProxy Ingress Dashboard Metrics](articles/haproxy-ingress-dashboard-metrics.md) | HAProxy ingress metrics — sessions, latency, throughput, errors, infrastructure, error code origins, and spike cascade troubleshooting. |
 
 ### Docker
 
