@@ -2,6 +2,15 @@
 
 Diagnosing unhealthy, NotReady, or misbehaving EKS worker nodes — from initial triage through kubelet, networking, storage, and instance-level issues.
 
+## Node States
+
+| Status | Description |
+|--------|-------------|
+| Ready | Node is healthy and ready to run pods. Functioning properly and can host workloads. |
+| NotReady | Node is not healthy and cannot run pods. Pods may be evicted or rescheduled to other nodes. |
+| SchedulingDisabled | Node is cordoned — marked as unschedulable. No new pods will be scheduled on it. Existing pods continue running. |
+| Unknown | Node controller hasn't heard from the node in the last `node-monitor-grace-period` (default 40s). Communication lost. |
+
 ## Quick Triage Flow
 
 ```
@@ -145,7 +154,26 @@ EKS nodes follow this sequence:
 sudo cat /var/log/cloud-init-output.log
 sudo cat /var/log/messages | grep -i kubelet
 sudo journalctl -u kubelet --no-pager | head -100
+
+# MicroK8s / snap-based EKS nodes
+sudo systemctl status snap.kubelet-eks.daemon.service
+sudo journalctl -f -u snap.kubelet-eks.daemon.service
 ```
+
+### EKS Log Collector Script
+
+AWS provides a script that collects all relevant logs, system info, and networking data into a single bundle:
+
+```bash
+# Download and run the log collector
+curl -O https://raw.githubusercontent.com/awslabs/amazon-eks-ami/master/log-collector-script/linux/eks-log-collector.sh
+sudo bash eks-log-collector.sh
+
+# Output: /var/log/eks_i-<instance-id>_<date>.tar.gz
+# Contains: kubelet logs, containerd logs, iptables, CNI config, system info, etc.
+```
+
+Useful for sharing with AWS support or post-mortem analysis.
 
 ### Common Join Failures
 

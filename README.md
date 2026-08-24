@@ -103,6 +103,13 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Why Pods Get Throttled Even When Node Has Available CPU](articles/kubernetes-cpu-throttling-available-cpu.md) | CPU throttling at the cgroup level — why limits ignore node capacity, CFS quota mechanics, requests vs limits, and the case for removing CPU limits. |
 | [EKS Node Troubleshooting Guide](articles/eks-node-troubleshooting-guide.md) | Diagnosing unhealthy EKS nodes — NotReady, bootstrap failures, resource pressure, networking, instance issues, kubelet, and recovery. |
 | [Cleaning Up Kubernetes Clusters from .kube/config](articles/kubeconfig-cleanup-guide.md) | Removing stale clusters from kubeconfig — connectivity checks, pattern-based removal, orphan detection, renaming contexts, and separate config files. |
+| [EKS Node Groups Explained](articles/eks-node-groups-explained.md) | Managed vs self-managed node groups — launch templates, scaling, updates, Spot instances, IAM roles, taints/labels, and common patterns. |
+| [runAsNonRoot: true](articles/kubernetes-runasnonroot.md) | How runAsNonRoot works — validation logic, fixing root images, runAsUser relationship, file permissions, PSS compliance, and hardened pod examples. |
+| [CoreDNS on EKS — Cheatsheet](articles/coredns-eks-cheatsheet.md) | CoreDNS commands and troubleshooting — Corefile editing, custom forwards, debug logging, metrics, scaling, ndots tuning, and NodeLocal DNSCache. |
+| [ImagePullBackOff Troubleshooting Guide](articles/kubernetes-imagepullbackoff-troubleshooting.md) | Diagnosing image pull failures — wrong names, auth secrets, ECR access, Docker Hub rate limits, network issues, and platform mismatches. |
+| [HAProxy Ingress Setup on EKS](articles/haproxy-ingress-eks-setup.md) | HAProxy Ingress Controller — Helm install, values.yaml, TLS, annotations, rate limiting, monitoring, one-liners, and troubleshooting. |
+| [HAProxy 5xx Errors During EKS Node Drains](articles/haproxy-5xx-eks-node-drains.md) | The race condition between pod termination and endpoint propagation — preStop hooks, PDBs, graceful shutdown, HAProxy health checks, and zero-downtime drains. |
+| [Deep Dive: system:masters Group on EKS](articles/eks-system-masters-group.md) | How system:masters bypasses RBAC, who gets it on EKS, why to avoid it, migration to cluster-admin RBAC, and break-glass best practices. |
 
 ### CKA Practice
 
@@ -206,6 +213,13 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 |---------|--------------|
 | [GCP Compute Engine with jq Cheatsheet](articles/gcloud-compute-jq-cheatsheet.md) | gcloud compute instances — create, list, filter, network info, disks, metadata, bulk operations, and advanced jq queries for reporting. |
 | [gcloud CLI Cheatsheet](articles/gcloud-cheatsheet.md) | Google Cloud CLI — auth, projects, compute, storage, Cloud Functions, Cloud Run, GKE, Cloud SQL, IAM, networking, logging, and billing. |
+
+### DigitalOcean
+
+| Article | Description |
+|---------|--------------|
+| [doctl Cheatsheet](articles/doctl-cheatsheet.md) | DigitalOcean CLI — Droplets, Kubernetes, databases, networking, volumes, registry, Apps Platform, and scripting. |
+| [HAProxy for Kubernetes on DigitalOcean](articles/haproxy-kubernetes-digitalocean.md) | HAProxy Ingress on DOKS — Helm install, DO Load Balancer annotations, TLS options, PROXY protocol, cert-manager, and multi-service routing. |
 
 ### Virtualization
 

@@ -186,3 +186,101 @@ The number of active sessions on the backend right now. This represents how many
 | `slim` | Configured session limit (`maxconn`) |
 | `stot` | Total number of sessions since HAProxy started |
 | `rate` | Number of new sessions per second |
+
+## Troubleshooting Scenarios
+
+### High Frontend Sessions, Low Backend Sessions
+
+**Symptom:** `frontend.session.current` >> `backend.session.current`
+
+**Diagnosis:** HAProxy is rejecting or filtering requests before they reach backends.
+
+**Causes:**
+- Rate limiting rules blocking traffic
+- ACL denying requests
+- Authentication failures
+- Request size limits exceeded
+- Backend queue full (`maxconn` on backend reached)
+
+### Equal Sessions, High Backend Response Time
+
+**Symptom:** Frontend/backend sessions match, but `backend.response_time` is high.
+
+**Diagnosis:** Application server performance issue — all requests get through, but responses are slow.
+
+**Causes:**
+- Database slowdowns
+- CPU/memory constraints on app servers
+- Network latency to backends
+- Upstream dependency timeouts
+
+### High Backend Queue
+
+**Symptom:** `backend.queue.current` is consistently high.
+
+**Diagnosis:** Backends can't keep up — need more capacity or faster servers.
+
+**Causes:**
+- Insufficient backend server count
+- Backend servers too slow to process requests
+- Load balancing algorithm sending too much to one server
+- `maxconn` per server too low
+
+### High Frontend Denied Requests
+
+**Symptom:** High `frontend.denied_req` or frontend 4xx errors.
+
+**Diagnosis:** Client-side issues or HAProxy ACL/config problems.
+
+**Causes:**
+- Malformed client requests
+- Invalid SSL certificates
+- IP blacklisting or geo-blocking
+- Incorrect HAProxy ACL rules
+
+### High Backend 5xx Responses
+
+**Symptom:** High `backend.http_responses_5xx`.
+
+**Diagnosis:** Application servers are failing.
+
+**Causes:**
+- Application crashes or exceptions
+- Database connection pool exhaustion
+- Resource limits reached (memory, file descriptors)
+- Deployment issues (bad release)
+
+## Performance Ratios
+
+### Request Acceptance Rate
+
+```
+Backend Sessions / Frontend Sessions ≈ 1.0 (healthy)
+```
+
+Lower values indicate request filtering or rejection. Investigate ACLs, rate limiting, or backend saturation.
+
+### Error Source Identification
+
+```
+High frontend errors → client or HAProxy config issues
+High backend errors  → application server issues
+```
+
+Compare `frontend.denied_req` vs `backend.http_responses_5xx` to locate the problem layer.
+
+### Capacity Pressure
+
+```
+Backend Queue / Backend Sessions = capacity pressure indicator
+```
+
+Higher ratios mean backends are saturated. Scale horizontally or optimize application performance.
+
+### Monitoring Strategy
+
+| Focus | Key Metrics |
+|-------|-------------|
+| Frontend health | `session_rate`, `denied_req`, `bytes_in_rate`, connection errors |
+| Backend health | `response_time`, `servers_up/down`, `queue_current`, `http_responses_5xx` |
+| Combined | Frontend/backend session ratio, end-to-end latency, error distribution |

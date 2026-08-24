@@ -146,6 +146,33 @@ Beyond CPU and memory, HPA v2 also supports:
 - **Custom metrics** (`type: Pods` or `type: Object`) — app-level metrics like requests per second, exposed via a custom metrics adapter (e.g., Prometheus Adapter).
 - **External metrics** (`type: External`) — metrics from outside the cluster, like a message queue depth from a cloud provider.
 
+## Test HPA with Load Generator
+
+The official Kubernetes HPA walkthrough using php-apache:
+
+```bash
+# 1. Deploy test application
+kubectl apply -f https://k8s.io/examples/application/php-apache.yaml
+
+# 2. Create HPA (scale at 50% CPU, 1-10 replicas)
+kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
+
+# 3. Verify HPA is created
+kubectl get hpa
+
+# 4. Generate load (in a separate terminal)
+kubectl run -i --tty load-generator --rm --image=busybox --restart=Never \
+  -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+
+# 5. Watch HPA scale up
+kubectl get hpa php-apache -w
+
+# 6. Stop load generator (Ctrl+C) and watch scale down
+
+# 7. Cleanup
+kubectl delete deployment.apps/php-apache service/php-apache horizontalpodautoscaler.autoscaling/php-apache
+```
+
 ## Useful Commands
 
 ```bash

@@ -187,3 +187,50 @@ Traffic spike → Sessions approach limit → Queue builds up → Response time 
 ```
 
 The dashboard is designed to let you trace this chain from left to right.
+
+## Datadog Integration Setup
+
+To enable HAProxy monitoring in Datadog:
+
+1. **Enable the HAProxy stats endpoint** (already exposed on port 9153 or 8404 by most Helm charts)
+2. **Install the Datadog Agent** on the cluster with HAProxy integration enabled
+3. **Configure the integration** in `haproxy.d/conf.yaml`:
+
+```yaml
+instances:
+  - url: http://%%host%%:8404/stats
+    # Or use annotations for auto-discovery:
+    # ad.datadoghq.com/haproxy.check_names: '["haproxy"]'
+    # ad.datadoghq.com/haproxy.init_configs: '[{}]'
+    # ad.datadoghq.com/haproxy.instances: '[{"url":"http://%%host%%:8404/stats"}]'
+```
+
+Or annotate the HAProxy pods for Datadog auto-discovery:
+
+```bash
+kubectl annotate pod -l app=haproxy -n haproxy-ingress \
+  ad.datadoghq.com/haproxy.check_names='["haproxy"]' \
+  ad.datadoghq.com/haproxy.init_configs='[{}]' \
+  ad.datadoghq.com/haproxy.instances='[{"url":"http://%%host%%:8404/stats"}]'
+```
+
+## Key Performance Indicators (KPIs)
+
+| KPI | Formula | Healthy |
+|-----|---------|---------|
+| Availability | `servers_up / (servers_up + servers_down)` | > 0.99 |
+| Error Rate | `(4xx + 5xx) / total_requests` | < 0.01 |
+| Queue Saturation | `queue_current / maxconn` | < 0.5 |
+| Session Utilization | `session_current / session_limit` | < 0.8 |
+
+## Recommended Alerts
+
+| Alert | Condition | Severity |
+|-------|-----------|----------|
+| Backend servers down | `haproxy.backend.servers_down > 0` | Critical |
+| High 5xx rate | `rate(backend.response.5xx) > 10/min` | Critical |
+| Session limit approaching | `frontend.session.current > 80% of limit` | Warning |
+| Response time degradation | `backend.response.time > 2s (p99)` | Warning |
+| Queue depth high | `backend.queue.current > 50` for 5 min | Warning |
+| Pod restarts | `kubernetes.containers.restarts > 0` (haproxy) | Critical |
+| Unhealthy targets | `alb.un_healthy_host_count > 0` | Critical |

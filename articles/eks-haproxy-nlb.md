@@ -20,10 +20,10 @@ HAProxy acts as the L7 reverse proxy inside the cluster, while the NLB provides 
 ### Architecture
 
 ```
-┌────────────────────────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────────────────────────┐
 │                             AWS VPC                                  │
 │                                                                      │
-│  ┌────────────────────── Public Subnets ──────────────────────────┐ │
+│  ┌────────────────────── Public Subnets ───────────────────────────┐ │
 │  │                                                                 │ │
 │  │   ┌─────────────────────────────────────────────────────────┐   │ │
 │  │   │            Network Load Balancer (NLB)                  │   │ │
@@ -34,29 +34,29 @@ HAProxy acts as the L7 reverse proxy inside the cluster, while the NLB provides 
 │  │   │   Target Group :80         Target Group :443            │   │ │
 │  │   │   (Pod IPs registered)     (Pod IPs registered)         │   │ │
 │  │   └────────┬────────────────────────┬───────────────────────┘   │ │
-│  └────────────┼────────────────────────┼──────────────────────────┘ │
+│  └────────────┼────────────────────────┼───────────────────────────┘ │
 │               │                        │                             │
-│  ┌────────────┼────── Private Subnets ─┼─────────────────────────┐  │
-│  │            │                        │                          │  │
-│  │   ┌────────▼────────────────────────▼────────────────────┐    │  │
-│  │   │            HAProxy Pods (Deployment, replicas: 2)     │    │  │
-│  │   │                                                       │    │  │
-│  │   │   HAProxy Pod 1             HAProxy Pod 2             │    │  │
-│  │   │   :80 (HTTP)                :80 (HTTP)                │    │  │
-│  │   │   :443 (HTTPS/TCP)          :443 (HTTPS/TCP)          │    │  │
-│  │   └────────┬─────────────────────────┬────────────────────┘    │  │
-│  │            │                         │                         │  │
-│  │            ▼                         ▼                         │  │
-│  │   ┌──────────────────────────────────────────────────────┐    │  │
-│  │   │          Backend Services (ClusterIP)                 │    │  │
-│  │   │                                                       │    │  │
-│  │   │  app-a:8080     app-b:8080     app-c:3000             │    │  │
-│  │   │  (ClusterIP)    (ClusterIP)    (ClusterIP)            │    │  │
-│  │   │      │               │              │                 │    │  │
-│  │   │      ▼               ▼              ▼                 │    │  │
-│  │   │  App A Pods     App B Pods     App C Pods             │    │  │
-│  │   └──────────────────────────────────────────────────────┘    │  │
-│  └────────────────────────────────────────────────────────────────┘  │
+│  ┌────────────┼────── Private Subnets ─┼─────────────────────────┐   │
+│  │            │                        │                         │   │
+│  │   ┌────────▼────────────────────────▼────────────────────┐    │   │
+│  │   │            HAProxy Pods (Deployment, replicas: 2)    │    │   │
+│  │   │                                                      │    │   │
+│  │   │   HAProxy Pod 1             HAProxy Pod 2            │    │   │
+│  │   │   :80 (HTTP)                :80 (HTTP)               │    │   │
+│  │   │   :443 (HTTPS/TCP)          :443 (HTTPS/TCP)         │    │   │
+│  │   └────────┬─────────────────────────┬───────────────────┘    │   │
+│  │            │                         │                        │   │
+│  │            ▼                         ▼                        │   │
+│  │   ┌──────────────────────────────────────────────────────┐    │   │
+│  │   │          Backend Services (ClusterIP)                │    │   │
+│  │   │                                                      │    │   │
+│  │   │  app-a:8080     app-b:8080     app-c:3000            │    │   │
+│  │   │  (ClusterIP)    (ClusterIP)    (ClusterIP)           │    │   │
+│  │   │      │               │              │                │    │   │
+│  │   │      ▼               ▼              ▼                │    │   │
+│  │   │  App A Pods     App B Pods     App C Pods            │    │   │
+│  │   └──────────────────────────────────────────────────────┘    │   │
+│  └───────────────────────────────────────────────────────────────┘   │
 └──────────────────────────────────────────────────────────────────────┘
 
 Port Summary:
@@ -440,3 +440,140 @@ kubectl port-forward -n haproxy svc/haproxy 8404:8404
 - **Deregistration delay** — when a HAProxy pod is terminated, it stays in the target group for 300s by default. Reduce with `deregistration_delay.timeout_seconds=30`.
 - **Pod readiness gates** — the LB controller uses readiness gates to prevent traffic to unready pods. Ensure pods have proper readiness probes.
 - **Annotation changes require Service recreation** — some annotations (like `scheme`) can't be changed after NLB creation. Delete and recreate the Service.
+- **HAProxy doesn't create the ELB** — the Service resource triggers ELB creation via the AWS cloud controller or LB Controller. HAProxy is passive; it just listens on its container port.
+
+## Who Creates the ELB?
+
+```
+Helm chart → creates Service (type: LoadBalancer)
+           → AWS LB Controller sees it → provisions NLB
+           → NLB targets pods (ip mode) or nodes (instance mode)
+           → kube-proxy DNATs (instance mode only) → HAProxy pod
+```
+
+HAProxy has no awareness of the NLB. If you change the Service to `type: ClusterIP`, no NLB is created — HAProxy still works, just without the AWS load balancer in front.
+
+## NodePort Behavior (Instance Target Mode)
+
+When using `instance` target mode, the NLB routes to NodePorts. NodePorts are active on **every node**, not just the one running HAProxy:
+
+- **iptables mode**: kube-proxy programs DNAT rules intercepting `nodeIP:nodePort` and rewriting to the HAProxy pod IP
+- **IPVS mode**: IPVS virtual servers handle forwarding — you may not see a LISTEN socket in `ss`
+
+```bash
+# Check kube-proxy mode
+kubectl -n kube-system get configmap kube-proxy -o jsonpath='{.data.config\.conf}' | grep mode
+
+# iptables — verify DNAT rules exist
+sudo iptables -t nat -L KUBE-NODEPORTS -n | grep -E '32080|32443'
+
+# IPVS — verify virtual servers
+sudo ipvsadm -Ln | grep -E '32080|32443'
+
+# Test NodePort from outside
+curl -sk https://<nodeIP>:32443/healthz
+```
+
+## HAProxy as DaemonSet
+
+Running one HAProxy per node keeps the ELB target simple (target = node) and avoids extra hops:
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: haproxy
+  namespace: haproxy
+spec:
+  selector:
+    matchLabels:
+      app: haproxy
+  template:
+    metadata:
+      labels:
+        app: haproxy
+    spec:
+      hostNetwork: true        # Bind directly to node ports
+      containers:
+      - name: haproxy
+        image: haproxy:2.9
+        ports:
+        - containerPort: 80
+          hostPort: 80
+        - containerPort: 443
+          hostPort: 443
+```
+
+Trade-offs vs Deployment:
+- DaemonSet: one per node, no kube-proxy hop, uses `hostNetwork`
+- Deployment: scalable independently of nodes, works with `ip` target type
+
+## Traffic Direction Patterns
+
+### Pattern 1: Inbound (ELB → HAProxy)
+
+The standard pattern — ELB is the public entry, HAProxy routes L7:
+
+```
+Client → NLB (:443) → HAProxy pod → app pods
+```
+
+HAProxy never sends client traffic back to the NLB.
+
+### Pattern 2: Outbound (HAProxy → Backend ELB)
+
+HAProxy routes to an internal ELB that fronts another service:
+
+```
+Client → front NLB → HAProxy → internal ALB/NLB → target pods/instances
+```
+
+HAProxy config — always resolve ELB DNS at runtime (IPs rotate):
+
+```
+resolvers awsdns
+    nameserver vpc 169.254.169.253:53
+    hold valid 10s
+
+backend svc_behind_elb
+    balance roundrobin
+    server elb internal-myapp-123.eu-west-1.elb.amazonaws.com:443 \
+        check ssl verify none resolvers awsdns init-addr none
+```
+
+Never pin an ELB IP — they rotate as AWS scales.
+
+```bash
+# Verify DNS resolves from HAProxy pod
+kubectl exec -it <haproxy-pod> -n haproxy -- nslookup internal-myapp-123.eu-west-1.elb.amazonaws.com
+
+# Test connectivity to backend ELB
+kubectl exec -it <haproxy-pod> -n haproxy -- sh -c 'nc -zv internal-myapp-123.eu-west-1.elb.amazonaws.com 443'
+```
+
+## ELB Management Commands
+
+```bash
+# List NLBs/ALBs
+aws elbv2 describe-load-balancers \
+  --query 'LoadBalancers[].{Name:LoadBalancerName,Type:Type,Scheme:Scheme,DNS:DNSName,State:State.Code}' \
+  --output table
+
+# List Classic Load Balancers
+aws elb describe-load-balancers \
+  --query 'LoadBalancerDescriptions[].{Name:LoadBalancerName,DNS:DNSName,Scheme:Scheme}' \
+  --output table
+
+# List target groups
+aws elbv2 describe-target-groups \
+  --query 'TargetGroups[].{Name:TargetGroupName,Port:Port,Proto:Protocol,ARN:TargetGroupArn}' \
+  --output table
+
+# Health of targets in a target group
+aws elbv2 describe-target-health --target-group-arn <arn> \
+  --query 'TargetHealthDescriptions[].{Target:Target.Id,Port:Target.Port,State:TargetHealth.State}' \
+  --output table
+
+# Find which ELB a Kubernetes LoadBalancer Service created
+kubectl get svc -A -o jsonpath='{range .items[?(@.spec.type=="LoadBalancer")]}{.metadata.namespace}{"\t"}{.metadata.name}{"\t"}{.status.loadBalancer.ingress[0].hostname}{"\n"}{end}'
+```

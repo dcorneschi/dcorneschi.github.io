@@ -42,7 +42,7 @@ At scale with hundreds of pods, this right-sizing adds up significantly.
 │                    Karpenter Controller                      │
 │                  (Deployment in kube-system)                 │
 │                                                              │
-│  ┌─────────────┐   ┌──────────────┐  ┌────────────────────┐  │
+│  ┌──────────────┐  ┌──────────────┐  ┌────────────────────┐  │
 │  │  Provisioner │  │ Consolidator │  │  Disruption Engine │  │
 │  │  (watches    │  │ (optimizes   │  │  (drift, expiry,   │  │
 │  │   pending    │  │  node usage) │  │   consolidation)   │  │
@@ -528,6 +528,145 @@ This prevents all pods landing in one AZ (which forces Karpenter to over-provisi
 - **Spot interruptions + consolidation**: If Karpenter replaces a Spot node due to consolidation, and then the replacement also gets interrupted, pods can bounce. Set `consolidateAfter` higher for Spot-heavy pools.
 - **Windows nodes**: Karpenter supports Windows, but ensure your EC2NodeClass specifies a Windows AMI.
 - **Drift can be aggressive**: If you change the EC2NodeClass (e.g., new AMI), ALL nodes are marked as drifted and will be replaced. Use `budgets` to control the rollout rate.
+
+## Node Pools
+
+Node pools are groups of nodes with similar configurations in a Kubernetes cluster. They organize and manage different types of compute resources.
+
+### Traditional Node Pool Components
+
+- **Instance type** — CPU, memory, and storage specifications
+- **Operating system** — Linux distributions, Windows, etc.
+- **Kubernetes version** — control plane compatibility
+- **Networking** — VPC, subnets, security groups
+- **Scaling policies** — min/max node counts, scaling triggers
+
+### EKS Node Group Example (eksctl)
+
+```yaml
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: my-cluster
+  region: us-west-2
+
+nodeGroups:
+  - name: general-purpose
+    instanceType: t3.medium
+    minSize: 1
+    maxSize: 10
+    desiredCapacity: 3
+    volumeSize: 20
+    labels:
+      role: general-purpose
+    tags:
+      nodegroup-role: general-purpose
+
+  - name: compute-optimized
+    instanceType: c5.large
+    minSize: 0
+    maxSize: 5
+    desiredCapacity: 0
+    volumeSize: 20
+    labels:
+      role: compute-optimized
+    taints:
+      - key: compute-optimized
+        value: "true"
+        effect: NoSchedule
+
+  - name: spot-instances
+    instanceType: m5.large
+    minSize: 0
+    maxSize: 10
+    desiredCapacity: 2
+    spot: true
+    labels:
+      lifecycle: spot
+    tags:
+      nodegroup-type: spot
+```
+
+### Scheduling Workloads to Specific Pools
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spot-workload
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spot-workload
+  template:
+    metadata:
+      labels:
+        app: spot-workload
+    spec:
+      nodeSelector:
+        karpenter.sh/capacity-type: spot
+      tolerations:
+        - key: spot
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+      containers:
+        - name: app
+          image: nginx
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+```
+
+## Karpenter vs Traditional Node Pools
+
+### Traditional Approach
+
+- Pre-defined node pools with fixed instance types
+- Slower scaling (Cluster Autoscaler + ASG)
+- Manual configuration for different workload types
+- Over-provisioning to handle demand spikes
+- Each instance type needs its own node group
+
+### Karpenter Approach
+
+- Dynamic node provisioning based on actual pod requirements
+- No pre-defined node pools — creates nodes on-demand
+- Automatically selects from hundreds of instance types
+- More efficient resource utilization
+- Single NodePool can serve many workload profiles
+
+### Side-by-Side Comparison
+
+| Aspect | Traditional Node Pools | Karpenter NodePools |
+|--------|----------------------|---------------------|
+| Instance selection | Fixed per node group | Dynamic per scheduling decision |
+| Scaling speed | Minutes (ASG + CA) | Seconds (direct EC2 API) |
+| Node groups needed | One per instance type/config | One or few NodePools cover everything |
+| Spot handling | Separate ASG or MIG | Built-in, multi-type diversification |
+| Right-sizing | Manual, per node group | Automatic, per pod batch |
+| Consolidation | Remove empty nodes only | Replace underutilized with smaller |
+| AMI updates | Rolling update per ASG | Drift detection + automatic replacement |
+| Operational overhead | High (many ASGs to manage) | Low (declarative NodePool + EC2NodeClass) |
+
+### When to Use Traditional Node Groups
+
+- System components (Karpenter itself, CoreDNS)
+- Strict compliance requiring fixed infrastructure
+- Windows nodes with specific AMI requirements
+- GPU nodes with limited instance type options
+- Fargate profiles for serverless workloads
+
+### When to Use Karpenter
+
+- General application workloads
+- Bursty or unpredictable traffic patterns
+- Cost optimization is a priority
+- Many different workload profiles on one cluster
+- Spot instance diversification
 
 ## Quick Reference
 

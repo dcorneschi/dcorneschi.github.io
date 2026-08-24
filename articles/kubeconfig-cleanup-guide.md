@@ -493,6 +493,29 @@ yq eval 'del(.clusters[] | select(.name == "*old*"))' -i ~/.kube/config
 
 Install yq: `brew install yq` (macOS) or `sudo apt install yq` (Ubuntu).
 
+## Using kubectx
+
+If you manage many clusters, `kubectx` provides a faster workflow:
+
+```bash
+# Install
+brew install kubectx
+
+# List all contexts
+kubectx
+
+# Switch context
+kubectx <context-name>
+
+# Delete a context
+kubectx -d <context-name>
+
+# Delete multiple contexts
+kubectx -d old-dev old-staging test-2023
+```
+
+`kubectx -d` only removes the context — you still need to clean up orphaned cluster/user entries separately.
+
 ## Scheduled Maintenance
 
 ### Cron Job to Flag Unreachable Clusters

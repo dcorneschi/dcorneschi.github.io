@@ -509,6 +509,94 @@ CPU limits are still valid in some cases:
 | Microservices with bursty traffic | No | Bursts cause throttling |
 | Latency-sensitive applications | No | Throttling adds unpredictable latency |
 
+## Why Memory Limits Are Different
+
+CPU is compressible (can be throttled). Memory is non-compressible (can only be killed). This is why the recommendation is: **remove CPU limits, keep memory limits**.
+
+### Memory vs CPU Behavior
+
+| Aspect | CPU | Memory |
+|--------|-----|--------|
+| Type | Compressible (time-sliced) | Non-compressible (allocated) |
+| Sharing | Can be shared among processes | Cannot be shared or borrowed |
+| Limit exceeded | Throttled (paused) | OOMKilled (terminated) |
+| Impact of no limit | Pods compete fairly via requests | One pod can exhaust entire node |
+| Recommendation | No limit | Always set limit |
+
+### What Happens Without Memory Limits
+
+```
+Node: 16GB total memory
+Pod A: No memory limit → keeps allocating...
+10GB... 12GB... 14GB... 15GB...
+↓
+Node runs out of memory
+↓
+Kernel OOMKiller starts killing random pods
+↓
+Cluster instability — multiple pods affected
+```
+
+### What Happens With Memory Limits
+
+```
+Node: 16GB total memory
+Pod A: 4GB memory limit → tries to allocate 4.1GB
+↓
+Kernel: "Pod A exceeded its limit"
+↓
+OOMKiller kills ONLY Pod A
+↓
+Other pods unaffected
+↓
+Pod A restarts with fresh memory
+```
+
+### Recommended Configuration
+
+```yaml
+resources:
+  requests:
+    cpu: 500m        # Scheduler guarantee — used for bin-packing
+    memory: 2Gi      # Scheduler guarantee
+  limits:
+    # NO CPU LIMIT   # Allow bursting to available capacity
+    memory: 4Gi      # Prevent memory exhaustion — always set this
+```
+
+This gives you Burstable QoS:
+- Guaranteed minimum resources (requests)
+- Can burst CPU when node has spare capacity
+- Protected from memory exhaustion
+- Medium eviction priority (better than BestEffort)
+
+### Memory Limit Best Practices
+
+```yaml
+# Set memory limit higher than request (room for spikes)
+resources:
+  requests:
+    memory: 2Gi      # Normal usage
+  limits:
+    memory: 4Gi      # Peak usage + buffer
+
+# For DaemonSets (predictable usage)
+resources:
+  requests:
+    memory: 512Mi
+  limits:
+    memory: 512Mi    # Or slightly higher
+```
+
+### Monitoring OOMKills
+
+```bash
+# Find OOMKilled pods
+kubectl get pods -A -o json | jq -r '.items[] | select(.status.containerStatuses[]?.lastState.terminated.reason == "OOMKilled") | "\(.metadata.namespace)/\(.metadata.name)"'
+
+# If you see OOMKills, increase memory limits — don't remove them
+```
+
 ## Summary
 
 | Question | Answer |

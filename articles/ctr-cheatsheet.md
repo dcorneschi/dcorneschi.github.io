@@ -318,6 +318,9 @@ ctr images remove docker.io/library/nginx:latest
 ## Debugging Kubernetes Containers with ctr
 
 ```sh
+# Check containerd service status
+systemctl status containerd
+
 # See what Kubernetes sees (use k8s.io namespace)
 ctr -n k8s.io images list
 ctr -n k8s.io containers list
@@ -334,6 +337,19 @@ ctr -n k8s.io content list | head -20
 
 # Check snapshot usage (disk)
 ctr -n k8s.io snapshots list
+```
+
+### Inspecting Container Mounts and Storage
+
+```sh
+# Find mount points for a specific container
+cat /proc/mounts | grep <container-id>
+
+# Check overlay filesystem disk usage
+df -h | grep overlay
+
+# Check all overlay mounts for a container
+mount | grep <container-id>
 ```
 
 ## Quick Reference

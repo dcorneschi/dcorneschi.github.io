@@ -676,10 +676,43 @@ kubectl get pods -n <namespace> -o=custom-columns='NAME:spec.containers[*].name,
 # Find non-running pods (excluding Completed jobs)
 kubectl get pods -A --field-selector=status.phase!=Running | grep -v Complete
 
+# Non-running pods with reasons
+kubectl get pods -A --field-selector=status.phase!=Running -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,STATUS:.status.phase,REASON:.status.containerStatuses[*].state.waiting.reason
+
+# Exclude Running, Completed, and Succeeded (focus on problematic)
+kubectl get pods -A | grep -v -E "(Running|Completed|Succeeded|STATUS)"
+
+# Pods in CrashLoopBackOff specifically
+kubectl get pods -A -o jsonpath='{range .items[?(@.status.containerStatuses[0].state.waiting.reason=="CrashLoopBackOff")]}{.metadata.namespace}{"\t"}{.metadata.name}{"\n"}{end}'
+
+# Pods with high restart counts (>5)
+kubectl get pods -A -o jsonpath='{range .items[?(@.status.containerStatuses[0].restartCount>5)]}{.metadata.namespace}{"\t"}{.metadata.name}{"\t"}{.status.containerStatuses[0].restartCount}{"\n"}{end}'
+
+# Non-running pods with log command hint
+kubectl get pods -A --field-selector=status.phase!=Running -o jsonpath='{range .items[*]}{"kubectl logs -n "}{.metadata.namespace}{" "}{.metadata.name}{"\n"}{end}'
+
 # Find nodes where a DaemonSet pod is NOT scheduled
 ns=kube-system
 pod_template=aws-node
 kubectl get node | grep -v "$(kubectl -n ${ns} get pod -o wide | grep ${pod_template} | awk '{print $7}' | xargs -n 1 echo -n "\|")"
+```
+
+### Non-Running Pods Report Function
+
+```bash
+# Add to .bashrc or .zshrc
+non-running-pods() {
+    echo "=== Non-Running Pods Report ==="
+    kubectl get pods -A --field-selector=status.phase!=Running -o custom-columns=\
+NAMESPACE:.metadata.namespace,\
+NAME:.metadata.name,\
+STATUS:.status.phase,\
+REASON:.status.containerStatuses[*].state.waiting.reason,\
+AGE:.metadata.creationTimestamp
+
+    echo -e "\n=== Summary ==="
+    kubectl get pods -A --field-selector=status.phase!=Running -o jsonpath='{.items[*].status.phase}' | tr ' ' '\n' | sort | uniq -c
+}
 ```
 
 ## Service Discovery
