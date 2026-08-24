@@ -98,6 +98,11 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Kubernetes Pods vs Deployments](articles/kubernetes-pods-vs-deployments.md) | Pod vs Deployment relationship, self-healing, scaling, rolling updates, rollback, and when to use each controller type. |
 | [Uncordon Disabled Nodes in Kubernetes](articles/kubernetes-uncordon-disabled-nodes.md) | Finding and re-enabling cordoned nodes — causes, bulk uncordon, failed drain recovery, and monitoring. |
 | [VPA and HPA Metrics Collection](articles/kubernetes-vpa-hpa-metrics-collection.md) | Metrics pipeline — metrics-server, Prometheus Adapter, custom/external metrics, how HPA and VPA collect and interpret data differently. |
+| [kubectl run with Resource Requests & Limits](articles/kubectl-run-resource-requests-limits.md) | Setting CPU and memory requests/limits with kubectl run — syntax, QoS classes, dry-run YAML, LimitRange/ResourceQuota interaction, and common mistakes. |
+| [Why Pod Shows 0/1 Ready Status](articles/kubernetes-pod-0-1-ready-status.md) | Diagnosing pods stuck at 0/1 Ready — readiness probe failures, startup delays, dependency issues, OOMKill, readiness gates, and fix checklist. |
+| [Why Pods Get Throttled Even When Node Has Available CPU](articles/kubernetes-cpu-throttling-available-cpu.md) | CPU throttling at the cgroup level — why limits ignore node capacity, CFS quota mechanics, requests vs limits, and the case for removing CPU limits. |
+| [EKS Node Troubleshooting Guide](articles/eks-node-troubleshooting-guide.md) | Diagnosing unhealthy EKS nodes — NotReady, bootstrap failures, resource pressure, networking, instance issues, kubelet, and recovery. |
+| [Cleaning Up Kubernetes Clusters from .kube/config](articles/kubeconfig-cleanup-guide.md) | Removing stale clusters from kubeconfig — connectivity checks, pattern-based removal, orphan detection, renaming contexts, and separate config files. |
 
 ### CKA Practice
 
