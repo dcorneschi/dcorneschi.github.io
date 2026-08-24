@@ -16,16 +16,24 @@ kubectl top nodes
 
 ## How HPA Works
 
-```mermaid
-graph BT
-    metrics[metrics-server] --> hpa[HorizontalPodAutoscaler]
-    hpa --> scale[Scale]
-    subgraph Deployment
-        scale
-    end
-    scale -.-> pod1[Pod 1]
-    scale -.-> pod2[Pod 2]
-    scale -.-> pod3[Pod N]
+```
+┌────────────────┐
+│ metrics-server │
+└───────┬────────┘
+        │ metrics
+        ▼
+┌───────────────────────────┐
+│  HorizontalPodAutoscaler  │
+└───────────┬───────────────┘
+            │ scale
+            ▼
+┌───────────────────────────┐
+│       Deployment          │
+│                           │
+│  ┌───────┐ ┌───────┐      │
+│  │ Pod 1 │ │ Pod 2 │ ...  │
+│  └───────┘ └───────┘      │
+└───────────────────────────┘
 ```
 
 The HPA controller checks metrics every 15 seconds, compares current usage against the target, and adjusts the replica count on the Deployment.
