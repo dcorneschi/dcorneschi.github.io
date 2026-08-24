@@ -57,6 +57,42 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [HPA with scaleDown Behavior](articles/kubernetes-hpa-scaledown-behavior.md) | HPA scaling behavior — scale-down policies, stabilization windows, tolerance, multi-metric scaling, and disabling auto scale-down. |
 | [Ingress](articles/kubernetes-ingress-guide.md) | Ingress resources — routing, TLS termination, IngressClass, nginx annotations, controller setup, and common mistakes. |
 | [HAProxy Ingress Dashboard Metrics](articles/haproxy-ingress-dashboard-metrics.md) | HAProxy ingress metrics — sessions, latency, throughput, errors, infrastructure, error code origins, and spike cascade troubleshooting. |
+| [Cron vs CronJob in Kubernetes](articles/kubernetes-cron-vs-cronjob.md) | CronJob vs Job relationship, differences from Linux cron, concurrency policies, and common confusion. |
+| [Kubernetes CronJob Examples & Reference](articles/kubernetes-cronjob-examples.md) | CronJob spec fields, cron syntax, practical examples, troubleshooting, and failed job cleanup. |
+| [Kubernetes Vertical Pod Autoscaler (VPA)](articles/kubernetes-vpa-guide.md) | VPA components, update modes, in-place pod resize, recommendations, resource policies, combining with HPA, and common pitfalls. |
+| [EKS Node NotReady with I/O and CPU Spikes](articles/eks-node-notready-io-cpu-spikes.md) | Diagnosing NotReady nodes — I/O and CPU spike causes, kubelet starvation, investigation commands, and analysis. |
+| [Kubernetes Resource Scheduling & Node Capacity](articles/kubernetes-resource-scheduling-node-capacity.md) | DaemonSet pending pods, free resource calculation, CPU vs memory, node fill-up, PriorityClasses, and kubelet reserved resources. |
+| [Troubleshooting CrashLoopBackOff with No Logs](articles/kubernetes-crashloopbackoff-no-logs.md) | Debugging silent crashes — exit codes, entrypoint override, OOMKill detection, ephemeral containers, and liveness probe issues. |
+| [Kubernetes Security Mechanisms](articles/kubernetes-security-mechanisms.md) | Security layers — RBAC, admission controllers, network policies, SecurityContext, secrets, AppArmor, seccomp, SELinux, Gatekeeper/Kyverno, and Falco. |
+| [Kubernetes Pod Security Standards (PSS)](articles/kubernetes-pod-security-standards.md) | Pod Security Admission — profiles, enforcement modes, migration from PSP, runAsNonRoot behavior, and common mistakes. |
+| [Kubernetes Scheduling](articles/kubernetes-scheduling-guide.md) | Full scheduling pipeline — queue internals, filtering, scoring, binding, framework plugins, real-world patterns, and debugging. |
+| [Persistent Volumes on EKS with EBS CSI Driver](articles/eks-persistent-volumes-ebs-csi.md) | EBS CSI Driver workflow, StorageClass, dynamic provisioning, default storage class, volume snapshots, and driver installation. |
+| [Check If Deployments Run the Latest Image](articles/kubernetes-check-latest-image-deployments.md) | Listing images, detecting drift, forcing re-pulls, finding pinned tags, and automated update tools. |
+| [Kubernetes Gateway API Guide](articles/kubernetes-gateway-api-guide.md) | Gateway API resources, architecture, HTTPRoute, path/header/weighted routing, cross-namespace routing, and comparison with Ingress. |
+| [Kubelet Privilege and Capability Check](articles/kubelet-privilege-check.md) | Inspecting kubelet capabilities — Linux capabilities, getpcaps, strace, auditd, SELinux/AppArmor context, and check script. |
+| [Kubernetes Variables Guide](articles/kubernetes-variables-guide.md) | Environment variables, ConfigMaps, Secrets, Downward API, variable expansion, and volume mounts. |
+| [How to Pause a Pod in Kubernetes](articles/kubernetes-pause-pod.md) | Scale to 0, suspend CronJobs, and crictl pause at the container runtime level. |
+| [kubectl run & expose Guide](articles/kubectl-run-expose-guide.md) | Pod creation, service exposure, port terminology, reachability, NetworkPolicy, and run vs create deployment. |
+| [Sidecar Log Agent Pattern](articles/kubernetes-sidecar-log-agent-pattern.md) | Shared emptyDir volumes, veth pairs, init containers vs sidecars, and native sidecars (K8s 1.28+). |
+| [Kubernetes Deployment Strategies](articles/kubernetes-deployment-strategies.md) | Recreate, rolling update, blue-green, canary, shadow, and A/B testing — with YAML examples and decision tree. |
+| [HAProxy Session Metrics: Frontend vs Backend](articles/haproxy-session-metrics-frontend-backend.md) | Frontend vs backend session.current, scur/smax/slim/stot, queuing scenarios, and metric lifecycle. |
+| [Amazon EKS Auto Mode](articles/eks-auto-mode-guide.md) | EKS Auto Mode overview — managed compute, networking, storage, load balancing, NodePool/NodeClass, and limitations. |
+| [AWS EKS — CIDR Allocation Reference](articles/eks-cidr-allocation-reference.md) | VPC CIDR planning, subnet sizing, pod IP allocation modes, prefix delegation, service CIDR, and IP exhaustion fixes. |
+| [EKS ENI Allowance Counters (ENA Driver)](articles/eks-ena-allowance-counters.md) | ENA counters — bandwidth, PPS, conntrack limits, Datadog integration, diagnosis, and instance bandwidth reference. |
+| [EC2 Network Burst Bandwidth — r7i.2xlarge](articles/ec2-network-burst-bandwidth.md) | Network credits, baseline vs burst, IGW limits, ENA metrics, sar/iptraf-ng, and EKS sizing guidance. |
+| [EKS Node Network Interfaces and Traffic Flow](articles/eks-node-network-interfaces-traffic-flow.md) | VPC CNI architecture, veth pairs, ENIs, routing tables, IMDS traffic flow, and tcpdump capture points. |
+| [Seeing Network Traffic on EKS Nodes](articles/eks-node-network-traffic-debugging.md) | VPC Flow Logs, node-level tools, eBPF tracing, per-pod capture, Datadog NPM, and fleet-wide monitoring. |
+| [Kubernetes Cluster Autoscaler Tuning](articles/kubernetes-cluster-autoscaler-tuning.md) | Scale-up/down parameters, resource limits, expander strategies, performance tuning, and recommended configurations. |
+| [Cluster Autoscaler Scale-Up Troubleshooting](articles/kubernetes-cluster-autoscaler-scale-up-troubleshooting.md) | Why scale-up fails — capacity estimation, DaemonSet overhead, overprovisioning, expanders, and debugging commands. |
+| [EKS Traffic Flow: ALB → HAProxy → Pods](articles/eks-traffic-flow-alb-haproxy-pods.md) | End-to-end request path, IP vs instance mode, security groups, timeouts, cross-AZ traffic, and deployment errors. |
+| [Maximum Packets Per Second (PPS) Reference](articles/network-max-pps-reference.md) | Theoretical PPS by link speed, formula, real-world Linux limits, and NIC diagnostics. |
+
+### CKA Practice
+
+| Article | Description |
+|---------|--------------|
+| [CKA Practice - ConfigMaps and Secrets](articles/cka-configmaps-secrets.md) | Practice creating ConfigMaps and Secrets, and injecting them into Pods as environment variables. |
+| [CKA Resource - Quotas & LimitRanges](articles/cka-resource-quotas-limitranges.md) | ResourceQuota and LimitRange — enforcing namespace limits, default requests/limits, and debugging exceeded quotas. |
 
 ### Docker
 

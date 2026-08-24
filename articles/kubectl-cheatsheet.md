@@ -54,6 +54,20 @@ kubectl top pod -n <namespace> --sort-by=cpu     # Sort by CPU
 kubectl top pod -n <namespace> --sort-by=memory  # Sort by Memory
 kubectl top pod <pod_name> --containers          # Pod and its containers
 kubectl top pod -l name=<myLabel>                # Pods by label
+
+# Sort nodes by current usage
+kubectl top nodes --sort-by=cpu                  # Highest CPU first
+kubectl top nodes --sort-by=memory              # Highest memory first
+kubectl top nodes --no-headers | sort -k2 -n     # Lowest CPU first
+kubectl top nodes --no-headers | sort -k4 -n     # Lowest memory first
+
+# Sort pods across all namespaces
+kubectl top pods -A --sort-by=cpu                # All pods, highest CPU first
+kubectl top pods -A --sort-by=memory             # All pods, highest memory first
+
+# Sort nodes by allocatable capacity (no metrics-server needed)
+kubectl get nodes --sort-by='.status.allocatable.cpu'
+kubectl get nodes --sort-by='.status.allocatable.memory'
 ```
 
 ## Nodes
@@ -81,6 +95,10 @@ kubectl get nodes -o='custom-columns=NodeName:.metadata.name,TaintKey:.spec.tain
 # CPU/MEM allocated for pods on each node
 kubectl describe nodes | sed -n '/Non-terminated Pods/,/Allocated resources/p'
 kubectl describe nodes | awk '/Non-terminated Pods/,/Allocated resources/'
+
+# Compare node IPs with a known IP list
+comm -12 <(kubectl get nodes -o wide --no-headers | awk '{print $6}' | sort) <(sort ip_list.txt)   # IPs active in both
+comm -23 <(sort ip_list.txt) <(kubectl get nodes -o wide --no-headers | awk '{print $6}' | sort)   # IPs in list but NOT active nodes
 ```
 
 ## Pods
