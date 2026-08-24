@@ -113,6 +113,11 @@ kubectl get pods -A -o custom-columns='NAME:.metadata.name,READY:.status.conditi
 kubectl get pods -A -o='custom-columns=NameSpace:.metadata.namespace,NAME:.metadata.name,CONTAINERS:.spec.containers[*].name'
 kubectl get pods -A --output=custom-columns="NAME:.metadata.name,IMAGE:.spec.containers[*].image"
 
+# Show exact creation timestamp instead of relative age
+kubectl get pods -o custom-columns="NAME:.metadata.name,CREATED:.metadata.creationTimestamp"
+kubectl get pods -o custom-columns="NAME:.metadata.name,STATUS:.status.phase,CREATED:.metadata.creationTimestamp"
+kubectl get pods -A -o custom-columns="NAMESPACE:.metadata.namespace,NAME:.metadata.name,CREATED:.metadata.creationTimestamp"
+
 # Count by restart
 kubectl get pods -A -o json | jq '.items[] | [.status.containerStatuses[0].restartCount, .metadata.name] | join("\t")' -r | sort -n
 
