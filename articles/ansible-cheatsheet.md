@@ -243,6 +243,40 @@ ansible localhost -m debug -a 'var=groups.keys()'
 ansible-playbook -i staging/ -i production/ playbook.yml
 ```
 
+### Dynamic Grouping with group_by
+
+Create host groups at runtime based on facts — no need to hardcode OS-specific groups in inventory:
+
+```yaml
+# First play: classify hosts by OS
+- name: Group hosts by OS
+  hosts: all
+  tasks:
+    - name: Create dynamic groups based on distribution
+      group_by:
+        key: "os_{{ ansible_distribution }}"
+
+# Second play: target only Ubuntu hosts
+- name: Configure Ubuntu servers
+  hosts: os_Ubuntu
+  tasks:
+    - name: Install packages via apt
+      apt:
+        name: nginx
+        state: present
+
+# Third play: target only RedHat-family hosts
+- name: Configure RHEL servers
+  hosts: os_RedHat
+  tasks:
+    - name: Install packages via dnf
+      dnf:
+        name: nginx
+        state: present
+```
+
+> `group_by` runs during the play and creates ephemeral groups that exist only for the current playbook run. Useful when the same inventory contains mixed OS hosts and you want different tasks per OS without duplicating inventory groups.
+
 ### Common Host Variables
 
 | Variable | Description |
@@ -636,6 +670,47 @@ roles/
       when: enable_monitoring | bool
       tags: monitoring
 ```
+
+### import_role / include_role (Inline Role Execution)
+
+The `roles:` keyword runs all roles before any `tasks:`. To mix roles and tasks in a specific order, use `import_role` or `include_role` inside the tasks section:
+
+```yaml
+- name: Deploy with controlled ordering
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Pre-deployment health check
+      uri:
+        url: "http://{{ inventory_hostname }}/health"
+        status_code: 200
+
+    - name: Apply nginx configuration role
+      import_role:
+        name: nginx
+      vars:
+        nginx_port: 8080
+
+    - name: Deploy application role
+      include_role:
+        name: app
+      when: deploy_app | default(true)
+
+    - name: Post-deployment verification
+      uri:
+        url: "http://{{ inventory_hostname }}:8080/health"
+        status_code: 200
+```
+
+| | `import_role` | `include_role` |
+|---|---|---|
+| **Processing** | Static — parsed at playbook load time | Dynamic — processed at runtime |
+| **Tags/when** | Applied to every task inside the role | Applied to the include statement only |
+| **Loops** | Cannot be used in a loop | Can be used with `loop` |
+| **Handlers** | Role handlers visible globally | Role handlers scoped to include |
+| **Use when** | Default choice — predictable behavior | Need conditional or looped role inclusion |
+
+> **Rule of thumb:** Use `import_role` unless you need to loop over it or conditionally skip entire roles at runtime. `import_role` is more predictable because all tasks are visible during `--list-tasks`.
 
 ### ansible-galaxy
 

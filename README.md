@@ -289,6 +289,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Ansible Ad-Hoc Commands vs Playbooks](articles/ansible-adhoc-vs-playbooks.md) | Why ad-hoc is faster, when playbooks win, side-by-side comparison, performance tips, and decision flowchart. |
 | [Ansible: Editing Files and Creating Scripts](articles/ansible-file-editing-creation.md) | copy, template, lineinfile, blockinfile, replace — creating, editing, and deploying files on remote servers. |
 | [Ansible Configuration: ansible.cfg Guide](articles/ansible-cfg-guide.md) | Config file precedence, global vs local, all sections and options, SSH tuning, fact caching, and production examples. |
+| [Ansible Roles Directory Structure](articles/ansible-roles-directory-structure.md) | Role directory layout — tasks, handlers, templates, files, vars, defaults, meta, library, plugins, variable priority, and execution flow. |
+| [ansible-lint Guide](articles/ansible-lint-guide.md) | Linting playbooks — install, profiles (min to production), common rules and fixes, inline skipping, config file, CI/CD integration, and before/after examples. |
 
 ### Bash and Shell
 
@@ -407,6 +409,10 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [top Cheatsheet](articles/top-cheatsheet.md) | Interactive process viewer — CPU, memory, sorting, filtering, and batch mode. |
 | [free Cheatsheet](articles/free-cheatsheet.md) | Memory usage — free, top, /proc/meminfo, vmstat, and per-process memory. |
 | [Performance Co-Pilot (PCP) Cheatsheet](articles/pcp-cheatsheet.md) | PCP monitoring framework — installation, PMDAs, live metrics, archives, pmrep, pmval, atop/htop, PMIE alerts, Grafana, and process monitoring. |
+| [tuned-adm Cheatsheet](articles/tuned-adm-cheatsheet.md) | Performance tuning daemon — profiles, custom profile creation with inheritance, THP control, sysctl integration, dynamic tuning, and Ansible integration. |
+| [NUMA Tuning Guide](articles/numa-tuning-guide.md) | NUMA architecture — numactl, numad, numastat, automatic balancing, manual pinning, KVM NUMA alignment, NIC affinity, and diagnostic workflow. |
+| [NUMA Performance Tuning on RHEL 7-10](articles/rhel-numa-performance-tuning.md) | Comprehensive NUMA tuning across RHEL 7–10 — topology, diagnostics, perf c2c, automatic balancing, numad, manual pinning, KVM, containers, NFV, low-latency, and tuned profiles. |
+| [RHEL Performance Analysis and VM Tuning](articles/rhel-performance-analysis-vm-tuning.md) | Memory management internals, page reclaim, swappiness, dirty ratios, hugepages, I/O schedulers, CPU governors, OOM control, and database/JVM tuning for RHEL 7–10. |
 | [Installing Nagios Core from Source](articles/nagios-installation-source.md) | Nagios on RHEL 9 and Ubuntu — prerequisites, compile, plugins, Apache config, firewall, host definitions, HTTPS, upgrades, and troubleshooting. |
 | [Nagios check_by_ssh Guide](articles/nagios-check-by-ssh.md) | Remote checks via SSH — examples, command definitions, SSH options, ControlMaster, sudo wrappers, security, and comparison with NRPE. |
 | [Nagios check_http Guide](articles/nagios-check-http-guide.md) | HTTP/HTTPS monitoring — options, virtual hosts, SNI/Traefik routing, certificate checks, curl fallbacks, and troubleshooting. |
