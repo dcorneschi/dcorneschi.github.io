@@ -111,6 +111,95 @@ behavior:
 >
 > If nothing is returned, the default `0.1` is in effect. Before v1.35, this value is cluster-wide and cannot be configured per-HPA — only by modifying the controller-manager startup flags (not possible on managed clusters like EKS).
 
+Asymmetric tolerance — react fast on scale-up, be conservative on scale-down:
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: web-app
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web-app
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  behavior:
+    scaleUp:
+      tolerance: 0.01    # 1% — scale up aggressively (triggers at 70.7%)
+    scaleDown:
+      tolerance: 0.05    # 5% — scale down conservatively (triggers at 66.5%)
+```
+
+> With a 70% CPU target:
+> - `scaleUp tolerance: 0.01` → HPA adds pods as soon as usage exceeds 70.7% (70% × 1.01). Very responsive to traffic spikes.
+> - `scaleDown tolerance: 0.05` → HPA removes pods only when usage drops below 66.5% (70% × 0.95). Avoids flapping during temporary dips.
+>
+> This asymmetry is the key insight: you almost always want to scale up faster than you scale down. Scaling up too slow loses requests; scaling down too fast causes repeated up/down cycles.
+
+Hands-on test with a stress container:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stress-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stress-test
+  template:
+    metadata:
+      labels:
+        app: stress-test
+    spec:
+      containers:
+      - name: stress
+        image: polinux/stress
+        command: ["stress"]
+        args: ["--cpu", "1", "--timeout", "600"]
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            cpu: 200m
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: stress-test
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: stress-test
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 10
+  behavior:
+    scaleUp:
+      tolerance: 0.02    # 2% — triggers at just above 10.2% of 100m
+    scaleDown:
+      tolerance: 0.1     # 10% — conservative scale-down
+```
+
+> The stress command generates ~100m CPU load. With requests at 100m, that's 100% utilization — well above the 10% target. With a 2% scaleUp tolerance the HPA triggers almost immediately. Watch it scale: `kubectl get hpa stress-test -w`
+
 ## Multi-Metric HPA (CPU + Memory)
 
 HPA supports scaling on both CPU and memory simultaneously using `autoscaling/v2`:
