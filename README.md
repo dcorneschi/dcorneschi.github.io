@@ -319,6 +319,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Vim Search and Replace](articles/vim-search-replace.md) | Vim substitution — ranges, flags, regex, capture groups, expression replacements, magic modes, and multi-file operations. |
 | [Display Tabs and Whitespace in Files](articles/display-tabs-whitespace.md) | Revealing invisible characters — cat -A, grep, sed, vim :set list, hexdump, expand/unexpand, and conversion one-liners. |
 | [ShellCheck Guide](articles/shellcheck-guide.md) | Static analysis for shell scripts — installation, common warnings with fixes, directives, .shellcheckrc, CI/CD integration, and editor setup. |
+| [Linux Job Control](articles/linux-job-control.md) | Background and foreground processes — &, Ctrl-Z, jobs, bg, fg, disown, nohup, and process monitoring. |
 
 ### Linux System Administration
 
@@ -339,6 +340,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [DEBIAN_FRONTEND for Scripts](articles/debian-frontend-noninteractive.md) | Non-interactive installs — debconf frontends, dpkg config options, preseeding, needrestart, Docker, and CI/CD patterns. |
 | [Linux File Permissions Guide](articles/linux-file-permissions.md) | Permissions, ownership, umask, SUID/SGID, sticky bit, and ACLs. |
 | [SELinux Cheatsheet](articles/selinux-cheatsheet.md) | SELinux administration — modes, contexts, booleans, port labels, troubleshooting denials, policy modules, containers, and relabeling. |
+| [OpenSCAP Security Compliance Guide](articles/openscap-guide.md) | OpenSCAP scanning, remediation, profiles (CIS, STIG, PCI-DSS), tailoring, Ansible/Satellite integration, kickstart hardening, and scheduled compliance checks. |
 | [Linux Audit (auditd) Cheatsheet](articles/auditd-cheatsheet.md) | Audit system — auditctl rules, file watches, syscall monitoring, ausearch, aureport, compliance rules (PCI-DSS, CIS), and log management. |
 | [psacct / acct Cheatsheet](articles/psacct-cheatsheet.md) | Process accounting — lastcomm, ac, sa, accton, tracking user commands, login times, resource usage, and security investigations. |
 | [/bin/false vs /sbin/nologin](articles/bin-false-vs-nologin.md) | Login shell differences — behavior, custom messages, /etc/nologin, path variations, and when to use each. |
@@ -350,6 +352,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [MySQL LDAP Authentication](articles/mysql-ldap-authentication.md) | MySQL PAM authentication with SSSD and LDAP — tarball install, PAM plugin, SSSD config, TLS certificates, and troubleshooting. |
 | [Installing MediaWiki on RHEL](articles/mediawiki-installation-rhel.md) | MediaWiki with Apache, PHP 7.4, and MariaDB on RHEL 8/9 — packages, database, SELinux, firewall, and deployment. |
 | [Installing DokuWiki on RHEL](articles/dokuwiki-installation-rhel.md) | DokuWiki with Apache and PHP on RHEL 8/9 — packages, mod_rewrite, SELinux, .htaccess, and web installer. |
+| [RHEL LAMP Stack Setup](articles/rhel-lamp-stack-setup.md) | LAMP stack on RHEL 7+ — Apache, MariaDB, PHP installation, systemctl, journalctl, file ownership, SELinux, and Java alternative. |
 | [Protect SSH with fail2ban](articles/fail2ban-ssh-protection.md) | fail2ban on RHEL and Ubuntu — installation, SSH jail, whitelisting, incremental bans, email alerts, and troubleshooting. |
 | [ReaR Backup Guide](articles/rear-backup-guide.md) | Relax-and-Recover — disaster recovery ISOs, NFS/CIFS/USB/rsync targets, incremental backups, recovery process, and scheduling. |
 | [Veeam Agent for Linux](articles/veeam-agent-linux.md) | Veeam backup agent — installation, jobs, volume/file-level restore, NFS server setup, dd+ssh imaging, and command reference. |
@@ -359,6 +362,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [subscription-manager Cheatsheet](articles/subscription-manager-cheatsheet.md) | RHEL subscriptions — register, attach, repos, release lock, Satellite, SCA, and troubleshooting. |
 | [dnf / yum Cheatsheet](articles/dnf-yum-cheatsheet.md) | Package management on RHEL 7–10 — install, update, repos, modules, groups, history, versionlock, and troubleshooting. |
 | [RPM Cheatsheet](articles/rpm-cheatsheet.md) | RPM commands — install, query, verify, signatures, custom query formats, database management, and rpm2cpio. |
+| [RPM Building Guide](articles/rpm-building-guide.md) | Building RPM packages — rpmbuild directory structure, spec file anatomy, build stages (-bp/-bc/-bi/-bb/-ba), macros, sub-packages, and debugging. |
 | [RHEL Boot Modes and Troubleshooting](articles/rhel-boot-troubleshooting.md) | Boot modes, rescue/emergency targets, and recovery techniques. |
 | [GRUB2 Cheatsheet](articles/grub-cheatsheet.md) | grubby, grub2-mkconfig, kernel args, default entry, password, BLS, serial console, and rescue. |
 | [initramfs vs initrd](articles/initramfs-vs-initrd.md) | Early boot filesystem — differences, dracut, update-initramfs, inspection, rebuild, and troubleshooting. |
@@ -456,6 +460,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | Article | Description |
 |---------|--------------|
 | [DNS Cheatsheet](articles/dns-cheatsheet.md) | DNS lookup tools — dig, host, nslookup, getent, resolvectl, record types, and troubleshooting. |
+| [curl Cheatsheet](articles/curl-cheatsheet.md) | HTTP client — methods, headers, auth, JSON, forms, SSL/TLS, cookies, proxies, timeouts, and debugging with verbose output. |
 | [Setting Up a DNS Server on RHEL 9](articles/dns-server-rhel9.md) | BIND DNS server — installation, forward/reverse zones, caching, split-horizon, secondary servers, and SELinux. |
 | [resolvectl Cheatsheet](articles/resolvectl-cheatsheet.md) | systemd-resolved CLI — DNS config, caching, DoT, DNSSEC, search domains, routing domains, and resolv.conf modes. |
 | [SSH Cheatsheet](articles/ssh-cheatsheet.md) | OpenSSH client and server — connections, keys, forwarding, tunnels, and troubleshooting. |
