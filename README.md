@@ -76,10 +76,6 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Sidecar Log Agent Pattern](articles/kubernetes-sidecar-log-agent-pattern.md) | Shared emptyDir volumes, veth pairs, init containers vs sidecars, and native sidecars (K8s 1.28+). |
 | [Kubernetes Deployment Strategies](articles/kubernetes-deployment-strategies.md) | Recreate, rolling update, blue-green, canary, shadow, and A/B testing — with YAML examples and decision tree. |
 | [HAProxy Session Metrics: Frontend vs Backend](articles/haproxy-session-metrics-frontend-backend.md) | Frontend vs backend session.current, scur/smax/slim/stot, queuing scenarios, and metric lifecycle. |
-| [Amazon EKS Auto Mode](articles/eks-auto-mode-guide.md) | EKS Auto Mode overview — managed compute, networking, storage, load balancing, NodePool/NodeClass, and limitations. |
-| [EKS Auto Mode Cheatsheet](articles/eks-auto-mode-cheatsheet.md) | EKS Auto Mode commands — NodePool, NodeClass, NodeClaim, node lifecycle, storage, networking, and troubleshooting. |
-| [EKS Auto Mode Security Deep Dive](articles/eks-auto-mode-security.md) | Security architecture — IMDS lockdown, EBS encryption, minimal IAM, pod networking segregation, SELinux, SCPs, GuardDuty, and node patching. |
-| [Deploy 2048 Game on EKS Auto Mode](articles/eks-auto-mode-2048-game.md) | Quick walkthrough — scale-from-zero, automatic NLB/ALB provisioning, Ingress without controllers, and cleanup. |
 | [EKS Load Balancers: ALB vs NLB](articles/eks-load-balancer-alb-vs-nlb.md) | ALB vs NLB comparison, YAML examples for both, annotations reference, Auto Mode vs standard EKS, and subnet tagging. |
 | [AWS EKS — CIDR Allocation Reference](articles/eks-cidr-allocation-reference.md) | VPC CIDR planning, subnet sizing, pod IP allocation modes, prefix delegation, service CIDR, and IP exhaustion fixes. |
 | [EKS ENI Allowance Counters (ENA Driver)](articles/eks-ena-allowance-counters.md) | ENA counters — bandwidth, PPS, conntrack limits, Datadog integration, diagnosis, and instance bandwidth reference. |
@@ -114,6 +110,16 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [HAProxy Ingress Setup on EKS](articles/haproxy-ingress-eks-setup.md) | HAProxy Ingress Controller — Helm install, values.yaml, TLS, annotations, rate limiting, monitoring, one-liners, and troubleshooting. |
 | [HAProxy 5xx Errors During EKS Node Drains](articles/haproxy-5xx-eks-node-drains.md) | The race condition between pod termination and endpoint propagation — preStop hooks, PDBs, graceful shutdown, HAProxy health checks, and zero-downtime drains. |
 | [Deep Dive: system:masters Group on EKS](articles/eks-system-masters-group.md) | How system:masters bypasses RBAC, who gets it on EKS, why to avoid it, migration to cluster-admin RBAC, and break-glass best practices. |
+
+### EKS Auto Mode
+
+| Article | Description |
+|---------|--------------|
+| [Amazon EKS Auto Mode](articles/eks-auto-mode-guide.md) | EKS Auto Mode overview — managed compute, networking, storage, load balancing, NodePool/NodeClass, and limitations. |
+| [EKS Auto Mode](articles/eks-auto-mode.md) | Fully managed data plane — what AWS handles, Auto vs Standard comparison, node pools, security model, networking, storage, and migration. |
+| [EKS Auto Mode Cheatsheet](articles/eks-auto-mode-cheatsheet.md) | EKS Auto Mode commands — NodePool, NodeClass, NodeClaim, node lifecycle, storage, networking, and troubleshooting. |
+| [EKS Auto Mode Security Deep Dive](articles/eks-auto-mode-security.md) | Security architecture — IMDS lockdown, EBS encryption, minimal IAM, pod networking segregation, SELinux, SCPs, GuardDuty, and node patching. |
+| [Deploy 2048 Game on EKS Auto Mode](articles/eks-auto-mode-2048-game.md) | Quick walkthrough — scale-from-zero, automatic ALB provisioning, Ingress without controllers, topology spreading, and cleanup. |
 
 ### CKA Practice
 
@@ -183,7 +189,6 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [EKS VPC CNI Proxy Configuration](articles/eks-vpc-cni-proxy-configuration.md) | Proxy settings for aws-node — NO_PROXY rules, critical endpoints, private vs public EKS endpoints, Terraform, ConfigMap, and troubleshooting. |
 | [eksctl Cheatsheet](articles/eksctl-cheatsheet.md) | eksctl CLI — cluster lifecycle, node groups, scaling, labels, IAM service accounts, OIDC, add-ons, Fargate, and identity mappings. |
 | [Creating an EKS Cluster with eksctl](articles/eks-cluster-with-eksctl.md) | Step-by-step guide — prerequisites, ClusterConfig YAML, managed node groups, IRSA, add-ons, private clusters, and production-ready examples. |
-| [EKS Auto Mode](articles/eks-auto-mode.md) | Fully managed data plane — what AWS handles, Auto vs Standard comparison, node pools, security model, networking, storage, and migration. |
 | [AWS CLI EKS Commands](articles/aws-eks-cli-cheatsheet.md) | All `aws eks` commands — clusters, node groups, add-ons, access entries, Pod Identity, Fargate, updates, tokens, and waiters. |
 | [EKS Node Not Joining Cluster](articles/eks-node-not-joining-troubleshooting.md) | Troubleshooting nodes that fail to join — IAM, security groups, networking, kubelet, bootstrap, and step-by-step diagnosis. |
 | [EKS Node Monitoring](articles/eks-node-monitoring.md) | Node health monitoring — CloudWatch metrics, node conditions, node-problem-detector, Prometheus, alerts, and capacity planning. |
