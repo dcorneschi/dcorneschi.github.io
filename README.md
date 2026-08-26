@@ -115,7 +115,6 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 
 | Article | Description |
 |---------|--------------|
-| [Amazon EKS Auto Mode](articles/eks-auto-mode-guide.md) | EKS Auto Mode overview — managed compute, networking, storage, load balancing, NodePool/NodeClass, and limitations. |
 | [EKS Auto Mode](articles/eks-auto-mode.md) | Fully managed data plane — what AWS handles, Auto vs Standard comparison, node pools, security model, networking, storage, and migration. |
 | [EKS Auto Mode Cheatsheet](articles/eks-auto-mode-cheatsheet.md) | EKS Auto Mode commands — NodePool, NodeClass, NodeClaim, node lifecycle, storage, networking, and troubleshooting. |
 | [EKS Auto Mode Security Deep Dive](articles/eks-auto-mode-security.md) | Security architecture — IMDS lockdown, EBS encryption, minimal IAM, pod networking segregation, SELinux, SCPs, GuardDuty, and node patching. |
