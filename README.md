@@ -77,6 +77,10 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Kubernetes Deployment Strategies](articles/kubernetes-deployment-strategies.md) | Recreate, rolling update, blue-green, canary, shadow, and A/B testing — with YAML examples and decision tree. |
 | [HAProxy Session Metrics: Frontend vs Backend](articles/haproxy-session-metrics-frontend-backend.md) | Frontend vs backend session.current, scur/smax/slim/stot, queuing scenarios, and metric lifecycle. |
 | [Amazon EKS Auto Mode](articles/eks-auto-mode-guide.md) | EKS Auto Mode overview — managed compute, networking, storage, load balancing, NodePool/NodeClass, and limitations. |
+| [EKS Auto Mode Cheatsheet](articles/eks-auto-mode-cheatsheet.md) | EKS Auto Mode commands — NodePool, NodeClass, NodeClaim, node lifecycle, storage, networking, and troubleshooting. |
+| [EKS Auto Mode Security Deep Dive](articles/eks-auto-mode-security.md) | Security architecture — IMDS lockdown, EBS encryption, minimal IAM, pod networking segregation, SELinux, SCPs, GuardDuty, and node patching. |
+| [Deploy 2048 Game on EKS Auto Mode](articles/eks-auto-mode-2048-game.md) | Quick walkthrough — scale-from-zero, automatic NLB/ALB provisioning, Ingress without controllers, and cleanup. |
+| [EKS Load Balancers: ALB vs NLB](articles/eks-load-balancer-alb-vs-nlb.md) | ALB vs NLB comparison, YAML examples for both, annotations reference, Auto Mode vs standard EKS, and subnet tagging. |
 | [AWS EKS — CIDR Allocation Reference](articles/eks-cidr-allocation-reference.md) | VPC CIDR planning, subnet sizing, pod IP allocation modes, prefix delegation, service CIDR, and IP exhaustion fixes. |
 | [EKS ENI Allowance Counters (ENA Driver)](articles/eks-ena-allowance-counters.md) | ENA counters — bandwidth, PPS, conntrack limits, Datadog integration, diagnosis, and instance bandwidth reference. |
 | [EC2 Network Burst Bandwidth — r7i.2xlarge](articles/ec2-network-burst-bandwidth.md) | Network credits, baseline vs burst, IGW limits, ENA metrics, sar/iptraf-ng, and EKS sizing guidance. |
