@@ -74,6 +74,61 @@ resource "aws_eks_cluster" "auto" {
 
 > No Node Groups to define. No Helm charts for LBC or EBS CSI. Just the cluster resource with capability flags.
 
+### eksctl Config File
+
+```yaml
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: my-cluster
+  region: us-east-1
+  version: "1.30"
+
+autoModeConfig:
+  enabled: true
+```
+
+### AWS Console
+
+1. Open EKS Console → **Add cluster** → **Create**
+2. Under **Configuration options**, select **Custom configuration**
+3. Toggle **Use EKS Auto Mode** to ON
+4. Configure VPC, subnets, and cluster IAM role
+5. Review and create
+
+### Migration from Standard to Auto Mode
+
+```bash
+# 1. Enable Auto Mode on existing cluster
+aws eks update-cluster-config --name my-cluster --region us-east-1 \
+  --compute-config '{
+    "enabled": true,
+    "nodePools": ["general-purpose", "system"],
+    "nodeRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/eks-auto-node-role"
+  }' \
+  --kubernetes-network-config '{"elasticLoadBalancing":{"enabled":true}}' \
+  --storage-config '{"blockStorage":{"enabled":true}}'
+
+# 2. Wait for Auto Mode to be active
+aws eks describe-cluster --name my-cluster --query "cluster.computeConfig"
+
+# 3. Taint old node groups (shift workloads to Auto Mode nodes)
+kubectl taint nodes -l eks.amazonaws.com/nodegroup=old-ng migration=true:PreferNoSchedule
+
+# 4. Verify workloads running on Auto Mode nodes
+kubectl get pods -A -o wide | grep -v <old-node-prefix>
+
+# 5. Scale down old node groups
+aws eks update-nodegroup-config --cluster-name my-cluster --nodegroup-name old-ng \
+  --scaling-config minSize=0,desiredSize=0,maxSize=0
+
+# 6. Delete old node groups
+aws eks delete-nodegroup --cluster-name my-cluster --nodegroup-name old-ng
+```
+
+> Existing managed node groups continue to work alongside Auto Mode nodes. You can migrate workloads gradually.
+
 ## Architecture: NodePool → NodeClass → NodeClaim → Node
 
 ```
@@ -521,6 +576,22 @@ kubectl describe pvc <name> -n <namespace>
 
 # Check volume attachments
 kubectl get volumeattachments
+```
+
+### Custom StorageClass
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp3
+  iops: "5000"
+  throughput: "500"
+  encrypted: "true"
+volumeBindingMode: WaitForFirstConsumer
 ```
 
 ## Networking & Load Balancing
