@@ -119,6 +119,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [EKS Auto Mode Cheatsheet](articles/eks-auto-mode-cheatsheet.md) | EKS Auto Mode commands — NodePool, NodeClass, NodeClaim, node lifecycle, storage, networking, and troubleshooting. |
 | [EKS Auto Mode Security Deep Dive](articles/eks-auto-mode-security.md) | Security architecture — IMDS lockdown, EBS encryption, minimal IAM, pod networking segregation, SELinux, SCPs, GuardDuty, and node patching. |
 | [Deploy 2048 Game on EKS Auto Mode](articles/eks-auto-mode-2048-game.md) | Quick walkthrough — scale-from-zero, automatic ALB provisioning, Ingress without controllers, topology spreading, and cleanup. |
+| [Troubleshoot DNS in EKS Auto Mode](articles/eks-auto-mode-dns-troubleshooting.md) | DNS troubleshooting — pod resolv.conf checks, CoreDNS log inspection via debug containers, node-level DNS verification, and response code interpretation. |
+| [Troubleshoot Custom NodePool and NodeClass in EKS Auto Mode](articles/eks-auto-mode-nodepool-nodeclass-troubleshooting.md) | NodePool/NodeClass provisioning failures — NotReady states, empty status, label restrictions, IAM permission errors, and access entry fixes. |
 
 ### CKA Practice
 
