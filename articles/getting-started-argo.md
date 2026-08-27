@@ -122,7 +122,7 @@ Let's understand each section:
 - `selfHeal`: Automatically corrects drift from the desired state
 - `syncOptions`: Additional sync behaviors
 
-### Why `--kubelet-insecure-tls`?
+### Why --kubelet-insecure-tls ?
 
 In development environments, Kubelet certificates might not be properly configured. This flag allows the Metrics Server to skip TLS verification. **Note**: In production, you should properly configure TLS certificates instead.
 
