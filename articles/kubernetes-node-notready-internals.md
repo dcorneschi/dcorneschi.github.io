@@ -118,8 +118,8 @@ Kubelet              API Server           Node Lifecycle Ctrl    Pods
    │ .................. │                       │                 │
    │                    │                       │                 │
    │ ╳ Node crashes or  │                       │                 │
-   │   network partitions                       │                 │
-   │   (no more heartbeats)                     │                 │
+   │network partitions  │                       │                 │
+   │(no more heartbeats)│                       │                 │
    │                    │                       │                 │
    │         +10s       │  (Lease not renewed)  │                 │
    │         +20s       │  (Lease not renewed)  │                 │
