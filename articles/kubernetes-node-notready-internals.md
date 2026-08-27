@@ -93,7 +93,7 @@ The `node-lifecycle-controller` (inside kube-controller-manager) monitors nodes 
 │         → Set node condition Ready=Unknown                     │
 │         → Apply taint: node.kubernetes.io/unreachable:NoExecute│
 │                                                                │
-│      3. If NodeStatus shows Ready=False:                       │
+│   3. If NodeStatus shows Ready=False:                          │
 │         → Apply taint: node.kubernetes.io/not-ready:NoExecute  │
 │                                                                │
 └────────────────────────────────────────────────────────────────┘
