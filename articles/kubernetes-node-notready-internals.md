@@ -6,19 +6,43 @@ Note: For EKS-specific NotReady troubleshooting (I/O spikes, CPU starvation, inv
 
 ## High-Level Flow
 
-```
-┌──────────┐     ┌───────────────┐     ┌──────────────────────┐     ┌─────────────┐
-│  Kubelet │────▶│   API Server  │────▶│  Node Lifecycle      │────▶│  Pod        │
-│  (heart- │     │  (Lease +     │     │  Controller          │     │  Eviction   │
-│   beat)  │     │   NodeStatus) │     │  (taint manager)     │     │             │
-└──────────┘     └───────────────┘     └──────────────────────┘     └─────────────┘
+```mermaid
+graph LR
+    A[Kubelet<br/>heartbeat] --> B[API Server<br/>Lease + NodeStatus]
+    B --> C[Node Lifecycle<br/>Controller<br/>taint manager]
+    C --> D[Pod<br/>Eviction]
 ```
 
 ## Node Health Reporting — Two Mechanisms
 
-The kubelet reports node health via two separate mechanisms:
+The kubelet reports node health via two separate mechanisms that serve different purposes:
 
-### 1. Node Lease (Lightweight Heartbeat)
+```mermaid
+graph TD
+    subgraph Lease["Lease every 10s"]
+        L1["I'm still alive — just a timestamp"]
+        L2["Detects DEAD nodes"]
+        L3["If stops → node marked Unknown"]
+    end
+
+    subgraph NodeStatus["NodeStatus every 5min or on change"]
+        N1["Detailed health report — conditions, resources"]
+        N2["Reports WHAT'S WRONG"]
+        N3["If Ready=False → node marked NotReady"]
+    end
+```
+
+**Key difference:**
+- **Lease** answers: "Is the node alive at all?"
+- **NodeStatus** answers: "Is the node healthy and functioning?"
+
+A node can be alive (Lease renewing) but unhealthy (NodeStatus `Ready=False` because containerd crashed).
+
+### 1. Node Lease (Lightweight Heartbeat) — "Am I Alive?"
+
+**When it fires:** Every 10 seconds, unconditionally. The kubelet renews the Lease timestamp as long as the kubelet process is running.
+
+**What triggers eviction:** If the Lease stops being renewed for 40 seconds (kubelet crashed, node lost network, node powered off), the node lifecycle controller marks the node `Ready=Unknown` and applies the `unreachable:NoExecute` taint.
 
 ```yaml
 apiVersion: coordination.k8s.io/v1
@@ -32,10 +56,9 @@ spec:
   renewTime: "2024-03-15T10:00:30Z"  # Updated every 10s
 ```
 
-- Kubelet renews the Lease every **10 seconds** (`nodeStatusUpdateFrequency`)
-- The Lease object is tiny (no conditions, no resource usage) — cheap to update
-- Only contains `renewTime` — a timestamp of last successful renewal
+- The Lease object is tiny (just a timestamp) — cheap to update every 10s
 - This is the **primary** heartbeat mechanism since Kubernetes 1.17+
+- Before Leases existed, the full NodeStatus update (expensive) was the only heartbeat
 
 ```bash
 # Check a node's lease:
@@ -45,7 +68,11 @@ kubectl get lease -n kube-node-lease <node-name> -o yaml
 kubectl get lease -n kube-node-lease <node-name> -o jsonpath='{.spec.renewTime}'
 ```
 
-### 2. NodeStatus (Full Status Report)
+### 2. NodeStatus (Full Status Report) — "Am I Healthy?"
+
+**When it fires:** Every 5 minutes, OR immediately when a condition changes (e.g., disk fills up, container runtime stops responding).
+
+**What triggers eviction:** If the kubelet reports `Ready=False` (it's alive but something is broken), the node lifecycle controller applies the `not-ready:NoExecute` taint.
 
 ```yaml
 status:
@@ -82,21 +109,13 @@ kubectl get nodes -o custom-columns=NAME:.metadata.name,STATUS:.status.condition
 
 The `node-lifecycle-controller` (inside kube-controller-manager) monitors nodes and reacts to failures:
 
-```
-┌────────────────────────────────────────────────────────────────┐
-│  Node Lifecycle Controller                                     │
-│                                                                │
-│  Every 5s (--node-monitor-period):                             │
-│    for each node:                                              │
-│   1. Check Lease renewTime                                     │
-│   2. If renewTime older than 40s (--node-monitor-grace-period):│
-│         → Set node condition Ready=Unknown                     │
-│         → Apply taint: node.kubernetes.io/unreachable:NoExecute│
-│                                                                │
-│   3. If NodeStatus shows Ready=False:                          │
-│         → Apply taint: node.kubernetes.io/not-ready:NoExecute  │
-│                                                                │
-└────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    A["Every 5s (--node-monitor-period):<br/>Check each node"] --> B{Lease renewTime<br/>older than 40s?}
+    B -->|Yes| C["Set Ready=Unknown<br/>Apply taint:<br/>unreachable:NoExecute"]
+    B -->|No| D{NodeStatus<br/>shows Ready=False?}
+    D -->|Yes| E["Apply taint:<br/>not-ready:NoExecute"]
+    D -->|No| F["Node is healthy<br/>no action"]
 ```
 
 ### Key Parameters
@@ -105,40 +124,31 @@ The `node-lifecycle-controller` (inside kube-controller-manager) monitors nodes 
 |-----------|---------|-------------|
 | `--node-monitor-period` | 5s | How often the controller checks node health |
 | `--node-monitor-grace-period` | 40s | How long to wait before marking Unknown |
-| `--pod-eviction-timeout` | 5m | How long to wait before evicting pods (deprecated, replaced by taints) |
+| `--node-startup-grace-period` | 60s | Longer grace period during initial node boot (allows time for CNI/CSI to initialize) |
+| `--default-not-ready-toleration-seconds` | 300 | Default `tolerationSeconds` injected into pods for `not-ready:NoExecute` taint |
+| `--default-unreachable-toleration-seconds` | 300 | Default `tolerationSeconds` injected into pods for `unreachable:NoExecute` taint |
+| `--pod-eviction-timeout` | 5m | (deprecated) Replaced by taint-based eviction with tolerationSeconds |
 
 ## Timeline: Node Becomes Unreachable
 
-```
-Time ──────────────────────────────────────────────────────────────────▶
+```mermaid
+sequenceDiagram
+    participant K as Kubelet
+    participant API as API Server
+    participant NLC as Node Lifecycle Controller
+    participant P as Pods
 
-Kubelet              API Server           Node Lifecycle Ctrl    Pods
-   │                    │                       │                 │
-   │ Lease renew (OK) ─▶│                       │                 │
-   │ .................. │                       │                 │
-   │                    │                       │                 │
-   │ ╳ Node crashes or  │                       │                 │
-   │network partitions  │                       │                 │
-   │(no more heartbeats)│                       │                 │
-   │                    │                       │                 │
-   │         +10s       │  (Lease not renewed)  │                 │
-   │         +20s       │  (Lease not renewed)  │                 │
-   │         +30s       │  (Lease not renewed)  │                 │
-   │         +40s       │                       │                 │
-   │                    │  ◀── check ───────────│                 │
-   │                    │     Lease expired!    │                 │
-   │                    │                       │                 │
-   │                    │  Set Ready=Unknown ◀──│                 │
-   │                    │  Apply taint:         │                 │
-   │                    │  unreachable:NoExecute│                 │
-   │                    │                       │                 │
-   │         +5m40s     │                       │                 │
-   │                    │                       │ toleration      │
-   │                    │                       │ timeout (300s)  │
-   │                    │                       │ expires         │
-   │                    │                       │ ───────────────▶│
-   │                    │                       │                 │ Pods evicted
-   │                    │                       │                 │ (rescheduled)
+    K->>API: Lease renew (OK)
+    Note over K: Node crashes or<br/>network partitions<br/>(no more heartbeats)
+    Note over API: +10s Lease not renewed
+    Note over API: +20s Lease not renewed
+    Note over API: +30s Lease not renewed
+    Note over API: +40s Lease expired!
+    NLC-->>API: Set Ready=Unknown
+    NLC-->>API: Apply taint:<br/>unreachable:NoExecute
+    Note over P: tolerationSeconds=300<br/>countdown starts
+    Note over P: +5m40s toleration expires
+    NLC-->>P: Pods evicted (rescheduled)
 ```
 
 ## Node Conditions and Taints
@@ -157,6 +167,34 @@ The difference between `unreachable` and `not-ready`:
 - **not-ready**: Kubelet actively reported it's unhealthy (e.g., container runtime down)
 
 ## Pod Eviction via Taint-Based Mechanism
+
+Pod eviction on NotReady nodes is a **two-stage pipeline** handled by two separate components inside `kube-controller-manager`:
+
+```mermaid
+flowchart TD
+    subgraph Stage1["Stage 1: Node Lifecycle Controller"]
+        A1["Detects node is unhealthy<br/>(Lease expired or Ready=False)"]
+        A2["Applies NoExecute taint to node"]
+        A3["Does NOT evict pods directly"]
+        A1 --> A2 --> A3
+    end
+
+    subgraph Stage2["Stage 2: Taint Manager"]
+        B1["Watches for NoExecute taints on nodes"]
+        B2["Checks each pod for matching tolerations"]
+        B1 --> B2
+        B2 --> B3{"Pod has toleration<br/>with tolerationSeconds?"}
+        B3 -->|Yes| B4["Start timer → evict<br/>when timeout expires"]
+        B3 -->|No toleration| B5["Evict immediately"]
+        B3 -->|Tolerates indefinitely| B6["Never evicted"]
+    end
+
+    Stage1 --> Stage2
+```
+
+**The Taint Manager is what actually deletes (evicts) the pods. The Node Lifecycle Controller only applies the taint.**
+
+This replaced the old `--pod-eviction-timeout` flag (deprecated since 1.13). Taint-based eviction is more flexible because each pod can control its own eviction behavior via `tolerationSeconds`.
 
 When a NoExecute taint is applied, the taint manager evicts pods that don't tolerate it:
 
@@ -207,6 +245,109 @@ StatefulSet pods have stable identity. When a node becomes unreachable:
 ```bash
 # Force delete a stuck StatefulSet pod (after confirming node is gone):
 kubectl delete pod <name> --grace-period=0 --force
+```
+
+### Toleration Tuning — Recovery Speed Tradeoffs
+
+The `tolerationSeconds` value on pods controls how quickly workloads are rescheduled after a node failure. Different workloads benefit from different values:
+
+| Configuration | Recovery Speed | Use Case | Tradeoff |
+|--------------|:--------------:|----------|----------|
+| `tolerationSeconds: 0` | Immediate | Critical monitoring agents, system pods | Causes scheduling spikes during brief network blips |
+| `tolerationSeconds: 30` | Ultra-fast | Stateless apps with fast startup (APIs, frontends) | High churn risk if node recovers within seconds |
+| `tolerationSeconds: 300` (default) | Balanced | Typical production workloads | Balanced protection against false positives |
+| `tolerationSeconds: 900` | Slow | Heavy stateful apps, databases, data pipelines | Prolonged downtime if the node is truly dead |
+| No `tolerationSeconds` (infinite) | Never | DaemonSets, node-critical agents | Pod never evicted by this taint |
+
+```yaml
+# Fast eviction for stateless APIs (30s):
+spec:
+  tolerations:
+  - key: node.kubernetes.io/not-ready
+    operator: Exists
+    effect: NoExecute
+    tolerationSeconds: 30
+  - key: node.kubernetes.io/unreachable
+    operator: Exists
+    effect: NoExecute
+    tolerationSeconds: 30
+
+# Slow eviction for databases (15 minutes):
+spec:
+  tolerations:
+  - key: node.kubernetes.io/not-ready
+    operator: Exists
+    effect: NoExecute
+    tolerationSeconds: 900
+  - key: node.kubernetes.io/unreachable
+    operator: Exists
+    effect: NoExecute
+    tolerationSeconds: 900
+```
+
+To change the cluster-wide default (affects all new pods without explicit tolerations):
+
+```bash
+# On the kube-controller-manager:
+--default-not-ready-toleration-seconds=60
+--default-unreachable-toleration-seconds=60
+```
+
+## NodeReadinessRules — Custom Health Signals
+
+A node being `Ready` in the traditional sense (kubelet is running, container runtime responds) doesn't guarantee it can actually run pods. Common gaps:
+
+- CNI plugin hasn't finished configuring networking
+- CSI drivers haven't registered
+- GPU drivers not loaded
+- Node-local DNS cache not started
+
+**NodeReadinessRules (NRR)** allow external components (CNI plugins, storage providers, custom agents) to inject additional readiness conditions that must be satisfied before the node is considered fully ready for scheduling.
+
+### How It Works
+
+```
+┌────────────────────────────────────────────────────────────────────┐
+│  Traditional Ready (kubelet only):                                 │
+│    kubelet healthy + runtime healthy → Ready=True → schedule pods  │
+│                                                                    │
+│  With NodeReadinessRules:                                          │
+│    kubelet healthy + runtime healthy                               │
+│      + CNI reports ready                                           │
+│      + CSI reports ready                                           │
+│      + custom agent reports ready                                  │
+│    → ALL conditions met → Ready=True → schedule pods               │
+│                                                                    │
+│  Until all conditions are met, node stays NotReady and no          │
+│  workload pods are scheduled (prevents blackholing)                │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+### Custom Node Conditions
+
+External agents can set custom conditions on the node object:
+
+```yaml
+status:
+  conditions:
+  - type: Ready
+    status: "True"
+  - type: NetworkReady           # Set by CNI agent
+    status: "True"
+  - type: StorageReady           # Set by CSI node driver
+    status: "True"
+  - type: GPUReady               # Set by GPU device plugin
+    status: "False"              # ← Not ready yet, block scheduling
+```
+
+This pattern ensures a node isn't marked schedulable until ALL infrastructure components are fully operational — preventing the common issue where pods are placed on a node that joined the cluster but lacks networking or volume mount capability.
+
+```bash
+# Check custom conditions on a node:
+kubectl get node <name> -o jsonpath='{.status.conditions[*].type}'
+
+# Find nodes where a custom condition is False:
+kubectl get nodes -o json | jq -r '.items[] | select(.status.conditions[] | select(.type=="NetworkReady" and .status=="False")) | .metadata.name'
 ```
 
 ## Node Recovery
@@ -288,18 +429,13 @@ crictl info
 
 ```bash
 # List node conditions:
-kubectl get nodes -o custom-columns=\
-  NAME:.metadata.name,\
-  READY:.status.conditions[?(@.type==\"Ready\")].status,\
-  SINCE:.status.conditions[?(@.type==\"Ready\")].lastTransitionTime
+kubectl get nodes -o custom-columns='NAME:.metadata.name,READY:.status.conditions[?(@.type=="Ready")].status,SINCE:.status.conditions[?(@.type=="Ready")].lastTransitionTime'
 
 # Find NotReady nodes:
-kubectl get nodes --field-selector status.conditions.type=Ready,status.conditions.status!=True
+kubectl get nodes | grep -v " Ready"
 
 # Check lease freshness:
-kubectl get leases -n kube-node-lease -o custom-columns=\
-  NODE:.metadata.name,\
-  RENEW:.spec.renewTime
+kubectl get leases -n kube-node-lease -o custom-columns='NODE:.metadata.name,RENEW:.spec.renewTime'
 
 # Watch node status changes:
 kubectl get nodes -w
@@ -307,6 +443,9 @@ kubectl get nodes -w
 # Events related to node issues:
 kubectl get events --field-selector reason=NodeNotReady
 kubectl get events --field-selector reason=NodeReady
+
+# Find nodes currently tainted as not-ready:
+kubectl get nodes -o json | jq '.items[] | select(.spec.taints != null) | .metadata.name + " " + (.spec.taints[] | select(.key=="node.kubernetes.io/not-ready") | .key)'
 ```
 
 ## Quick Reference
