@@ -51,7 +51,7 @@ kube-proxy creates iptables chains in the `nat` table that DNAT traffic from Clu
 ┌────────────────────────────────────────────────────────────────────┐
 │  Packet path (iptables mode):                                      │
 │                                                                    │
-│  Packet dst: 10.100.42.15:80 (ClusterIP)                          │
+│  Packet dst: 10.100.42.15:80 (ClusterIP)                           │
 │      │                                                             │
 │      ▼                                                             │
 │  PREROUTING chain → KUBE-SERVICES chain                            │
@@ -60,14 +60,14 @@ kube-proxy creates iptables chains in the `nat` table that DNAT traffic from Clu
 │      ▼                                                             │
 │  KUBE-SVC-XXXXX chain (Service-level)                              │
 │      │                                                             │
-│      ├── 33% → KUBE-SEP-AAAA (endpoint A)                         │
-│      ├── 50% → KUBE-SEP-BBBB (endpoint B)                         │
-│      └── 100% → KUBE-SEP-CCCC (endpoint C)                        │
+│      ├── 33% → KUBE-SEP-AAAA (endpoint A)                          │
+│      ├── 50% → KUBE-SEP-BBBB (endpoint B)                          │
+│      └── 100% → KUBE-SEP-CCCC (endpoint C)                         │
 │                                                                    │
 │  KUBE-SEP-AAAA:                                                    │
 │      -j DNAT --to-destination 10.244.1.5:8080                      │
 │                                                                    │
-│  Result: packet rewritten from 10.100.42.15:80 → 10.244.1.5:8080  │
+│  Result: packet rewritten from 10.100.42.15:80 → 10.244.1.5:8080   │
 │  conntrack entry created for return traffic                        │
 └────────────────────────────────────────────────────────────────────┘
 ```
@@ -119,14 +119,14 @@ sudo iptables-save | wc -l              # Total rules in all tables
 │                                                                │
 │  Each packet traverses rules SEQUENTIALLY (O(n)):              │
 │                                                                │
-│  1000 Services × 3 endpoints each = ~6000 KUBE-SEP rules      │
+│  1000 Services × 3 endpoints each = ~6000 KUBE-SEP rules       │
 │  + 1000 KUBE-SVC rules + KUBE-SERVICES entries                 │
 │  = ~8000+ rules traversed per packet (worst case)              │
 │                                                                │
 │  Rule update is ATOMIC (full replace):                         │
 │  - kube-proxy generates entire iptables-restore input          │
 │  - Replaces ALL chains atomically                              │
-│  - With 10,000+ rules: takes 100ms+ to apply                  │
+│  - With 10,000+ rules: takes 100ms+ to apply                   │
 │  - During apply: brief packet loss possible                    │
 │                                                                │
 │  At ~5,000 services: noticeable CPU overhead on nodes          │
@@ -144,7 +144,7 @@ IPVS (IP Virtual Server) is a kernel-level Layer 4 load balancer. It uses hash t
 ┌────────────────────────────────────────────────────────────────────┐
 │  Packet path (IPVS mode):                                          │
 │                                                                    │
-│  Packet dst: 10.100.42.15:80 (ClusterIP)                          │
+│  Packet dst: 10.100.42.15:80 (ClusterIP)                           │
 │      │                                                             │
 │      ▼                                                             │
 │  IPVS kernel module intercepts (hash table lookup, O(1))           │
@@ -294,7 +294,7 @@ sudo nft list ruleset | wc -l
 
 ```
 ┌────────────────────────────────────────────────────────────────────┐
-│  Rule update time (adding/removing one endpoint):                   │
+│  Rule update time (adding/removing one endpoint):                  │
 │                                                                    │
 │  Services    iptables         IPVS           nftables              │
 │  ──────────  ──────────       ──────────     ──────────            │
@@ -313,7 +313,7 @@ sudo nft list ruleset | wc -l
 │  10,000      ~hundreds of μs  ~negligible    ~negligible           │
 │                                                                    │
 │  iptables: O(n) rule traversal per packet                          │
-│  IPVS: O(1) hash lookup                                           │
+│  IPVS: O(1) hash lookup                                            │
 │  nftables: O(1) set lookup                                         │
 └────────────────────────────────────────────────────────────────────┘
 ```
@@ -345,14 +345,14 @@ helm install cilium cilium/cilium \
 ┌────────────────────────────────────────────────────────────────┐
 │  eBPF (Cilium) advantages over kube-proxy:                     │
 │                                                                │
-│  - O(1) lookup (BPF hash maps)                                │
-│  - No conntrack table overhead (BPF manages its own state)    │
-│  - Direct packet rewrite (no traversing chains)               │
-│  - Socket-level load balancing (skips network stack entirely) │
-│  - DSR (Direct Server Return) mode                            │
-│  - Maglev consistent hashing                                  │
-│  - No dummy interface needed                                  │
-│  - Lower latency, higher throughput                           │
+│  - O(1) lookup (BPF hash maps)                                 │
+│  - No conntrack table overhead (BPF manages its own state)     │
+│  - Direct packet rewrite (no traversing chains)                │
+│  - Socket-level load balancing (skips network stack entirely)  │
+│  - DSR (Direct Server Return) mode                             │
+│  - Maglev consistent hashing                                   │
+│  - No dummy interface needed                                   │
+│  - Lower latency, higher throughput                            │
 └────────────────────────────────────────────────────────────────┘
 ```
 
