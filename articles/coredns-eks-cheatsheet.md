@@ -532,12 +532,44 @@ kubectl logs -n kube-system -l k8s-app=kube-dns --tail=50
 kubectl run net-test --image=busybox:1.36 --restart=Never --rm -it -- nc -zvu 10.100.0.10 53
 ```
 
+### Verify kube-proxy Health
+
+kube-proxy creates the iptables/IPVS rules that route traffic to CoreDNS pods. If kube-proxy can't reach the API server, DNS routing breaks.
+
+```bash
+# Check kube-proxy logs for timeout or auth errors
+kubectl logs -n kube-system --selector 'k8s-app=kube-proxy' | grep -i "error\|timeout\|403"
+
+# Check kube-proxy pods are running
+kubectl get pods -n kube-system -l k8s-app=kube-proxy
+```
+
+Look for connection timeouts to the control plane or `403 Unauthorized` errors — both indicate kube-proxy can't sync endpoint rules.
+
+### CoreDNS CPU Starvation
+
+The EKS CoreDNS add-on sets a 170 MiB memory limit but **no CPU limit**. If the node's CPU is saturated, CoreDNS gets starved and DNS queries time out.
+
+```bash
+# Check CoreDNS pod CPU and memory usage
+kubectl top pods -n kube-system -l k8s-app=kube-dns
+
+# Check node CPU pressure
+kubectl top nodes
+```
+
+If CoreDNS CPU is consistently high or the node is at 100%, either:
+- Move CoreDNS pods to less loaded nodes via taints/tolerations
+- Add explicit CPU requests to guarantee scheduling priority
+- Scale up replicas to distribute load
+
 ### Intermittent DNS Failures
 
 Common causes on EKS:
 - **Conntrack table full** — UDP DNS uses conntrack, table fills under high load
 - **Race condition with DNAT** — multiple DNS packets from same source port
 - **CoreDNS overloaded** — too few replicas for cluster size
+- **VPC DNS resolver throttling** — 1024 packets/sec per ENI limit hit
 
 ```bash
 # Check conntrack table on node
@@ -553,6 +585,29 @@ Fixes:
 - Scale up CoreDNS replicas
 - Deploy NodeLocal DNSCache
 - Increase `nf_conntrack_max` on nodes
+
+### VPC DNS Resolver Throttling (1024 pps per ENI)
+
+The Amazon VPC DNS resolver accepts a maximum of 1024 packets per second per elastic network interface. If multiple CoreDNS pods land on the same node, external domain queries forwarded upstream can exceed this limit, causing intermittent SERVFAIL or timeouts.
+
+Use PodAntiAffinity to spread CoreDNS pods across separate nodes:
+
+```yaml
+# Add to CoreDNS deployment spec.template.spec
+podAntiAffinity:
+  preferredDuringSchedulingIgnoredDuringExecution:
+  - podAffinityTerm:
+      labelSelector:
+        matchExpressions:
+        - key: k8s-app
+          operator: In
+          values:
+          - kube-dns
+      topologyKey: kubernetes.io/hostname
+    weight: 100
+```
+
+This ensures each CoreDNS pod uses a different node's ENI, effectively multiplying the available VPC DNS bandwidth.
 
 ### Slow DNS Resolution (High Latency)
 
@@ -916,6 +971,26 @@ kubectl run debug --image=nicolaka/netshoot --privileged --restart=Never --rm -i
 # Inside the pod
 tcpdump -i eth0 port 53 -A
 ```
+
+### Via nsenter into CoreDNS Network Namespace
+
+Target the CoreDNS process directly by entering its network namespace using the PID. Useful when you want to capture only traffic hitting a specific CoreDNS replica without noise from other pods on the node.
+
+```bash
+# SSH/SSM into the node running the CoreDNS pod
+aws ssm start-session --target <instance-id>
+
+# Find the CoreDNS process ID
+ps ax | grep coredns
+
+# Enter the CoreDNS network namespace and capture DNS traffic
+sudo nsenter -n -t <PID> tcpdump udp port 53
+
+# Save capture to file
+sudo nsenter -n -t <PID> tcpdump udp port 53 -w /tmp/coredns_capture.pcap
+```
+
+Then from a separate terminal, run `nslookup` against the CoreDNS service IP and each pod IP to confirm which replica handles the query. If the CoreDNS pod experiences timeouts and you don't see the query in the capture, the issue is network reachability between the client pod's node and the CoreDNS node.
 
 ### Monitor via conntrack
 

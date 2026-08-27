@@ -660,6 +660,116 @@ node1: maintenance, workload
 node3: spot-instance
 ```
 
+## EKS-Specific Taints
+
+| Taint | When Applied |
+|-------|--------------|
+| `eks.amazonaws.com/compute-type=fargate:NoSchedule` | Fargate virtual nodes |
+| `karpenter.sh/disruption=disrupting:NoExecute` | Karpenter is draining the node |
+
+## Taints + Node Affinity — Combined Pattern
+
+Taints only repel — they don't attract pods. To dedicate nodes to specific workloads, combine taints (keep others out) with node affinity (pull target pods in):
+
+```bash
+# Taint the nodes
+kubectl taint nodes -l role=ml gpu=true:NoSchedule
+
+# Label the nodes (if not already)
+kubectl label nodes -l role=ml workload=ml
+```
+
+```yaml
+# Pod spec — tolerate the taint + prefer these nodes
+spec:
+  tolerations:
+  - key: "gpu"
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: workload
+            operator: In
+            values:
+            - ml
+  containers:
+  - name: training
+    image: ml-training:latest
+```
+
+Without node affinity, a pod with a GPU toleration could still land on a non-GPU node if one is available — the toleration just means it's *allowed* on tainted nodes, not that it's *required* to go there.
+
+## Graceful Node Maintenance with Taints
+
+```bash
+# Step 1: Prevent new pods (soft)
+kubectl taint nodes node-5 maintenance=planned:PreferNoSchedule
+
+# Step 2: Cordon the node
+kubectl cordon node-5
+
+# Step 3: Drain existing pods
+kubectl drain node-5 --ignore-daemonsets --delete-emptydir-data
+
+# Step 4: After maintenance, reverse everything
+kubectl uncordon node-5
+kubectl taint nodes node-5 maintenance:PreferNoSchedule-
+```
+
+## Troubleshooting
+
+### Pod Stuck in Pending — Taint Related
+
+```bash
+# Check events for taint-related scheduling failures
+kubectl describe pod <pod-name> | grep -A 3 "Events"
+
+# Look for: "0/3 nodes are available: 3 node(s) had taint {key=value:NoSchedule}"
+```
+
+### Verify a Pod's Tolerations
+
+```bash
+kubectl get pod <pod-name> -o jsonpath='{.spec.tolerations}' | jq .
+```
+
+### Find Pods That Would Be Evicted by a NoExecute Taint
+
+Before applying a `NoExecute` taint, check which pods would be affected:
+
+```bash
+# List pods on the node that do NOT tolerate a specific taint
+kubectl get pods --field-selector spec.nodeName=<node-name> -o json | \
+  jq -r '.items[] | select(
+    .spec.tolerations == null or
+    (.spec.tolerations | map(select(.key == "YOUR_TAINT_KEY" and .effect == "NoExecute")) | length == 0)
+  ) | .metadata.name'
+```
+
+### DaemonSet Pods Not Running on Tainted Nodes
+
+DaemonSets need explicit tolerations for custom taints. Check what's configured:
+
+```bash
+kubectl get daemonset <name> -o jsonpath='{.spec.template.spec.tolerations}' | jq .
+```
+
+Add the required toleration to the DaemonSet spec if missing.
+
+### Remove All Taints from a Node (Loop)
+
+When the JSON patch approach isn't suitable:
+
+```bash
+for taint in $(kubectl get node <node-name> -o jsonpath='{.spec.taints[*].key}'); do
+  kubectl taint nodes <node-name> "${taint}-"
+done
+```
+
 ## When to Use Taints vs Cordon
 
 | Scenario | Use |
