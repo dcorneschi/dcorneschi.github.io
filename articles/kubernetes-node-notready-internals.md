@@ -6,35 +6,40 @@ Note: For EKS-specific NotReady troubleshooting (I/O spikes, CPU starvation, inv
 
 ## High-Level Flow
 
-```mermaid
-graph LR
-    A[Kubelet<br/>heartbeat] --> B[API Server<br/>Lease + NodeStatus]
-    B --> C[Node Lifecycle<br/>Controller<br/>taint manager]
-    C --> D[Pod<br/>Eviction]
+```
+┌──────────┐     ┌───────────────┐     ┌──────────────────────┐     ┌─────────────┐
+│  Kubelet │────▶│   API Server  │────▶│  Node Lifecycle      │────▶│  Pod        │
+│  (heart- │     │  (Lease +     │     │  Controller          │     │  Eviction   │
+│   beat)  │     │   NodeStatus) │     │  (taint manager)     │     │             │
+└──────────┘     └───────────────┘     └──────────────────────┘     └─────────────┘
 ```
 
 ## Node Health Reporting — Two Mechanisms
 
 The kubelet reports node health via two separate mechanisms that serve different purposes:
 
-```mermaid
-graph TD
-    subgraph Lease["Lease every 10s"]
-        L1["I'm still alive — just a timestamp"]
-        L2["Detects DEAD nodes"]
-        L3["If stops → node marked Unknown"]
-    end
-
-    subgraph NodeStatus["NodeStatus every 5min or on change"]
-        N1["Detailed health report — conditions, resources"]
-        N2["Reports WHAT'S WRONG"]
-        N3["If Ready=False → node marked NotReady"]
-    end
 ```
-
-**Key difference:**
-- **Lease** answers: "Is the node alive at all?"
-- **NodeStatus** answers: "Is the node healthy and functioning?"
+┌────────────────────────────────────────────────────────────────────┐
+│  Two Mechanisms — Different Jobs                                   │
+│                                                                    │
+│  Lease (every 10s):                                                │
+│    "I'm still alive" — just a timestamp, nothing else              │
+│    → Used by the node lifecycle controller to detect DEAD nodes    │
+│    → If Lease stops being renewed → node marked Unknown            │
+│                                                                    │
+│  NodeStatus (every 5min or on change):                             │
+│    "Here's my detailed health report" — conditions, resources      │
+│    → Used to report WHAT'S WRONG (disk pressure, memory, runtime)  │
+│    → If kubelet reports Ready=False → node marked NotReady         │
+│                                                                    │
+│  Key difference:                                                   │
+│    Lease answers:      "Is the node alive at all?"                 │
+│    NodeStatus answers: "Is the node healthy and functioning?"      │
+│                                                                    │
+│  A node can be alive (Lease renewing) but unhealthy                │
+│  (NodeStatus Ready=False because containerd crashed)               │
+└────────────────────────────────────────────────────────────────────┘
+```
 
 A node can be alive (Lease renewing) but unhealthy (NodeStatus `Ready=False` because containerd crashed).
 
@@ -109,13 +114,21 @@ kubectl get nodes -o custom-columns=NAME:.metadata.name,STATUS:.status.condition
 
 The `node-lifecycle-controller` (inside kube-controller-manager) monitors nodes and reacts to failures:
 
-```mermaid
-flowchart TD
-    A["Every 5s (--node-monitor-period):<br/>Check each node"] --> B{Lease renewTime<br/>older than 40s?}
-    B -->|Yes| C["Set Ready=Unknown<br/>Apply taint:<br/>unreachable:NoExecute"]
-    B -->|No| D{NodeStatus<br/>shows Ready=False?}
-    D -->|Yes| E["Apply taint:<br/>not-ready:NoExecute"]
-    D -->|No| F["Node is healthy<br/>no action"]
+```
+┌────────────────────────────────────────────────────────────────┐
+│  Node Lifecycle Controller                                     │
+│                                                                │
+│  Every 5s (--node-monitor-period):                             │
+│    for each node:                                              │
+│   1. Check Lease renewTime                                     │
+│   2. If renewTime older than 40s (--node-monitor-grace-period):│
+│         → Set node condition Ready=Unknown                     │
+│         → Apply taint: node.kubernetes.io/unreachable:NoExecute│
+│                                                                │
+│   3. If NodeStatus shows Ready=False:                          │
+│         → Apply taint: node.kubernetes.io/not-ready:NoExecute  │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
 ```
 
 ### Key Parameters
@@ -131,24 +144,36 @@ flowchart TD
 
 ## Timeline: Node Becomes Unreachable
 
-```mermaid
-sequenceDiagram
-    participant K as Kubelet
-    participant API as API Server
-    participant NLC as Node Lifecycle Controller
-    participant P as Pods
+```
+Time ──────────────────────────────────────────────────────────────────▶
 
-    K->>API: Lease renew (OK)
-    Note over K: Node crashes or<br/>network partitions<br/>(no more heartbeats)
-    Note over API: +10s Lease not renewed
-    Note over API: +20s Lease not renewed
-    Note over API: +30s Lease not renewed
-    Note over API: +40s Lease expired!
-    NLC-->>API: Set Ready=Unknown
-    NLC-->>API: Apply taint:<br/>unreachable:NoExecute
-    Note over P: tolerationSeconds=300<br/>countdown starts
-    Note over P: +5m40s toleration expires
-    NLC-->>P: Pods evicted (rescheduled)
+Kubelet              API Server           Node Lifecycle Ctrl    Pods
+   │                    │                       │                 │
+   │ Lease renew (OK) ─▶│                       │                 │
+   │ .................. │                       │                 │
+   │                    │                       │                 │
+   │ ╳ Node crashes or  │                       │                 │
+   │network partitions  │                       │                 │
+   │(no more heartbeats)│                       │                 │
+   │                    │                       │                 │
+   │         +10s       │  (Lease not renewed)  │                 │
+   │         +20s       │  (Lease not renewed)  │                 │
+   │         +30s       │  (Lease not renewed)  │                 │
+   │         +40s       │                       │                 │
+   │                    │  ◀── check ───────────│                 │
+   │                    │     Lease expired!    │                 │
+   │                    │                       │                 │
+   │                    │  Set Ready=Unknown ◀──│                 │
+   │                    │  Apply taint:         │                 │
+   │                    │  unreachable:NoExecute│                 │
+   │                    │                       │                 │
+   │         +5m40s     │                       │                 │
+   │                    │                       │ toleration      │
+   │                    │                       │ timeout (300s)  │
+   │                    │                       │ expires         │
+   │                    │                       │ ───────────────▶│
+   │                    │                       │                 │ Pods evicted
+   │                    │                       │                 │ (rescheduled)
 ```
 
 ## Node Conditions and Taints
@@ -170,29 +195,27 @@ The difference between `unreachable` and `not-ready`:
 
 Pod eviction on NotReady nodes is a **two-stage pipeline** handled by two separate components inside `kube-controller-manager`:
 
-```mermaid
-flowchart TD
-    subgraph Stage1["Stage 1: Node Lifecycle Controller"]
-        A1["Detects node is unhealthy<br/>(Lease expired or Ready=False)"]
-        A2["Applies NoExecute taint to node"]
-        A3["Does NOT evict pods directly"]
-        A1 --> A2 --> A3
-    end
-
-    subgraph Stage2["Stage 2: Taint Manager"]
-        B1["Watches for NoExecute taints on nodes"]
-        B2["Checks each pod for matching tolerations"]
-        B1 --> B2
-        B2 --> B3{"Pod has toleration<br/>with tolerationSeconds?"}
-        B3 -->|Yes| B4["Start timer → evict<br/>when timeout expires"]
-        B3 -->|No toleration| B5["Evict immediately"]
-        B3 -->|Tolerates indefinitely| B6["Never evicted"]
-    end
-
-    Stage1 --> Stage2
 ```
-
-**The Taint Manager is what actually deletes (evicts) the pods. The Node Lifecycle Controller only applies the taint.**
+┌────────────────────────────────────────────────────────────────────┐
+│  Stage 1: Node Lifecycle Controller                                │
+│    → Detects node is unhealthy (Lease expired or Ready=False)      │
+│    → Applies NoExecute taint to the node                           │
+│    → Does NOT evict pods directly                                  │
+│                                                                    │
+│  Stage 2: Taint Manager (NoExecute Taint Eviction Controller)      │
+│    → Watches for NoExecute taints on nodes                         │
+│    → Checks each pod on that node for matching tolerations         │
+│    → If pod has toleration with tolerationSeconds:                 │
+│        → Starts a timer, evicts when tolerationSeconds expires     │
+│    → If pod has NO matching toleration:                            │
+│        → Evicts immediately                                        │
+│    → If pod tolerates indefinitely (no tolerationSeconds):         │
+│        → Never evicted by this mechanism                           │
+│                                                                    │
+│  The Taint Manager is what actually deletes (evicts) the pods.     │
+│  The Node Lifecycle Controller only applies the taint.             │
+└────────────────────────────────────────────────────────────────────┘
+```
 
 This replaced the old `--pod-eviction-timeout` flag (deprecated since 1.13). Taint-based eviction is more flexible because each pod can control its own eviction behavior via `tolerationSeconds`.
 
