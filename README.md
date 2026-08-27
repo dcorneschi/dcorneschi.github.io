@@ -152,6 +152,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [How kube-proxy Works — iptables vs IPVS vs nftables](articles/kubernetes-kube-proxy-internals.md) | Three proxy modes, packet path, chain structure, IPVS scheduling algorithms, performance at scale, and when to switch modes. |
 | [Kubernetes DNS Deep Dive — CoreDNS Architecture](articles/kubernetes-coredns-deep-dive.md) | Plugin architecture, kubernetes plugin internals, autopath optimization, stub domains, conditional forwarding, ndots, caching, and scaling. |
 | [GitHub Actions for Kubernetes Deployments](articles/github-actions-kubernetes-deployments.md) | Build, push, deploy patterns — ECR/GHCR, OIDC auth to EKS, Helm/Kustomize/kubectl, multi-environment workflows, rollback, and security best practices. |
+| [Pipeline to Get the Latest Ubuntu EKS AMI](articles/eks-ubuntu-ami-latest-pipeline.md) | Auto-discover latest Ubuntu EKS AMI via SSM parameters, Terraform data sources, GitHub Actions weekly check, and triggering node group rolling updates. |
 
 ### EKS Auto Mode
 
