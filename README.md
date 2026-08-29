@@ -275,6 +275,13 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [doctl Cheatsheet](articles/doctl-cheatsheet.md) | DigitalOcean CLI — Droplets, Kubernetes, databases, networking, volumes, registry, Apps Platform, and scripting. |
 | [HAProxy for Kubernetes on DigitalOcean](articles/haproxy-kubernetes-digitalocean.md) | HAProxy Ingress on DOKS — Helm install, DO Load Balancer annotations, TLS options, PROXY protocol, cert-manager, and multi-service routing. |
 
+### Hetzner
+
+| Article | Description |
+|---------|--------------|
+| [hcloud CLI Cheatsheet](articles/hcloud-cheatsheet.md) | Hetzner Cloud CLI — contexts/tokens, servers, SSH keys, volumes, private networks, firewalls, load balancers, floating/primary IPs, output formatting, and label selectors. |
+| [hetzner-k3s Cheatsheet](articles/hetzner-k3s-cheatsheet.md) | k3s clusters on Hetzner Cloud — install, create/delete/upgrade, run commands on nodes, YAML config (masters/worker pools, autoscaling, ARM, CNI), workflows, instance types, and troubleshooting. |
+
 ### Virtualization
 
 | Article | Description |
@@ -301,6 +308,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Why Proxmox Needs libguestfs-tools](articles/proxmox-libguestfs-tools.md) | Why the package is installed for templating — offline image customization with virt-customize/virt-sysprep, baking in qemu-guest-agent, SSH keys, cloud-image prep, and pitfalls. |
 | [Migrating VMs and LXC Containers Between Proxmox Nodes](articles/proxmox-migrate-vms-containers.md) | Live vs offline migration — qm/pct commands, bulk pvesh scripting, local-disk migration, bandwidth limits, backup/restore, pre/post checks, and troubleshooting. |
 | [Proxmox xterm.js Serial Console](articles/proxmox-xtermjs-serial-console.md) | Web serial terminal vs noVNC — adding a serial device, guest kernel/getty setup, showing GRUB on serial, catching the boot menu, console= parameters, and troubleshooting. |
+| [Proxmox ACME SSL with Hetzner DNS](articles/proxmox-acme-hetzner-dns.md) | Trusted Let's Encrypt certs via the DNS-01 challenge — ACME account, Hetzner DNS plugin, node domain assignment, ordering (UI and pvenode CLI), auto-renewal, wildcards, and troubleshooting. |
 | [VirtualBox CLI Cheatsheet](articles/virtualbox-cheatsheet.md) | VBoxManage commands — VM lifecycle, storage, networking, port forwarding, snapshots, cloning, import/export, guest control, and shared folders. |
 
 ### Terraform
@@ -599,6 +607,29 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Windows Battery Report](articles/windows-battery-report.md) | Using the built-in `powercfg` tool to check battery health, usage, and degradation. |
 | [Windows Tips and Commands](articles/windows-tips-commands.md) | Useful commands — perfmon, winsat, diskpart, Test-NetConnection, hosts file, resmon, gpupdate, and Java config. |
 | [Outlook Instant Search Syntax](articles/outlook-search-syntax.md) | Search query syntax — operators, from/to/cc, attachments, dates, size filters, flags, calendar, and contacts. |
+
+### AIX
+
+| Article | Description |
+|---------|--------------|
+| [AIX Backup and Recovery Cheatsheet](articles/aix-backup-recovery-cheatsheet.md) | System backup and restore on IBM AIX — mksysb, lsmksysb/listvgbackup, savevg/restvg, cpio, tar, backup/restore, bootable media with mkcd/mkdvd, and rootvg cloning with alt_disk_install. |
+| [AIX Boot and Init Cheatsheet](articles/aix-boot-init-cheatsheet.md) | Boot process and init on IBM AIX — bootlist device order, bosboot image rebuild, ipl_varyon, /etc/inittab management (lsitab/mkitab/chitab/rmitab), init/telinit run levels, and savebase/restbase. |
+| [AIX CDE and X Window System Cheatsheet](articles/aix-cde-x11-cheatsheet.md) | Graphical desktop on IBM AIX — enable/disable CDE autostart with dtconfig, start dtlogin manually, and launch X11/CDE sessions with xinit. |
+| [AIX Filesystems Cheatsheet](articles/aix-filesystems-cheatsheet.md) | Filesystems on IBM AIX — default rootvg LV layout, file timestamps and istat, lsfs/chfs (resize, move, noatime, freeze, split-copy), VFS entries, snapshots, du, fuser, and fileplace. |
+| [AIX LVM Cheatsheet](articles/aix-lvm-cheatsheet.md) | Logical Volume Manager on IBM AIX — VG types, VGDA/VGSA/LVCB internals, allocation policies, PV states, and commands for VGs, LVs, PVs, mirroring, snapshots, migration, and common tasks. |
+| [AIX NIM Cheatsheet](articles/aix-nim-cheatsheet.md) | Network Installation Management on IBM AIX — lpp_source/SPOT/mksysb resources, ports and files, master/client commands, setting up a NIM master, defining resources, BOS installs, and nimadm migration. |
+| [AIX SMIT Cheatsheet](articles/aix-smit-cheatsheet.md) | System Management Interface Tool — smit vs smitty, fast paths for common tasks, navigation keys (F4/F6/F8), field markers, and the smit.log/smit.script logs for learning the underlying commands. |
+| [AIX LDAP Cheatsheet](articles/aix-ldap-cheatsheet.md) | LDAP authentication on IBM AIX — mksecldap client setup, secldapclntd daemon (ls/start/stop/flush), directing users/groups to the LDAP registry, IBM Directory Server tools, ldapsearch, and troubleshooting. |
+| [AIX NFS Cheatsheet](articles/aix-nfs-cheatsheet.md) | NFS on IBM AIX — daemons, exporting with mknfsexp/exportfs, mounting with mknfsmnt/mount, client tools (showmount, nfsstat, rpcinfo), NFSv4 domain/idmapd, and troubleshooting. |
+| [AIX VIOS Cheatsheet](articles/aix-vios-cheatsheet.md) | PowerVM Virtual I/O Server — padmin/ioscli, devices, virtual SCSI and NPIV mappings (lsmap/mkvdev/vfcmap), Shared Ethernet Adapters, monitoring (viostat/entstat), updateios, and viosbr/backupios. |
+| [AIX Package Management Cheatsheet](articles/aix-package-management-cheatsheet.md) | Software on IBM AIX — installp/lslpp filesets (apply/commit/reject), lppchk, emgr interim fixes, RPM and dnf/yum from the AIX Toolbox, oslevel/instfix maintenance levels, and SMIT fast paths. |
+| [AIX HMC Cheatsheet](articles/aix-hmc-cheatsheet.md) | Hardware Management Console CLI — lssyscfg managed systems/LPARs, chsysstate power control, mkvterm/vtmenu consoles, chhwres DLPAR, mksyscfg profiles, service events, and HMC backup/updates. |
+| [AIX PowerVM Virtualization Concepts](articles/aix-powervm-virtualization-concepts.md) | I/O virtualization building blocks — virtual SCSI (backing types, client/server model), virtual Ethernet (slots, MTU, MAC/VLAN limits), Shared Ethernet Adapter, and Integrated Virtual Ethernet, and when each needs a VIOS. |
+| [AIX Users and Groups Cheatsheet](articles/aix-users-groups-cheatsheet.md) | User/group management on IBM AIX — mkuser/chuser/lsuser/rmuser, groups, passwords and aging, security files, login controls and limits, chsec, usrck/grpck/pwdck, and RBAC roles. |
+| [AIX ODM Cheatsheet](articles/aix-odm-cheatsheet.md) | Object Data Manager on IBM AIX — repositories and ODMDIR, device/SWVPD object classes (CuDv/CuAt/PdDv/PdAt), odmget/odmadd/odmchange/odmdelete/odmshow, how lsdev/chdev map to the ODM, and repair scenarios. |
+| [AIX Software Updates and Fixes Cheatsheet](articles/aix-software-updates-fixes-cheatsheet.md) | Patching IBM AIX — smitty update_all, install_all_updates flags, Technology Level/Service Pack upgrades (installer-first), emgr interim fixes, and instfix APAR/keyword fixes. |
+| [AIX Devices and Hardware Cheatsheet](articles/aix-devices-hardware-cheatsheet.md) | Hardware inventory on IBM AIX — lsdev classes and parent/child, lscfg VPD and HBA WWNs, getconf/prtconf/bootinfo system parameters, lsslot PCI slots, lsattr/chdev attributes, PVIDs, and fcstat. |
+| [AIX Cron and Job Scheduling Cheatsheet](articles/aix-cron-cheatsheet.md) | Scheduling on IBM AIX — crontab management and format, access control (cron.allow/cron.deny under /var/adm/cron), at/batch one-off jobs, the cron daemon and /var/adm/cron/log, and troubleshooting. |
 
 ## About
 
