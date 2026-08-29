@@ -615,6 +615,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 
 | Article | Description |
 |---------|--------------|
+| [IBM AIX: An Overview](articles/aix-overview.md) | What AIX is — history from the RT PC to Power Systems, versions and lifecycle, notable firsts (JFS, shared libraries, virtualization), and the SMIT/ODM/LVM management concepts, with links to the AIX cheatsheets. |
 | [AIX Backup and Recovery Cheatsheet](articles/aix-backup-recovery-cheatsheet.md) | System backup and restore on IBM AIX — mksysb, lsmksysb/listvgbackup, savevg/restvg, cpio, tar, backup/restore, bootable media with mkcd/mkdvd, and rootvg cloning with alt_disk_install. |
 | [AIX Boot and Init Cheatsheet](articles/aix-boot-init-cheatsheet.md) | Boot process and init on IBM AIX — bootlist device order, bosboot image rebuild, ipl_varyon, /etc/inittab management (lsitab/mkitab/chitab/rmitab), init/telinit run levels, and savebase/restbase. |
 | [AIX CDE and X Window System Cheatsheet](articles/aix-cde-x11-cheatsheet.md) | Graphical desktop on IBM AIX — enable/disable CDE autostart with dtconfig, start dtlogin manually, and launch X11/CDE sessions with xinit. |
