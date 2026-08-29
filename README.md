@@ -187,6 +187,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Docker Swarm Storage](articles/docker-swarm-storage.md) | Swarm storage strategies — NFS server/client, GlusterFS, Ceph, Docker NFS volumes, stack examples, backups, and monitoring. |
 | [Docker Overlay2 Storage Driver](articles/docker-overlay2-storage.md) | Overlay2 internals — LowerDir, UpperDir, MergedDir, copy-on-write, layer inspection, disk usage, configuration, and troubleshooting. |
 | [Installing Podman on RHEL 7–10](articles/podman-installation-rhel.md) | Podman installation across RHEL versions — rootless setup, registries, storage, Docker migration, Quadlet, systemd integration, and troubleshooting. |
+| [Fixing Critical Vulnerabilities in Public Docker Images](articles/docker-fix-critical-vulnerabilities.md) | Scanning with Trivy, Grype, and Docker Scout — fixable vs unfixable CVEs, base image updates, distroless, OS/app package patching, runtime mitigation, suppression, and CI gating. |
 
 ### AWS
 
