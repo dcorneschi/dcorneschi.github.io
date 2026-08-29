@@ -599,6 +599,9 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [rclone Cheatsheet](articles/rclone-cheatsheet.md) | Cloud storage CLI — copy, sync, mount, encrypt, serve, filtering, backup patterns, and 70+ backends. |
 | [Homebrew Cheatsheet](articles/homebrew-cheatsheet.md) | macOS package manager — install, update, services, taps, Brewfile, casks, versions, and cleanup. |
 | [lssh Cheatsheet](articles/lssh-cheatsheet.md) | SSH connection manager — TUI host picker, parallel execution, mux workspaces, file transfer, cloud inventory, and monitoring. |
+| [VS Code Git Actions and Git CLI Equivalents](articles/vscode-git-cli-equivalents.md) | Mapping VS Code Source Control actions to git commands — staging/committing, branches, sync/pull/push, history, stashing, undo, tags, and merge conflicts. |
+| [Kiro CLI Cheatsheet](articles/kiro-cli-cheatsheet.md) | Kiro's terminal AI CLI — install, login/logout, starting and resuming chat sessions, --agent, in-session slash commands (/editor, /save, /load, /settings), and key concepts (agents, MCP, steering, hooks). |
+| [Understanding Context Usage in AI Assistants](articles/ai-context-usage-explained.md) | How the context window works — tokens, what consumes context, truncation and "lost in the middle", compaction/summarization, and practical habits for keeping AI answers accurate. |
 
 ### Windows
 
