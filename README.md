@@ -295,6 +295,12 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Troubleshooting cloud-init on Proxmox](articles/proxmox-cloud-init-troubleshooting.md) | cloud-init debugging — datasource issues, network config, SSH keys, custom snippets, and template preparation. |
 | [Resize a Partition on Proxmox](articles/proxmox-resize-partition.md) | Growing a VM disk — qm resize, growpart, LVM extend, ext4/XFS expansion, and online resize. |
 | [QEMU Guest Agent on Proxmox](articles/proxmox-qemu-guest-agent.md) | Why the guest agent matters — consistent backups, IP display, remote commands, file transfer, and fstrim. |
+| [Changing the Root Password in Proxmox LXC Containers](articles/proxmox-lxc-change-root-password.md) | Reset LXC root passwords — pct exec, chpasswd, expect automation, batch loops with logging, secure generation, Terraform null_resource, and troubleshooting. |
+| [Setting the LXC Root Password with cloud-init Userdata](articles/proxmox-lxc-cloud-init-root-password.md) | Set the root password at creation via cloud-init — basic/advanced userdata, plain vs hashed passwords, generated YAML, Terraform variables, and troubleshooting. |
+| [Proxmox Two-Node Cluster Quorum](articles/proxmox-two-node-cluster-quorum.md) | Keeping a 2-node cluster usable when a node is offline — votequorum basics, two_node mode, QDevice witness, expected votes, clean node shutdown, and HA/split-brain considerations. |
+| [Why Proxmox Needs libguestfs-tools](articles/proxmox-libguestfs-tools.md) | Why the package is installed for templating — offline image customization with virt-customize/virt-sysprep, baking in qemu-guest-agent, SSH keys, cloud-image prep, and pitfalls. |
+| [Migrating VMs and LXC Containers Between Proxmox Nodes](articles/proxmox-migrate-vms-containers.md) | Live vs offline migration — qm/pct commands, bulk pvesh scripting, local-disk migration, bandwidth limits, backup/restore, pre/post checks, and troubleshooting. |
+| [Proxmox xterm.js Serial Console](articles/proxmox-xtermjs-serial-console.md) | Web serial terminal vs noVNC — adding a serial device, guest kernel/getty setup, showing GRUB on serial, catching the boot menu, console= parameters, and troubleshooting. |
 | [VirtualBox CLI Cheatsheet](articles/virtualbox-cheatsheet.md) | VBoxManage commands — VM lifecycle, storage, networking, port forwarding, snapshots, cloning, import/export, guest control, and shared folders. |
 
 ### Terraform
@@ -396,6 +402,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [SELinux Cheatsheet](articles/selinux-cheatsheet.md) | SELinux administration — modes, contexts, booleans, port labels, troubleshooting denials, policy modules, containers, and relabeling. |
 | [OpenSCAP Security Compliance Guide](articles/openscap-guide.md) | OpenSCAP scanning, remediation, profiles (CIS, STIG, PCI-DSS), tailoring, Ansible/Satellite integration, kickstart hardening, and scheduled compliance checks. |
 | [Linux Audit (auditd) Cheatsheet](articles/auditd-cheatsheet.md) | Audit system — auditctl rules, file watches, syscall monitoring, ausearch, aureport, compliance rules (PCI-DSS, CIS), and log management. |
+| [Postfix Gmail SMTP Relay Setup](articles/postfix-gmail-relay.md) | Send-only Postfix relay through Gmail — App Passwords, main.cf directives, SASL credentials, TLS, testing, troubleshooting, and sender rewriting. |
 | [psacct / acct Cheatsheet](articles/psacct-cheatsheet.md) | Process accounting — lastcomm, ac, sa, accton, tracking user commands, login times, resource usage, and security investigations. |
 | [/bin/false vs /sbin/nologin](articles/bin-false-vs-nologin.md) | Login shell differences — behavior, custom messages, /etc/nologin, path variations, and when to use each. |
 | [Linux User Quotas](articles/linux-user-quotas.md) | Disk quotas — ext4/XFS setup, setquota, edquota, grace periods, project quotas, warnquota, and troubleshooting. |
