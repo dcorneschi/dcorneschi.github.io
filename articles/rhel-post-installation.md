@@ -2,6 +2,17 @@
 
 Essential configuration tasks to perform after a fresh Red Hat Enterprise Linux installation, covering RHEL 7 through 10. These steps establish a baseline for registration, networking, security, monitoring, and day-two operations.
 
+## Pre-Installation (Hardware and Partitioning)
+
+Decisions made before and during the install are hard to change later — get these right first:
+
+- **Out-of-band access first.** Set up iLO/iDRAC/IPMI with an IP before installing so you can recover a system that won't boot. See the [Dell racadm/OMSA](articles/dell-racadm-omsa-cheatsheet.md) and [HP iLO](articles/hp-ilo-cli-cheatsheet.md) cheatsheets.
+- **HP servers with a Bxxxi "software RAID" controller:** in BIOS, enable **SATA AHCI support** (System Options → SATA Controller Options) so GRUB boots. Otherwise the install completes but the BIOS tries to boot a non-existent HP RAID volume. This avoids the proprietary RAID drivers, per Red Hat guidance.
+- **Battery/flash-backed write cache** on the RAID controller gives a large performance boost — confirm your servers have it.
+- **Sensible LVM names.** Use meaningful volume group / logical volume names and mount points, not `Vol00`.
+- **Leave 5–15 GB free in the volume group** for LVM snapshots (needed for consistent backups). On EL7+ the default allocation policy sizes the VG to exactly fit the LVs, leaving 0 bytes free — during install, change the VG policy to **"As large as possible"** and then undersize the LVs, or shrink an LV afterward.
+- **Software RAID + UEFI:** create a second FAT EFI partition (e.g. `/boot/efi2`) in addition to the mandatory `/boot/efi`. After install, copy `/boot/efi` into `/boot/efi2` and add its `*.efi` to the boot order so the system still boots if the first disk fails. For legacy boot, install GRUB on the other disk(s) with `grub2-install /dev/sdX`.
+
 ## Register and Subscribe
 
 ```bash
@@ -599,6 +610,113 @@ umount /mnt
 vmware-toolbox-cmd stat speed
 vmtoolsd --version
 ```
+
+## Predictable Interface Names (Optional)
+
+To revert from the "consistent" names (`ens192`, `enp0s3`) to classic `ethX`:
+
+```bash
+# Append to GRUB_CMDLINE_LINUX in /etc/default/grub
+sudo sed -i 's/\(GRUB_CMDLINE_LINUX="[^"]*\)"/\1 net.ifnames=0 biosdevname=0"/' /etc/default/grub
+
+# Regenerate GRUB config
+sudo grub2-mkconfig -o /boot/grub2/grub.cfg              # BIOS
+sudo grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg    # UEFI
+
+# Rename the connection/DEVICE entries accordingly, then reboot
+```
+
+## Shell Environment and Safety Aliases
+
+Color the prompt by environment so you don't run a command on the wrong box, and guard reboot/poweroff. Add to `/root/.bashrc`:
+
+```bash
+# Red prompt for production (green/blue for non-prod/dev)
+export PS1="[\u@\[\e[1;31m\]\h\[\e[0m\] \W]\\$ "     # prod (red)
+# export PS1="[\u@\[\e[1;32m\]\h\[\e[0m\] \W]\\$ "   # non-prod (green)
+# export PS1="[\u@\[\e[1;34m\]\h\[\e[0m\] \W]\\$ "   # dev (blue)
+
+# Give yourself 5 seconds to cancel an accidental reboot/poweroff
+alias reboot='echo "Rebooting $(hostname) in 5s. Ctrl+C to cancel"; sleep 5 && reboot'
+alias poweroff='echo "Powering off $(hostname) in 5s. Ctrl+C to cancel"; sleep 5 && poweroff'
+```
+
+Use `tmux` or `screen` for long-running foreground jobs (like `dnf update`) so a dropped SSH session can't kill a half-finished transaction and corrupt system state. For `screen` scrollback, add to `/etc/screenrc`:
+
+```bash
+termcapinfo xterm* ti@:te@
+```
+
+## Harden Mount Options
+
+Add `noatime` to reduce write overhead, and lock down world-writable mounts:
+
+```bash
+# In /etc/fstab, for a hardened /tmp (on its own filesystem):
+# UUID=...  /tmp  xfs  defaults,nosuid,noexec,nodev,noatime  0 0
+
+# Add noatime to other data mounts (not needed on /boot).
+# Consider disabling fsck (trailing "0 0") on non-root filesystems so a
+# corrupt data FS doesn't block boot / SSH waiting for console intervention —
+# but then run periodic checks during maintenance windows.
+```
+
+## Speed Up and Secure SSH
+
+```bash
+# In /etc/ssh/sshd_config — faster logins:
+GSSAPIAuthentication no
+UseDNS no
+
+# Run SSH on a non-standard port for public servers (can list multiple Port lines).
+# If SELinux is enforcing, register the new port first:
+sudo semanage port -a -t ssh_port_t -p tcp 2222
+# Optionally remove 22 once you've confirmed the new port works (risk of lockout):
+# sudo semanage port -d -t ssh_port_t -p tcp 22
+
+sudo systemctl restart sshd
+```
+
+## Disable Unnecessary Services
+
+```bash
+# See what starts at boot
+systemctl list-unit-files --type=service | grep enabled
+
+# Disable services you don't need (tailor this list to the role)
+for svc in abrtd abrt-ccpp abrt-oops abrt-xorg mdmonitor smartd postfix; do
+  sudo systemctl disable --now "$svc" 2>/dev/null
+done
+```
+
+## Prevent rsyslog Rate-Limiting Loss
+
+By default rsyslog/journal drop messages from a chatty daemon for a while, which can hide events. To disable rate limiting, create `/etc/rsyslog.d/disable_ratelimiting.conf`:
+
+```bash
+cat <<'EOF' | sudo tee /etc/rsyslog.d/disable_ratelimiting.conf
+$SystemLogRateLimitInterval 0
+$SystemLogRateLimitBurst 0
+$imjournalRatelimitInterval 0
+$imjournalRatelimitBurst 0
+EOF
+sudo systemctl restart rsyslog
+```
+
+## Install Vendor Management Tools
+
+Install the vendor's management tools (avoid their kernel drivers where possible; the in-box drivers are usually fine):
+
+```bash
+# Dell — OpenManage (see the Dell racadm/OMSA cheatsheet)
+sudo /opt/dell/srvadmin/sbin/srvadmin-services.sh start
+/opt/dell/srvadmin/bin/omreport chassis temps
+
+# HP/HPE — hp-health, ssacli from the HPE SDR repo; also install OpenIPMI
+sudo systemctl enable --now ipmi
+```
+
+See the [Dell racadm and OMSA](articles/dell-racadm-omsa-cheatsheet.md) and [HP iLO](articles/hp-ilo-cli-cheatsheet.md) cheatsheets for managing the hardware once these are installed.
 
 ## Post-Install Verification
 

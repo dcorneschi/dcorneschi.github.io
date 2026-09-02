@@ -118,6 +118,9 @@ sudo tcpdump -i eth0 -c 1000 -w /tmp/capture.pcap
 # Write with file rotation (100 MB per file, keep 10 files)
 sudo tcpdump -i eth0 -w /tmp/capture-%Y%m%d-%H%M%S.pcap -C 100 -W 10
 
+# Rotation with an explicit tcpdump user (needed for perms on the output dir)
+sudo tcpdump -i eth0 -w /tmp/capture.pcap -C 250 -W 5 -Z tcpdump
+
 # Write with time-based rotation (new file every 3600 seconds)
 sudo tcpdump -i eth0 -w /tmp/capture.pcap -G 3600
 
@@ -479,6 +482,94 @@ sudo tcpdump -i bond0 -w /tmp/tcpdump.$(uname -n).$DATE.pcap \
   'tcp port 1521 and (host 10.80.20.207 or host 10.80.20.206 or host 10.80.20.208)' &
 ```
 
+## Choosing the Right Interface
+
+Avoid `-i any` for troubleshooting. On bonded, teamed, or bridged setups it captures the same packet more than once, and analysis tools then flag those duplicates as retransmissions — muddying the diagnosis. Capture on the specific interface the traffic actually flows through, and run a separate capture (to its own file) per interface if you truly need several.
+
+```bash
+# Find the source interface for a given remote host, then capture on it
+ip route get 10.16.29.55
+# 10.16.29.55 via 10.16.47.254 dev eth0  src 10.16.46.34
+#                                    ^^^^ use this with -i
+
+sudo tcpdump -s 0 -i eth0 -w /tmp/capture.pcap host 10.16.29.55
+```
+
+## Choosing the Snap Length
+
+`-s 0` captures the full packet, but on high-traffic links or long captures that wastes CPU and disk and can cause drops. Set the smallest snaplen that still captures the protocol detail you need — it's issue-dependent:
+
+| Scenario | Suggested `-s` |
+|----------|----------------|
+| Full packet payload needed | `0` (entire packet) |
+| Headers-only / connection analysis | `96`–`128` |
+| NFSv3 general troubleshooting | `256` |
+| NFSv3 READDIR/READDIRPLUS issues | `0` |
+| NFSv4 | `0` |
+
+RHEL 6+ defaults to capturing 65535 bytes per packet; RHEL 5 and older defaulted to 68 bytes (often too small). Check `man tcpdump` and search for "snaplen" if unsure.
+
+## Capturing Best Practices (Red Hat Method)
+
+When capturing packets for support analysis, following a consistent method makes the capture actually useful:
+
+- **Capture on both ends** — run tcpdump simultaneously on client and server so you can compare what each side sent and received.
+- **Capture while the issue is happening** — a clean capture that misses the event proves nothing.
+- **Write to local storage** — point `-w` at a local filesystem (e.g. `/tmp` if locally mounted), not NFS/remote, or you capture your own capture traffic and risk drops.
+- **Use binary output** — always `-w file.pcap` (`.cap`/`.pcap`), never redirected text output; end the filename with a binary extension.
+- **Note the timezone** of the capturing system for later correlation with logs.
+- **Use rolling capture** for intermittent issues so files don't grow without bound (`-C` size + `-W` count).
+- **Limit snaplen** with `-s` to the smallest sufficient value.
+- **Avoid `-i any`** and confirm you're on the correct interface.
+- **Avoid capture filters when feasible** — filtering adds CPU load and can discard context (e.g. one direction of a conversation) that later turns out to matter. Filter only when bandwidth would otherwise produce an unmanageable file, and document which filters you used and why.
+- **Verify the capture** by reading it back before handing it off, then compress with gzip.
+
+```bash
+# Verify a capture recorded both directions (client and server packets)
+tcpdump -r /tmp/client.cap
+
+# Compress before uploading (gzip is the most compatible for tshark, etc.)
+gzip /tmp/client.cap /tmp/server.cap
+```
+
+## Rolling Capture Until a Log Trigger
+
+For hard-to-reproduce issues, run a size-limited ring buffer and automatically stop it the moment a known error string appears in a log file — so the file holding the event isn't overwritten before you can save it.
+
+```bash
+#!/bin/sh
+# pcapLogwatch.sh — capture packets until a string appears in a logfile
+# Usage: ./pcapLogwatch.sh DEVICE NUM_FILES SIZE_MB DUMP_DIR DUMP_NAME FILTER LOG_FILE TRIGGER_STRING
+# Example: ./pcapLogwatch.sh eth0 5 250 /tmp dump.pcap "" /var/log/messages "Time has been changed"
+
+DUMP_INTERFACE="$1"; DUMP_NUM="$2"; DUMP_SIZE="$3"
+DUMP_DIR="$4"; DUMP_NAME="$5"; DUMP_FILTER="$6"
+LOG_FILE="$7"; LOG_STRING="$8"
+TIME_AFTER=1   # seconds to keep capturing after the trigger is seen
+
+mkdir -p "$DUMP_DIR"
+chmod g+w "$DUMP_DIR"
+chgrp tcpdump "$DUMP_DIR"
+
+# Ring buffer: NUM files of ~SIZE MB each; -Z sets the tcpdump user
+/usr/sbin/tcpdump -s 0 -w "$DUMP_DIR/$DUMP_NAME" -W "$DUMP_NUM" -C "$DUMP_SIZE" \
+  -i "$DUMP_INTERFACE" -Z tcpdump "$DUMP_FILTER" &
+DUMP_PID=$!
+
+# Watch the log; when the string appears, stop tcpdump after TIME_AFTER seconds
+tail --follow=name --pid=$DUMP_PID -n 0 "$LOG_FILE" \
+  | awk "/$LOG_STRING/{system(\"sleep $TIME_AFTER; kill $DUMP_PID\")}" &
+disown -a -h
+exit 0
+```
+
+If the event trails the trigger by a known delay instead, a plain rolling capture you stop manually is enough:
+
+```bash
+# 4 files of ~300 MB each, rotating, on eth0
+sudo /usr/sbin/tcpdump -s 0 -w /tmp/reproduced_issue.pcap -W 4 -C 300 -i eth0
+```
+
 ## Filter Syntax Quick Reference
 
 | Operator | Description | Example |
@@ -560,6 +651,84 @@ sudo tcpdump -i eth0 -w /tmp/two-host-udp.pcap -s 1000 udp and \(host 169.144.0.
 - When capturing over SSH, always exclude your SSH port: `not port 22`
 - Use `-w` to write to file for large captures — real-time display adds overhead
 - Prefer specific filters over capturing everything to reduce CPU and storage impact
+
+## Analyzing Captures in Wireshark
+
+A common and effective workflow is to **capture broadly with tcpdump, then filter and analyze in Wireshark**. The reasoning: heavy filtering at capture time risks discarding packets that later turn out to be relevant, forcing you to re-capture and reproduce the problem. Capture with a generous scope (`-s 0`), then narrow things down non-destructively with Wireshark's display filters.
+
+```bash
+# Capture on the host, analyze on your workstation
+sudo tcpdump -s 0 -i eth0 -w /tmp/dump.pcap
+# ...then open /tmp/dump.pcap in Wireshark (File > Open)
+```
+
+### Capture Filters vs Display Filters
+
+These are two different syntaxes and it's a frequent source of confusion:
+
+- **tcpdump / capture filters** use BPF syntax: `host 10.0.0.1 and port 80`.
+- **Wireshark display filters** use dotted field syntax and apply after capture, non-destructively.
+
+| tcpdump (capture / BPF) | Wireshark (display filter) |
+|-------------------------|----------------------------|
+| `port 80` | `tcp.port == 80` |
+| `udp port 21` | `udp.port == 21` |
+| `host 192.168.0.1` | `ip.addr == 192.168.0.1` |
+| `src host 192.168.0.1` | `ip.src == 192.168.0.1` |
+| `dst host 192.168.0.1` | `ip.dst == 192.168.0.1` |
+| `net 192.168.0.0/24` | `ip.addr == 192.168.0.0/24` |
+| `not host 192.168.0.1` | `!(ip.addr == 192.168.0.1)` |
+| `ether host 00:19:B9:1F:34:B6` | `eth.addr == 00:19:B9:1F:34:B6` |
+| `host A and port 80 and not host B` | `ip.addr == A && tcp.port == 80 && !(ip.addr == B)` |
+
+Wireshark combines filters with `&&` (and), `||` (or), and `!()` (not).
+
+### Useful Diagnostic Display Filters
+
+| Filter | What it shows |
+|--------|---------------|
+| `tcp.analysis.flags` | Packets Wireshark flagged (retransmissions, dup ACKs, zero window, etc.) |
+| `tcp.analysis.retransmission` | TCP retransmissions only |
+| `tcp.analysis.zero_window` | Zero-window (receiver buffer full) events |
+| `tcp.checksum_bad` | Bad TCP checksums (see offload caveat below) |
+| `udp.checksum_bad` | Bad UDP checksums |
+| `http.response.code == 500` | Specific HTTP status codes |
+
+> Checksum caveat: `tcp.checksum_bad` / `udp.checksum_bad` are often false positives. With NIC **checksum offload**, the kernel hands packets to the capture before the card computes the checksum, so locally originated packets look "bad." Disable checksum validation in Wireshark, or verify with `ethtool -k <iface>`.
+
+### Latency Analysis with a Time Reference
+
+To measure how long a server took to respond (e.g. "the page takes 20 minutes"), filter down to the conversation, then set a time reference on the first request so every later packet's time is relative to it:
+
+1. Filter, e.g. `ip.addr == 192.168.0.1 && ip.addr == 192.168.0.22 && tcp.port == 80`
+2. Right-click the first request packet → **Set Time Reference (Toggle)**
+3. The Time column now counts from that packet; toggle again to clear.
+
+### Quick Traffic Breakdown
+
+- **Statistics → Protocol Hierarchy** — percentage of traffic by protocol; quickly shows where bandwidth is going (e.g. "83% TCP, of which 34% SSH").
+- **Statistics → Conversations** — list endpoint pairs; right-click a row → **Apply as Filter → Selected → A ↔ B** to isolate one conversation.
+
+### Matching Capture Timestamps to Logs
+
+Wireshark shows packet timestamps in UTC. To line them up with logs from a host in another timezone, launch Wireshark with the `TZ` variable set to the capturing machine's zone:
+
+```bash
+# Display packet times as if in GMT, to match a GMT server's logs
+TZ=GMT wireshark /tmp/dump.pcap &
+```
+
+This is why noting the capturing system's timezone (see best practices above) matters for later correlation.
+
+### Handling Large Capture Files
+
+Wireshark gets sluggish loading/filtering pcaps larger than ~100 MB. Split or pre-filter on the command line first:
+
+```bash
+# Split a large capture into 100 MB chunks
+editcap -c 100000 /tmp/big.pcap /tmp/split.pcap        # by packet count
+tcpdump -r /tmp/big.pcap -w /tmp/subset.pcap host 10.0.0.5   # pre-filter to a subset
+```
 
 ## Related Tools
 

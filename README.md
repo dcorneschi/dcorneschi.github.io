@@ -217,6 +217,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [EC2 Cheatsheet](articles/aws-ec2-cheatsheet.md) | AWS EC2 — instances, AMIs, security groups, EBS, Elastic IPs, metadata, and CLI patterns. |
 | [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md) | Resize EBS volumes and grow filesystems (XFS, ext4, LVM) — no downtime required. |
 | [EC2 Instance Metadata Service (IMDS)](articles/aws-ec2-metadata.md) | IMDS endpoint, IMDSv1 vs IMDSv2, ec2-metadata script, IAM credentials, tags, spot notices, and configuration. |
+| [EC2 User Data: Serving Instance Metadata on a Web Page](articles/ec2-userdata-instance-metadata-webpage.md) | Bootstrap script that installs Apache and renders instance metadata (ID, type, public/private IPs) — IMDSv1 vs IMDSv2 token flow, public/private detection, AL2 vs AL2023/Ubuntu, attaching via CLI/Terraform/console, security groups, and troubleshooting. |
 | [EC2 vs ELB Health Checks](articles/aws-ec2-vs-elb-health-checks.md) | EC2 status checks vs ELB health checks — what each monitors, how they interact with Auto Scaling, and self-healing patterns. |
 | [EBS Cheatsheet](articles/aws-ebs-cheatsheet.md) | EBS volume types, create/attach/resize, snapshots, DLM lifecycle policies, encryption, multi-attach, performance tuning, and monitoring. |
 | [S3 Cheatsheet](articles/aws-s3-cheatsheet.md) | S3 CLI — buckets, objects, sync, presigned URLs, lifecycle, storage classes, versioning, encryption, and performance tuning. |
@@ -287,6 +288,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | Article | Description |
 |---------|--------------|
 | [Vagrant Cheatsheet](articles/vagrant-cheatsheet.md) | VM lifecycle, Vagrantfile, providers, provisioning, networking, multi-machine, plugins, and tips. |
+| [Increasing Vagrant Box Disk Space on Provisioning](articles/vagrant-increase-disk-size-provisioning.md) | Auto-grow an Ubuntu 22.04/24.04 Vagrant box disk at `vagrant up` — vagrant-disksize plugin, Vagrantfile, growpart-based provisioning script, the LVM resize chain (growpart → pvresize → lvextend → resize2fs), ext4/XFS notes, and troubleshooting. |
+| [Adding an SSH Public Key to a Vagrant VM](articles/vagrant-add-ssh-public-key.md) | Four ways to get your public key into a Vagrant box — ssh-copy-id, inline shell provisioner (Ruby File read), file provisioner, and reusing Vagrant's key via ssh-config — with a comparison table, verification, Ansible connectivity check, and troubleshooting. |
 | [Installing KVM](articles/kvm-installation.md) | KVM installation on RHEL 7–10 and Ubuntu 22.04/24.04 — packages, networking, storage, and verification. |
 | [KVM / virsh Cheatsheet](articles/kvm-cheatsheet.md) | virsh commands — VM lifecycle, disks, snapshots, networks, pools, migration, and monitoring. |
 | [Adding a New Disk in KVM](articles/kvm-add-disk.md) | Create, attach, partition, format, mount, resize, and detach disks in KVM guests. |
@@ -297,6 +300,12 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Enable SSH Password Auth in Ubuntu Cloud Images](articles/ubuntu-cloud-image-ssh-password.md) | virt-edit and virt-customize to enable password authentication — Ubuntu 20.04 vs 22.04/24.04 config paths, scripts, and verification. |
 | [Converting VMware VMs to KVM](articles/kvm-convert-vmware-to-kvm.md) | virt-v2v — convert from vCenter, OVA, VMDK, Xen, and Hyper-V to KVM with libvirt. |
 | [KVM libguestfs Tools](articles/kvm-libguestfs-tools.md) | virt-edit, virt-cat, virt-customize, virt-sysprep, guestfish — accessing and modifying VM disk images offline. |
+| [VirtualBox CLI Cheatsheet](articles/virtualbox-cheatsheet.md) | VBoxManage commands — VM lifecycle, storage, networking, port forwarding, snapshots, cloning, import/export, guest control, and shared folders. |
+
+### Proxmox
+
+| Article | Description |
+|---------|--------------|
 | [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md) | Proxmox VE — VM/CT management, storage, networking, clusters, and backups. |
 | [Importing OVA/qcow2 into Proxmox](articles/proxmox-import-ova-qcow2.md) | Import VMware OVA, qcow2, and VMDK into Proxmox — qm importdisk, cloud-init, templates, and UEFI. |
 | [Troubleshooting cloud-init on Proxmox](articles/proxmox-cloud-init-troubleshooting.md) | cloud-init debugging — datasource issues, network config, SSH keys, custom snippets, and template preparation. |
@@ -309,7 +318,6 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Migrating VMs and LXC Containers Between Proxmox Nodes](articles/proxmox-migrate-vms-containers.md) | Live vs offline migration — qm/pct commands, bulk pvesh scripting, local-disk migration, bandwidth limits, backup/restore, pre/post checks, and troubleshooting. |
 | [Proxmox xterm.js Serial Console](articles/proxmox-xtermjs-serial-console.md) | Web serial terminal vs noVNC — adding a serial device, guest kernel/getty setup, showing GRUB on serial, catching the boot menu, console= parameters, and troubleshooting. |
 | [Proxmox ACME SSL with Hetzner DNS](articles/proxmox-acme-hetzner-dns.md) | Trusted Let's Encrypt certs via the DNS-01 challenge — ACME account, Hetzner DNS plugin, node domain assignment, ordering (UI and pvenode CLI), auto-renewal, wildcards, and troubleshooting. |
-| [VirtualBox CLI Cheatsheet](articles/virtualbox-cheatsheet.md) | VBoxManage commands — VM lifecycle, storage, networking, port forwarding, snapshots, cloning, import/export, guest control, and shared folders. |
 
 ### Terraform
 
@@ -406,11 +414,13 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [dpkg Cheatsheet](articles/dpkg-cheatsheet.md) | Debian package manager — install, remove, query, verify, hold, diversions, alternatives, and .deb creation. |
 | [apt Cheatsheet](articles/apt-cheatsheet.md) | APT package management — install, upgrade, repositories, pinning, cache, proxy, offline installs, and automation. |
 | [apt vs apt-get](articles/apt-vs-apt-get.md) | When to use each — command mapping, behavioral differences, output stability, and scripting guidelines. |
+| [Fixing "Packages Have Been Kept Back" on Ubuntu](articles/apt-packages-kept-back.md) | Why apt holds packages back — new/changed dependencies, kernel meta-packages, phased updates — plus diagnosing with dry-run, full-upgrade, upgrading specific packages, apt-mark hold vs kept-back, and verification. |
 | [Aptitude Cheatsheet](articles/aptitude-cheatsheet.md) | Aptitude package manager — install, search patterns, TUI, dependency resolution, holds, marks, and comparison with apt. |
 | [debsums Cheatsheet](articles/debsums-cheatsheet.md) | Package integrity verification — MD5 checksums, detecting tampered files, security audits, cron jobs, and reinstalling corrupted packages. |
 | [Snap Cheatsheet](articles/snap-cheatsheet.md) | Snap package manager — install, channels, updates, services, interfaces, confinement, disk management, and removing snapd. |
 | [Ubuntu Repositories Guide](articles/ubuntu-repositories-guide.md) | Main, Universe, Restricted, Multiverse — what's in each, security coverage, sources.list, PPAs, ESM, and package pinning. |
 | [Finding Old Package Versions on Ubuntu](articles/ubuntu-old-package-versions.md) | Why repos don't keep all versions, Launchpad archive, archive pool, downloading old .debs, version pinning, and local caching. |
+| [Installing Node.js on Ubuntu 22.04 and 24.04](articles/install-nodejs-ubuntu.md) | Five install methods — apt default repo, NodeSource repository, nvm, fnm, and Docker — with a comparison table, per-LTS default versions, verification, uninstall steps, and LTS/version guidance. |
 | [Fixing apt Lock Held Errors](articles/apt-lock-held-fix.md) | "Could not get lock" troubleshooting — causes, lock file locations, unattended-upgrades, safe removal, prevention, and noninteractive timeout. |
 | [DEBIAN_FRONTEND for Scripts](articles/debian-frontend-noninteractive.md) | Non-interactive installs — debconf frontends, dpkg config options, preseeding, needrestart, Docker, and CI/CD patterns. |
 | [Linux File Permissions Guide](articles/linux-file-permissions.md) | Permissions, ownership, umask, SUID/SGID, sticky bit, and ACLs. |
@@ -457,6 +467,13 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [sosreport Guide](articles/sosreport-guide.md) | sos utility — generating reports, plugins, targeted collection, sos collect for clusters, obfuscation, xsos analysis, and uploading to Red Hat. |
 | [RHEL Post-Installation Steps](articles/rhel-post-installation.md) | Essential post-install tasks for RHEL 7–10 — registration, networking, SSH, firewall, SELinux, storage, kdump, Insights, and version differences. |
 | [Linux cgroups and Kubernetes](articles/linux-cgroups-kubernetes.md) | How resource requests/limits translate to cgroup v1/v2 settings — cpu.shares, CFS quota, memory.max, OOMKill, QoS class hierarchy, and inspecting cgroups on nodes. |
+
+### Server Hardware and BMC
+
+| Article | Description |
+|---------|--------------|
+| [Dell racadm and OMSA Cheatsheet](articles/dell-racadm-omsa-cheatsheet.md) | Managing Dell PowerEdge servers — racadm iDRAC reset/power/SEL/firmware, server power actions, OMSA omreport/omconfig for storage, RAID hot spares, chassis health, logs, firmware extraction, and racadm vs OMSA guidance. |
+| [HP iLO CLI Cheatsheet (SSH / SMASH CLP)](articles/hp-ilo-cli-cheatsheet.md) | Managing HPE servers over SSH — iLO reset (/map1), fixing a stuck virtual serial port (oemhp_vsp1), power control, firmware upgrade via load -source, CLP target tree, troubleshooting, and an iLO vs iDRAC mapping. |
 
 ### Satellite and Foreman
 
@@ -605,6 +622,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [PuTTY Default Settings](articles/putty-default-settings.md) | Font, bell, colors, window size, and scrollback — settings to apply after a fresh Windows install. |
 | [rclone Cheatsheet](articles/rclone-cheatsheet.md) | Cloud storage CLI — copy, sync, mount, encrypt, serve, filtering, backup patterns, and 70+ backends. |
 | [Homebrew Cheatsheet](articles/homebrew-cheatsheet.md) | macOS package manager — install, update, services, taps, Brewfile, casks, versions, and cleanup. |
+| [Making List View the Default in macOS Finder](articles/macos-finder-default-list-view.md) | Set Finder's default view — global default via Use as Defaults, per-folder persistence, applying to all subfolders with Option → Apply to all, how .DS_Store stores view settings, and troubleshooting. |
+| [Finding and Managing Git Credentials in the macOS Keychain](articles/macos-keychain-git-credentials.md) | Locate and manage HTTPS Git credentials/PATs on macOS — Keychain Access GUI, the security CLI, Git's osxkeychain helper (fill/approve/reject), updating/removing rotated tokens, storing non-interactively, troubleshooting, and security notes. |
 | [lssh Cheatsheet](articles/lssh-cheatsheet.md) | SSH connection manager — TUI host picker, parallel execution, mux workspaces, file transfer, cloud inventory, and monitoring. |
 | [VS Code Git Actions and Git CLI Equivalents](articles/vscode-git-cli-equivalents.md) | Mapping VS Code Source Control actions to git commands — staging/committing, branches, sync/pull/push, history, stashing, undo, tags, and merge conflicts. |
 | [Kiro CLI Cheatsheet](articles/kiro-cli-cheatsheet.md) | Kiro's terminal AI CLI — install, login/logout, starting and resuming chat sessions, --agent, in-session slash commands (/editor, /save, /load, /settings), and key concepts (agents, MCP, steering, hooks). |
