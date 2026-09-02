@@ -642,6 +642,25 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Windows Tips and Commands](articles/windows-tips-commands.md) | Useful commands — perfmon, winsat, diskpart, Test-NetConnection, hosts file, resmon, gpupdate, and Java config. |
 | [Outlook Instant Search Syntax](articles/outlook-search-syntax.md) | Search query syntax — operators, from/to/cc, attachments, dates, size filters, flags, calendar, and contacts. |
 
+### Solaris
+
+| Article | Description |
+|---------|--------------|
+| [Solaris Disk and Filesystem Management](articles/solaris-disk-management.md) | Adding and slicing disks on Oracle Solaris — SPARC vs x86 slicing, cCtTdDsS device naming, format/prtvtoc/devfsadm, the new-disk UFS workflow with newfs and /etc/vfstab, preparing a whole disk for ZFS, and default UFS mount options. |
+| [Solaris Zones](articles/solaris-zones.md) | OS-level virtualization (containers) — global vs non-global zones, isolation model, the z* command set, and the full lifecycle: zonecfg configuration, zoneadm install/boot, zlogin modes, removing a zone, and removing a zone network interface. |
+| [Solaris Boot Management: OpenBoot, eeprom, and bootadm](articles/solaris-boot-openboot.md) | Booting Solaris on SPARC and x86 — OpenBoot PROM boot commands (boot -s/-a/-r, cdrom), device tree/aliases (show-devs, devalias), NVRAM parameters via printenv/setenv and eeprom, and the x86 GRUB boot archive with bootadm. |
+| [Solaris SVR4 Package Management](articles/solaris-svr4-package-management.md) | Classic pkgadd/pkgrm/pkginfo/pkgchk tooling (Solaris 10 and earlier) — file system vs data stream formats, the /var/sadm databases, querying/installing/verifying/removing packages, installing from CD/DVD, spool, data stream and HTTP, and an IPS note for Solaris 11. |
+| [Solaris 10 Patch Management](articles/solaris-patch-management.md) | patchadd/patchrm/showrev — checking installed patches, applying/removing individual patches (including -d and IDR patches), patch log locations, and installing a Recommended Patch Cluster with installcluster on Solaris 10 x86. |
+| [Solaris SMF (Service Management Facility) and Cron](articles/solaris-smf-services.md) | Managing services with SMF — svcs/svcadm/svccfg, FMRI identifier categories, instance states (online/offline/maintenance/degraded/...), the repository.db and /var/svc/log, restore_repository, plus Solaris cron access control (cron.allow/deny) and files. |
+| [Solaris System Information and Inventory](articles/solaris-system-information.md) | Identifying a Solaris box — /etc/release, showrev, uname, prtconf memory, prtdiag hardware diagnostics, psrinfo CPU, svcs -o FMRI,DESC, the install CLUSTER metacluster and install_log, and a "what is this box?" snapshot script. |
+| [Solaris Tips and Tricks](articles/solaris-tips-and-tricks.md) | Small everyday fixes — correcting the Backspace/erase character with stty, setting the TERM terminal type per shell (sh/ksh/bash/csh), and installing VirtualBox Guest Additions in a Solaris guest with pkgadd -G. |
+| [Solaris 11 IPS: Local Package Repository and pkg Management](articles/solaris-ips-pkg-repository.md) | Image Packaging System on Solaris 11 — hosting a local IPS repo (ZFS dataset, application/pkg/server depot), client publishers, applying monthly SRUs, updating with or without a network repo (file:// origin), the pkg command set, and IPS vs SVR4. |
+| [Solaris Performance and Resource Monitoring](articles/solaris-performance-monitoring.md) | CPU, memory, and swap monitoring — prstat (per-user/zone/project, sort by RSS), swap -l vs swap -s, psrinfo -pv CPU inventory, ::memstat via mdb, a command reference, and a Linux-to-Solaris tool mapping. |
+| [Solaris Network Configuration Files](articles/solaris-network-configuration.md) | The /etc files that drive networking — hostname.<if>, defaultrouter, netmasks, inet/hosts, resolv.conf, nodename, nsswitch.conf, defaultdomain — plus svcadm restart network/physical, netstat -D, sys-unconfig, wiring a static IPv4 host, and the Solaris 11 ipadm/dladm equivalents. |
+| [Solaris 11: Configure a Static IP with ipadm and dladm](articles/solaris11-static-ip-ipadm.md) | Switching from DHCP/NWAM to a fixed address on Solaris 11 — netadm DefaultFixed profile, dladm/ipadm interface and static address, persistent default route, DNS and nsswitch via svccfg/SMF, verification, and a legacy-vs-ipadm mapping. |
+| [Oracle Solaris 11 Installation Methods](articles/solaris11-installation-methods.md) | Interactive vs automated installs — Live Media (x86), the text installer (x86 and SPARC), the Automated Installer (AI) with manifests and sysconfig profiles, choosing an installer, and the install_log location. |
+| [Solaris User and Password Administration](articles/solaris-user-password-administration.md) | Account and password management — passwd status/lock/unlock/force-change/aging, useradd -D defaults, the /etc account and policy files (shadow, default/passwd, default/login, policy.conf, user_attr), account lockout, and reserved UID ranges. |
+
 ### AIX
 
 | Article | Description |
