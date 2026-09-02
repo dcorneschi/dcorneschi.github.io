@@ -388,7 +388,6 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Bash Single vs Double Brackets](articles/bash-single-vs-double-brackets.md) | `[ ]` vs `[[ ]]` in depth — word splitting, globbing, pattern matching, regex, logical operators, pitfalls, and best practices. |
 | [Bash Subshells](articles/bash-subshells-guide.md) | How subshells work, the pipeline variable problem, isolation patterns, and performance tips. |
 | [Bash Troubleshooting Guide](articles/bash-troubleshooting-guide.md) | Bash debugging — `set -x`, `set -euo pipefail`, PS4, and tracing. |
-| [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md) | Installing a newer bash on macOS (ships with outdated 3.2.x). |
 | [sed Replace Line Guide](articles/sed-replace-line-guide.md) | Using `sed` to replace entire lines based on a string match. |
 | [Running Multiple Commands with sudo](articles/sudo-multiple-commands.md) | Subshells, heredocs, logical operators, pipes, and running as a specific user. |
 | [sudoers Guide](articles/sudo-sudoers-guide.md) | Granting access to users, groups, and LDAP; aliases, Defaults, logging, and tips. |
@@ -462,7 +461,6 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux Kernel Map](articles/linux-kernel-map.md) | Kernel subsystems overview — process, memory, VFS, network, drivers, security, source tree, boot process, and tuning. |
 | [Linux SysRq Guide](articles/linux-sysrq-guide.md) | Magic SysRq Key — REISUB safe reboot, emergency commands, debugging a hung system, and serial console usage. |
 | [Linux ulimit Guide](articles/linux-ulimit-guide.md) | Per-process resource limits, limits.conf, systemd directives, sysctl, and troubleshooting. |
-| [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) | Remove and prevent .DS_Store files from being tracked in git. |
 | [LD_LIBRARY_PATH and Shared Libraries](articles/linux-ld-library-path.md) | Dynamic linker search order, LD_LIBRARY_PATH usage and risks, ldconfig, compiling in $HOME, and best practices. |
 | [sosreport Guide](articles/sosreport-guide.md) | sos utility — generating reports, plugins, targeted collection, sos collect for clusters, obfuscation, xsos analysis, and uploading to Red Hat. |
 | [RHEL Post-Installation Steps](articles/rhel-post-installation.md) | Essential post-install tasks for RHEL 7–10 — registration, networking, SSH, firewall, SELinux, storage, kdump, Insights, and version differences. |
@@ -621,13 +619,20 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [JetBrains Mono Font](articles/jetbrains-mono-font.md) | Free monospaced font designed for terminals and code editors. |
 | [PuTTY Default Settings](articles/putty-default-settings.md) | Font, bell, colors, window size, and scrollback — settings to apply after a fresh Windows install. |
 | [rclone Cheatsheet](articles/rclone-cheatsheet.md) | Cloud storage CLI — copy, sync, mount, encrypt, serve, filtering, backup patterns, and 70+ backends. |
-| [Homebrew Cheatsheet](articles/homebrew-cheatsheet.md) | macOS package manager — install, update, services, taps, Brewfile, casks, versions, and cleanup. |
-| [Making List View the Default in macOS Finder](articles/macos-finder-default-list-view.md) | Set Finder's default view — global default via Use as Defaults, per-folder persistence, applying to all subfolders with Option → Apply to all, how .DS_Store stores view settings, and troubleshooting. |
-| [Finding and Managing Git Credentials in the macOS Keychain](articles/macos-keychain-git-credentials.md) | Locate and manage HTTPS Git credentials/PATs on macOS — Keychain Access GUI, the security CLI, Git's osxkeychain helper (fill/approve/reject), updating/removing rotated tokens, storing non-interactively, troubleshooting, and security notes. |
 | [lssh Cheatsheet](articles/lssh-cheatsheet.md) | SSH connection manager — TUI host picker, parallel execution, mux workspaces, file transfer, cloud inventory, and monitoring. |
 | [VS Code Git Actions and Git CLI Equivalents](articles/vscode-git-cli-equivalents.md) | Mapping VS Code Source Control actions to git commands — staging/committing, branches, sync/pull/push, history, stashing, undo, tags, and merge conflicts. |
 | [Kiro CLI Cheatsheet](articles/kiro-cli-cheatsheet.md) | Kiro's terminal AI CLI — install, login/logout, starting and resuming chat sessions, --agent, in-session slash commands (/editor, /save, /load, /settings), and key concepts (agents, MCP, steering, hooks). |
 | [Understanding Context Usage in AI Assistants](articles/ai-context-usage-explained.md) | How the context window works — tokens, what consumes context, truncation and "lost in the middle", compaction/summarization, and practical habits for keeping AI answers accurate. |
+
+### macOS
+
+| Article | Description |
+|---------|--------------|
+| [Homebrew Cheatsheet](articles/homebrew-cheatsheet.md) | macOS package manager — install, update, services, taps, Brewfile, casks, versions, and cleanup. |
+| [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md) | Installing a newer bash on macOS (ships with outdated 3.2.x). |
+| [Making List View the Default in macOS Finder](articles/macos-finder-default-list-view.md) | Set Finder's default view — global default via Use as Defaults, per-folder persistence, applying to all subfolders with Option → Apply to all, how .DS_Store stores view settings, and troubleshooting. |
+| [Finding and Managing Git Credentials in the macOS Keychain](articles/macos-keychain-git-credentials.md) | Locate and manage HTTPS Git credentials/PATs on macOS — Keychain Access GUI, the security CLI, Git's osxkeychain helper (fill/approve/reject), updating/removing rotated tokens, storing non-interactively, troubleshooting, and security notes. |
+| [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) | Remove and prevent .DS_Store files from being tracked in git. |
 
 ### Windows
 

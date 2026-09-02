@@ -18,4 +18,5 @@
 - [Cloud-Init](README.md#cloud-init)
 - [Datadog](README.md#datadog)
 - [Terminal and Tools](README.md#terminal-and-tools)
+- [macOS](README.md#macos)
 - [Windows](README.md#windows)
