@@ -360,6 +360,13 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Ansible Roles Directory Structure](articles/ansible-roles-directory-structure.md) | Role directory layout — tasks, handlers, templates, files, vars, defaults, meta, library, plugins, variable priority, and execution flow. |
 | [ansible-lint Guide](articles/ansible-lint-guide.md) | Linting playbooks — install, profiles (min to production), common rules and fixes, inline skipping, config file, CI/CD integration, and before/after examples. |
 
+### GitLab and GitHub
+
+| Article | Description |
+|---------|--------------|
+| [GitLab vs GitHub Cheatsheet](articles/gitlab-vs-github-cheatsheet.md) | Side-by-side reference — terminology map, hosting/editions, CI/CD comparison with example pipelines, permissions/roles, git remotes and auth, `gh` vs `glab` CLI, REST API quick reference, webhooks, and features that don't map cleanly. |
+| [Testing a GitLab Runner with a Standalone Pipeline](articles/gitlab-runner-test-pipeline.md) | Safe, no-credentials smoke test for a GitLab Runner — runner-info, basic shell, internet and GitLab reachability checks, running a non-default CI config file, reading results, common failure modes, and YAML validation. |
+
 ### Bash and Shell
 
 | Article | Description |
