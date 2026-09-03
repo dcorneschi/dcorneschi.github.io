@@ -28,8 +28,18 @@ kubectl config current-context                   # Display the current-context
 kubectl config get-contexts                      # Display all contexts
 kubectl config use-context <context_name>        # Switch context
 kubectl config delete-context <context_name>     # Delete a context
+kubectl config view --raw                        # Merged config WITH raw cert data and secrets
+kubectl config get-contexts -o name              # Just the context names
+kubectl config set-cluster <name> --proxy-url=<url>            # Set a proxy for a cluster entry
+kubectl config set-credentials <user> --username=<u> --password=<p>   # Add a basic-auth user
+kubectl config unset users.<user>                # Delete a user entry
 kubectl api-resources                            # Supported API resources
 kubectl api-versions                             # Supported API versions
+kubectl get --raw "/" | jq                       # List all API endpoints exposed by the server
+kubectl explain <resource>                       # Docs for a resource (e.g. pods, svc, deploy)
+kubectl explain pod.spec.containers              # Docs for a nested field
+kubectl apply -R -f .                            # Recursively apply all manifests in a directory tree
+kubectl get cs --kubeconfig <file>              # Use an alternate kubeconfig for one command
 kubectl auth can-i --list                        # List all your permissions
 ```
 
@@ -193,6 +203,8 @@ kubectl rollout status deployment nginx-deployment
 kubectl rollout history deploy coredns -n kube-system
 kubectl rollout undo deploy <deployment-name> -n <namespace>
 kubectl rollout undo deploy <deployment-name> --to-revision=50 -n <namespace>
+kubectl rollout pause deploy <deployment-name> -n <namespace>    # Pause an in-progress rollout
+kubectl rollout resume deploy <deployment-name> -n <namespace>   # Resume a paused rollout
 ```
 
 ## Namespaces
@@ -238,6 +250,9 @@ kubectl scale deployment <deployment-name> -n kube-system --replicas=2
 
 ```sh
 kubectl get statefulset -A
+kubectl get sts
+kubectl scale sts/<statefulset-name> --replicas=5              # Scale a StatefulSet
+kubectl delete sts/<statefulset-name> --cascade=false         # Delete the StatefulSet but leave its pods running
 ```
 
 ## Services
@@ -258,6 +273,15 @@ kubectl get configmap -n kube-system
 kubectl describe configmap aws-auth -n kube-system
 kubectl describe configmap coredns -n kube-system
 kubectl get configmap coredns -n kube-system -o yaml
+
+# Create ConfigMaps imperatively
+kubectl create configmap app-config --from-literal=ENV=production
+kubectl create configmap app-config --from-literal=ENV=prod --from-literal=TIER=web
+kubectl create configmap app-config --from-file=config.properties
+kubectl create configmap app-config --from-file=./config-dir/     # All files in a directory
+
+# List configmaps and secrets together
+kubectl get configmaps,secrets -n <namespace>
 ```
 
 ## Secrets
@@ -265,6 +289,17 @@ kubectl get configmap coredns -n kube-system -o yaml
 ```sh
 kubectl get secrets -A
 kubectl describe secrets <secret-name> -n <namespace>
+
+# Create a generic secret with multiple keys
+kubectl create secret generic db-creds \
+  --from-literal=username=admin \
+  --from-literal=password=secret123
+
+# Create a secret from files
+kubectl create secret generic db-creds --from-file=./username.txt --from-file=./password.txt
+
+# Decode a single field
+kubectl get secret db-creds -o jsonpath='{.data.password}' | base64 -d
 ```
 
 ## Service Accounts
@@ -348,6 +383,10 @@ kubectl auth can-i --list --as=system:serviceaccount:default:my-sa
 kubectl set env daemonset aws-node -n kube-system AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG=true
 kubectl set env daemonset aws-node -n kube-system ENI_CONFIG_LABEL_DEF=topology.kubernetes.io/zone
 kubectl set env daemonset aws-node -n kube-system ENABLE_PREFIX_DELEGATION=true
+kubectl set env daemonset aws-node -n kube-system WARM_IP_TARGET=10
+
+# Verify a value was set
+kubectl get ds aws-node -n kube-system -o yaml | grep -A1 WARM_IP_TARGET
 ```
 
 ## kubectl Verbosity
@@ -435,11 +474,20 @@ kubectl label pods my-pod env=staging --overwrite
 # Remove a label
 kubectl label pods my-pod env-
 
+# Set-based label selectors (in / notin / exists)
+kubectl get pods -A -l 'env in (production, development)'   # Value in a set
+kubectl get pods -A -l 'env notin (staging)'                # Value not in a set
+kubectl get pods -A -l 'env'                                # Label key exists
+kubectl get pods -A -l '!env'                               # Label key does NOT exist
+
 # Add an annotation
 kubectl annotate pods my-pod description="my app"
 
 # Remove an annotation
 kubectl annotate pods my-pod description-
+
+# Find pods that have a specific annotation KEY (existence check, any value)
+kubectl get pods -A -o json | jq -r '.items[].metadata | select(.annotations | has("kubernetes.io/psp")) | [.namespace, .name] | @tsv'
 ```
 
 ## Patching Resources
@@ -453,6 +501,10 @@ kubectl patch pod my-pod -p '{"spec":{"containers":[{"name":"app","image":"nginx
 
 # JSON patch (positional array)
 kubectl patch pod my-pod --type='json' -p='[{"op":"replace","path":"/spec/containers/0/image","value":"nginx:1.25"}]'
+
+# JSON patch — append to an array with the "-" token (e.g. add an env var to a container)
+kubectl patch daemonset aws-node -n kube-system --type='json' \
+  -p='[{"op":"add","path":"/spec/template/spec/containers/0/env/-","value":{"name":"WARM_IP_TARGET","value":"5"}}]'
 
 # Patch a deployment's replicas via scale subresource
 kubectl patch deployment nginx --subresource='scale' --type='merge' -p '{"spec":{"replicas":3}}'
@@ -880,4 +932,286 @@ kubectl config view --minify -o jsonpath='{..namespace}'
 kubectl get endpoints
 kubectl get endpoints <service-name>
 kubectl get endpoints -A
+```
+## Advanced jq Queries
+
+```sh
+# Ports < 1024 for all containers across all pods (privileged ports)
+kubectl get pod -A -o json | jq 'try(.items[] | select((.spec.containers[].ports != null) and (.spec.containers[].ports[].containerPort < 1024)) | { "name": .metadata.name, "namespace": .metadata.namespace, "ports": .spec.containers[].ports[].containerPort })'
+
+# Pods with a specific nodeSelector key — print the pod name and the selector value
+kubectl get pods -o json | jq '.items[] | select(.spec.nodeSelector | has("<selector-key>")) | [.metadata.name, .spec.nodeSelector["<selector-key>"]] | @tsv' -r
+
+# All pods running on a specific node (jq form)
+kubectl get po -A -o json | jq '.items[] | select(.spec.nodeName == "<node-name>") | .metadata.name'
+
+# All images across all namespaces, sorted by how many times each is used
+kubectl get pods --all-namespaces -o jsonpath="{..image}" | tr -s '[[:space:]]' '\n' | sort | uniq -c | sort
+
+# ServiceAccount annotations (namespace, name, annotations)
+kubectl get sa -o json | jq '.items[].metadata | select(.annotations) | {"namespace": .namespace, "name": .name, "annotations": .annotations}'
+
+# Any resource type carrying a specific label
+kubectl get all -A -o json | jq '.items[] | select(.metadata.labels["<label-key>"] == "<label-value>") | [.metadata.name, .kind] | @tsv' -r
+```
+## Context and Kubeconfig Inspection
+
+```sh
+kubectl config view -o jsonpath='{.users[].name}'    # First user in kubeconfig
+kubectl config view -o jsonpath='{.users[*].name}'   # All users
+```
+
+## More Node & Pod Queries
+
+```sh
+# ExternalIPs of all nodes
+kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}'
+
+# All worker nodes (exclude control-plane via negated label selector)
+kubectl get node --selector='!node-role.kubernetes.io/control-plane'
+
+# Which nodes are Ready
+JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}' \
+  && kubectl get nodes -o jsonpath="$JSONPATH" | grep "Ready=True"
+
+# Version label of all pods matching a selector
+kubectl get pods --selector=app=<app-label> -o jsonpath='{.items[*].metadata.labels.version}'
+
+# Secrets currently in use by pods (via secretKeyRef)
+kubectl get pods -o json | jq '.items[].spec.containers[].env[]?.valueFrom.secretKeyRef.name' | grep -v null | sort | uniq
+
+# containerIDs of all initContainers across every pod (cleanup helper)
+kubectl get pods --all-namespaces -o jsonpath='{range .items[*].status.initContainerStatuses[*]}{.containerID}{"\n"}{end}' | cut -d/ -f3
+
+# Names of pods belonging to a particular ReplicationController
+sel=${$(kubectl get rc <rc-name> --output=json | jq -j '.spec.selector | to_entries | .[] | "\(.key)=\(.value),"')%?}
+echo $(kubectl get pods --selector=$sel --output=jsonpath={.items..metadata.name})
+
+# Run a command (e.g. env) across all pods that have a default container
+for pod in $(kubectl get po --output=jsonpath={.items..metadata.name}); do echo $pod && kubectl exec -it $pod -- env; done
+```
+
+## Events (newer `kubectl events` command)
+
+```sh
+kubectl events --types=Warning                       # Only warning events
+```
+
+## Subresources
+
+```sh
+kubectl get deployment <deployment-name> --subresource=status   # Status subresource
+```
+
+## Replacing Resources
+
+```sh
+# Replace a resource from stdin
+cat pod.json | kubectl replace -f -
+
+# Force replace (delete + recreate — causes a service outage)
+kubectl replace --force -f ./pod.json
+
+# Bump a single-container pod's image tag in place
+kubectl get pod <pod-name> -o yaml | sed 's/\(image: <image>\):.*$/\1:v4/' | kubectl replace -f -
+
+# Expose a ReplicationController as a Service (port 80 → container 8000)
+kubectl expose rc <rc-name> --port=80 --target-port=8000
+```
+
+## Scaling Resources
+
+```sh
+kubectl scale --replicas=3 rs/<name>                                # Scale a ReplicaSet
+kubectl scale --replicas=3 -f foo.yaml                              # Scale a resource defined in a file
+kubectl scale --current-replicas=2 --replicas=3 deployment/<name>   # Conditional scale (only if current == 2)
+kubectl scale --replicas=5 rc/foo rc/bar rc/baz                     # Scale multiple controllers at once
+```
+
+## More JSON Patch Operations
+
+```sh
+# Remove an element (e.g. disable a livenessProbe)
+kubectl patch deployment <name> --type json -p='[{"op": "remove", "path": "/spec/template/spec/containers/0/livenessProbe"}]'
+
+# Add an element at a specific positional array index
+kubectl patch sa default --type='json' -p='[{"op": "add", "path": "/secrets/1", "value": {"name": "<secret-name>"}}]'
+```
+
+## More Ways to Run & Attach to Pods
+
+```sh
+kubectl run -i --tty busybox --image=busybox:1.28 -- sh            # Run a throwaway interactive pod
+kubectl run nginx --image=nginx --dry-run=client -o yaml > pod.yaml # Generate a pod spec to a file
+kubectl attach <pod-name> -i                                       # Attach to a running container
+kubectl exec --stdin --tty <pod-name> -- /bin/sh                   # Interactive shell (single-container)
+kubectl exec <pod-name> -c <container-name> -- ls /                # Run command in a specific container
+```
+## Component Status
+
+```sh
+kubectl get componentstatus                          # scheduler, controller-manager, etcd health
+```
+
+## Aggregate Resource Usage (metrics-server)
+
+```sh
+# Total memory usage across all pods
+kubectl top po -A | awk '{print $4}' | sed 1d | tr -d 'Mi' | \
+  awk 'BEGIN {total=0}{total+=$1}END {print "Total Memory Usage of all Pods:", total, "Mi"}'
+
+# Total CPU usage across all pods
+kubectl top po -A | awk '{print $3}' | sed 1d | tr -d 'm' | \
+  awk 'BEGIN {total=0}{total+=$1}END {print "Total CPU Usage of all Pods:", total, "m"}'
+
+# Total memory usage of all running pods on a specific node
+kubectl get po -A --field-selector spec.nodeName=<node-name>,status.phase==Running -o wide | sed 1d | awk '{print $1" "$2}' | \
+  while read namespace pod; do kubectl top pods --no-headers --namespace $namespace $pod; done | \
+  awk '{print $3}' | tr -d 'Mi' | awk 'BEGIN {total=0}{total+=$1}END {print "Total Memory on this Node:", total, "Mi"}'
+
+# Total CPU usage of all running pods on a specific node
+kubectl get po -A --field-selector spec.nodeName=<node-name>,status.phase==Running -o wide | sed 1d | awk '{print $1" "$2}' | \
+  while read namespace pod; do kubectl top pods --no-headers --namespace $namespace $pod; done | \
+  awk '{print $2}' | tr -d 'm' | awk 'BEGIN {total=0}{total+=$1}END {print "Total CPU on this Node:", total, "m"}'
+```
+
+## EKS Add-On Troubleshooting (CoreDNS / VPC CNI / kube-proxy)
+
+```sh
+# List CoreDNS pods and the nodes they run on
+kubectl get pod -n kube-system -o wide -l eks.amazonaws.com/component=coredns
+kubectl get po -n kube-system -l k8s-app=kube-dns -o wide
+
+# Grab a CoreDNS pod name and query its Prometheus metrics via the API proxy
+COREDNS_POD=$(kubectl get pod -n kube-system -l eks.amazonaws.com/component=coredns -o jsonpath='{.items[0].metadata.name}')
+kubectl get --raw /api/v1/namespaces/kube-system/pods/$COREDNS_POD:9153/proxy/metrics | grep 'coredns_dns_request_count_total'
+
+# CoreDNS configmap and deployment
+kubectl get cm coredns -o yaml -n kube-system
+kubectl -n kube-system get deploy coredns -o yaml
+
+# Add-on versions (extract image tag)
+kubectl describe deployment coredns  --namespace kube-system | grep Image | cut -d "/" -f 3    # CoreDNS
+kubectl describe daemonset aws-node   --namespace kube-system | grep Image | cut -d "/" -f 2    # VPC CNI
+kubectl describe daemonset kube-proxy --namespace kube-system | grep Image | cut -d "/" -f 3    # kube-proxy
+
+# Dump logs from all CoreDNS pods
+for p in $(kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name); do kubectl logs --namespace=kube-system $p; done
+
+# Extract CoreDNS logs from every pod into a file
+for i in $(kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name); do echo $i; kubectl logs -n kube-system $i -c coredns >> corednslogs.txt; done
+
+# Dump logs from all running aws-node (VPC CNI) pods
+for i in $(kubectl get pods -n kube-system -o wide -l k8s-app=aws-node | egrep "aws-node" | grep Running | awk '{print $1}'); do echo $i; kubectl logs $i -n kube-system; echo; done
+```
+## Resource Types & API Objects
+
+```sh
+kubectl get crd                                  # List all CustomResourceDefinitions
+kubectl get storageclass                         # List storage classes
+kubectl get resourcequota -A                     # List resource quotas
+kubectl get limitrange -A                        # List limit ranges
+kubectl get csr                                  # List certificate signing requests
+kubectl get networkpolicy -A                     # List network policies
+```
+
+## Quotas, Limits & Resource Requests
+
+```sh
+# Set container resource limits on a deployment
+kubectl set resources deployment nginx -c=nginx --limits=cpu=200m
+kubectl set resources deployment nginx -c=nginx --limits=cpu=200m,memory=512Mi
+
+# Set requests as well as limits
+kubectl set resources deployment nginx -c=nginx --requests=cpu=100m,memory=256Mi --limits=cpu=500m,memory=512Mi
+```
+
+## Exposing Services
+
+```sh
+# Expose a deployment as a LoadBalancer service
+kubectl expose deployment/my-app --type=LoadBalancer --name=my-service
+
+# Expose an existing service as a new LoadBalancer service
+kubectl expose service/my-svc --type=LoadBalancer --name=my-lb
+
+# Patch an existing service to type LoadBalancer
+kubectl patch svc <service-name> -p '{"spec":{"type":"LoadBalancer"}}'
+
+# Get a service's ClusterIP / first port via go-template
+kubectl get service <service-name> -o go-template='{{.spec.clusterIP}}'
+kubectl get service <service-name> -o go-template='{{(index .spec.ports 0).port}}'
+```
+
+## Watching & Extra Port-Forward Targets
+
+```sh
+kubectl get pods -n <namespace> --watch            # Stream pod state changes
+kubectl port-forward rs/<replicaset-name> 6379:6379   # Port-forward to a ReplicaSet
+```
+
+## Pod initContainer Status
+
+```sh
+# Print the initContainer statuses for a pod
+kubectl get pod <pod-name> --template '{{.status.initContainerStatuses}}'
+```
+## Resource Shortnames
+
+Common shortnames accepted anywhere a resource type is expected (e.g. `kubectl get po`):
+
+| Shortname | Full resource |
+|-----------|---------------|
+| `po` | pods |
+| `deploy` | deployments |
+| `rs` | replicasets |
+| `svc` | services |
+| `ns` | namespaces |
+| `cm` | configmaps |
+| `pv` | persistentvolumes |
+| `pvc` | persistentvolumeclaims |
+| `ing` | ingresses |
+| `no` | nodes |
+| `sa` | serviceaccounts |
+| `ds` | daemonsets |
+| `sts` | statefulsets |
+| `netpol` | networkpolicies |
+
+```sh
+kubectl api-resources    # Authoritative list of all types + their shortnames
+```
+
+## Ephemeral & Throwaway Debug Pods
+
+```sh
+# Attach an ephemeral debug container to a running pod, sharing a target container's namespace (K8s 1.25+)
+kubectl debug -it <pod-name> --image=busybox --target=<container-name>
+
+# One-off throwaway pod for DNS resolution checks (auto-deleted on exit)
+kubectl run debug --rm -it --image=busybox -- nslookup kubernetes
+
+# One-off throwaway pod for HTTP connectivity checks
+kubectl run debug --rm -it --image=curlimages/curl -- curl -v http://<service>:80
+```
+
+## Quick Diagnostic Greps
+
+```sh
+# Just the Events block from a describe
+kubectl describe pod <pod-name> | grep -A10 "Events:"
+
+# Container state (handy for CrashLoopBackOff)
+kubectl describe pod <pod-name> | grep -A5 "State:"
+
+# Allocated resources per node
+kubectl describe nodes | grep -A5 "Allocated resources"
+
+# Recent events, newest last
+kubectl get events --sort-by='.lastTimestamp' | tail -30
+```
+
+## Expose as ClusterIP
+
+```sh
+kubectl expose deploy nginx --port=80 --type=ClusterIP     # Default service type (internal only)
 ```
