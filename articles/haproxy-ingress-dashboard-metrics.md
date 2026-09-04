@@ -29,17 +29,17 @@ Backend slow/down → HAProxy queues fill → Sessions saturate → ALB gets 5xx
 
 ```
                          HAProxy Ingress Controller
-              ┌─────────────────────────────────────────────────┐
-              │                                                 │
-              │   FRONTEND              BACKEND                 │
-              │   (_front_https)        (per service)           │
-              │                                                 │
-Client ──▶ ALB ──▶│  Accepts traffic  │──▶│  Routes to pods  │──▶ Pods
-              │   Sessions & limits     │   Connect & respond   │
-              │   Request rate          │   Queue management    │
-              │   Total responses       │   Per-service errors  │
-              │                                                 │
-              └─────────────────────────────────────────────────┘
+                   ┌─────────────────────────────────────────────────┐
+                   │                                                 │
+                   │   FRONTEND              BACKEND                 │
+                   │   (_front_https)        (per service)           │
+                   │                                                 │
+ Client ──▶ ALB ──▶│   Accepts traffic    ──▶│  Routes to pods       │──▶ Pods
+                   │   Sessions & limits     │   Connect & respond   │
+                   │   Request rate          │   Queue management    │
+                   │   Total responses       │   Per-service errors  │
+                   │                                                 │
+                   └─────────────────────────────────────────────────┘
 ```
 
 | | **Frontend** | **Backend** |
