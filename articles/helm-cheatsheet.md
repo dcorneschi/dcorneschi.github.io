@@ -253,12 +253,14 @@ Release information is stored in Kubernetes, not on your local machine.
 |---------|---------|
 | `helm status metrics-server -n kube-system` | Show release details |
 | `helm status metrics-server -n kube-system --revision 2` | Show release status at a specific revision |
+| `helm status metrics-server -o json \| jq -r .info.status` | Scriptable release status (clean for CI gates vs. parsing human output) |
 | `helm get values metrics-server -n kube-system` | Get user-supplied values |
 | `helm get values metrics-server -n kube-system --all` | Get all values used by release (including defaults) |
 | `helm get values metrics-server -n kube-system --output json` | Get user-supplied values as JSON |
 | `helm get values metrics-server -n kube-system --revision 2` | Get values from a specific revision |
 | `helm get manifest metrics-server -n kube-system` | Get release manifest (rendered YAML) |
 | `helm get manifest metrics-server -n kube-system --revision 2` | Get manifest at specific revision |
+| `diff <(helm get manifest r --revision 3) <(helm get manifest r --revision 4)` | Diff what two revisions deployed — precise "what changed between these upgrades" (no plugin) |
 | `helm get notes metrics-server -n kube-system` | Get release notes |
 | `helm get hooks metrics-server -n kube-system` | Download hooks for a release |
 | `helm get all metrics-server -n kube-system` | Get all information about a named release |
@@ -385,6 +387,8 @@ helm install metrics-server ./metrics-server-3.12.2.tgz
 | `helm plugin install https://github.com/fabmation-gmbh/helm-whatup` | Install helm-whatup plugin (check outdated releases) |
 | `helm plugin install https://github.com/chartmuseum/helm-push` | Install helm-push plugin (push charts to ChartMuseum) |
 | `helm plugin install https://github.com/hypnoglow/helm-s3` | Install helm-s3 plugin (use AWS S3 as chart repo) |
+| `helm plugin install https://github.com/helm/helm-mapkubeapis` | Install mapkubeapis plugin — rewrites release metadata referencing removed Kubernetes APIs |
+| `helm mapkubeapis metrics-server -n kube-system` | Fix upgrades failing with "unable to build kubernetes objects" after a cluster API removal |
 | `helm plugin list` | List installed plugins |
 | `helm plugin update diff` | Update a plugin |
 | `helm plugin uninstall diff` | Uninstall a plugin |
