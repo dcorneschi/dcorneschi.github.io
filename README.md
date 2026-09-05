@@ -206,6 +206,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Docker Overlay2 Storage Driver](articles/docker-overlay2-storage.md) | Overlay2 internals — LowerDir, UpperDir, MergedDir, copy-on-write, layer inspection, disk usage, configuration, and troubleshooting. |
 | [Installing Podman on RHEL 7–10](articles/podman-installation-rhel.md) | Podman installation across RHEL versions — rootless setup, registries, storage, Docker migration, Quadlet, systemd integration, and troubleshooting. |
 | [Fixing Critical Vulnerabilities in Public Docker Images](articles/docker-fix-critical-vulnerabilities.md) | Scanning with Trivy, Grype, and Docker Scout — fixable vs unfixable CVEs, base image updates, distroless, OS/app package patching, runtime mitigation, suppression, and CI gating. |
+| [Docker Management UIs: Portainer vs Dockge vs Dockhand and Others](articles/docker-management-uis-comparison.md) | Comparing self-hosted Docker web UIs — Portainer, Dockge, Dockhand, Arcane, Komodo, Sencho, and Yacht — scope, multi-host, Compose-on-disk, vulnerability scanning, SSO, licensing, and a decision guide. |
 
 ### AWS
 
