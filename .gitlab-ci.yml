@@ -1,0 +1,17 @@
+stages:
+  - sync
+
+sync-from-github:
+  stage: sync                                   # a normal stage, not .pre/.post
+  image: alpine:latest
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'   # automated schedule
+    - if: '$CI_PIPELINE_SOURCE == "web"'        # manual "Run pipeline" button
+  variables:
+    GIT_STRATEGY: none                          # we manage git ourselves
+  before_script:
+    - apk add --no-cache git
+  script:
+    - git clone --mirror https://github.com/dcorneschi/dcorneschi.github.io.git repo.git
+    - cd repo.git
+    - git push --mirror "https://oauth2:${GITLAB_SYNC_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
