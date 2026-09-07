@@ -33,6 +33,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Ingress with MetalLB on MicroK8s](articles/ingress-metallb-microk8s-guide.md) | NGINX Ingress with MetalLB for bare-metal load balancing. |
 | [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md) | NFS CSI driver on MicroK8s for persistent volumes. |
 | [Helm Cheatsheet](articles/helm-cheatsheet.md) | Package manager for Kubernetes — repos, installs, upgrades, and rollbacks. |
+| [Krew: The kubectl Plugin Manager](articles/kubectl-krew-plugin-manager.md) | Managing kubectl plugins with krew — install, plugin lifecycle, searching the default index, adding/searching custom indexes, and popular plugins. |
 | [crictl Cheatsheet](articles/crictl-cheatsheet.md) | CLI for inspecting and debugging container runtimes at the CRI level. |
 | [ctr Cheatsheet (containerd)](articles/ctr-cheatsheet.md) | containerd CLI — images, containers, tasks, namespaces, snapshots, and Kubernetes debugging. |
 | [Kubernetes Schema Validation](articles/kubernetes-schema-validation.md) | Validating K8s manifests — yamllint, kubeconform, kubectl dry-run (client vs server), pluto, and CI/CD strategies. |
@@ -60,12 +61,14 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Kubernetes Distributions: K3s vs MicroK8s vs Minikube vs kubeadm and Others](articles/kubernetes-distributions-comparison.md) | Comparing self-managed Kubernetes options — kubeadm, K3s, MicroK8s, Minikube, kind, k3d, k0s, and RKE2 — packaging, datastore, resource needs, production vs local dev, and a decision guide. |
 | [HPA with scaleDown Behavior](articles/kubernetes-hpa-scaledown-behavior.md) | HPA scaling behavior — scale-down policies, stabilization windows, tolerance, multi-metric scaling, and disabling auto scale-down. |
 | [Ingress](articles/kubernetes-ingress-guide.md) | Ingress resources — routing, TLS termination, IngressClass, nginx annotations, controller setup, and common mistakes. |
+| [NodePort Services](articles/kubernetes-nodeport-service.md) | Exposing a Deployment with a NodePort Service — port range, manifest and kubectl expose, finding the allocated nodePort, verification, and cleanup. |
 | [HAProxy Ingress Dashboard Metrics](articles/haproxy-ingress-dashboard-metrics.md) | HAProxy ingress metrics — sessions, latency, throughput, errors, infrastructure, error code origins, and spike cascade troubleshooting. |
 | [Cron vs CronJob in Kubernetes](articles/kubernetes-cron-vs-cronjob.md) | CronJob vs Job relationship, differences from Linux cron, concurrency policies, and common confusion. |
 | [Kubernetes CronJob Examples & Reference](articles/kubernetes-cronjob-examples.md) | CronJob spec fields, cron syntax, practical examples, troubleshooting, and failed job cleanup. |
 | [Kubernetes Vertical Pod Autoscaler (VPA)](articles/kubernetes-vpa-guide.md) | VPA components, update modes, in-place pod resize, recommendations, resource policies, combining with HPA, and common pitfalls. |
 | [In-Place Pod Resize with the VPA](articles/in-place-pod-resize-with-vpa.md) | Resizing CPU/memory without recreating Pods — the InPlacePodVerticalScaling feature, VPA InPlaceOrRecreate mode, resize policies, limits, and version support. |
 | [EKS Node NotReady with I/O and CPU Spikes](articles/eks-node-notready-io-cpu-spikes.md) | Diagnosing NotReady nodes — I/O and CPU spike causes, kubelet starvation, investigation commands, and analysis. |
+| [Kubernetes Node Disk Pressure](articles/kubernetes-node-disk-pressure.md) | The DiskPressure node condition — triggers and thresholds, taint/eviction behavior, checking with kubectl and df/du, cleanup, and prevention. |
 | [Kubernetes Resource Scheduling & Node Capacity](articles/kubernetes-resource-scheduling-node-capacity.md) | DaemonSet pending pods, free resource calculation, CPU vs memory, node fill-up, PriorityClasses, and kubelet reserved resources. |
 | [Troubleshooting CrashLoopBackOff with No Logs](articles/kubernetes-crashloopbackoff-no-logs.md) | Debugging silent crashes — exit codes, entrypoint override, OOMKill detection, ephemeral containers, and liveness probe issues. |
 | [Kubernetes Security Mechanisms](articles/kubernetes-security-mechanisms.md) | Security layers — RBAC, admission controllers, network policies, SecurityContext, secrets, AppArmor, seccomp, SELinux, Gatekeeper/Kyverno, and Falco. |
@@ -73,6 +76,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Kubernetes Scheduling](articles/kubernetes-scheduling-guide.md) | Full scheduling pipeline — queue internals, filtering, scoring, binding, framework plugins, real-world patterns, and debugging. |
 | [Persistent Volumes on EKS with EBS CSI Driver](articles/eks-persistent-volumes-ebs-csi.md) | EBS CSI Driver workflow, StorageClass, dynamic provisioning, default storage class, volume snapshots, and driver installation. |
 | [Check If Deployments Run the Latest Image](articles/kubernetes-check-latest-image-deployments.md) | Listing images, detecting drift, forcing re-pulls, finding pinned tags, and automated update tools. |
+| [Finding the Real Image Version Behind a latest Tag](articles/kubernetes-resolve-running-image-version.md) | Resolving what actually runs behind a mutable tag — imageID/SHA digest, in-container version checks (nginx -v/-V), spec-vs-running drift, and troubleshooting. |
 | [Kubernetes Gateway API Guide](articles/kubernetes-gateway-api-guide.md) | Gateway API resources, architecture, HTTPRoute, path/header/weighted routing, cross-namespace routing, and comparison with Ingress. |
 | [Kubelet Privilege and Capability Check](articles/kubelet-privilege-check.md) | Inspecting kubelet capabilities — Linux capabilities, getpcaps, strace, auditd, SELinux/AppArmor context, and check script. |
 | [Kubernetes Variables Guide](articles/kubernetes-variables-guide.md) | Environment variables, ConfigMaps, Secrets, Downward API, variable expansion, and volume mounts. |
@@ -172,6 +176,13 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [DNS Policies for Pods in Kubernetes](articles/kubernetes-pod-dns-policies.md) | Per-Pod DNS — the four dnsPolicy values, dnsConfig merge/override rules, resolv.conf generation, the ndots:5 latency trap, hostNetwork gotcha, and debugging. |
 | [GitHub Actions for Kubernetes Deployments](articles/github-actions-kubernetes-deployments.md) | Build, push, deploy patterns — ECR/GHCR, OIDC auth to EKS, Helm/Kustomize/kubectl, multi-environment workflows, rollback, and security best practices. |
 | [Pipeline to Get the Latest Ubuntu EKS AMI](articles/eks-ubuntu-ami-latest-pipeline.md) | Auto-discover latest Ubuntu EKS AMI via SSM parameters, Terraform data sources, GitHub Actions weekly check, and triggering node group rolling updates. |
+| [ConfigMaps and Secrets](articles/kubernetes-configmaps-secrets.md) | Creating ConfigMaps and Secrets, and injecting them into Pods as environment variables. |
+| [Resource Quotas & LimitRanges](articles/kubernetes-resource-quotas-limitranges.md) | ResourceQuota and LimitRange — enforcing namespace limits, default requests/limits, and debugging exceeded quotas. |
+| [Kubeadm Cluster Upgrade](articles/kubeadm-cluster-upgrade.md) | Upgrading kubeadm clusters — semver constraints, per-minor apt/yum repos, automatic etcd backups, and control plane/worker upgrade order. |
+| [HPA with scaleDown Behavior](articles/hpa-scaledown-behavior.md) | Horizontal Pod Autoscaler with autoscaling/v2 — CPU utilization target, custom scaleDown stabilization window, and load testing. |
+| [HPA ScalingLimited (TooManyReplicas)](articles/hpa-scaling-limited-too-many-replicas.md) | Troubleshooting an HPA capped at maxReplicas — diagnosis, risk, resolution options, and the matching Datadog monitor. |
+| [CPU Starvation Diagnostic Guide](articles/cpu-starvation-diagnostic-guide.md) | Diagnosing CPU starvation and CFS throttling — node/pod/container checks, cgroup v1/v2 stats, probe-failure correlation, and mitigations. |
+| [Installing metrics-server](articles/metrics-server-install.md) | Installing metrics-server via Helm or manifest, the --kubelet-insecure-tls gotcha, verifying the metrics APIService, and querying the Metrics API. |
 
 ### EKS Auto Mode
 
@@ -183,13 +194,6 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Deploy 2048 Game on EKS Auto Mode](articles/eks-auto-mode-2048-game.md) | Quick walkthrough — scale-from-zero, automatic ALB provisioning, Ingress without controllers, topology spreading, and cleanup. |
 | [Troubleshoot DNS in EKS Auto Mode](articles/eks-auto-mode-dns-troubleshooting.md) | DNS troubleshooting — pod resolv.conf checks, CoreDNS log inspection via debug containers, node-level DNS verification, and response code interpretation. |
 | [Troubleshoot Custom NodePool and NodeClass in EKS Auto Mode](articles/eks-auto-mode-nodepool-nodeclass-troubleshooting.md) | NodePool/NodeClass provisioning failures — NotReady states, empty status, label restrictions, IAM permission errors, and access entry fixes. |
-
-### CKA Practice
-
-| Article | Description |
-|---------|--------------|
-| [CKA Practice - ConfigMaps and Secrets](articles/cka-configmaps-secrets.md) | Practice creating ConfigMaps and Secrets, and injecting them into Pods as environment variables. |
-| [CKA Resource - Quotas & LimitRanges](articles/cka-resource-quotas-limitranges.md) | ResourceQuota and LimitRange — enforcing namespace limits, default requests/limits, and debugging exceeded quotas. |
 
 ### Docker
 

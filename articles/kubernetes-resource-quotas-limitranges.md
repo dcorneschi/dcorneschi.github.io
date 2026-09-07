@@ -1,4 +1,4 @@
-# CKA Resource - Quotas & LimitRanges
+# Resource Quotas & LimitRanges
 
 ## Step 1: Create a Namespace
 

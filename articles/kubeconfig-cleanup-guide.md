@@ -17,6 +17,34 @@ Problems caused by a bloated kubeconfig:
 - Confusing output from `kubectl config get-contexts`
 - Expired tokens causing auth errors
 
+## How kubectl Finds Your Config
+
+By default `kubectl` reads its configuration from `$HOME/.kube/config`. You can
+override that location two ways:
+
+```sh
+# Environment variable (applies to all kubectl calls in the shell)
+export KUBECONFIG="/custom/path/.kube/config"
+
+# Per-command flag (overrides the env var for this call only)
+kubectl --kubeconfig="/custom/path/.kube/config" get nodes
+```
+
+Resolution order (highest precedence first):
+
+1. The `--kubeconfig` flag, if passed.
+2. The `KUBECONFIG` environment variable, if set. It may list multiple
+   colon-separated files, which kubectl merges in order.
+3. The default `$HOME/.kube/config`.
+
+Knowing which file is in effect matters before you start deleting entries —
+otherwise you may edit the wrong config. Confirm with:
+
+```bash
+# Show the file(s) kubectl is currently using
+echo "${KUBECONFIG:-$HOME/.kube/config}"
+```
+
 ## View Current State
 
 ```bash
