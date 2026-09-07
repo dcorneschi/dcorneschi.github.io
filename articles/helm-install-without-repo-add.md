@@ -21,7 +21,7 @@ Install straight from a published chart tarball:
 helm install metrics-server https://kubernetes-sigs.github.io/metrics-server/charts/metrics-server-3.12.1.tgz
 ```
 
-## Method 3: The `--repo` Flag
+## Method 3: The --repo Flag
 
 Pass the repository URL inline with `--repo` instead of registering it first:
 
