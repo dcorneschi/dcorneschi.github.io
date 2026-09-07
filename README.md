@@ -423,6 +423,9 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Cron Cheatsheet](articles/cron-cheatsheet.md) | Cron jobs — scheduling syntax, crontab management, environment, logging, locking, email, and scripting patterns. |
 | [Bash Aliases and Functions](articles/bash-aliases-functions.md) | Productivity aliases for git, Docker, Kubernetes, systemd, networking, and utility shell functions (extract, mkcd, backup). |
 | [Bash Read Builtin](articles/bash-read-builtin.md) | `read` command examples — prompts, silent input, timeouts, arrays, file reading patterns, delimiters, validation loops, and process substitution. |
+| [Bash While Loop Examples](articles/bash-while-loops-examples.md) | Practical `while` loop patterns — counters, arithmetic conditions, reading files line by line, IFS field splitting, CSV/here strings, the pipe subshell pitfall vs process substitution, nested loops, and retry logic. |
+| [Bash Loops Guide: for, while, until, select](articles/bash-loops-guide.md) | All Bash loop constructs — `for` (word lists, brace ranges, C-style, command output, arrays), `while`/`until`, the `select` menu, `break`/`continue` including the `N` form, `mapfile`/`readarray`, and choosing the right loop. |
+| [Ignoring Command Errors with \|\| true](articles/bash-ignore-command-errors.md) | Using `\|\| true` (and `\|\| :`) to keep `set -e` scripts running past expected failures — controlling stderr noise, the idempotent check-first alternative, capturing real exit codes, `pipefail` interaction, and when not to use it. |
 | [awk Cheatsheet](articles/awk-cheatsheet.md) | Pattern scanning and text processing — fields, separators, regex, arithmetic, BEGIN/END, and one-liners. |
 | [Print Column Numbers for Any Command Output](articles/awk-print-column-numbers.md) | Generic awk one-liner to identify column positions — examples with iotop, ps, df, ss, free, and top. |
 | [sed Cheatsheet](articles/sed-cheatsheet.md) | Stream editor — substitution, deletion, insertion, addressing, capture groups, hold space, and one-liners. |
@@ -655,6 +658,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [VS Code Git Actions and Git CLI Equivalents](articles/vscode-git-cli-equivalents.md) | Mapping VS Code Source Control actions to git commands — staging/committing, branches, sync/pull/push, history, stashing, undo, tags, and merge conflicts. |
 | [Kiro CLI Cheatsheet](articles/kiro-cli-cheatsheet.md) | Kiro's terminal AI CLI — install, login/logout, starting and resuming chat sessions, --agent, in-session slash commands (/editor, /save, /load, /settings), and key concepts (agents, MCP, steering, hooks). |
 | [Understanding Context Usage in AI Assistants](articles/ai-context-usage-explained.md) | How the context window works — tokens, what consumes context, truncation and "lost in the middle", compaction/summarization, and practical habits for keeping AI answers accurate. |
+| [Test a Docsify Site Locally](articles/docsify-test-locally.md) | Preview a Docsify docs site before pushing to GitHub Pages — Docsify CLI with live reload, Python http.server, and Node http-server, plus notes on blank pages and file:// pitfalls. |
 
 ### macOS
 
