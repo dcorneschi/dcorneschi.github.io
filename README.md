@@ -32,7 +32,6 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Ingress for Kubernetes Dashboard on MicroK8s](articles/ingress-kubernetes-dashboard-microk8s.md) | Exposing the Kubernetes Dashboard through Ingress on MicroK8s. |
 | [Ingress with MetalLB on MicroK8s](articles/ingress-metallb-microk8s-guide.md) | NGINX Ingress with MetalLB for bare-metal load balancing. |
 | [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md) | NFS CSI driver on MicroK8s for persistent volumes. |
-| [Helm Cheatsheet](articles/helm-cheatsheet.md) | Package manager for Kubernetes — repos, installs, upgrades, and rollbacks. |
 | [Krew: The kubectl Plugin Manager](articles/kubectl-krew-plugin-manager.md) | Managing kubectl plugins with krew — install, plugin lifecycle, searching the default index, adding/searching custom indexes, and popular plugins. |
 | [crictl Cheatsheet](articles/crictl-cheatsheet.md) | CLI for inspecting and debugging container runtimes at the CRI level. |
 | [ctr Cheatsheet (containerd)](articles/ctr-cheatsheet.md) | containerd CLI — images, containers, tasks, namespaces, snapshots, and Kubernetes debugging. |
@@ -102,7 +101,6 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [ArgoCD Access Methods on EKS](articles/argocd-access-methods-eks.md) | Exposing ArgoCD UI — port-forward, LoadBalancer, ALB Ingress, NGINX passthrough, gRPC access, SSO, and Helm chart handling. |
 | [Cluster Autoscaler vs Karpenter for EKS](articles/eks-cluster-autoscaler-vs-karpenter.md) | Architecture comparison, scale-up/down behavior, configuration, Spot handling, cost optimization, and migration guide. |
 | [Cluster Autoscaler on EKS](articles/eks-cluster-autoscaler-setup.md) | IAM setup, Helm installation, ASG tags, expander strategies, overprovisioning, testing, and troubleshooting. |
-| [Kustomize vs Helm](articles/kustomize-vs-helm.md) | Comparison — templating vs patching, release management, array merge gotcha, when to use each, and combining both. |
 | [Kustomize Cheatsheet](articles/kustomize-cheatsheet.md) | Commands, overlays, patch types, generators, one-liners, components, tips, and common mistakes. |
 | [Fix Cluster Autoscaler on Hetzner Cloud](articles/hetzner-cluster-autoscaler-fix.md) | Empty nodeConfigs crash fix — creating proper HCLOUD_CLUSTER_CONFIG with node pool definitions. |
 | [EKS Cluster IAM Roles Setup](articles/eks-cluster-iam-roles-setup.md) | Required IAM roles and policies — cluster role, worker node role, creation methods (eksctl, CLI, Terraform), and add-on permissions. |
@@ -118,6 +116,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Burstable vs. Non-Burstable Instances for Kubernetes](articles/burstable-vs-nonburstable-kubernetes.md) | T-family CPU credits vs. M/C/R, why the scheduler doesn't model credits, credit-exhaustion symptoms, and a decision framework for EKS node groups. |
 | [EKS Node Troubleshooting Guide](articles/eks-node-troubleshooting-guide.md) | Diagnosing unhealthy EKS nodes — NotReady, bootstrap failures, resource pressure, networking, instance issues, kubelet, and recovery. |
 | [Cleaning Up Kubernetes Clusters from .kube/config](articles/kubeconfig-cleanup-guide.md) | Removing stale clusters from kubeconfig — connectivity checks, pattern-based removal, orphan detection, renaming contexts, and separate config files. |
+| [Fixing k3d TLS Certificate SAN Errors](articles/k3d-tls-san-certificate-fix.md) | Resolving x509 SAN mismatches when reaching a k3d API server by IP — --tls-san on cluster create, SSH tunneling, skip-verify, and inspecting cert SANs. |
 | [EKS Node Groups Explained](articles/eks-node-groups-explained.md) | Managed vs self-managed node groups — launch templates, scaling, updates, Spot instances, IAM roles, taints/labels, and common patterns. |
 | [runAsNonRoot: true](articles/kubernetes-runasnonroot.md) | How runAsNonRoot works — validation logic, fixing root images, runAsUser relationship, file permissions, PSS compliance, and hardened pod examples. |
 | [CoreDNS on EKS — Cheatsheet](articles/coredns-eks-cheatsheet.md) | CoreDNS commands and troubleshooting — Corefile editing, custom forwards, debug logging, metrics, scaling, ndots tuning, and NodeLocal DNSCache. |
@@ -183,6 +182,16 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [HPA ScalingLimited (TooManyReplicas)](articles/hpa-scaling-limited-too-many-replicas.md) | Troubleshooting an HPA capped at maxReplicas — diagnosis, risk, resolution options, and the matching Datadog monitor. |
 | [CPU Starvation Diagnostic Guide](articles/cpu-starvation-diagnostic-guide.md) | Diagnosing CPU starvation and CFS throttling — node/pod/container checks, cgroup v1/v2 stats, probe-failure correlation, and mitigations. |
 | [Installing metrics-server](articles/metrics-server-install.md) | Installing metrics-server via Helm or manifest, the --kubelet-insecure-tls gotcha, verifying the metrics APIService, and querying the Metrics API. |
+
+### Helm
+
+| Article | Description |
+|---------|--------------|
+| [Helm Cheatsheet](articles/helm-cheatsheet.md) | Package manager for Kubernetes — repos, installs, upgrades, and rollbacks. |
+| [What's New in Helm 4](articles/helm-4-whats-new.md) | Helm 4 (Nov 2025) — Server-Side Apply, kstatus readiness annotations, Wasm plugin system, OCI digests, renamed CLI flags, a v3-vs-v4 command table, and compatibility notes. |
+| [Kustomize vs Helm](articles/kustomize-vs-helm.md) | Comparison — templating vs patching, release management, array merge gotcha, when to use each, and combining both. |
+| [Installing Helm Charts Without helm repo add](articles/helm-install-without-repo-add.md) | Installing charts without registering a repo — OCI registry URLs, packaged .tgz URLs, the --repo flag, GitHub release assets, and passing --set overrides. |
+| [Replacing an Existing Deployment with a Helm Chart](articles/helm-overwrite-existing-deployment.md) | Migrating a kubectl- or Helm-managed workload to a Helm release — detecting ownership, upgrade vs reinstall, --reset-values/--wait/--atomic, ownership-conflict fixes, and verification. |
 
 ### EKS Auto Mode
 
@@ -303,6 +312,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 |---------|--------------|
 | [doctl Cheatsheet](articles/doctl-cheatsheet.md) | DigitalOcean CLI — Droplets, Kubernetes, databases, networking, volumes, registry, Apps Platform, and scripting. |
 | [HAProxy for Kubernetes on DigitalOcean](articles/haproxy-kubernetes-digitalocean.md) | HAProxy Ingress on DOKS — Helm install, DO Load Balancer annotations, TLS options, PROXY protocol, cert-manager, and multi-service routing. |
+| [DOKS Node Pools](articles/doks-node-pools.md) | Managing DigitalOcean Kubernetes node pools with doctl — list/create/delete, per-pool auto-scaling and taints, kubeconfig save, and how they compare to EKS node groups. |
 
 ### Hetzner
 

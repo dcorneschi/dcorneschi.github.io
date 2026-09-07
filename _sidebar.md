@@ -1,5 +1,6 @@
 - [Home](README.md)
 - [Kubernetes](README.md#kubernetes)
+- [Helm](README.md#helm)
 - [Docker](README.md#docker)
 - [AWS](README.md#aws)
 - [Azure](README.md#azure)
