@@ -1,4 +1,4 @@
-# Installing Helm Charts Without `helm repo add`
+# Installing Helm Charts Without helm repo add
 
 You don't always need to run `helm repo add` before installing a chart. Helm can
 pull a chart directly from an OCI registry, a packaged `.tgz` URL, or a repo URL
