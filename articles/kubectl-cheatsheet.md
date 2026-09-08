@@ -349,12 +349,90 @@ kubectl get hpa -A
 kubectl get pdb -A
 ```
 
+### Find Deployments Missing a PDB
+
+```sh
+# Quick count comparison (rough sanity check, not label-aware)
+[ $(kubectl get deploy -A --no-headers | wc -l) -eq $(kubectl get pdb -A --no-headers | wc -l) ] \
+  && echo "All deployments have PDBs" || echo "Some deployments missing PDBs"
+
+# Compare deployment vs PDB lists by namespace/name
+diff \
+  <(kubectl get deploy -A -o json | jq -r '.items[] | "\(.metadata.namespace)/\(.metadata.name)"' | sort) \
+  <(kubectl get pdb -A -o json | jq -r '.items[] | "\(.metadata.namespace)/\(.metadata.name)"' | sort)
+
+# Most accurate — match PDB label selectors against deployment selectors
+kubectl get deploy -A -o json | jq -r '.items[] | "\(.metadata.namespace) \(.metadata.name) \(.spec.selector.matchLabels | to_entries | map("\(.key)=\(.value)") | join(","))"' | \
+while read ns name labels; do
+  kubectl get pdb -n "$ns" -o json | jq -e --arg labels "$labels" \
+    '.items[] | select(.spec.selector.matchLabels | to_entries | map("\(.key)=\(.value)") | join(",") == $labels)' >/dev/null 2>&1 \
+    || echo "Missing PDB: $ns/$name"
+done
+```
+
+> The label-selector version is the most reliable: it verifies a PDB actually
+> targets each deployment via matching selectors, rather than assuming a
+> name/count match.
+
 ## Persistent Volumes
 
 ```sh
 kubectl get pv
 kubectl get pv --sort-by=.spec.capacity.storage
 kubectl get pvc -A
+```
+
+PV status values: **Available** (unbound, ready), **Bound** (in use by a PVC),
+**Released** (PVC deleted, not yet reclaimed), **Failed** (reclamation failed).
+
+Reclaim policy decides what happens when the PVC is deleted: **Retain** (PV stays
+`Released`, manual cleanup), **Delete** (PV auto-deleted), **Recycle**
+(scrubbed and made Available again — deprecated).
+
+### Clean Up Released PVs
+
+```sh
+# List Released PVs first
+kubectl get pv | grep Released
+
+# Preview deletion (dry-run)
+kubectl get pv | grep Released | awk '{print $1}' | xargs kubectl delete pv --dry-run=client
+
+# Delete all Released PVs
+kubectl get pv | grep Released | awk '{print $1}' | xargs kubectl delete pv
+
+# Cleaner: select by phase with jsonpath
+kubectl delete pv $(kubectl get pv -o jsonpath='{.items[?(@.status.phase=="Released")].metadata.name}')
+
+# For very large numbers (avoids "argument list too long")
+kubectl get pv | grep Released | awk '{print $1}' | xargs -n 1 kubectl delete pv
+```
+
+### Fix Stuck Terminating PVs
+
+A PV stuck in `Terminating` usually has a finalizer that never cleared. Remove it:
+
+```sh
+# Merge patch (recommended)
+kubectl get pv | grep Terminating | awk '{print $1}' | \
+  xargs -I {} kubectl patch pv {} -p '{"metadata":{"finalizers":null}}' --type=merge
+
+# JSON patch (force remove the finalizers array)
+kubectl get pv | grep Terminating | awk '{print $1}' | \
+  xargs -I {} kubectl patch pv {} --type=json -p='[{"op":"remove","path":"/metadata/finalizers"}]'
+```
+
+> You can't *add* a finalizer to an object already terminating — that returns
+> `Forbidden: no new finalizers can be added if the object is being deleted`.
+
+### Manage PV Finalizers
+
+```sh
+# Add the protection finalizer to a PV
+kubectl patch pv <pv-name> -p '{"metadata":{"finalizers":["kubernetes.io/pv-protection"]}}'
+
+# Remove finalizers from a PV (allows deletion)
+kubectl patch pv <pv-name> -p '{"metadata":{"finalizers":null}}'
 ```
 
 ## RBAC
@@ -560,6 +638,29 @@ kubectl port-forward svc/my-service 8080:80
 kubectl port-forward deploy/my-deployment 8080:80
 ```
 
+### Port-Forward Patterns
+
+```sh
+# Syntax: <local-port>:<pod-port>
+kubectl port-forward pod/mypod 8888:5000        # local 8888 -> pod 5000
+
+# Bind on all addresses (not just localhost)
+kubectl port-forward --address 0.0.0.0 pod/mypod 8888:5000
+
+# Random local port -> pod 5000 (kubectl prints the chosen port)
+kubectl port-forward pod/mypod :5000
+
+# Bind on localhost and a specific IP
+kubectl port-forward --address localhost,10.19.21.23 pod/mypod 8888:5000
+
+# Same port locally and in the target (omit the colon)
+kubectl port-forward pod/mypod 5000 6000
+
+# Forward multiple ports via a Deployment- or Service-selected pod
+kubectl port-forward deployment/mydeployment 5000 6000
+kubectl port-forward service/myservice 5000 6000
+```
+
 ## Diff (Compare Manifest vs Cluster)
 
 ```sh
@@ -717,6 +818,123 @@ kubectl get nodes -o json | jq -r '.items[].status.addresses[]? | select(.type =
 
 # Get pod CIDR for each node (useful for CNI troubleshooting)
 kubectl get nodes -o jsonpath='{.items[*].spec.podCIDR}' | tr " " "\n"
+```
+
+## Node Labels and Availability Zones
+
+```sh
+# All unique label keys across nodes
+kubectl get nodes -o json | jq -r '.items[].metadata.labels | keys[]' | sort -u
+
+# All unique label key=value pairs
+kubectl get nodes -o json | jq -r '.items[].metadata.labels | to_entries[] | "\(.key)=\(.value)"' | sort -u
+
+# Zone-related label keys
+kubectl get nodes -o json | jq -r '.items[].metadata.labels | keys[]' | sort -u | grep -i zone
+
+# Unique zone values across nodes (topology.kubernetes.io/zone is standard on EKS)
+kubectl get nodes -o json | jq -r '.items[].metadata.labels | to_entries[] | select(.key | contains("zone")) | "\(.key)=\(.value)"' | sort -u
+```
+
+## Pods by Availability Zone
+
+```sh
+# Nodes in an AZ, then pods on each (loop)
+ZONE="us-east-1a"
+NODES=$(kubectl get nodes -l topology.kubernetes.io/zone=$ZONE -o jsonpath='{.items[*].metadata.name}')
+for node in $NODES; do
+  kubectl get pods -A --field-selector spec.nodeName=$node -o wide
+done
+
+# Same, via xargs
+kubectl get nodes -l topology.kubernetes.io/zone="$ZONE" -o jsonpath='{.items[*].metadata.name}' \
+  | tr ' ' '\n' | xargs -I {} kubectl get pods -A --field-selector spec.nodeName={} -o wide
+
+# Pods from just the first node in an AZ
+kubectl get pods -A -o wide --field-selector spec.nodeName=$(kubectl get nodes -l topology.kubernetes.io/zone=us-east-1a -o jsonpath='{.items[0].metadata.name}')
+
+# Pods with restarts > 0 across all nodes (awk on column 5)
+kubectl get pods -A -o wide | awk 'NR==1 || $5>0'
+
+# Restarts > 0 per node in an AZ, with a header per node
+for node in $NODES; do
+  echo "=== restarts on $node ==="
+  kubectl get pods -A --field-selector spec.nodeName=$node -o wide | awk 'NR==1 || $5>0'
+done
+
+# Restarts > 0 (reliable, via JSON instead of column position)
+kubectl get pods -A -o json | jq -r '.items[] | select(.status.containerStatuses[]?.restartCount > 0) | "\(.metadata.namespace)\t\(.metadata.name)\t\(.status.containerStatuses[].restartCount)"'
+```
+
+## Batch Node Operations by Label
+
+```sh
+# Pods on nodes matching a label
+kubectl get nodes -l node-role.kubernetes.io/worker -o jsonpath='{.items[*].metadata.name}' \
+  | tr ' ' '\n' | xargs -I {} kubectl get pods -A --field-selector spec.nodeName={}
+
+# Drain nodes by label
+kubectl get nodes -l environment=staging -o name \
+  | xargs -I {} kubectl drain {} --ignore-daemonsets --delete-emptydir-data
+
+# Cordon nodes by label
+kubectl get nodes -l disk=ssd -o name | xargs -I {} kubectl cordon {}
+
+# Describe all nodes in a zone
+kubectl get nodes -l topology.kubernetes.io/zone="us-west-2a" -o name | xargs kubectl describe
+
+# Annotate nodes by label
+kubectl get nodes -l environment=prod -o name | xargs -I {} kubectl annotate {} owner=platform-team
+```
+
+> Tips: use `-o name` when you need the `node/` prefix for follow-up commands, and
+> `-o jsonpath='{.items[*].metadata.name}'` for bare names. Trace a pipeline with
+> `set -x` / `xargs -t` — note that only shell expansions are traced, not the
+> internals of `kubectl`.
+
+## Node Disk and Ephemeral Storage
+
+```sh
+# Simple - node name and available disk
+kubectl get nodes -o json | jq -r '.items[] | "\(.metadata.name): \(.status.allocatable."ephemeral-storage")"'
+
+# With capacity and allocatable
+kubectl get nodes -o json | jq -r '.items[] | "\(.metadata.name) - Capacity: \(.status.capacity."ephemeral-storage") | Allocatable: \(.status.allocatable."ephemeral-storage")"'
+
+# Show disk pressure status
+kubectl get nodes -o json | jq -r '.items[] | "\(.metadata.name): DiskPressure=\(.status.conditions[] | select(.type=="DiskPressure") | .status)"'
+
+# Combined: name, disk pressure, and available storage
+kubectl get nodes -o json | jq -r '.items[] | "\(.metadata.name) | DiskPressure: \(.status.conditions[] | select(.type=="DiskPressure") | .status) | Available: \(.status.allocatable."ephemeral-storage")"'
+
+# Recommended one-liner - name, disk pressure, capacity, and allocatable
+kubectl get nodes -o json | jq -r '.items[] | {name: .metadata.name, diskPressure: (.status.conditions[] | select(.type=="DiskPressure") | .status), capacity: .status.capacity."ephemeral-storage", allocatable: .status.allocatable."ephemeral-storage"} | "\(.name) | Pressure: \(.diskPressure) | Capacity: \(.capacity) | Available: \(.allocatable)"'
+```
+
+### Using Custom Columns
+
+```sh
+# Clean table format (no special escaping needed)
+kubectl get nodes -o custom-columns=NAME:.metadata.name,DISK-CAPACITY:.status.capacity.ephemeral-storage,DISK-ALLOCATABLE:.status.allocatable.ephemeral-storage
+
+# With disk pressure condition
+kubectl get nodes -o custom-columns='NAME:.metadata.name,DISK-PRESSURE:.status.conditions[?(@.type=="DiskPressure")].status,AVAILABLE:.status.allocatable.ephemeral-storage'
+
+# All pressure conditions in one view
+kubectl get nodes -o custom-columns='NAME:.metadata.name,DISK-PRESSURE:.status.conditions[?(@.type=="DiskPressure")].status,MEMORY-PRESSURE:.status.conditions[?(@.type=="MemoryPressure")].status,PID-PRESSURE:.status.conditions[?(@.type=="PIDPressure")].status'
+
+# Alternative with jq (easier and more reliable)
+kubectl get nodes -o json | jq -r '.items[] | [.metadata.name, (.status.conditions[] | select(.type=="DiskPressure") | .status), .status.allocatable."ephemeral-storage"] | @tsv' | column -t
+```
+
+### Human-Readable Storage Units
+
+```sh
+# Convert Ki to GB (floored)
+kubectl get nodes -o json | jq -r '.items[] | "\(.metadata.name): \((.status.allocatable."ephemeral-storage" | rtrimstr("Ki") | tonumber) / 1024 / 1024 | floor)GB available"'
+
+# More precise conversion with decimals
+kubectl get nodes -o json | jq -r '.items[] | "\(.metadata.name): \((.status.allocatable."ephemeral-storage" | rtrimstr("Ki") | tonumber) / 1024 / 1024 | . * 100 | floor / 100)GB available"'
 ```
 
 ## Advanced Pod Queries
