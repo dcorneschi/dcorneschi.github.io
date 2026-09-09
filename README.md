@@ -27,6 +27,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Kubernetes PriorityClasses Guide](articles/kubernetes-priority-classes-guide.md) | How PriorityClasses control scheduling and preemption. |
 | [Kubernetes QoS Classes — Requests and Limits](articles/kubernetes-qos-requests-limits.md) | QoS classes, eviction order, OOM kill priority, and the CPU limits debate. |
 | [Kubernetes Pod Evictions Cheatsheet](articles/kubernetes-evictions-cheatsheet.md) | Eviction methods, PDB respect, graceful termination, and eviction actors. |
+| [Evicting Pods from Nodes: A Practical Guide](articles/kubectl-evict-pods-guide.md) | Hands-on pod eviction — delete, Eviction API, drain, scale-down, cordon, plus DaemonSet-unblock, node-maintenance, and resource-pressure workflows and troubleshooting. |
 | [Kubernetes PodDisruptionBudgets Guide](articles/kubernetes-pdb-guide.md) | How PDBs protect availability during voluntary disruptions. |
 | [kubectl run vs kubectl create](articles/kubectl-run-vs-create.md) | When to use `kubectl run` (bare Pods) vs `kubectl create` (other resources). |
 | [Init Containers vs Regular Containers](articles/kubernetes-init-vs-regular-containers.md) | Lifecycle differences, kubelet orchestration, cgroup allocation, and use cases. |
@@ -42,6 +43,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Node Selectors in Kubernetes](articles/kubernetes-node-selectors.md) | nodeSelector, node affinity, built-in labels, taints, scheduling constraints, and combining strategies. |
 | [Node Affinity in Kubernetes](articles/kubernetes-node-affinity.md) | Required and preferred rules, operators (In, NotIn, Exists, Gt, Lt), weight scoring, combining with taints, and troubleshooting. |
 | [Kubernetes Taints and Tolerations](articles/kubernetes-taints-tolerations.md) | Taint effects, keys, values, toleration operators, real-world patterns, removal, monitoring, and validation rules. |
+| [Taint vs Cordon vs Drain](articles/kubernetes-taint-cordon-drain.md) | Comparing the three ways to keep pods off a node — selective taints, unconditional cordon, and drain eviction — with effects, a decision guide, and the maintenance sequence. |
 | [Kubernetes Scheduling Deep Dive](articles/kubernetes-scheduling-deep-dive.md) | Full scheduling pipeline — filtering, scoring, preemption, PriorityClasses, topology spread, QoS, NUMA, PDBs, and debugging. |
 | [LimitRange and ResourceQuota](articles/kubernetes-limitrange-resourcequota.md) | Namespace resource controls — default limits, per-pod constraints, namespace quotas, scoping by priority class, and enforcement. |
 | [Kubernetes Pod Conditions Flow](articles/kubernetes-pod-conditions-flow.md) | Pod lifecycle conditions — PodScheduled, Initialized, ContainersReady, Ready, readiness gates, and troubleshooting stuck pods. |
@@ -54,6 +56,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Kubelet Image-Pull Throttling: "pull QPS exceeded"](articles/kubelet-pull-qps-exceeded.md) | Kubelet rate-limiting image pulls — registryPullQPS/registryBurst, ImagePullBackOff during node recycling, tuning, and how it differs from client-side throttling. |
 | [Kubernetes Field Selectors](articles/kubernetes-field-selectors.md) | --field-selector — supported fields per resource type, operators, practical examples, and limitations. |
 | [kubectl logs Guide](articles/kubectl-logs-guide.md) | Pod log retrieval — follow, tail, timestamps, previous, multi-container, labels, debug bundles, and troubleshooting. |
+| [kubectl logs --previous](articles/kubectl-logs-previous.md) | Debugging restarted containers with `--previous` — CrashLoopBackOff, OOMKilled, exit codes, multi-container and init containers, garbage collection, and a snapshot workflow. |
+| [kubectl set env](articles/kubectl-set-env.md) | Managing container environment variables imperatively — set/remove vars, sourcing from ConfigMaps and Secrets, container/label/namespace targeting, dry-run, overwrite, rollout, and best practices. |
 | [Kubernetes Log Locations by Distribution](articles/kubernetes-log-locations.md) | Log file paths across MicroK8s, kubeadm, K3s, kind, k3d, minikube, EKS, GKE, AKS — containers, kubelet, control plane, and runtime. |
 | [Kubernetes Jobs and CronJobs](articles/kubernetes-jobs-cronjobs.md) | Jobs and CronJobs — commands, cron syntax, concurrency policies, CrashLoopBackOff fix, and auto-cleanup. |
 | [EKS Port Communication](articles/eks-port-communication.md) | Control plane to worker node ports — kubelet API, kube-proxy, security group rules, and communication flows. |
@@ -116,6 +120,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [VPA and HPA Metrics Collection](articles/kubernetes-vpa-hpa-metrics-collection.md) | Metrics pipeline — metrics-server, Prometheus Adapter, custom/external metrics, how HPA and VPA collect and interpret data differently. |
 | [kubectl run with Resource Requests & Limits](articles/kubectl-run-resource-requests-limits.md) | Setting CPU and memory requests/limits with kubectl run — syntax, QoS classes, dry-run YAML, LimitRange/ResourceQuota interaction, and common mistakes. |
 | [Why Pod Shows 0/1 Ready Status](articles/kubernetes-pod-0-1-ready-status.md) | Diagnosing pods stuck at 0/1 Ready — readiness probe failures, startup delays, dependency issues, OOMKill, readiness gates, and fix checklist. |
+| [Kubernetes Health Checks: Liveness, Readiness, Startup Probes](articles/kubernetes-health-checks-probes.md) | Why probes matter — behavior without them, the endpoint-removal propagation chain, probe types (HTTP/TCP/exec/gRPC), timing math, liveness-vs-readiness split, a full example, and monitoring. |
 | [Time Required for a Pod to Reach Running/Ready](articles/kubectl-pod-time-to-ready.md) | Measuring pod startup time — Ready condition timestamps, creation-to-ready deltas, per-phase breakdown, scripting with jsonpath, and fleet-wide timing. |
 | [Troubleshooting Workloads When No Pod Shows Up](articles/pod-not-showing-any-state.md) | When kubectl get pods shows nothing — pod never created, created then deleted, or wrong context; inspecting events and parent controllers. |
 | [Troubleshooting a Pending Pod: Insufficient Resources](articles/pod-pending-insufficient-resources.md) | Pods stuck Pending from insufficient CPU/memory/storage/GPU — confirming it's a scheduling issue and finding the reason in events and pod status. |

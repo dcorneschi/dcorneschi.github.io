@@ -354,6 +354,18 @@ kubectl delete pod node-debugger-node-1-abc12
 kubectl delete pod my-pod-debug
 ```
 
+> A node debug pod does not clean itself up after you exit. Once its command finishes it lingers in `Completed` status, and these accumulate every time you debug a node. Delete them so `kubectl get pods` stays readable.
+
+Bulk-delete all leftover node debug pods at once:
+
+```bash
+# One-off cleanup of every node-debugger pod in the current namespace:
+kubectl get pods --no-headers | grep node-debugger | awk '{print $1}' | xargs kubectl delete pod
+
+# Handy as an alias:
+alias delete-all-debug='kubectl get pods --no-headers | grep "node-debugger" | awk "{print \$1}" | xargs kubectl delete pod'
+```
+
 ## Limitations
 
 | Limitation | Explanation |

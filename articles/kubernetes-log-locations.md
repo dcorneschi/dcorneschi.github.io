@@ -682,3 +682,15 @@ az aks list
 8. **Use labels and selectors** - Filter logs by labels for easier troubleshooting
 9. **Enable audit logging** - Critical for security and compliance in production
 10. **Test log access** - Verify you can access logs before you need them in an emergency
+
+---
+
+## Additional Resources
+
+- [Kubernetes Logging Architecture](https://kubernetes.io/docs/concepts/cluster-administration/logging/)
+- [kubectl logs documentation](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#logs)
+- [Fluentd on Kubernetes](https://docs.fluentd.org/container-deployment/kubernetes)
+- [Grafana Loki](https://grafana.com/docs/loki/latest/)
+- [AWS CloudWatch Container Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights.html)
+- [GCP Cloud Logging](https://cloud.google.com/logging/docs/view/logs-explorer-interface)
+- [Azure Monitor Container Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview)
