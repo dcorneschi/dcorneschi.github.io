@@ -407,6 +407,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Escaping $ in Terraform Userdata](articles/terraform-userdata-dollar-escaping.md) | Dollar sign escaping in heredocs (`$$`), templatefile() approach, cloud-init YAML, multipart userdata, debugging, and common patterns. |
 | [Terraform Lifecycle Guide](articles/terraform-lifecycle-guide.md) | create_before_destroy, prevent_destroy, ignore_changes, replace_triggered_by, precondition/postcondition, and common patterns. |
 | [Terraform Config Drift Detection](articles/terraform-drift-detection.md) | Detecting drift with plan/refresh-only, automated CI/CD checks, JSON parsing, resolving strategies, prevention, and scheduled reconciliation. |
+| [Understanding `<=`, `+`, and Other Signs in a Terraform Plan](articles/terraform-plan-symbols.md) | Reading plan action symbols — `+` create, `-` destroy, `~` update, `-/+` replace, and the misunderstood `<=` data-source read — with a full annotated plan, the summary count, and JSON action mapping. |
 | [Terraform UserData Base64 Encoding/Decoding](articles/terraform-userdata-base64.md) | user_data vs user_data_base64, decoding from state/CLI/IMDS, launch templates, multipart MIME, hash behavior, and debugging failures. |
 
 ### Ansible
