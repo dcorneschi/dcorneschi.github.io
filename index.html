@@ -49,11 +49,25 @@
       padding: 0;
       line-height: 1.4;
     }
-    .markdown-section table td:nth-child(2) {
-      font-size: 15px;
+    /* Wider Article column, narrower Description column */
+    .markdown-section table {
+      table-layout: fixed;
+      width: 100%;
     }
-    .markdown-section table td:nth-child(1) {
+    .markdown-section table td:nth-child(1),
+    .markdown-section table th:nth-child(1) {
       font-size: 15px;
+      width: 42%;
+    }
+    .markdown-section table td:nth-child(2),
+    .markdown-section table th:nth-child(2) {
+      font-size: 15px;
+      width: 58%;
+    }
+    /* Let long titles/links and descriptions wrap instead of overflowing */
+    .markdown-section table td {
+      word-break: break-word;
+      overflow-wrap: anywhere;
     }
 
     /* Theme switcher — trigger button in sidebar */
