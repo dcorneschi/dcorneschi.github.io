@@ -242,6 +242,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Docker Compose vs Docker Swarm](articles/docker-compose-vs-swarm.md) |
 | [Rebuilding Docker Compose Images and Containers](articles/docker-compose-rebuild-images.md) |
 | [SUID, SGID, and Capabilities in Docker](articles/docker-suid-sgid-capabilities.md) |
+| [Traefik Static vs Dynamic Configuration](articles/traefik-static-vs-dynamic-config.md) |
+| [Traefik Metrics and Monitoring](articles/traefik-metrics-monitoring.md) |
 | [Docker Swarm Cheatsheet](articles/docker-swarm-cheatsheet.md) |
 | [Docker Swarm Storage](articles/docker-swarm-storage.md) |
 | [Shared Storage Options for Docker Swarm](articles/docker-swarm-storage-options.md) |
@@ -644,6 +646,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [iostat Cheatsheet](articles/iostat-cheatsheet.md) |
 | [Understanding iostat -x Output](articles/understanding-iostat-x-output.md) |
 | [iotop Cheatsheet](articles/iotop-cheatsheet.md) |
+| [nmon Cheatsheet](articles/nmon-cheatsheet.md) |
 | [ps Cheatsheet](articles/ps-cheatsheet.md) |
 | [top Cheatsheet](articles/top-cheatsheet.md) |
 | [free Cheatsheet](articles/free-cheatsheet.md) |
@@ -750,6 +753,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Datadog Agent Cheatsheet](articles/datadog-agent-cheatsheet.md) |
 | [Datadog API Reference](articles/datadog-api-reference.md) |
 | [Datadog Dashboards Guide](articles/datadog-dashboards-guide.md) |
+| [Importing a Datadog Dashboard from JSON](articles/datadog-import-dashboard-json.md) |
 | [Datadog Monitor Notification Variables](articles/datadog-monitor-notification-variables.md) |
 | [Datadog Monitor Tagging Best Practices](articles/datadog-monitor-tagging-best-practices.md) |
 | [Datadog Monitors Tips & Tricks](articles/datadog-monitors-tips-and-tricks.md) |
