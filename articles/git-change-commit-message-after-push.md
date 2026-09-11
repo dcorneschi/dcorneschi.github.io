@@ -11,6 +11,12 @@ Rewording a commit doesn't edit it in place — Git creates a *new* commit with 
 - **No one has pulled** → nobody has the old commit, so replacing it on the remote affects only you. Safe.
 - **Someone has pulled** → they still hold the old hash; your force push makes their history diverge, and they'll have to reconcile. Avoid — use `git revert` or coordinate.
 
+## Before You Start
+
+- The branch with the commit is checked out (`git switch <branch>`).
+- You have a clean working tree, or you've stashed uncommitted changes (see the gotcha below).
+- You've confirmed no one else has pulled the branch since your last push — ask teammates or check the remote's activity if unsure.
+
 ## Fixing the Most Recent Commit
 
 This is the common case. Amend the message, then force-push:
@@ -27,6 +33,16 @@ git push --force-with-lease
 
 ```bash
 git commit --amend
+```
+
+### Gotcha: amend also folds in staged changes
+
+`git commit --amend` doesn't only touch the message — it adds whatever is currently **staged** into the amended commit. If you have unrelated work staged and only want to change the message, stash first so nothing extra sneaks in:
+
+```bash
+git stash          # shelve uncommitted work
+git commit --amend -m "Correct message"
+git stash pop      # bring it back
 ```
 
 ### Prefer --force-with-lease over --force
@@ -62,6 +78,15 @@ Then push the rewritten history:
 git push --force-with-lease
 ```
 
+## If Someone Has Already Pulled
+
+If it turns out a teammate already pulled the old commit, **don't** amend and force-push — that splits their history from the remote and causes merge headaches. Instead, for a mere message fix, the least disruptive option is usually to leave the commit alone and move on; the wording lives in history but nothing breaks.
+
+If the message genuinely needs correcting on the record, either:
+
+- **Add a follow-up commit** noting the correction (e.g. "Note: previous commit should read '…'"), or
+- **Coordinate a rewrite** — amend and force-push, then have everyone who pulled reset their local branch to the new history. Disruptive, so reserve it for messages that actually matter (misleading, security-sensitive, etc.).
+
 ## Verify Before and After
 
 ```bash
@@ -95,3 +120,7 @@ If others now have history built on the branch, don't force-push. Leave the orig
 - Latest commit: `git commit --amend -m "…"` then `git push --force-with-lease`.
 - Older commit: `git rebase -i HEAD~N`, mark it `r`, then `git push --force-with-lease`.
 - Always use `--force-with-lease`, never blind `--force`; if it's rejected, someone pushed — reassess rather than forcing.
+
+## Source
+
+- [How to Change a Git Commit Message After Push (When No One Has Pulled)](https://www.codegenes.net/blog/changing-git-commit-message-after-push-given-that-no-one-pulled-from-remote/) — content was rephrased for compliance with licensing restrictions.

@@ -14,6 +14,19 @@ git commit --amend -m "New commit message"
 git commit --amend
 ```
 
+### Related amend options
+
+```bash
+# Add staged changes to the last commit WITHOUT changing its message
+git add forgotten-file.txt
+git commit --amend --no-edit
+
+# Change the message AND reset the author to your current identity
+git commit --amend --reset-author -m "New message"
+```
+
+`--no-edit` is handy for folding in a file you forgot to stage; `--reset-author` updates the recorded author/email (useful when the commit was made under the wrong identity).
+
 ## Older Commit, Not Pushed
 
 Use interactive rebase and `reword` the target commit:
@@ -90,6 +103,13 @@ Mark more than one commit with `r` in the same rebase to reword several in one p
 - **Only reword shared history with care.** Rewriting pushed commits forces everyone else to reconcile; coordinate on active shared branches.
 - **`--autostash` handles uncommitted work.** It stashes before the rebase and re-applies after, so you don't have to stash manually.
 - **Overshot or messed up the rebase?** `git rebase --abort` returns to the pre-rebase state; afterward, `git reflog` can recover the previous commit positions.
+- **Amended the wrong commit and lost the old message?** The original stays in the reflog (30 days by default). Read its message without moving the branch, then amend again and paste it back:
+
+  ```bash
+  git reflog                       # find the entry, e.g. HEAD@{1}
+  git show -s --format=%B HEAD@{1} # print its full message
+  git commit --amend               # paste the recovered message
+  ```
 - **Amending is a rewrite too.** `git commit --amend` on an already-pushed tip also needs `git push --force-with-lease`.
 
 ## Summary
@@ -98,3 +118,7 @@ Mark more than one commit with `r` in the same rebase to reword several in one p
 - Older commit → `git rebase -i --autostash HEAD~N`, mark it `r`, edit the message.
 - Already pushed → same, then `git push --force-with-lease`.
 - Use `--autostash` to carry uncommitted changes through the rebase; use `--force-with-lease`, never blind `--force`.
+
+## Source
+
+- [How to Change a Git Commit Message, Even After Pushing](https://linuxize.com/post/change-git-commit-message) — content was rephrased for compliance with licensing restrictions.
