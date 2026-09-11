@@ -458,6 +458,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Git Clone Methods and Options](articles/git-clone-methods.md) |
 | [Fixing Shell Script Execute Permissions Across Windows and Linux](articles/git-shell-script-executable-permissions.md) |
 | [Restoring Files with git restore](articles/git-restore-files.md) |
+| [Restoring a Deleted File from a Repository](articles/git-restore-deleted-file.md) |
 | [Listing Git Branches by Author](articles/git-list-branches-by-author.md) |
 | [Gitea / Forgejo Actions vs GitHub Actions Compatibility](articles/gitea-forgejo-actions-github-compatibility.md) |
 | [Setting Up a Gitea Actions Runner (act_runner)](articles/gitea-act-runner-setup.md) |
