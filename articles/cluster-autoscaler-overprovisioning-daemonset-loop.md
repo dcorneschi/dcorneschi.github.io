@@ -173,7 +173,7 @@ spec:
 
 ## How to Fix It
 
-### 1. Use `--expendable-pods-priority-cutoff`
+### 1. Use --expendable-pods-priority-cutoff
 
 The CA flag `--expendable-pods-priority-cutoff` (default `-10`) controls which
 pods are ignored for scale-up decisions. Pods with priority **below** this

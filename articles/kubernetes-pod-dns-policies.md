@@ -16,7 +16,7 @@ trap.
 
 ---
 
-## The `dnsPolicy` field
+## The dnsPolicy field
 
 `dnsPolicy` is set in the Pod spec (`spec.dnsPolicy`) and takes one of four values. **The
 default is `ClusterFirst`**, *not* `Default` — a naming quirk that trips people up.
@@ -79,7 +79,7 @@ Forgetting this is a frequent "host-network Pod can't reach the API/Service by n
 configuration through `dnsConfig`. Use it when you need a fully custom resolver setup that
 none of the other policies produce.
 
-## Customizing with `dnsConfig`
+## Customizing with dnsConfig
 
 `spec.dnsConfig` lets you **add to** (with most policies) or **fully define** (with
 `None`) the Pod's DNS settings. It has three fields:
@@ -88,7 +88,7 @@ none of the other policies produce.
 - `searches` — list of search domains for hostname lookup.
 - `options` — list of `{name, value}` objects (e.g. `ndots`, `edns0`, `timeout`).
 
-### Example: fully custom DNS with `None`
+### Example: fully custom DNS with None
 
 ```yaml
 apiVersion: v1
@@ -170,7 +170,7 @@ If you genuinely need the Pod to bypass CoreDNS entirely and talk to corporate r
 use `dnsPolicy: None` with explicit `nameservers` — but then you only get cluster Service
 resolution if those corporate servers forward the cluster zones back to CoreDNS.
 
-## The `ndots:5` performance trap
+## The ndots:5 performance trap
 
 By default, `ClusterFirst` sets **`options ndots:5`**. `ndots` means: "if a name has fewer
 than N dots, try the search domains **first** before treating it as absolute."
@@ -198,7 +198,7 @@ problem for chatty apps calling external APIs.
   the search list may then need more dots or FQDNs.
 - **Cache with NodeLocal DNSCache** to blunt the cost of the extra queries cluster-wide.
 
-### Tuning `timeout` and `attempts`
+### Tuning timeout and attempts
 
 Two more resolver options shape how DNS failures are handled:
 

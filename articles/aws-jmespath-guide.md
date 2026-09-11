@@ -329,7 +329,7 @@ aws ec2 describe-instances \
 
 ## Wildcards and Projections
 
-### Wildcard `*`
+### Wildcard *
 
 ```bash
 # All values from all keys in a map
@@ -634,7 +634,7 @@ aws ec2 describe-instances \
     --query 'Reservations[].Instances[].{ID:InstanceId, IP:PublicIpAddress || `N/A`}'
 ```
 
-### `| [0]` for Single Values from Nested Filters
+### | [0] for Single Values from Nested Filters
 
 Tag queries return arrays. Use `| [0]` to get the first (usually only) value:
 
@@ -648,7 +648,7 @@ Tags[?Key==`Name`].Value | [0]
 # "my-instance"
 ```
 
-### Flatten `[]` to Remove Empty Arrays
+### Flatten [] to Remove Empty Arrays
 
 When filtering at a parent level, non-matching parents return empty arrays. Append `[]` to clean up:
 

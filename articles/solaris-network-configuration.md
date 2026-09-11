@@ -17,7 +17,7 @@ Network configuration on Oracle Solaris (10 and the "classic"/legacy path on 11)
 | Node name | `/etc/nodename` | The system's hostname |
 | Name service order | `/etc/nsswitch.conf` | Resolution order (files, dns, nis, ldap) |
 
-### `/etc/hostname.<interface>`
+### /etc/hostname.<interface>
 
 The interface name is encoded in the filename — `/etc/hostname.e1000g0` configures `e1000g0`. It typically contains the hostname (resolved via `/etc/hosts`) or a literal IP address that Solaris plumbs onto that interface at boot. The presence of this file is what brings the interface up automatically.
 
@@ -28,7 +28,7 @@ server01
 192.168.1.10
 ```
 
-### `/etc/inet/netmasks`
+### /etc/inet/netmasks
 
 Maps a network number to its netmask so the address in `hostname.<interface>` gets the right prefix:
 
@@ -37,7 +37,7 @@ Maps a network number to its netmask so the address in `hostname.<interface>` ge
 192.168.1.0      255.255.255.0
 ```
 
-### `/etc/hosts` and `/etc/inet/hosts`
+### /etc/hosts and /etc/inet/hosts
 
 `/etc/hosts` is a symlink to `/etc/inet/hosts` — the static host database:
 
@@ -46,7 +46,7 @@ Maps a network number to its netmask so the address in `hostname.<interface>` ge
 192.168.1.10     server01.example.com  server01
 ```
 
-### `/etc/resolv.conf`
+### /etc/resolv.conf
 
 The DNS client resolver configuration:
 
@@ -57,7 +57,7 @@ nameserver 192.168.1.1
 nameserver 8.8.8.8
 ```
 
-### `/etc/defaultrouter`
+### /etc/defaultrouter
 
 One default gateway IP per line; read at boot to install the default route:
 
@@ -65,7 +65,7 @@ One default gateway IP per line; read at boot to install the default route:
 192.168.1.1
 ```
 
-### `/etc/nodename`
+### /etc/nodename
 
 A single line with the system's node (host) name:
 
@@ -73,7 +73,7 @@ A single line with the system's node (host) name:
 server01
 ```
 
-### `/etc/nsswitch.conf`
+### /etc/nsswitch.conf
 
 Controls the order sources are consulted for each database. For DNS name resolution, the `hosts:` line must include `dns`:
 
@@ -99,7 +99,7 @@ netstat -D
 - `netstat -D` — shows DHCP status for interfaces (whether an address is DHCP-assigned and its lease).
 - `sys-unconfig` — **destructive to config:** unconfigures hostname, network, naming service, timezone, and root password, then halts. On next boot the system runs the initial setup interview again. Useful for cloning/templating a system, but it wipes the current network identity.
 
-### Inspecting Interfaces with `ifconfig` (Solaris 10)
+### Inspecting Interfaces with ifconfig (Solaris 10)
 
 ```bash
 # Show all interfaces (including down)

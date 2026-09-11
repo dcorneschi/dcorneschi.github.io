@@ -1209,7 +1209,7 @@ echo $(kubectl get pods --selector=$sel --output=jsonpath={.items..metadata.name
 for pod in $(kubectl get po --output=jsonpath={.items..metadata.name}); do echo $pod && kubectl exec -it $pod -- env; done
 ```
 
-## Events (newer `kubectl events` command)
+## Events (newer kubectl events command)
 
 ```sh
 kubectl events --types=Warning                       # Only warning events

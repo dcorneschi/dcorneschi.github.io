@@ -112,7 +112,7 @@ Docker containers share the host kernel. UIDs inside the container map directly 
 
 ## Configuring UID/GID in Docker Compose
 
-### Method 1: `user` Directive
+### Method 1: user Directive
 
 ```yaml
 services:

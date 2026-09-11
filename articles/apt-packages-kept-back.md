@@ -64,7 +64,7 @@ apt-cache policy <package>
 
 If it's a phased update, the cleanest action is simply to **wait** — it'll be offered automatically once your machine enters the rollout phase. Forcing it works too, but phasing exists to catch bad updates before they hit everyone.
 
-## The Recommended Fix: `full-upgrade`
+## The Recommended Fix: full-upgrade
 
 The correct tool for kept-back packages is `apt full-upgrade` (formerly `dist-upgrade`). Unlike `upgrade`, it's allowed to install new dependencies and remove packages when needed to complete upgrades:
 

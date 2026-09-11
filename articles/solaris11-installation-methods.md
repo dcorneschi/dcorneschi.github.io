@@ -42,7 +42,7 @@ For installing many systems consistently, Solaris 11 uses the **Automated Instal
 
 This is the right path when you need repeatable, unattended installs across a fleet.
 
-### Setting Up an AI Server (`installadm`)
+### Setting Up an AI Server (installadm)
 
 ```bash
 # Install the AI server package

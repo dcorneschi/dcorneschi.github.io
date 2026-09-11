@@ -102,7 +102,7 @@ Alert if rate(ena.linklocal_allowance_exceeded) > 0 over 5 min
 
 The `conntrack_allowance_exceeded` one is the most critical — it causes connection failures that look like application bugs (timeouts, refused connections) and are extremely hard to diagnose without this counter.
 
-## Deep Dive: `pps_allowance_exceeded`
+## Deep Dive: pps_allowance_exceeded
 
 ### What It Is
 
@@ -199,7 +199,7 @@ rate(system.net.packets_in.count) + rate(system.net.packets_out.count)
 
 Alert when the combined PPS approaches 80% of your instance type's known limit, not just when drops start.
 
-## Deep Dive: `bw_in_allowance_exceeded` / `bw_out_allowance_exceeded`
+## Deep Dive: bw_in_allowance_exceeded / bw_out_allowance_exceeded
 
 ### What They Are
 

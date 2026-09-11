@@ -138,7 +138,7 @@ echo $0
 | Non-interactive login | no | on | `bash` |
 | Non-interactive non-login | no | off | `bash` |
 
-#### Understanding `$-` Flags
+#### Understanding $- Flags
 
 The `$-` variable contains single-letter flags representing active shell options. Here's what each means:
 

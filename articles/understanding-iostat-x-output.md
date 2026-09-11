@@ -286,7 +286,7 @@ Percentage of elapsed wall clock time during which I/O requests were issued to t
 - **Formula:** `(clock-time-with-io-present / interval) / 10`
 - Simply measures what percentage of the sample interval had **any** I/O present
 
-#### Does 100% `%util` Mean Saturation?
+#### Does 100% %util Mean Saturation?
 
 **Generally NO.** `%util` is just a measure of device busy time. It means at least one I/O was always outstanding during the sample, but says nothing about how much capacity the device has left.
 

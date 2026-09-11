@@ -293,7 +293,7 @@ Setting `gecos` costs nothing and makes system administration easier — always 
 
 ## Direct Format vs Nested Format
 
-### Direct format: `users:` (Standalone cloud-config)
+### Direct format: users: (Standalone cloud-config)
 
 ```yaml
 #cloud-config
@@ -308,7 +308,7 @@ This is **direct cloud-config syntax** used when:
 - Used in `.yaml` or `.yml` files for cloud-init
 - Common in configuration files or templates
 
-### Nested format: `user-data:` containing `users:` (Wrapped structure)
+### Nested format: user-data: containing users: (Wrapped structure)
 
 ```yaml
 user-data:

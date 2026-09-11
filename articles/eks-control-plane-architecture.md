@@ -102,7 +102,7 @@ owned by the EKS managed account but living in your VPC** — commonly called
 - Traffic on these ENIs is governed by the **cluster security group** EKS creates, plus any
   additional security groups you attached in the VPC config.
 
-### The `kubernetes` Service — how pods reach the API server
+### The kubernetes Service — how pods reach the API server
 
 The reverse direction (pods calling the API server) uses a well-known indirection:
 

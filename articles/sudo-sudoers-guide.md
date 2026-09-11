@@ -733,7 +733,7 @@ if ! visudo -c -f /etc/sudoers.d/docker; then
 fi
 ```
 
-### Using `printf` (more portable)
+### Using printf (more portable)
 
 ```bash
 #!/bin/bash

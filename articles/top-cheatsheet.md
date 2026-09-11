@@ -160,7 +160,7 @@ MiB Swap:   2048.0 total,   2048.0 free,      0.0 used.   6543.2 avail Mem
 | `L` | Search/locate string in COMMAND |
 | `&` | Find next match |
 
-### Common Signals (for `k` command)
+### Common Signals (for k command)
 
 | Signal | Number | Description |
 |--------|--------|-------------|

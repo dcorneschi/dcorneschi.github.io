@@ -195,7 +195,7 @@ crashing container to inspect its filesystem, environment, or processes. A
 crashing container is hard to `exec` into because it's rarely running — these
 methods work around that.
 
-### Method 1: Ephemeral debug container (`kubectl debug`, K8s 1.18+)
+### Method 1: Ephemeral debug container (kubectl debug, K8s 1.18+)
 
 Attach a debug container that shares namespaces with the target, so you can
 inspect the target container's process, filesystem, and environment via

@@ -40,7 +40,7 @@ All return an exit status: 0 for true, 1 for false.
 | Parentheses for grouping | `\( \)` (escaped) | `( )` (no escaping) |
 
 
-## Why `[ ]` Requires Quoting
+## Why [ ] Requires Quoting
 
 `[ ]` is a command, so its arguments undergo word splitting and glob expansion like any other command. An unquoted empty variable causes a syntax error:
 

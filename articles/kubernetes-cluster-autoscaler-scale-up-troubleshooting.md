@@ -41,7 +41,7 @@ If any of these aren't met, the autoscaler ignores the pod.
 | Image pull error | Ignored |
 | SchedulerError | Ignored |
 
-## Expander Strategy: `most-pods`
+## Expander Strategy: most-pods
 
 The autoscaler uses an **expander** to choose which node group to scale when multiple groups are eligible:
 

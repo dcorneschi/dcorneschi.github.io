@@ -400,7 +400,7 @@ cat /sys/block/sda/stat
 
 ## Troubleshooting
 
-### Scheduler shows `none` when I expect mq-deadline
+### Scheduler shows none when I expect mq-deadline
 
 On NVMe devices, the kernel defaults to `none` because NVMe controllers have their own internal scheduling with multiple hardware queues. This is correct behaviour — adding a kernel scheduler on top adds CPU overhead without benefit.
 

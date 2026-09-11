@@ -112,7 +112,7 @@ exceeded`).
 
 ## Fixes
 
-### 1. Raise `registryPullQPS` / `registryBurst` (primary fix)
+### 1. Raise registryPullQPS / registryBurst (primary fix)
 
 Set higher limits in the **kubelet configuration** (the CLI flags `--registry-qps` /
 `--registry-burst` are deprecated; prefer the config file). Example kubelet config:

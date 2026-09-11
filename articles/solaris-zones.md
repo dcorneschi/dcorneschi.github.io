@@ -36,7 +36,7 @@ Solaris always has one **global zone** (the host itself) and zero or more **non-
 - Maintain their own **hostname and system files** (distinct identity).
 - **Cannot communicate with other non-global zones by default** — traffic must go over a network interface using the standard TCP/IP network API, just like separate hosts.
 
-## Configure a Zone (`zonecfg`)
+## Configure a Zone (zonecfg)
 
 Create the parent directory, then define the zone's configuration — zone path and a network interface here:
 
@@ -132,7 +132,7 @@ zonecfg:testzone1:device> set match=/dev/rdsk/c0t3d0s0
 zonecfg:testzone1:device> end
 ```
 
-## Install and Boot (`zoneadm`)
+## Install and Boot (zoneadm)
 
 ```bash
 # Install the zone (lays down its filesystem from the global zone's packages)

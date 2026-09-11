@@ -14,7 +14,7 @@ avg(last_5m):avg:system.cpu.idle{*} by {host} > 90
 
 There are two critical parts that control scope:
 
-### `{*}` — The Filter (Scope)
+### {*} — The Filter (Scope)
 
 The curly braces define **which data sources** the monitor evaluates. The wildcard `*` means "all hosts reporting this metric" with no filter applied.
 
@@ -23,7 +23,7 @@ The curly braces define **which data sources** the monitor evaluates. The wildca
 - `{host:srv-prod-01}` — one specific host
 - `{team:backend,env:staging}` — hosts matching both tags
 
-### `by {host}` — The Grouping
+### by {host} — The Grouping
 
 The `by` clause defines **how the monitor evaluates thresholds**. With `by {host}`, each host is evaluated independently and gets its own alert state.
 
@@ -74,7 +74,7 @@ query = "avg(last_5m):avg:system.disk.in_use{*} by {host,device} > 0.85"
 
 Evaluates per host AND per disk device. You get separate alerts for `/dev/vda1` and `/dev/vdb1` on the same host.
 
-## No Data Behavior with `{*}`
+## No Data Behavior with {*}
 
 When using wildcard scoping, hosts can silently disappear. If a host stops reporting metrics (crash, decommission, network issue), the monitor enters a **No Data** state for that group.
 

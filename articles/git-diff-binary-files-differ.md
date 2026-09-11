@@ -74,7 +74,7 @@ git check-attr -a notes.md
 
 `git check-attr` is the fastest way to confirm whether an attribute rule — not the content — is the culprit.
 
-## Fix 1: A `.gitattributes` Rule Is Forcing Binary
+## Fix 1: A .gitattributes Rule Is Forcing Binary
 
 The most common cause is an overly broad rule. A line like `* binary` or `* binary eol=lf` tells Git to treat **every file** in the repo as binary, text files included.
 
@@ -126,7 +126,7 @@ git diff --cached
 
 Marking such a file as `text` in `.gitattributes` only hides the symptom — clean the content so editors and tooling behave correctly.
 
-## The Recommended `.gitattributes` Baseline
+## The Recommended .gitattributes Baseline
 
 For a cross-platform repository, this is the safe default:
 

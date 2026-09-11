@@ -164,7 +164,7 @@ sda1  reads  read sectors  writes  requested writes
 
 ### Procs (Process) Section
 
-#### `r` — Run Queue Length
+#### r — Run Queue Length
 
 The number of runnable processes (running + waiting for CPU time).
 
@@ -186,7 +186,7 @@ cat /proc/cpuinfo | grep processor | wc -l
 1. Add more processors (CPUs) to the server
 2. Load balance by rescheduling large batch tasks to off-peak hours
 
-#### `b` — Blocked Processes
+#### b — Blocked Processes
 
 The number of processes in uninterruptible sleep (D state) — waiting for a resource (e.g., filesystem I/O, inode lock).
 
@@ -212,7 +212,7 @@ ps -eLo state,pid,cmd | grep ^D
 
 All values are in kilobytes by default. Use `-S M` for megabytes, `-S m` for mebibytes.
 
-#### `swpd` — Swap Used
+#### swpd — Swap Used
 
 Amount of swap space currently in use (KiB).
 
@@ -226,7 +226,7 @@ Amount of swap space currently in use (KiB).
 cat /proc/swaps
 ```
 
-#### `free` — Free Memory
+#### free — Free Memory
 
 Amount of idle (completely unused) memory (KiB).
 
@@ -234,7 +234,7 @@ Amount of idle (completely unused) memory (KiB).
 - **Low `free` alone does not mean the system is out of memory**
 - To understand actual memory availability: `free + buff + cache` (approximately), or better yet use `free -h` and look at the "available" column
 
-#### `buff` — Buffer Memory
+#### buff — Buffer Memory
 
 Memory used for kernel buffer cache (KiB).
 
@@ -242,7 +242,7 @@ Memory used for kernel buffer cache (KiB).
 - Typically small compared to page cache
 - Used by the block layer to cache disk metadata
 
-#### `cache` — Page Cache
+#### cache — Page Cache
 
 Memory used for page cache (KiB).
 
@@ -251,17 +251,17 @@ Memory used for page cache (KiB).
 - Cache memory is reclaimable — the kernel will shrink it when applications need more memory
 - High cache usage is **healthy** — it means the kernel is effectively using idle memory to speed up I/O
 
-#### `inact` — Inactive Memory (with `-a` flag)
+#### inact — Inactive Memory (with -a flag)
 
 Memory on the inactive list (KiB). Pages that have not been recently accessed and are candidates for reclaim.
 
-#### `active` — Active Memory (with `-a` flag)
+#### active — Active Memory (with -a flag)
 
 Memory on the active list (KiB). Pages that have been recently accessed and are less likely to be reclaimed.
 
 ### Swap Section
 
-#### `si` — Swap In (Pages Read from Swap)
+#### si — Swap In (Pages Read from Swap)
 
 Amount of memory swapped in from disk per second (KiB/s).
 
@@ -269,7 +269,7 @@ Amount of memory swapped in from disk per second (KiB/s).
 - This happens when a process accesses a page that was previously swapped out
 - Sustained non-zero `si` indicates the system doesn't have enough RAM for the working set
 
-#### `so` — Swap Out (Pages Written to Swap)
+#### so — Swap Out (Pages Written to Swap)
 
 Amount of memory swapped out to disk per second (KiB/s).
 
@@ -292,7 +292,7 @@ In ideal conditions, `si` and `so` should be at 0 most of the time. More than 10
 
 **Note:** The memory, swap, and I/O statistics are in blocks, not in bytes. In Linux, blocks are usually 1,024 bytes (1 KiB).
 
-#### `bi` — Blocks In
+#### bi — Blocks In
 
 Blocks received from a block device per second (blocks/s).
 
@@ -300,7 +300,7 @@ Blocks received from a block device per second (blocks/s).
 - Represents reads from disk (or reads from swap, which are also counted here)
 - High `bi` with high `b` (blocked processes) suggests I/O-bound reads
 
-#### `bo` — Blocks Out
+#### bo — Blocks Out
 
 Blocks sent to a block device per second (blocks/s).
 
@@ -312,7 +312,7 @@ Blocks sent to a block device per second (blocks/s).
 
 ### System Section
 
-#### `in` — Interrupts Per Second
+#### in — Interrupts Per Second
 
 Total number of interrupts per second, including the clock interrupt.
 
@@ -321,7 +321,7 @@ Total number of interrupts per second, including the clock interrupt.
 - Compare against baseline — what's "high" depends entirely on the workload
 - On modern multi-queue NIC systems, interrupt rates can be very high during heavy network load without indicating a problem
 
-#### `cs` — Context Switches Per Second
+#### cs — Context Switches Per Second
 
 Total number of context switches per second.
 
@@ -343,7 +343,7 @@ Total number of context switches per second.
 
 All CPU values are percentages of total CPU time across all CPUs.
 
-#### `us` — User Time
+#### us — User Time
 
 Time spent running user-space (non-kernel) code.
 
@@ -351,7 +351,7 @@ Time spent running user-space (non-kernel) code.
 - High `us` indicates CPU-intensive application workloads
 - This is generally "productive" CPU usage
 
-#### `sy` — System Time
+#### sy — System Time
 
 Time spent running kernel code.
 
@@ -369,14 +369,14 @@ Time spent running kernel code.
 - If `us` + `sy` = 100%, possible CPU bottleneck
 - High `sy` means the application is issuing many system calls to the kernel — it measures how heavily the application is using kernel services
 
-#### `id` — Idle Time
+#### id — Idle Time
 
 Time the CPU is idle with no outstanding work.
 
 - `id` close to 0 means the CPU is fully utilized (check `r` column to see if there's CPU contention)
 - High `id` with high `wa` means CPUs are idle because they're waiting on I/O, not because there's no work
 
-#### `wa` — I/O Wait Time
+#### wa — I/O Wait Time
 
 Time the CPU is idle while the system has outstanding I/O requests.
 
@@ -400,7 +400,7 @@ Time the CPU is idle while the system has outstanding I/O requests.
 - Application doing synchronous I/O on slow devices
 - NFS mounts with latency issues
 
-#### `st` — Steal Time
+#### st — Steal Time
 
 Time the virtual CPU waited while the hypervisor was servicing another virtual processor.
 
@@ -409,7 +409,7 @@ Time the virtual CPU waited while the hypervisor was servicing another virtual p
 - Non-zero `st` means your VM is not getting all the CPU time it requests
 - Sustained `st > 5-10%` typically indicates noisy neighbors or an undersized host
 
-#### `gu` — Guest Time (newer kernels)
+#### gu — Guest Time (newer kernels)
 
 Time spent running KVM guest code (on hypervisor hosts only).
 

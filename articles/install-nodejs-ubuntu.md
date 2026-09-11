@@ -21,7 +21,7 @@ Quick reference of what each Ubuntu LTS ships in its default repo (approximate �
 | 22.04 LTS (Jammy) | 12.x |
 | 24.04 LTS (Noble) | 18.x |
 
-## Method 1 — Default Ubuntu Repository (`apt`)
+## Method 1 — Default Ubuntu Repository (apt)
 
 The fastest path. The packaged version lags behind current releases and mainly gets security fixes, so update it before using it in production.
 
@@ -80,7 +80,7 @@ sudo apt update
 
 Best when: a server needs a current, pinned major version installed system-wide via apt.
 
-## Method 3 — Node Version Manager (`nvm`)
+## Method 3 — Node Version Manager (nvm)
 
 `nvm` installs Node.js per-user in your home directory and lets you install, list, and switch between multiple versions — ideal when different projects need different Node releases. It needs no `sudo` for Node installs.
 
@@ -123,7 +123,7 @@ nvm uninstall 20.11.1
 
 Best when: you develop across projects that target different Node versions.
 
-## Method 4 — Fast Node Manager (`fnm`)
+## Method 4 — Fast Node Manager (fnm)
 
 `fnm` is a faster, Rust-based alternative to nvm with the same per-user, multi-version model and near-instant shell startup.
 

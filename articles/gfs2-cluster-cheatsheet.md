@@ -555,7 +555,7 @@ mount -t gfs2 -o noatime,nodiratime /dev/<vg>/<lv> <mountpoint>
 - **Web servers** — a good fit (content caches read-only on all nodes). To update, build a fresh copy and swap it in with a bind mount + `mount --move` rather than editing files in place.
 - **Backups** — best to back up each node's own working set from that node (keeps caches warm, spreads load); or take a hardware SAN snapshot. If a single node reads the whole FS, run `echo -n 3 > /proc/sys/vm/drop_caches` afterward.
 
-### The `ls --color` Trap
+### The ls --color Trap
 
 On a slow GFS2 filesystem, people instinctively run `ls` — but `--color=tty` forces a `stat()` on every entry, generating extra lock requests and *worsening* contention. Disable the color aliases on cluster nodes:
 

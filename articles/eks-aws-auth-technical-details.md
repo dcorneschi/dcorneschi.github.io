@@ -144,7 +144,7 @@ Not:
 - rolearn: arn:aws:sts::123456789012:assumed-role/MyRole/session-name
 ```
 
-### The `{{EC2PrivateDNSName}}` Template
+### The {{EC2PrivateDNSName}} Template
 
 For node roles, the username uses a template:
 
@@ -156,7 +156,7 @@ The authenticator replaces `{{EC2PrivateDNSName}}` with the actual private DNS n
 
 This is how Kubernetes identifies which physical node is making the API call.
 
-### The `{{SessionName}}` Template
+### The {{SessionName}} Template
 
 For Fargate and general role assumptions:
 

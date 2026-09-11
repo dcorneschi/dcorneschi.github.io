@@ -381,7 +381,7 @@ fuser -ck /data                 # kill those processes (use with care)
 
 `fuser -ck` is a blunt instrument; prefer identifying and stopping the application cleanly. A force-unmount can leave an application with open handles in an undefined state.
 
-### Filesystem full but `du` disagrees with `bdf`
+### Filesystem full but du disagrees with bdf
 
 If `bdf` shows the filesystem full but `du` accounts for far less, a process is almost certainly holding a **deleted-but-still-open** file — the space is not released until the last file descriptor closes. Restarting the offending process (often a logger or database) reclaims it:
 

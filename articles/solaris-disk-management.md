@@ -146,7 +146,7 @@ df -h /newfs
 | mount at boot | `yes` | Mount automatically at boot |
 | mount options | `-` | Options (`-` = defaults) |
 
-### Slicing Interactively in `format`
+### Slicing Interactively in format
 
 Inside `format`, the flow to lay down slices and label the disk:
 

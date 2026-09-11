@@ -79,7 +79,7 @@ if [ "$status" -ne 0 ]; then
 fi
 ```
 
-### Interaction with `pipefail`
+### Interaction with pipefail
 
 Under `set -o pipefail`, a pipeline fails if *any* stage fails. Put `|| true` on the whole pipeline, not just the last command, or the earlier failure can still surface:
 

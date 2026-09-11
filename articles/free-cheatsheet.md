@@ -107,7 +107,7 @@ The `-/+ buffers/cache` line showed:
 
 On RHEL 7+ / modern kernels, this was replaced by the `available` column which is computed more accurately using `/proc/meminfo`'s `MemAvailable` field.
 
-### Why `free` Looks Low
+### Why free Looks Low
 
 Linux uses idle memory for disk cache (page cache). This is a feature, not a problem:
 

@@ -101,13 +101,13 @@ sudo resize2fs "$ROOT_SRC"
 echo "> After:  $(df -h / | awk 'NR==2 {print $2" total, "$4" free"}')"
 ```
 
-### Why `growpart` instead of `fdisk`?
+### Why growpart instead of fdisk?
 
 The original approach fed keystrokes to interactive `fdisk` with a heredoc (delete partition, recreate it larger, write). That works but is fragile — it depends on partition numbers, sector offsets, and exact prompt ordering, and a small mismatch can corrupt the partition table.
 
 `growpart` (part of `cloud-guest-utils`, standard on Ubuntu cloud/Vagrant images) is purpose-built for exactly this: it grows an existing partition in place to consume free space after it, non-interactively and safely. It's the same tool `cloud-init` uses to expand root disks on first boot. Note the space in the syntax — `growpart /dev/sda 3`, not `growpart /dev/sda3`.
 
-### Why device discovery instead of hard-coded `/dev/sda1`?
+### Why device discovery instead of hard-coded /dev/sda1?
 
 Ubuntu 22.04/24.04 LVM layouts commonly put the PV on `/dev/sda3` (with a separate EFI/boot partition), and the LV path is `/dev/mapper/ubuntu--vg-ubuntu--lv`, not the older `vagrant-vg/root`. Discovering the layout with `findmnt` / `lsblk` at runtime makes the script portable across box versions instead of breaking when the naming changes.
 

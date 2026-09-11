@@ -248,14 +248,14 @@ ls -Z /bin/false /sbin/nologin
 
 ## When to Use Which
 
-### Use `/sbin/nologin` when:
+### Use /sbin/nologin when:
 - Creating service accounts (web servers, databases, message queues)
 - Temporarily disabling user accounts
 - You want users to understand why they can't log in
 - You need better security auditing (the message generates log entries)
 - Compliance requires informative denial messages
 
-### Use `/bin/false` when:
+### Use /bin/false when:
 - Creating pure system accounts (nobody, daemon, bin, sys)
 - Building minimal/embedded systems where no messages are wanted
 - The account will never be accessed by a human

@@ -51,7 +51,7 @@ The biggest conceptual gap between the two platforms.
 | OIDC to cloud | `id-token: write` + provider action | `id_tokens:` keyword |
 | Environments | `environment:` | `environment:` (with protected environments) |
 
-### Why There's No `actions/checkout@v4` in GitLab
+### Why There's No actions/checkout@v4 in GitLab
 
 On GitHub, almost every job starts with reusable **action blocks** — `uses: actions/checkout@v4`, `uses: actions/setup-node@v4`, and so on. These are versioned, third-party (or first-party) units you pull from the Marketplace with `uses:`. GitLab has **no `uses:` keyword and no equivalent block** you drop in. This is a deliberate design choice, not a missing feature.
 

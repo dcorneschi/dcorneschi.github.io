@@ -262,7 +262,7 @@ brand-new release. `pluto` and `kubent` are ruleset-based and also scan Helm rel
 manifests. The `--dry-run=server` approach needs nothing installed but only checks what
 you apply, not everything already stored in the cluster.
 
-## Note on `kubectl` and cluster upgrades
+## Note on kubectl and cluster upgrades
 
 `kubectl` is a standalone client binary. It is not tied to the cluster upgrade and can be
 updated before, during, or after a control plane upgrade. On EKS, `aws eks

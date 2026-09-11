@@ -221,7 +221,7 @@ Managing accounts with `modprpw`:
 /usr/lbin/modprpw -v -l user
 ```
 
-### Interpreting `getprpw` lockout
+### Interpreting getprpw lockout
 
 The lockout reason is a bit string (`0` = condition absent, `1` = present). Read left to right:
 

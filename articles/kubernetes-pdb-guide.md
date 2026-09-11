@@ -356,7 +356,7 @@ kubectl get pods -l app=my-app -n default
 kubectl get pdb my-app-pdb -n default -o jsonpath='{.status.expectedPods}'
 ```
 
-### 5. `minAvailable: 100%` or `maxUnavailable: 0`
+### 5. minAvailable: 100% or maxUnavailable: 0
 
 Both settings mean "no Pod can ever be voluntarily disrupted." This completely blocks node drains and autoscaler scale-downs. Only use this if you have a very specific reason and understand the operational impact.
 

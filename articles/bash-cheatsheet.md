@@ -954,7 +954,7 @@ while read -r line; do count=$((count+1)); done < file.txt
 echo $count  # correct
 ```
 
-### 6. Forgetting `--` for End of Options
+### 6. Forgetting -- for End of Options
 
 ```bash
 # WRONG - file named "-rf" would be interpreted as options

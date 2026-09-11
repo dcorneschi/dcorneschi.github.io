@@ -73,7 +73,7 @@ The pipeline uses two stages — `info` runs first, then `test` runs its three j
 | `network-check` | test | The runner has outbound internet access |
 | `gitlab-reachability` | test | The runner can reach the GitLab instance (needed to clone, report status, upload artifacts) |
 
-### `runner-info` — is a runner even picking this up?
+### runner-info — is a runner even picking this up?
 
 If this job runs at all, a runner is connected and matched your pipeline. The `echo` lines print [predefined CI/CD variables](https://docs.gitlab.com/ee/ci/variables/predefined_variables.html) so you can confirm *which* runner and *which* context:
 
@@ -83,15 +83,15 @@ If this job runs at all, a runner is connected and matched your pipeline. The `e
 
 The single quotes around each `echo` keep YAML happy — colons and `$(...)` inside an unquoted scalar can otherwise break parsing.
 
-### `basic-commands` — does the executor run shell?
+### basic-commands — does the executor run shell?
 
 `date`, `whoami`, `uname -a`, `pwd`, `ls -la` are deliberately boring. They confirm the executor (Docker, shell, Kubernetes, etc.) actually starts the container and runs commands. `whoami` and `uname -a` also tell you the user and host kernel — useful when debugging permission or platform issues later.
 
-### `network-check` — outbound internet
+### network-check — outbound internet
 
 Uses BusyBox `wget` (built into `alpine`) to fetch a well-known URL. Prints `Internet OK` or `Internet FAILED` without failing the job, so you get a clear signal even in a locked-down network. If this fails, jobs that pull dependencies (`npm ci`, `pip install`, `apk add`) will also fail.
 
-### `gitlab-reachability` — can the runner talk back to GitLab?
+### gitlab-reachability — can the runner talk back to GitLab?
 
 The runner must reach the GitLab instance to clone the repo, report job status, and upload artifacts/logs. This job installs `curl` and hits `$CI_SERVER_URL`. A failure here often explains "stuck" or "hung" jobs even when the internet works — common with self-managed runners behind a firewall or split-horizon DNS.
 

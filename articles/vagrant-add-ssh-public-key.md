@@ -18,7 +18,7 @@ ssh-keygen -t rsa -b 4096 -C "you@host"
 
 Accept the default location (`~/.ssh/id_ed25519` or `~/.ssh/id_rsa`) and set a passphrase if you want one. The public key is the `.pub` file — that's what goes into the VM. Never copy the private key into the box.
 
-## Method 1 — `ssh-copy-id` (Simplest, After Boot)
+## Method 1 — ssh-copy-id (Simplest, After Boot)
 
 Once the box is up and reachable on a known IP, `ssh-copy-id` appends your public key to the VM's `authorized_keys` in one command.
 
@@ -52,7 +52,7 @@ ssh -i ~/.ssh/id_ed25519 -p 2222 vagrant@localhost
 
 Best when: the box is already running and you just want to push a key interactively.
 
-## Method 1b — Manual Pipe Over SSH (No `ssh-copy-id`)
+## Method 1b — Manual Pipe Over SSH (No ssh-copy-id)
 
 If `ssh-copy-id` isn't available (it's missing on some minimal or Windows setups), you can do the same thing with a plain pipe — read the public key on the host and append it to `authorized_keys` inside the box in one command:
 
@@ -65,7 +65,7 @@ This is exactly what `ssh-copy-id` does under the hood, minus the duplicate-dete
 
 Best when: `ssh-copy-id` isn't installed and you want a one-liner.
 
-## Method 2 — Inline Shell Provisioner (Ruby `File` Read)
+## Method 2 — Inline Shell Provisioner (Ruby File Read)
 
 Because the `Vagrantfile` is Ruby, you can read your public key at provision time and append it inside the box. This bakes the key in automatically on `vagrant up` / `vagrant provision`.
 
@@ -115,7 +115,7 @@ A common mistake is `destination: "~/.ssh/id_rsa.pub"` alone — that just drops
 
 Best when: you need the raw file in the box (not only the authorized key), or prefer separating copy from install.
 
-## Method 4 — Use Vagrant's Own Key via `ssh-config`
+## Method 4 — Use Vagrant's Own Key via ssh-config
 
 This one doesn't add *your* key at all — it reuses the private key Vagrant already generated, so you can SSH in directly (useful for scripts, Ansible `ansible_ssh_private_key_file`, or IDE remote SSH) without running `vagrant ssh`.
 
@@ -152,7 +152,7 @@ vagrant ssh-config --host vagrant-dev >> ~/.ssh/config
 
 Best when: you don't need your own key in the box — you just want non-`vagrant ssh` access for tooling.
 
-## Method 5 — Let Vagrant Manage Your Key (`config.ssh`)
+## Method 5 — Let Vagrant Manage Your Key (config.ssh)
 
 The most "Vagrant-native" option is to tell Vagrant to use *your* keypair instead of the auto-generated one. Then `vagrant ssh`, `vagrant ssh-config`, and any provisioner all authenticate with your key — no manual `authorized_keys` editing.
 
@@ -174,7 +174,7 @@ How it behaves:
 
 Best when: you want your key to be *the* key Vagrant uses everywhere, not just an extra entry in `authorized_keys`.
 
-## Method 6 — Ansible Provisioner (`authorized_key` Module)
+## Method 6 — Ansible Provisioner (authorized_key Module)
 
 Since the usual reason for all this is "so Ansible can connect," you can let Vagrant run Ansible and have the `authorized_key` module install the key idempotently — no shell string-appending, no duplicate entries.
 

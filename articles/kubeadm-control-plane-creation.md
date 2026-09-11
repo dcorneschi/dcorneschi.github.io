@@ -18,7 +18,7 @@ mirroring the structure of the EKS control-plane doc so you can compare the two 
 
 ---
 
-## 1. Prerequisites (what must be true before `kubeadm init`)
+## 1. Prerequisites (what must be true before kubeadm init)
 
 kubeadm assumes the host is already prepared. On each machine you need:
 
@@ -37,7 +37,7 @@ the kubelet is what actually runs the control-plane containers as **static pods*
 
 ---
 
-## 2. What `kubeadm init` does, phase by phase
+## 2. What kubeadm init does, phase by phase
 
 `kubeadm init` runs a sequence of **phases**. You can run them all at once, or invoke any
 phase individually (`kubeadm init phase <name>`) for customization. The main phases:

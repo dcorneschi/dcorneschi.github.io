@@ -89,11 +89,11 @@ groups alice                       # show a user's group membership
 | `/etc/security/policy.conf` | System-wide security policy (e.g. account lockout) |
 | `/etc/user_attr` | Associates users/roles with authorizations and profiles (RBAC) |
 
-### `/etc/default/passwd`
+### /etc/default/passwd
 
 Default password policy applied when passwords are set — minimum/maximum age, minimum length, and complexity rules (e.g. `PASSLENGTH`, `MAXWEEKS`, `MINWEEKS`, `WARNWEEKS`).
 
-### `/etc/shadow`
+### /etc/shadow
 
 Holds the encrypted password and per-user aging fields (last change, min, max, warn, inactive, expire). This is what `passwd -s` summarizes.
 
@@ -113,7 +113,7 @@ RETRIES=5
 - `RETRIES` in `/etc/default/login` defines how many consecutive failures trigger it.
 - Per-user override is possible via `lock_after_retries` in `/etc/user_attr`.
 
-### `/etc/user_attr` (RBAC)
+### /etc/user_attr (RBAC)
 
 Maps users and roles to authorizations and rights profiles — the basis of Solaris Role-Based Access Control (RBAC). It's also where a per-user `lock_after_retries` keyword can be set.
 

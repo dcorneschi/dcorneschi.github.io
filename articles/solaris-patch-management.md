@@ -31,7 +31,7 @@ Each line shows the patch ID, patches it **obsoletes** (supersedes), patches it 
 - **IDR** (`IDR<id>`) — Interim Diagnostic/Relief patch, a temporary fix from support; usually removed once a formal patch ships.
 - **T-patch** — a test/pre-release patch (not for production).
 
-## Installing Patches (`patchadd`)
+## Installing Patches (patchadd)
 
 ```bash
 # Apply a patch
@@ -51,7 +51,7 @@ patchadd -R /a 101010-01
 - By default `patchadd` saves the files it replaces so the patch can be backed out later.
 - The `-d` option tells `patchadd` **not** to save those backout copies (saves disk, but the patch can no longer be removed with `patchrm`).
 
-## Removing Patches (`patchrm`)
+## Removing Patches (patchrm)
 
 ```bash
 # Remove a patch and restore the files it replaced

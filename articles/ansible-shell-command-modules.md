@@ -413,7 +413,7 @@ In older Ansible versions (< 2.14), the `command` and `shell` modules warned you
 
 Use YAML block scalars for complex multi-line scripts:
 
-### Literal Block (`|`) — Preserves Newlines
+### Literal Block (|) — Preserves Newlines
 
 ```yaml
 # Each line runs as a separate command in the shell
@@ -438,7 +438,7 @@ Use YAML block scalars for complex multi-line scripts:
     executable: /bin/bash
 ```
 
-### Folded Block (`>`) — Joins Lines (Single Command)
+### Folded Block (>) — Joins Lines (Single Command)
 
 ```yaml
 # Lines are joined with spaces — useful for very long single commands

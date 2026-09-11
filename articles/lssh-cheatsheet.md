@@ -374,7 +374,7 @@ path = "/dev/null"
 | `addr_in` / `addr_not_in` | Filter by address |
 | `port_in` / `port_not_in` | Filter by port |
 
-### Conditional `when.*` Keys
+### Conditional when.* Keys
 
 | Key | Description |
 |-----|-------------|

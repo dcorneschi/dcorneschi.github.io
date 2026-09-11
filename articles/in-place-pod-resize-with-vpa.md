@@ -52,7 +52,7 @@ clean way to prove a change was truly in-place rather than a recreate.
 > This is why cgroup **v2** is required on the nodes (next section) — the live cgroup
 > update relies on it.
 
-### Triggering a resize: the `resize` subresource
+### Triggering a resize: the resize subresource
 
 You change resources by patching the Pod's **`resize` subresource** — not the normal Pod
 spec path:
@@ -177,7 +177,7 @@ The in-place flow through VPA is:
 The result: the new resources land on the running Pod, same UID, no restart (unless
 `resizePolicy` forces one).
 
-### The `InPlaceOrRecreate` update mode
+### The InPlaceOrRecreate update mode
 
 Newer VPA (the `InPlaceOrRecreate` mode, gated by VPA's own
 `InPlaceOrRecreate` feature flag on the VPA components) applies recommendations by patching

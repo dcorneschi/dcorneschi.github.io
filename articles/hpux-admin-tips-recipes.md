@@ -6,7 +6,7 @@ A grab-bag of practical HP-UX recipes: tracking down an unlinked open file that'
 
 A common "disk is full but I can't find the file" scenario: a program (often a logger) has a file open, then someone `rm`s the file. Deleting only removes the directory entry (unlinks the inode); the process keeps its open file handle and keeps writing, so the space is consumed but no visible file accounts for it. The space isn't reclaimed until the process closes the handle (or exits).
 
-### Why `bdf` and `du` Disagree
+### Why bdf and du Disagree
 
 This is the tell-tale symptom: `bdf` reports a filesystem is 95% full, but `du -sk` on that mount point adds up to far less. `du` walks the directory tree and can only count files that still have a name (a directory entry). An unlinked-but-open file has no directory entry, so `du` cannot see it, yet its blocks are still allocated on disk and counted by `bdf` (which reads the filesystem's free-block accounting directly). Whenever `bdf` and `du` disagree by a large margin, suspect an unlinked open file (or a file hidden underneath a mount point — a file written to a directory *before* something was mounted over it).
 

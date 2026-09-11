@@ -31,7 +31,7 @@ Related: [Cron vs CronJob in Kubernetes](articles/kubernetes-cron-vs-cronjob.md)
 
 ## CronJob Spec Fields
 
-### `spec` (CronJob level)
+### spec (CronJob level)
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
@@ -43,7 +43,7 @@ Related: [Cron vs CronJob in Kubernetes](articles/kubernetes-cron-vs-cronjob.md)
 | `failedJobsHistoryLimit` | int | `1` | Number of failed finished jobs to keep |
 | `startingDeadlineSeconds` | int | unlimited | Deadline (seconds) for starting the job if it missed its scheduled time |
 
-### `concurrencyPolicy` options
+### concurrencyPolicy options
 
 | Value | Behavior |
 |-------|----------|
@@ -51,7 +51,7 @@ Related: [Cron vs CronJob in Kubernetes](articles/kubernetes-cron-vs-cronjob.md)
 | `Forbid` | Skip the new run if the previous one is still active |
 | `Replace` | Cancel the currently running job and start a new one |
 
-### `jobTemplate.spec` (Job level)
+### jobTemplate.spec (Job level)
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
@@ -61,7 +61,7 @@ Related: [Cron vs CronJob in Kubernetes](articles/kubernetes-cron-vs-cronjob.md)
 | `completions` | int | `1` | Number of pods that need to successfully complete |
 | `parallelism` | int | `1` | Number of pods to run in parallel |
 
-### `jobTemplate.spec.template.spec` (Pod level)
+### jobTemplate.spec.template.spec (Pod level)
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|

@@ -56,7 +56,7 @@ kubectl autoscale deployment web-frontend \
 
 > **Note:** `--dry-run=client` doesn't contact the API server, so the generated YAML won't include the `namespace` field in metadata. You'll need to add `namespace: scaling-lab` manually. Using `--dry-run=server` instead will include the namespace automatically, but requires the namespace and deployment to already exist in the cluster.
 
-### 5. Edit `hpa.yaml` — add scaleDown behavior
+### 5. Edit hpa.yaml — add scaleDown behavior
 
 Open the generated file and add the `behavior` block so the final result
 looks like this:

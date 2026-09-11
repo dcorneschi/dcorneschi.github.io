@@ -107,7 +107,7 @@ Insights knows. The `insight` object includes:
     need to move to a compatible version for the target Kubernetes version.
   - **`deprecationDetails[]`** – the deprecated-API findings (next section).
 
-### The `deprecationDetails` object — field by field
+### The deprecationDetails object — field by field
 
 This is the heart of deprecated-API detection. Each entry has:
 

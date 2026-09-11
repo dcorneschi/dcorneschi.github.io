@@ -1,10 +1,10 @@
-# Finding the Real Image Version Behind a `latest` Tag
+# Finding the Real Image Version Behind a latest Tag
 
 A mutable tag like `nginx:latest` tells you nothing about what's actually
 running — two pods on the same tag can be different builds. This guide shows how
 to resolve the real version and immutable digest of a running container.
 
-## When Using the `nginx:latest` Tag
+## When Using the nginx:latest Tag
 
 If your deployment uses `nginx:latest`, check the actual resolved version that's running.
 
@@ -30,7 +30,7 @@ kubectl get pod <pod-name> -o jsonpath='{range .status.containerStatuses[*]}{.na
 
 ## Check the Actual Nginx Version Inside the Container
 
-### Run `nginx -v`
+### Run nginx -v
 
 ```bash
 kubectl exec <pod-name> -- nginx -v

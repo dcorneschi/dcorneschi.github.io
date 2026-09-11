@@ -241,7 +241,7 @@ You *can* put the local backend file on an NFS mount or Samba share on your NAS.
 
 ## 6. Other Notable Backends
 
-### HCP Terraform / Terraform Enterprise (`cloud` block)
+### HCP Terraform / Terraform Enterprise (cloud block)
 
 HashiCorp's managed (or self-hosted Enterprise) offering. Handles state, locking, remote runs, policy, and a UI.
 

@@ -131,7 +131,7 @@ echo "umask 027" >> ~/.bashrc
 
 ## Special Permissions
 
-### setuid (`u+s`)
+### setuid (u+s)
 
 When set on an executable file, the process runs with the **file owner's** privileges instead of the user who launched it.
 
@@ -143,7 +143,7 @@ ls -l /usr/bin/passwd
 
 > **Security:** setuid on shell scripts is ignored by the kernel on Linux. It only applies to compiled binaries.
 
-### setgid (`g+s`)
+### setgid (g+s)
 
 - **On files:** the process runs with the file's group privileges.
 - **On directories:** new files and subdirectories inherit the directory's group (instead of the creator's primary group).
@@ -158,7 +158,7 @@ ls -l /shared/project/newfile
 -rw-r--r-- 1 alice developers ...   # group is 'developers', not alice's primary
 ```
 
-### Sticky bit (`o+t`)
+### Sticky bit (o+t)
 
 When set on a directory, only the file owner, directory owner, or root can delete/rename files within it. Prevents users from deleting each other's files in shared directories.
 
@@ -499,7 +499,7 @@ find /var/www -type f -exec chmod ug+rw {} \;
 
 Setting the SGID bit (`2775`) on directories ensures that new files and subdirectories inherit the group ownership of the parent directory.
 
-## About the `users` Group
+## About the users Group
 
 The `users` group exists just to be assigned to users which don't need to belong in any other group, as far as permissions are concerned. It basically exists just because every user must be at least part of a primary group (which you can find in `/etc/passwd`). Think of `users` like a "fallback" — if no group is assigned to a user, the `useradd` utility uses it as a default when homonym groups are disabled.
 
@@ -536,7 +536,7 @@ find /var/www -perm 644
 find /home -perm -u+rw
 ```
 
-## Inspecting Permissions with `stat`
+## Inspecting Permissions with stat
 
 The `stat` command shows permissions in both octal and symbolic format at once, along with ownership and timestamps:
 
@@ -569,7 +569,7 @@ stat -c "%a %A %U:%G %n" /etc/passwd
 644 -rw-r--r-- root:root /etc/passwd
 ```
 
-## Debugging Permission Chains with `namei`
+## Debugging Permission Chains with namei
 
 The `namei` command traces the permission chain along a full path. Useful when troubleshooting "permission denied" errors on deeply nested directories — the problem is often a missing execute bit on a parent directory:
 

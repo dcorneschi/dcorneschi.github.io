@@ -174,7 +174,7 @@ Then:
    vparboot -p test_vpar1
    ```
 
-## Booting vPars (`vparload` at the MON> prompt)
+## Booting vPars (vparload at the MON> prompt)
 
 ```
 MON> vparload -all                         # boot all vPars

@@ -28,7 +28,7 @@ cat /var/sadm/install/contents
 - `/var/sadm/pkg/` — one subdirectory per installed package (its metadata and install scripts).
 - `/var/sadm/install/contents` — the system-wide file inventory used by `pkgchk` to verify integrity.
 
-## Querying Packages (`pkginfo`)
+## Querying Packages (pkginfo)
 
 ```bash
 # List installed packages, filter for one
@@ -72,7 +72,7 @@ Sample `pkginfo -l SUNWwgetr` (long form):
 
 **Naming convention:** the historical `SUNW*` prefix identifies Sun/Oracle packages (e.g. `SUNWwgetr`, `SUNWman`). A trailing letter often marks the delivery target — `r` = root filesystem components, `u` = `/usr` components. Third-party packages use their own prefixes (e.g. `SMCwget` from sunfreeware).
 
-## Installing Packages (`pkgadd`)
+## Installing Packages (pkgadd)
 
 ```bash
 # Install from install media (directory format)
@@ -99,7 +99,7 @@ pkgadd -d http://instructor/packages/SUNWrsc.pkg all
 head -5 /var/tmp/stream.pkg
 ```
 
-### Converting Between Formats (`pkgtrans`)
+### Converting Between Formats (pkgtrans)
 
 `pkgtrans` converts a directory-format package to a data-stream file and vice-versa:
 
@@ -140,7 +140,7 @@ pkgadd -n -a /tmp/noask -d . SUNWxxx
 
 `-n` runs in non-interactive mode; the admin file's `nocheck`/`quit` keywords control how prompts are handled.
 
-## Verifying Packages (`pkgchk`)
+## Verifying Packages (pkgchk)
 
 `pkgchk` checks installed files against the `/var/sadm/install/contents` database — useful for detecting tampering or corruption.
 
@@ -162,7 +162,7 @@ pkgchk -l -p /usr/bin/showrev
 - `-p <path>` — check a specific file (or files) rather than a whole package.
 - `-l` — list information about the files instead of just reporting problems.
 
-## Removing Packages (`pkgrm`)
+## Removing Packages (pkgrm)
 
 ```bash
 # Remove an installed package

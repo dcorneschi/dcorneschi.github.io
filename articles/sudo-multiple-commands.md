@@ -14,7 +14,7 @@ sudo systemctl enable nginx
 
 There are cleaner ways to handle this.
 
-## Approach 1 — Semicolons or `&&` Inside a Subshell
+## Approach 1 — Semicolons or && Inside a Subshell
 
 ```bash
 sudo bash -c "apt update; apt install -y nginx; systemctl enable nginx"
@@ -53,7 +53,7 @@ systemctl enable $PACKAGE
 EOF
 ```
 
-## Approach 3 — `sudo -s` (Interactive Root Shell)
+## Approach 3 — sudo -s (Interactive Root Shell)
 
 ```bash
 sudo -s
@@ -71,7 +71,7 @@ exit
 
 > **Note:** `sudo -s` does not reset the environment. Use `sudo -i` if you need a full login shell with root's `PATH`, `HOME`, and profile scripts sourced.
 
-## Approach 4 — `sudo -i` (Full Login Shell)
+## Approach 4 — sudo -i (Full Login Shell)
 
 ```bash
 sudo -i
@@ -125,7 +125,7 @@ You can use `--` with root as well:
 sudo -- sh -c 'apt update && apt upgrade'
 ```
 
-## Approach 7 — `sudo su`
+## Approach 7 — sudo su
 
 ```bash
 sudo su
@@ -151,7 +151,7 @@ For scripting, prefer `sudo bash -c` or a script file. `sudo su` is more of an i
 
 Pipes and redirections are interpreted by the shell before `sudo` runs, so the elevated privileges don't apply to them. This is a common source of unexpected "permission denied" errors.
 
-### Why `sudo echo "text" >> file` Fails
+### Why sudo echo "text" >> file Fails
 
 ```bash
 # WRONG — only echo runs as root, >> runs as your user
@@ -161,7 +161,7 @@ sudo echo "some config" >> /etc/hosts
 
 `sudo` only elevates the `echo` command. The shell processes `>>` before `sudo` even runs, using your unprivileged user. Your user can't write to `/etc/hosts`, so it fails.
 
-### Solution 1 — `tee` (recommended)
+### Solution 1 — tee (recommended)
 
 `tee` runs as root and handles the file writing:
 
@@ -176,7 +176,7 @@ echo "some config" | sudo tee /etc/hosts
 echo "some config" | sudo tee -a /etc/hosts > /dev/null
 ```
 
-### Solution 2 — `bash -c` with quoted redirection
+### Solution 2 — bash -c with quoted redirection
 
 Wrap the entire command including the redirection inside a root shell:
 
@@ -190,7 +190,7 @@ sudo bash -c 'cat >> /etc/hosts << EOF
 EOF'
 ```
 
-### Solution 3 — `sh -c`
+### Solution 3 — sh -c
 
 Same as `bash -c`, using the system's `sh`:
 
@@ -215,7 +215,7 @@ sudo sh -c 'echo "some config" >> /etc/hosts'
 - Test with `echo` first to verify the command structure before writing to system files
 - Always quote the content inside `bash -c`
 
-### Why `tee` Is Preferred
+### Why tee Is Preferred
 
 1. **More portable** — works across different shells (bash, sh, zsh)
 2. **Cleaner syntax** — easier to read and maintain

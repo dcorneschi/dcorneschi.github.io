@@ -470,7 +470,7 @@ variable "api_key" {
 | `map(string)` | `{ Name = "app", Env = "prod" }` |
 | `object({...})` | `object({ name = string, size = number })` |
 
-### Variable Files (`.pkrvars.hcl`)
+### Variable Files (.pkrvars.hcl)
 
 ```hcl
 # prod.pkrvars.hcl

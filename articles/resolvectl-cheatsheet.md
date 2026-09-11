@@ -175,7 +175,7 @@ resolvectl domain eth0 homelab.local ~internal.corp
 resolvectl domain eth0 ""
 ```
 
-### The `~` Prefix (Routing Domains)
+### The ~ Prefix (Routing Domains)
 
 | Setting | Meaning |
 |---------|---------|

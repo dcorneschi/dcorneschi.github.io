@@ -1,4 +1,4 @@
-# Temporarily Disabling AWS Credentials Safely (with `$$` and `trap`)
+# Temporarily Disabling AWS Credentials Safely (with $$ and trap)
 
 A common need when working with AWS auth: you want to **prove that a role-based or SSO auth
 path works without static keys**. The cleanest way is to make the AWS CLI/SDK stop seeing
@@ -49,7 +49,7 @@ mv ~/.aws/credentials ~/.aws/credentials.disabled.$$
   current shell**. If your shell's PID is `48213`, the backup becomes
   `~/.aws/credentials.disabled.48213`.
 
-### Why `$$`?
+### Why $$?
 
 It makes the backup filename **unique per shell** so you don't clobber an earlier backup.
 Run the pattern in two different shells and each gets its own file
@@ -66,7 +66,7 @@ mv ~/.aws/credentials ~/.aws/credentials.disabled.$(date +%Y%m%d-%H%M%S)
 
 ---
 
-## 3. Line 2 — guarantee the restore with `trap`
+## 3. Line 2 — guarantee the restore with trap
 
 ```bash
 trap "mv ~/.aws/credentials.disabled.$$ ~/.aws/credentials" EXIT
@@ -81,7 +81,7 @@ trap 'COMMAND' SIGNAL_OR_EVENT
 
 Here it says: **when the shell exits, move the backup back to `~/.aws/credentials`.**
 
-### `EXIT` fires no matter how you leave
+### EXIT fires no matter how you leave
 
 `EXIT` is a pseudo-event (not a real OS signal) that runs whenever the shell terminates —
 normal finish, `exit`, an error, or Ctrl-C. That's the whole point: your credentials get
@@ -89,7 +89,7 @@ restored **even if the commands in between fail or you interrupt them**. Without
 a crash would leave your static keys disabled and you'd have to remember to move them back
 by hand.
 
-### Why `$$` again, and why double quotes
+### Why $$ again, and why double quotes
 
 - `$$` resolves to the **same PID** as line 1 (it's the same shell), so the trap references
   the exact backup file you created.
@@ -173,7 +173,7 @@ role, etc.) is really the one in effect.
 
 ---
 
-## 6. Handy `trap` reference
+## 6. Handy trap reference
 
 | Event / signal | Fires when |
 |---|---|

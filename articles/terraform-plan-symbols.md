@@ -1,4 +1,4 @@
-# Understanding `<=`, `+`, and Other Signs in a Terraform Plan
+# Understanding <=, +, and Other Signs in a Terraform Plan
 
 When you run `terraform plan` or `terraform apply`, Terraform prints a summary of every change it intends to make. Each resource and attribute is prefixed with a symbol that tells you *what kind* of action Terraform will take. Reading these symbols correctly is the difference between confidently approving a plan and accidentally destroying production.
 
@@ -23,7 +23,7 @@ The final line of a plan aggregates these:
 Plan: 3 to add, 1 to change, 2 to destroy.
 ```
 
-## `+` — Create
+## + — Create
 
 A `+` means the object does not exist yet and Terraform will create it. You see it for brand-new resources and for individual attributes being set.
 
@@ -40,7 +40,7 @@ A `+` means the object does not exist yet and Terraform will create it. You see 
 - Every attribute of a new resource is prefixed with `+`.
 - `(known after apply)` means the value isn't decidable until the resource actually exists (IDs, computed IPs, ARNs).
 
-## `-` — Destroy
+## - — Destroy
 
 A `-` means the object will be removed. This appears when you delete a resource block, remove it from `count`/`for_each`, or when a whole resource is going away.
 
@@ -55,7 +55,7 @@ A `-` means the object will be removed. This appears when you delete a resource 
 
 Destroys are the highest-risk action. The `# ... will be destroyed` comment line above the block always tells you exactly which address is affected. Read those lines carefully before approving.
 
-## `~` — Update in Place
+## ~ — Update in Place
 
 A `~` means the resource stays but one or more attributes change. Terraform shows the transition as `old -> new`.
 
@@ -71,7 +71,7 @@ A `~` means the resource stays but one or more attributes change. Terraform show
 - Only the changed attributes carry `~`; unchanged ones are shown without a symbol for context.
 - Whether an attribute can be updated in place (`~`) versus forcing a replacement (`-/+`) is defined by the provider.
 
-## `-/+` and `+/-` — Replacement (Destroy and Recreate)
+## -/+ and +/- — Replacement (Destroy and Recreate)
 
 Some attributes cannot be changed on a live resource, so Terraform must destroy the old one and create a new one. This is a **replacement**, shown as `-/+`.
 
@@ -91,7 +91,7 @@ Two critical details:
   - `-/+` → **destroy first, then create** (default). There will be downtime.
   - `+/-` → **create first, then destroy** — happens when the resource has `lifecycle { create_before_destroy = true }`.
 
-## `<=` — Read (Data Sources)
+## <= — Read (Data Sources)
 
 This is the symbol that confuses most people. `<=` does **not** mean "less than or equal to." It represents a **data source read** that Terraform will perform during apply rather than at plan time.
 
@@ -134,7 +134,7 @@ Lines with no leading symbol are unchanged attributes displayed to give you cont
 
 Use `terraform plan -no-color` and scroll, or `terraform show` on a saved plan, if you want to expand hidden attributes.
 
-## `#` — Comment Lines
+## # — Comment Lines
 
 Lines beginning with `#` are human-readable annotations, not actions. The most important ones:
 

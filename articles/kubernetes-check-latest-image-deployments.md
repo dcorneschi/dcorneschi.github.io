@@ -8,7 +8,7 @@ kubectl get deployments -A -o jsonpath='{range .items[*]}{.metadata.namespace}/{
 
 This outputs every deployment across all namespaces alongside its container image(s) and tags.
 
-## Filter Deployments Using the `:latest` Tag
+## Filter Deployments Using the :latest Tag
 
 ```bash
 kubectl get deployments -A -o json | jq -r '
@@ -50,7 +50,7 @@ kubectl rollout restart deployment/<name> -n <namespace>
 kubectl get deployments -n <namespace> -o name | xargs -I {} kubectl rollout restart {} -n <namespace>
 ```
 
-## Find Deployments NOT Using `:latest` (Pinned Tags)
+## Find Deployments NOT Using :latest (Pinned Tags)
 
 ```bash
 kubectl get deployments -A -o json | jq -r '

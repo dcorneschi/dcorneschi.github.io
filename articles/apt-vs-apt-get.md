@@ -209,14 +209,14 @@ The only visible difference is rendering speed of the progress bar in `apt`, whi
 
 ## When to Use Which
 
-### Use `apt` when:
+### Use apt when:
 - Working interactively in a terminal
 - You want progress bars and colored output
 - Running one-off installs or upgrades
 - You want `apt list --installed` or `apt list --upgradeable`
 - Learning the package system (simpler mental model)
 
-### Use `apt-get` / `apt-cache` when:
+### Use apt-get / apt-cache when:
 - Writing shell scripts or automation
 - Building Docker images (`RUN apt-get install -y`)
 - In CI/CD pipelines

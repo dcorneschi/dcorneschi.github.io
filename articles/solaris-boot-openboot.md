@@ -13,7 +13,7 @@ Booting and boot configuration on Oracle Solaris spans two worlds: **SPARC** sys
 
 `eeprom` works on both platforms; on SPARC it reads/writes real NVRAM, on x86 it stores parameters in `bootenv.rc`.
 
-## OpenBoot Boot Commands (SPARC `ok` Prompt)
+## OpenBoot Boot Commands (SPARC ok Prompt)
 
 You reach the `ok` prompt by halting the OS (`init 0`), or via `Stop-A` / a console break.
 
@@ -33,7 +33,7 @@ ok boot -r          # reconfiguration boot (rebuild device tree for new hardware
 
 A **reconfiguration boot** (`boot -r`) is the classic way to make Solaris pick up hardware added while powered off; on a running system, `devfsadm` does the equivalent.
 
-### Reaching the `ok` Prompt
+### Reaching the ok Prompt
 
 ```bash
 # From a running system — halt to the ok prompt
@@ -124,7 +124,7 @@ ok setenv boot-device mydisk
 ok reset-all
 ```
 
-## NVRAM Parameters from a Running System (`eeprom`)
+## NVRAM Parameters from a Running System (eeprom)
 
 `eeprom` lets you read and set the same parameters without dropping to the `ok` prompt — handy for scripting and remote administration.
 
@@ -137,7 +137,7 @@ eeprom 'auto-boot?'=true        # names containing '?' must be single-quoted
 
 > The `?` in parameter names like `auto-boot?` is a shell metacharacter, so wrap the whole name in single quotes: `eeprom 'auto-boot?'=true`.
 
-## x86 Boot Archive and GRUB (`bootadm`)
+## x86 Boot Archive and GRUB (bootadm)
 
 On x86, Solaris boots via GRUB and loads a **boot archive** — a RAM filesystem image containing the kernel modules and data needed to bring the system up before the root filesystem is mounted.
 

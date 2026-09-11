@@ -10,7 +10,7 @@ When you clone or push over HTTPS on macOS, Git stores the password or personal 
 4. Double-click the entry, then check **Show password**.
 5. Enter your macOS login password when prompted to reveal it.
 
-## Using the Command Line (`security`)
+## Using the Command Line (security)
 
 The `security` tool queries the Keychain directly.
 

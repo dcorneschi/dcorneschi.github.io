@@ -140,14 +140,14 @@ All three containers can talk to each other by service name because they're on t
 
 ## When to Use Which
 
-### Use `ports` when:
+### Use ports when:
 
 - The service needs to be accessed from outside Docker (browsers, API clients, external tools)
 - You're running a web server, API gateway, or reverse proxy that faces users
 - You're developing locally and need to hit the service from your machine
 - The service is the entry point to your application
 
-### Use `expose` when:
+### Use expose when:
 
 - The service is internal — only other containers need to reach it
 - You're running a database, cache, message queue, or internal microservice

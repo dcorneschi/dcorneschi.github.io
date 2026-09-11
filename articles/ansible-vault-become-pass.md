@@ -171,7 +171,7 @@ Add in the editor:
 vault_sudo_password: mySecretSudoPassword123
 ```
 
-### 3. Create Inventory (`inventory.ini`)
+### 3. Create Inventory (inventory.ini)
 
 ```ini
 [rhel_servers]
@@ -185,7 +185,7 @@ ansible_become_method=sudo
 ansible_become_pass="{{ vault_sudo_password }}"
 ```
 
-### 4. Create Playbook (`playbook.yml`)
+### 4. Create Playbook (playbook.yml)
 
 ```yaml
 ---

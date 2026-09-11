@@ -159,7 +159,7 @@ startupProbe:
 
 All three probes support the same handlers.
 
-### HTTP (`httpGet`)
+### HTTP (httpGet)
 
 ```yaml
 httpGet:
@@ -175,7 +175,7 @@ httpGet:
 - Success is any status `200 <= code < 400`; anything else (or a timeout) is a failure.
 - Requests carry a `User-Agent: kube-probe/<version>` header, handy for filtering probe traffic in access logs.
 
-### TCP (`tcpSocket`)
+### TCP (tcpSocket)
 
 ```yaml
 tcpSocket:
@@ -184,7 +184,7 @@ tcpSocket:
 
 Succeeds if the kubelet can open a TCP connection. It sends no data, so it proves the port is accepting connections but not that the app is healthy behind it. Useful when there's no HTTP endpoint.
 
-### Exec (`exec`)
+### Exec (exec)
 
 ```yaml
 exec:
@@ -193,7 +193,7 @@ exec:
 
 Runs a command inside the container; exit code `0` is success. Most flexible (custom scripts, file checks, local queries) but also the most expensive since it forks a process each period.
 
-### gRPC (`grpc`)
+### gRPC (grpc)
 
 ```yaml
 grpc:

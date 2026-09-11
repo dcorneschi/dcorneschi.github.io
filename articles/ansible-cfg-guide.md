@@ -26,7 +26,7 @@ ansible-config dump --only-changed
 
 ## Global vs Local: When to Use Which
 
-### Global — `/etc/ansible/ansible.cfg`
+### Global — /etc/ansible/ansible.cfg
 
 Use for system-wide defaults that apply to all users and all projects on a machine. Typical for shared jump hosts or centralized automation servers.
 
@@ -38,7 +38,7 @@ host_key_checking = False
 log_path = /var/log/ansible.log
 ```
 
-### User-Level — `~/.ansible.cfg`
+### User-Level — ~/.ansible.cfg
 
 Use for personal preferences that apply across all your projects but don't affect other users.
 
@@ -49,7 +49,7 @@ vault_password_file = ~/.vault_pass
 stdout_callback = yaml
 ```
 
-### Project-Level — `./ansible.cfg` (Recommended)
+### Project-Level — ./ansible.cfg (Recommended)
 
 Use for project-specific settings. This is the most common approach — check it into git with the rest of your Ansible code.
 
