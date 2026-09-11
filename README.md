@@ -234,6 +234,13 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Docker Swarm Cheatsheet](articles/docker-swarm-cheatsheet.md) |
 | [Docker Swarm Storage](articles/docker-swarm-storage.md) |
 | [Docker Overlay2 Storage Driver](articles/docker-overlay2-storage.md) |
+| [Move the Docker Data Directory (data-root)](articles/docker-move-data-root.md) |
+| [Pin Docker Image Versions Instead of latest](articles/docker-image-version-pinning.md) |
+| [Docker Compose: Bind Mounts vs Named Volumes](articles/docker-compose-volumes-vs-bind-mounts.md) |
+| [Set the Container User (UID/GID) in Docker Compose](articles/docker-compose-set-container-user.md) |
+| [Defining Variables in Docker Compose](articles/docker-compose-variables-env.md) |
+| [Where to Store Docker Compose Bind-Mount Data on the Host](articles/docker-compose-host-data-layout.md) |
+| [Fixing Docker Bind-Mount Permission Errors](articles/docker-bind-mount-permissions.md) |
 | [Installing Podman on RHEL 7–10](articles/podman-installation-rhel.md) |
 | [Fixing Critical Vulnerabilities in Public Docker Images](articles/docker-fix-critical-vulnerabilities.md) |
 | [Docker Management UIs: Portainer vs Dockge vs Dockhand and Others](articles/docker-management-uis-comparison.md) |
@@ -496,6 +503,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [bash Cheatsheet](articles/bash-cheatsheet.md) |
 | [Korn Shell (ksh) Cheatsheet](articles/ksh-cheatsheet.md) |
 | [Bash Essentials Guide](articles/bash-essentials-guide.md) |
+| [Safely Download and Run Installation Scripts](articles/download-run-install-scripts.md) |
 | [Bash Pipelines and Redirections](articles/bash-redirection-operators.md) |
 | [Bash History Guide](articles/bash-history-guide.md) |
 | [Bash Test Conditions: \[ \] vs \[\[ \]\]](articles/bash-test-conditions-guide.md) |
@@ -529,6 +537,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Enable Persistent systemd Journal Logging](articles/systemd-journal-persistent-logging.md) |
 | [dpkg Cheatsheet](articles/dpkg-cheatsheet.md) |
 | [apt Cheatsheet](articles/apt-cheatsheet.md) |
+| [Configure Automatic Updates with unattended-upgrades](articles/unattended-upgrades-guide.md) |
 | [apt vs apt-get](articles/apt-vs-apt-get.md) |
 | [Fixing "Packages Have Been Kept Back" on Ubuntu](articles/apt-packages-kept-back.md) |
 | [Aptitude Cheatsheet](articles/aptitude-cheatsheet.md) |
@@ -538,6 +547,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Finding Old Package Versions on Ubuntu](articles/ubuntu-old-package-versions.md) |
 | [Installing Node.js on Ubuntu 22.04 and 24.04](articles/install-nodejs-ubuntu.md) |
 | [Fixing apt Lock Held Errors](articles/apt-lock-held-fix.md) |
+| [Troubleshoot APT NOSPLIT and Excess Data Errors Behind a Proxy](articles/apt-nosplit-proxy-troubleshooting.md) |
 | [DEBIAN_FRONTEND for Scripts](articles/debian-frontend-noninteractive.md) |
 | [Linux File Permissions Guide](articles/linux-file-permissions.md) |
 | [SELinux Cheatsheet](articles/selinux-cheatsheet.md) |
@@ -553,8 +563,10 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Configure Samba](articles/samba-configuration.md) |
 | [MySQL LDAP Authentication](articles/mysql-ldap-authentication.md) |
 | [Installing MediaWiki on RHEL](articles/mediawiki-installation-rhel.md) |
+| [Reinstall and Restore MediaWiki on RHEL](articles/mediawiki-reinstallation-rhel.md) |
 | [Installing DokuWiki on RHEL](articles/dokuwiki-installation-rhel.md) |
 | [RHEL LAMP Stack Setup](articles/rhel-lamp-stack-setup.md) |
+| [Apache HTTP Server Administration on RHEL](articles/apache-http-server-administration-rhel.md) |
 | [Protect SSH with fail2ban](articles/fail2ban-ssh-protection.md) |
 | [ReaR Backup Guide](articles/rear-backup-guide.md) |
 | [Veeam Agent for Linux](articles/veeam-agent-linux.md) |
@@ -574,6 +586,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Chroot SFTP Setup](articles/chroot-sftp-setup.md) |
 | [Linux Kernel Panics](articles/linux-kernel-panics.md) |
 | [Why Processes in D State Can't Be Killed](articles/linux-processes-d-state.md) |
+| [fuser Cheatsheet](articles/fuser-cheatsheet.md) |
 | [Linux Capabilities](articles/linux-capabilities.md) |
 | [Linux System Calls](articles/linux-syscalls.md) |
 | [Linux Kernel Map](articles/linux-kernel-map.md) |
@@ -685,11 +698,13 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [SSH Remote Sudo Execution](articles/ssh-remote-sudo-execution.md) |
 | [SSH Heredoc Variable Expansion](articles/ssh-heredoc-variables.md) |
 | [ip Command Cheatsheet](articles/ip-command-cheatsheet.md) |
+| [Configure a Static IP with Netplan on Ubuntu](articles/ubuntu-netplan-static-ip.md) |
 | [ss Cheatsheet](articles/ss-cheatsheet.md) |
 | [VNC Cheatsheet](articles/vnc-cheatsheet.md) |
 | [tcpdump Cheatsheet](articles/tcpdump-cheatsheet.md) |
 | [Diagnosing Packet Loss with mtr](articles/mtr-packet-loss-guide.md) |
 | [iperf3 Cheatsheet](articles/iperf3-cheatsheet.md) |
+| [Test Network Speed Between Two Hosts](articles/network-speed-testing-guide.md) |
 | [netstat Cheatsheet](articles/netstat-cheatsheet.md) |
 | [/proc/net Cheatsheet](articles/proc-net-cheatsheet.md) |
 | [Ephemeral Ports vs Conntrack Max](articles/ephemeral-ports-vs-conntrack.md) |
