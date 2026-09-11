@@ -8,6 +8,7 @@
 - [Proxmox](README.md#proxmox)
 - [Terraform](README.md#terraform)
 - [Ansible](README.md#ansible)
+- [Git](README.md#git)
 - [Bash and Shell](README.md#bash-and-shell)
 - [Linux System Administration](README.md#linux-system-administration)
 - [Server Hardware and BMC](README.md#server-hardware-and-bmc)
