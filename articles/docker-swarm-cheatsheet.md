@@ -653,6 +653,79 @@ secrets:
     external: true
 ```
 
+## Additional Operations and One-Liners
+
+### Deploy with private registry auth
+
+Swarm nodes each pull images independently, so a stack using a private registry needs the manager's login credentials pushed out to the nodes:
+
+```bash
+# Log in on the manager first, then propagate the auth to agents
+docker login registry.example.com
+docker stack deploy -c docker-compose.yml --with-registry-auth myapp
+```
+
+Without `--with-registry-auth`, worker nodes may fail to pull private images with an authentication error.
+
+### Update published ports on a running service
+
+```bash
+# Add a published port
+docker service update --publish-add 8080:80 web
+
+# Remove a published port
+docker service update --publish-rm 8080:80 web
+```
+
+### Recover a single-manager cluster
+
+If quorum is lost (for example the sole manager was restored from backup), force a new single-node cluster:
+
+```bash
+docker swarm init --force-new-cluster --advertise-addr <MANAGER-IP>
+```
+
+This reuses the existing Raft state but resets the cluster to one manager; re-join the other nodes afterward. Pairs with the backup/restore steps above.
+
+### Debug placement and task errors
+
+```bash
+# Where each task landed, its state, and any error
+docker service ps web --no-trunc \
+  --format "table {{.Name}}\t{{.Node}}\t{{.CurrentState}}\t{{.Error}}"
+
+# Only failed/rejected tasks
+docker service ps web --filter desired-state=shutdown --no-trunc
+
+# Test service-to-service connectivity from inside the overlay network
+docker run --rm --network my-overlay nicolaka/netshoot ping -c 3 web
+docker run --rm --network my-overlay nicolaka/netshoot nslookup web
+```
+
+### Filter nodes by role
+
+```bash
+docker node ls --filter role=manager --format "{{.Hostname}}"
+docker node ls --filter role=worker --format "{{.Hostname}}"
+```
+
+### Bulk service operations
+
+These act on every service — use deliberately, and scope with a stack name where possible.
+
+```bash
+# Scale every service to 0 (maintenance mode)
+docker service ls --format "{{.Name}}" | xargs -r -I{} docker service scale {}=0
+
+# List services with their published ports
+docker service ls --format "table {{.Name}}\t{{.Ports}}"
+
+# Prefer per-stack teardown over removing all services blindly
+docker stack rm myapp
+```
+
+> Bulk `docker service rm $(docker service ls -q)` removes **every** service in the swarm, not just one stack. Prefer `docker stack rm <stack>` so you only tear down what you intend.
+
 ## Best Practices
 
 | Area | Recommendation |

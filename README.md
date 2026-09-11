@@ -231,8 +231,20 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md) |
 | [dbash — Docker Shell Function](articles/docker-dbash-function.md) |
 | [Building Docker Images with Dockerfile](articles/docker-build-image-guide.md) |
+| [Docker Buildx and Multi-Platform Builds](articles/docker-buildx-multi-platform-builds.md) |
+| [Docker Restart Policies](articles/docker-restart-policies.md) |
+| [Docker Compose Build Configuration and Build Context](articles/docker-compose-build-configuration.md) |
+| [Configuring DNS in Docker Compose](articles/docker-compose-dns-configuration.md) |
+| [Docker Compose depends_on: Startup Order and Readiness](articles/docker-compose-depends-on.md) |
+| [Tagging Built Images in Docker Compose](articles/docker-compose-image-tagging.md) |
+| [Updating Docker Compose Containers](articles/docker-compose-updating-containers.md) |
+| [Docker Healthcheck Examples](articles/docker-healthcheck-examples.md) |
+| [Docker Compose vs Docker Swarm](articles/docker-compose-vs-swarm.md) |
+| [Rebuilding Docker Compose Images and Containers](articles/docker-compose-rebuild-images.md) |
+| [SUID, SGID, and Capabilities in Docker](articles/docker-suid-sgid-capabilities.md) |
 | [Docker Swarm Cheatsheet](articles/docker-swarm-cheatsheet.md) |
 | [Docker Swarm Storage](articles/docker-swarm-storage.md) |
+| [Shared Storage Options for Docker Swarm](articles/docker-swarm-storage-options.md) |
 | [Docker Overlay2 Storage Driver](articles/docker-overlay2-storage.md) |
 | [Move the Docker Data Directory (data-root)](articles/docker-move-data-root.md) |
 | [Pin Docker Image Versions Instead of latest](articles/docker-image-version-pinning.md) |

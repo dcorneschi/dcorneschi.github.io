@@ -773,6 +773,33 @@ docker compose rm -v
 docker compose down --rmi all -v --remove-orphans
 ```
 
+## Volume Inspection and Cleanup
+
+Compose named volumes persist across `down` and are removed only with `down -v` or `docker volume rm`. These commands help find what a volume belongs to and clean up unused ones.
+
+```bash
+# Which containers use a specific volume
+docker ps -a --filter volume=myproject_db_data
+
+# A volume's mountpoint and driver
+docker volume inspect myproject_db_data
+
+# List orphaned (dangling) volumes not used by any container
+docker volume ls -f dangling=true
+
+# Count them
+docker volume ls -f dangling=true --format '{{.Name}}' | wc -l
+
+# Remove unused volumes (prompts unless -f)
+docker volume prune
+docker volume prune -f
+
+# Disk usage including volumes
+docker system df -v
+```
+
+> Review `docker volume ls -f dangling=true` before pruning. A volume attached only to a stopped container is not dangling, but one left by a removed container is — and pruning deletes its data irreversibly. Back up anything important first.
+
 ## Advanced Network Configuration
 
 ```yaml
@@ -868,6 +895,30 @@ Most modern installations use V2. If you see `docker-compose` in old documentati
 | `docker compose top` | View running processes |
 | `docker compose --profile name up` | Start with profile |
 | `docker compose up --scale svc=N` | Scale a service |
+
+## Compose Environment Variables
+
+These shell variables change how the `docker compose` CLI behaves, without editing any file.
+
+```bash
+# Set the project name (default: current directory name)
+COMPOSE_PROJECT_NAME=myapp docker compose up -d
+
+# Select which compose files to load (path-separated)
+COMPOSE_FILE=docker-compose.yml:docker-compose.prod.yml docker compose up -d
+COMPOSE_PATH_SEPARATOR=:
+
+# Activate profiles without the --profile flag
+COMPOSE_PROFILES=frontend,api docker compose up -d
+
+# Increase the CLI operation timeout (seconds) on slow hosts
+COMPOSE_HTTP_TIMEOUT=120 docker compose up -d
+
+# Target a remote or alternate daemon
+DOCKER_HOST=ssh://user@remote docker compose ps
+```
+
+`COMPOSE_FILE` and `COMPOSE_PROFILES` are the two most useful: they let a shell profile or `.env` pin the file set and active profiles so plain `docker compose up` does the right thing.
 
 ## Kill and Signals
 
