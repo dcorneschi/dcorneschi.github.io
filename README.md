@@ -16,837 +16,837 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 
 ### Kubernetes
 
-| Article | Description |
-|---------|--------------|
-| [Using jq with kubectl](articles/kubectl-jq-guide.md) | Composing jq commands for kubectl JSON output — filtering, aggregation, formatting, and scripts. |
-| [kubectl JSONPath Guide](articles/kubectl-jsonpath-guide.md) | Built-in JSONPath expressions — pods, nodes, services, storage, events, and formatting. |
-| [kubectl + sed Combinations](articles/kubectl-sed-combinations.md) | Piping kubectl output through sed — filtering/extracting fields, inline YAML edits and templating, log/event processing, batch ops, and when to prefer native output flags. |
-| [Getting Started with Argo CD](articles/getting-started-argo.md) | Installing ArgoCD and deploying your first application. |
-| [Kubernetes imagePullPolicy](articles/kubernetes-imagepullpolicy.md) | How `imagePullPolicy` controls image pulling behavior. |
-| [Kubernetes emptyDir Volumes](articles/kubernetes-emptyDir-volumes.md) | How `emptyDir` volumes work and sharing files between containers. |
-| [Kubernetes PriorityClasses Guide](articles/kubernetes-priority-classes-guide.md) | How PriorityClasses control scheduling and preemption. |
-| [Kubernetes QoS Classes — Requests and Limits](articles/kubernetes-qos-requests-limits.md) | QoS classes, eviction order, OOM kill priority, and the CPU limits debate. |
-| [Kubernetes Pod Evictions Cheatsheet](articles/kubernetes-evictions-cheatsheet.md) | Eviction methods, PDB respect, graceful termination, and eviction actors. |
-| [Evicting Pods from Nodes: A Practical Guide](articles/kubectl-evict-pods-guide.md) | Hands-on pod eviction — delete, Eviction API, drain, scale-down, cordon, plus DaemonSet-unblock, node-maintenance, and resource-pressure workflows and troubleshooting. |
-| [Kubernetes PodDisruptionBudgets Guide](articles/kubernetes-pdb-guide.md) | How PDBs protect availability during voluntary disruptions. |
-| [kubectl run vs kubectl create](articles/kubectl-run-vs-create.md) | When to use `kubectl run` (bare Pods) vs `kubectl create` (other resources). |
-| [Init Containers vs Regular Containers](articles/kubernetes-init-vs-regular-containers.md) | Lifecycle differences, kubelet orchestration, cgroup allocation, and use cases. |
-| [Ingress for Kubernetes Dashboard on MicroK8s](articles/ingress-kubernetes-dashboard-microk8s.md) | Exposing the Kubernetes Dashboard through Ingress on MicroK8s. |
-| [Ingress with MetalLB on MicroK8s](articles/ingress-metallb-microk8s-guide.md) | NGINX Ingress with MetalLB for bare-metal load balancing. |
-| [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md) | NFS CSI driver on MicroK8s for persistent volumes. |
-| [Dynamic PV/PVC Provisioning with a StorageClass](articles/kubernetes-dynamic-provisioning-storageclass.md) | How a PVC + StorageClass auto-creates a PV — the provisioning flow, what the provisioner fills in, an NFS/Helm example, dynamic vs static, and Pending-PVC debugging. |
-| [Krew: The kubectl Plugin Manager](articles/kubectl-krew-plugin-manager.md) | Managing kubectl plugins with krew — install, plugin lifecycle, searching the default index, adding/searching custom indexes, and popular plugins. |
-| [crictl Cheatsheet](articles/crictl-cheatsheet.md) | CLI for inspecting and debugging container runtimes at the CRI level. |
-| [ctr Cheatsheet (containerd)](articles/ctr-cheatsheet.md) | containerd CLI — images, containers, tasks, namespaces, snapshots, and Kubernetes debugging. |
-| [Kubernetes Schema Validation](articles/kubernetes-schema-validation.md) | Validating K8s manifests — yamllint, kubeconform, kubectl dry-run (client vs server), pluto, and CI/CD strategies. |
-| [k9s Cheatsheet](articles/k9s-cheatsheet.md) | Terminal UI for navigating and managing Kubernetes clusters. |
-| [Node Selectors in Kubernetes](articles/kubernetes-node-selectors.md) | nodeSelector, node affinity, built-in labels, taints, scheduling constraints, and combining strategies. |
-| [Node Affinity in Kubernetes](articles/kubernetes-node-affinity.md) | Required and preferred rules, operators (In, NotIn, Exists, Gt, Lt), weight scoring, combining with taints, and troubleshooting. |
-| [Kubernetes Taints and Tolerations](articles/kubernetes-taints-tolerations.md) | Taint effects, keys, values, toleration operators, real-world patterns, removal, monitoring, and validation rules. |
-| [Taint vs Cordon vs Drain](articles/kubernetes-taint-cordon-drain.md) | Comparing the three ways to keep pods off a node — selective taints, unconditional cordon, and drain eviction — with effects, a decision guide, and the maintenance sequence. |
-| [Kubernetes Scheduling Deep Dive](articles/kubernetes-scheduling-deep-dive.md) | Full scheduling pipeline — filtering, scoring, preemption, PriorityClasses, topology spread, QoS, NUMA, PDBs, and debugging. |
-| [LimitRange and ResourceQuota](articles/kubernetes-limitrange-resourcequota.md) | Namespace resource controls — default limits, per-pod constraints, namespace quotas, scoping by priority class, and enforcement. |
-| [Kubernetes Pod Conditions Flow](articles/kubernetes-pod-conditions-flow.md) | Pod lifecycle conditions — PodScheduled, Initialized, ContainersReady, Ready, readiness gates, and troubleshooting stuck pods. |
-| [Pod Phases and the Succeeded Phase](articles/kubernetes-pod-phase-succeeded.md) | The five pod phases and what Succeeded means — restartPolicy's role, finding/cleaning completed pods with field selectors, ttlSecondsAfterFinished, and phase vs condition vs container state. |
-| [Kubernetes Pod Commands](articles/kubernetes-pod-commands.md) | command vs args — Docker ENTRYPOINT/CMD mapping, YAML syntax styles, shell vs exec form, and signal handling. |
-| [Fix DaemonSet Scheduling on EKS](articles/eks-daemonset-scheduling-fix.md) | DaemonSet pods stuck Pending — diagnosis, PriorityClass fix, resource reservation, eviction, and prevention strategies. |
-| [Kubernetes Control Plane API Commands](articles/kubernetes-api-commands.md) | Direct API server access — kubectl raw, curl with tokens, API discovery, health endpoints, metrics, and debugging. |
-| [kubectl Cheatsheet](articles/kubectl-cheatsheet.md) | kubectl commands — nodes, pods, deployments, services, events, logs, performance, RBAC, custom-columns, and one-liners. |
-| [kubectl Client-Side Throttling Explained](articles/kubectl-client-side-throttling.md) | The "Waited ... due to client-side throttling" message — client-go rate limiting, QPS/Burst flags, discovery cache, and how to fix it. |
-| [Kubelet Image-Pull Throttling: "pull QPS exceeded"](articles/kubelet-pull-qps-exceeded.md) | Kubelet rate-limiting image pulls — registryPullQPS/registryBurst, ImagePullBackOff during node recycling, tuning, and how it differs from client-side throttling. |
-| [Kubernetes Field Selectors](articles/kubernetes-field-selectors.md) | --field-selector — supported fields per resource type, operators, practical examples, and limitations. |
-| [kubectl logs Guide](articles/kubectl-logs-guide.md) | Pod log retrieval — follow, tail, timestamps, previous, multi-container, labels, debug bundles, and troubleshooting. |
-| [kubectl logs --previous](articles/kubectl-logs-previous.md) | Debugging restarted containers with `--previous` — CrashLoopBackOff, OOMKilled, exit codes, multi-container and init containers, garbage collection, and a snapshot workflow. |
-| [kubectl set env](articles/kubectl-set-env.md) | Managing container environment variables imperatively — set/remove vars, sourcing from ConfigMaps and Secrets, container/label/namespace targeting, dry-run, overwrite, rollout, and best practices. |
-| [Kubernetes Log Locations by Distribution](articles/kubernetes-log-locations.md) | Log file paths across MicroK8s, kubeadm, K3s, kind, k3d, minikube, EKS, GKE, AKS — containers, kubelet, control plane, and runtime. |
-| [Kubernetes Jobs and CronJobs](articles/kubernetes-jobs-cronjobs.md) | Jobs and CronJobs — commands, cron syntax, concurrency policies, CrashLoopBackOff fix, and auto-cleanup. |
-| [EKS Port Communication](articles/eks-port-communication.md) | Control plane to worker node ports — kubelet API, kube-proxy, security group rules, and communication flows. |
-| [EKS Node Lifecycle During Updates](articles/eks-node-lifecycle-during-updates.md) | Node state progression during rolling updates — cordon, drain, eviction API, PDBs, ASG integration, and timing. |
-| [Kubernetes Cluster Setup with kubeadm](articles/kubeadm-cluster-setup.md) | Step-by-step kubeadm cluster setup — CRI-O, Calico CNI, metrics server, node joins, validation, upgrades, and troubleshooting. |
-| [How kubeadm Creates a Control Plane (Self-Managed)](articles/kubeadm-control-plane-creation.md) | What kubeadm init actually does — certs, etcd, static pod manifests, kubeconfigs, the kubelet bootstrap, and how it contrasts with managed EKS. |
-| [Kubernetes Distributions: K3s vs MicroK8s vs Minikube vs kubeadm and Others](articles/kubernetes-distributions-comparison.md) | Comparing self-managed Kubernetes options — kubeadm, K3s, MicroK8s, Minikube, kind, k3d, k0s, and RKE2 — packaging, datastore, resource needs, production vs local dev, and a decision guide. |
-| [HPA with scaleDown Behavior](articles/kubernetes-hpa-scaledown-behavior.md) | HPA scaling behavior — scale-down policies, stabilization windows, tolerance, multi-metric scaling, and disabling auto scale-down. |
-| [Ingress](articles/kubernetes-ingress-guide.md) | Ingress resources — routing, TLS termination, IngressClass, nginx annotations, controller setup, and common mistakes. |
-| [NodePort Services](articles/kubernetes-nodeport-service.md) | Exposing a Deployment with a NodePort Service — port range, manifest and kubectl expose, finding the allocated nodePort, verification, and cleanup. |
-| [HAProxy Ingress Dashboard Metrics](articles/haproxy-ingress-dashboard-metrics.md) | HAProxy ingress metrics — sessions, latency, throughput, errors, infrastructure, error code origins, and spike cascade troubleshooting. |
-| [Cron vs CronJob in Kubernetes](articles/kubernetes-cron-vs-cronjob.md) | CronJob vs Job relationship, differences from Linux cron, concurrency policies, and common confusion. |
-| [Kubernetes CronJob Examples & Reference](articles/kubernetes-cronjob-examples.md) | CronJob spec fields, cron syntax, practical examples, troubleshooting, and failed job cleanup. |
-| [Kubernetes Vertical Pod Autoscaler (VPA)](articles/kubernetes-vpa-guide.md) | VPA components, update modes, in-place pod resize, recommendations, resource policies, combining with HPA, and common pitfalls. |
-| [In-Place Pod Resize with the VPA](articles/in-place-pod-resize-with-vpa.md) | Resizing CPU/memory without recreating Pods — the InPlacePodVerticalScaling feature, VPA InPlaceOrRecreate mode, resize policies, limits, and version support. |
-| [EKS Node NotReady with I/O and CPU Spikes](articles/eks-node-notready-io-cpu-spikes.md) | Diagnosing NotReady nodes — I/O and CPU spike causes, kubelet starvation, investigation commands, and analysis. |
-| [Kubernetes Node Disk Pressure](articles/kubernetes-node-disk-pressure.md) | The DiskPressure node condition — triggers and thresholds, taint/eviction behavior, checking with kubectl and df/du, cleanup, and prevention. |
-| [Kubernetes Resource Scheduling & Node Capacity](articles/kubernetes-resource-scheduling-node-capacity.md) | DaemonSet pending pods, free resource calculation, CPU vs memory, node fill-up, PriorityClasses, and kubelet reserved resources. |
-| [Troubleshooting CrashLoopBackOff with No Logs](articles/kubernetes-crashloopbackoff-no-logs.md) | Debugging silent crashes — exit codes, entrypoint override, OOMKill detection, ephemeral containers, and liveness probe issues. |
-| [CrashLoopBackOff Explained](articles/kubernetes-crashloopbackoff-explained.md) | What CrashLoopBackOff means — exponential backoff timing, status progression, six common causes, exit-code reference, diagnostic workflow, fixes, and the 10-minute backoff reset. |
-| [Kubernetes Security Mechanisms](articles/kubernetes-security-mechanisms.md) | Security layers — RBAC, admission controllers, network policies, SecurityContext, secrets, AppArmor, seccomp, SELinux, Gatekeeper/Kyverno, and Falco. |
-| [Kubernetes Pod Security Standards (PSS)](articles/kubernetes-pod-security-standards.md) | Pod Security Admission — profiles, enforcement modes, migration from PSP, runAsNonRoot behavior, and common mistakes. |
-| [Kubernetes Scheduling](articles/kubernetes-scheduling-guide.md) | Full scheduling pipeline — queue internals, filtering, scoring, binding, framework plugins, real-world patterns, and debugging. |
-| [Persistent Volumes on EKS with EBS CSI Driver](articles/eks-persistent-volumes-ebs-csi.md) | EBS CSI Driver workflow, StorageClass, dynamic provisioning, default storage class, volume snapshots, and driver installation. |
-| [EBS Volume Available but PV Still Bound](articles/eks-ebs-available-but-pv-bound.md) | Diagnosing the EBS-detached-but-PV-Bound mismatch — causes (stopped pod, terminated node, stale VolumeAttachment, AZ mismatch), investigation commands, fixes, and prevention. |
-| [Check If Deployments Run the Latest Image](articles/kubernetes-check-latest-image-deployments.md) | Listing images, detecting drift, forcing re-pulls, finding pinned tags, and automated update tools. |
-| [Finding the Real Image Version Behind a latest Tag](articles/kubernetes-resolve-running-image-version.md) | Resolving what actually runs behind a mutable tag — imageID/SHA digest, in-container version checks (nginx -v/-V), spec-vs-running drift, and troubleshooting. |
-| [Kubernetes Gateway API Guide](articles/kubernetes-gateway-api-guide.md) | Gateway API resources, architecture, HTTPRoute, path/header/weighted routing, cross-namespace routing, and comparison with Ingress. |
-| [Kubelet Privilege and Capability Check](articles/kubelet-privilege-check.md) | Inspecting kubelet capabilities — Linux capabilities, getpcaps, strace, auditd, SELinux/AppArmor context, and check script. |
-| [Kubernetes Variables Guide](articles/kubernetes-variables-guide.md) | Environment variables, ConfigMaps, Secrets, Downward API, variable expansion, and volume mounts. |
-| [How to Pause a Pod in Kubernetes](articles/kubernetes-pause-pod.md) | Scale to 0, suspend CronJobs, and crictl pause at the container runtime level. |
-| [kubectl run & expose Guide](articles/kubectl-run-expose-guide.md) | Pod creation, service exposure, port terminology, reachability, NetworkPolicy, and run vs create deployment. |
-| [Sidecar Log Agent Pattern](articles/kubernetes-sidecar-log-agent-pattern.md) | Shared emptyDir volumes, veth pairs, init containers vs sidecars, and native sidecars (K8s 1.28+). |
-| [Kubernetes Deployment Strategies](articles/kubernetes-deployment-strategies.md) | Recreate, rolling update, blue-green, canary, shadow, and A/B testing — with YAML examples and decision tree. |
-| [Kubernetes Production Readiness Checklist](articles/kubernetes-production-readiness-checklist.md) | Practical checklist across five areas — application, manifests, security, scaling, and go-live — with the reasoning behind each check. |
-| [HAProxy Session Metrics: Frontend vs Backend](articles/haproxy-session-metrics-frontend-backend.md) | Frontend vs backend session.current, scur/smax/slim/stot, queuing scenarios, and metric lifecycle. |
-| [EKS Load Balancers: ALB vs NLB](articles/eks-load-balancer-alb-vs-nlb.md) | ALB vs NLB comparison, YAML examples for both, annotations reference, Auto Mode vs standard EKS, and subnet tagging. |
-| [AWS EKS — CIDR Allocation Reference](articles/eks-cidr-allocation-reference.md) | VPC CIDR planning, subnet sizing, pod IP allocation modes, prefix delegation, service CIDR, and IP exhaustion fixes. |
-| [EKS ENI Allowance Counters (ENA Driver)](articles/eks-ena-allowance-counters.md) | ENA counters — bandwidth, PPS, conntrack limits, Datadog integration, diagnosis, and instance bandwidth reference. |
-| [EC2 Network Burst Bandwidth — r7i.2xlarge](articles/ec2-network-burst-bandwidth.md) | Network credits, baseline vs burst, IGW limits, ENA metrics, sar/iptraf-ng, and EKS sizing guidance. |
-| [EKS Node Network Interfaces and Traffic Flow](articles/eks-node-network-interfaces-traffic-flow.md) | VPC CNI architecture, veth pairs, ENIs, routing tables, IMDS traffic flow, and tcpdump capture points. |
-| [Seeing Network Traffic on EKS Nodes](articles/eks-node-network-traffic-debugging.md) | VPC Flow Logs, node-level tools, eBPF tracing, per-pod capture, Datadog NPM, and fleet-wide monitoring. |
-| [Kubernetes Cluster Autoscaler Tuning](articles/kubernetes-cluster-autoscaler-tuning.md) | Scale-up/down parameters, resource limits, expander strategies, performance tuning, and recommended configurations. |
-| [Cluster Autoscaler Scale-Up Troubleshooting](articles/kubernetes-cluster-autoscaler-scale-up-troubleshooting.md) | Why scale-up fails — capacity estimation, DaemonSet overhead, overprovisioning, expanders, and debugging commands. |
-| [Cluster Autoscaler Loop: DaemonSets Preempting Overprovisioning Pods](articles/cluster-autoscaler-overprovisioning-daemonset-loop.md) | Infinite scale-up loop when a higher-priority DaemonSet evicts a priority -1 overprovisioning pod — the timing race, CA simulation blind spots, sizing formula, and fixes. |
-| [EKS Traffic Flow: ALB → HAProxy → Pods](articles/eks-traffic-flow-alb-haproxy-pods.md) | End-to-end request path, IP vs instance mode, security groups, timeouts, cross-AZ traffic, and deployment errors. |
-| [Maximum Packets Per Second (PPS) Reference](articles/network-max-pps-reference.md) | Theoretical PPS by link speed, formula, real-world Linux limits, and NIC diagnostics. |
-| [Kubernetes allowPrivilegeEscalation Explained](articles/kubernetes-allowprivilegeescalation.md) | What allowPrivilegeEscalation does, how it prevents setuid/setgid escalation, and hardened security context examples. |
-| [EKS aws-auth ConfigMap Guide](articles/eks-aws-auth-configmap-guide.md) | Managing aws-auth — adding IAM roles, recovery from broken ConfigMap, validation, and migration to EKS Access Entries. |
-| [Troubleshooting EKS Access: The 401 That Isn't Kubernetes](articles/eks-access-troubleshooting.md) | Why kubectl access failures usually live in AWS, not Kubernetes — the auth chain, 401/403 diagnosis, IAM/STS, access entries, and aws-auth. |
-| [ArgoCD Access Methods on EKS](articles/argocd-access-methods-eks.md) | Exposing ArgoCD UI — port-forward, LoadBalancer, ALB Ingress, NGINX passthrough, gRPC access, SSO, and Helm chart handling. |
-| [Cluster Autoscaler vs Karpenter for EKS](articles/eks-cluster-autoscaler-vs-karpenter.md) | Architecture comparison, scale-up/down behavior, configuration, Spot handling, cost optimization, and migration guide. |
-| [Cluster Autoscaler on EKS](articles/eks-cluster-autoscaler-setup.md) | IAM setup, Helm installation, ASG tags, expander strategies, overprovisioning, testing, and troubleshooting. |
-| [Cluster Autoscaler Scale-Down Failures Across EKS Clusters](articles/eks-cluster-autoscaler-scale-down-failures.md) | Finding failed scale-down messages across all clusters — single/loop/parallel checks, categorized failure reasons, CSV/report export, one-liners, and scheduling. |
-| [Kustomize Cheatsheet](articles/kustomize-cheatsheet.md) | Commands, overlays, patch types, generators, one-liners, components, tips, and common mistakes. |
-| [Fix Cluster Autoscaler on Hetzner Cloud](articles/hetzner-cluster-autoscaler-fix.md) | Empty nodeConfigs crash fix — creating proper HCLOUD_CLUSTER_CONFIG with node pool definitions. |
-| [EKS Cluster IAM Roles Setup](articles/eks-cluster-iam-roles-setup.md) | Required IAM roles and policies — cluster role, worker node role, creation methods (eksctl, CLI, Terraform), and add-on permissions. |
-| [Kubernetes Pods vs Deployments](articles/kubernetes-pods-vs-deployments.md) | Pod vs Deployment relationship, self-healing, scaling, rolling updates, rollback, and when to use each controller type. |
-| [Uncordon Disabled Nodes in Kubernetes](articles/kubernetes-uncordon-disabled-nodes.md) | Finding and re-enabling cordoned nodes — causes, bulk uncordon, failed drain recovery, and monitoring. |
-| [VPA and HPA Metrics Collection](articles/kubernetes-vpa-hpa-metrics-collection.md) | Metrics pipeline — metrics-server, Prometheus Adapter, custom/external metrics, how HPA and VPA collect and interpret data differently. |
-| [kubectl run with Resource Requests & Limits](articles/kubectl-run-resource-requests-limits.md) | Setting CPU and memory requests/limits with kubectl run — syntax, QoS classes, dry-run YAML, LimitRange/ResourceQuota interaction, and common mistakes. |
-| [Why Pod Shows 0/1 Ready Status](articles/kubernetes-pod-0-1-ready-status.md) | Diagnosing pods stuck at 0/1 Ready — readiness probe failures, startup delays, dependency issues, OOMKill, readiness gates, and fix checklist. |
-| [Kubernetes Health Checks: Liveness, Readiness, Startup Probes](articles/kubernetes-health-checks-probes.md) | Why probes matter — behavior without them, the endpoint-removal propagation chain, probe types (HTTP/TCP/exec/gRPC), timing math, liveness-vs-readiness split, a full example, and monitoring. |
-| [Time Required for a Pod to Reach Running/Ready](articles/kubectl-pod-time-to-ready.md) | Measuring pod startup time — Ready condition timestamps, creation-to-ready deltas, per-phase breakdown, scripting with jsonpath, and fleet-wide timing. |
-| [Troubleshooting Workloads When No Pod Shows Up](articles/pod-not-showing-any-state.md) | When kubectl get pods shows nothing — pod never created, created then deleted, or wrong context; inspecting events and parent controllers. |
-| [Troubleshooting a Pending Pod: Insufficient Resources](articles/pod-pending-insufficient-resources.md) | Pods stuck Pending from insufficient CPU/memory/storage/GPU — confirming it's a scheduling issue and finding the reason in events and pod status. |
-| [Why Pods Get Throttled Even When Node Has Available CPU](articles/kubernetes-cpu-throttling-available-cpu.md) | CPU throttling at the cgroup level — why limits ignore node capacity, CFS quota mechanics, requests vs limits, and the case for removing CPU limits. |
-| [Burstable vs. Non-Burstable Instances for Kubernetes](articles/burstable-vs-nonburstable-kubernetes.md) | T-family CPU credits vs. M/C/R, why the scheduler doesn't model credits, credit-exhaustion symptoms, and a decision framework for EKS node groups. |
-| [EKS Node Troubleshooting Guide](articles/eks-node-troubleshooting-guide.md) | Diagnosing unhealthy EKS nodes — NotReady, bootstrap failures, resource pressure, networking, instance issues, kubelet, and recovery. |
-| [Using systemctl to Debug EKS Nodes](articles/eks-node-systemctl-debugging.md) | Managing host systemd services from a debug container — kubectl debug + chroot /host, kubelet/containerd/AWS agents, image choices, restart blast radius, and a quick reference. |
-| [Cleaning Up Kubernetes Clusters from .kube/config](articles/kubeconfig-cleanup-guide.md) | Removing stale clusters from kubeconfig — connectivity checks, pattern-based removal, orphan detection, renaming contexts, and separate config files. |
-| [Fixing k3d TLS Certificate SAN Errors](articles/k3d-tls-san-certificate-fix.md) | Resolving x509 SAN mismatches when reaching a k3d API server by IP — --tls-san on cluster create, SSH tunneling, skip-verify, and inspecting cert SANs. |
-| [EKS Node Groups Explained](articles/eks-node-groups-explained.md) | Managed vs self-managed node groups — launch templates, scaling, updates, Spot instances, IAM roles, taints/labels, and common patterns. |
-| [EKS Fargate](articles/eks-fargate-guide.md) | Serverless pods on EKS — Fargate profiles and selectors, pod execution role, limitations (no DaemonSets/GPU, reserved port 10250), pricing, status checks, and Metrics Server on Fargate. |
-| [runAsNonRoot: true](articles/kubernetes-runasnonroot.md) | How runAsNonRoot works — validation logic, fixing root images, runAsUser relationship, file permissions, PSS compliance, and hardened pod examples. |
-| [CoreDNS on EKS — Cheatsheet](articles/coredns-eks-cheatsheet.md) | CoreDNS commands and troubleshooting — Corefile editing, custom forwards, debug logging, metrics, scaling, ndots tuning, and NodeLocal DNSCache. |
-| [Troubleshooting DNS Resolution Issues on EKS](articles/eks-dns-troubleshooting.md) | Systematic layer-by-layer DNS debugging — Pod resolv.conf/dnsPolicy, CoreDNS pods/endpoints/Corefile, ndots amplification, VPC DNS attributes, CoreDNS scaling/NodeLocal DNSCache, loops, and conntrack exhaustion. |
-| [DNS Observability and Troubleshooting in Kubernetes](articles/kubernetes-dns-observability.md) | Vendor-neutral DNS observability — the four signals (response codes, query types, latency, distribution), CoreDNS metrics and log plugin, packet capture with Wireshark filters, and failure patterns: policy-denied DNS, SERVFAIL, NXDOMAIN, NOERROR-with-missing-records, and uneven CoreDNS load balancing. |
-| [Velero: Kubernetes Backup and Disaster Recovery](articles/velero-kubernetes-backup-dr.md) | Backing up cluster objects and volume data with Velero — CSI snapshots vs data movement vs File System Backup, install flags, on-demand and scheduled backups, restores and cross-cluster/cross-cloud DR, application-consistent hooks, backup deletion/storage lifecycle, and troubleshooting. |
-| [ImagePullBackOff Troubleshooting Guide](articles/kubernetes-imagepullbackoff-troubleshooting.md) | Diagnosing image pull failures — wrong names, auth secrets, ECR access, Docker Hub rate limits, network issues, and platform mismatches. |
-| [Kubernetes Pod Troubleshooting Guide](articles/kubernetes-pod-troubleshooting-guide.md) | Troubleshooting pods by state — Pending, ContainerCreating, ImagePullBackOff, CrashLoopBackOff, Error, Terminating/Unknown, misbehaving pods, and static pod refresh. |
-| [HAProxy Ingress Setup on EKS](articles/haproxy-ingress-eks-setup.md) | HAProxy Ingress Controller — Helm install, values.yaml, TLS, annotations, rate limiting, monitoring, one-liners, and troubleshooting. |
-| [HAProxy 5xx Errors During EKS Node Drains](articles/haproxy-5xx-eks-node-drains.md) | The race condition between pod termination and endpoint propagation — preStop hooks, PDBs, graceful shutdown, HAProxy health checks, and zero-downtime drains. |
-| [Deep Dive: system:masters Group on EKS](articles/eks-system-masters-group.md) | How system:masters bypasses RBAC, who gets it on EKS, why to avoid it, migration to cluster-admin RBAC, and break-glass best practices. |
-| [What Happens When You Run kubectl apply](articles/kubectl-apply-internals.md) | Step-by-step breakdown of every component involved — auth, RBAC, admission controllers, etcd, controllers, kubelet, and common failure points. |
-| [Kubernetes Objects vs Resources vs Custom Resources](articles/kubernetes-objects-resources-explained.md) | Difference between Kubernetes objects, API resources, and custom resources — what they are and how they map to the API server. |
-| [What Happens When You Run kubectl delete pod](articles/kubectl-delete-pod-internals.md) | Pod deletion lifecycle — deletionTimestamp, endpoint removal, preStop hooks, SIGTERM, grace period, SIGKILL, finalizers, and stuck Terminating pods. |
-| [CrashLoopBackOff Internals](articles/kubernetes-crashloopbackoff-internals.md) | Kubelet restart state machine — exponential backoff (10s→300s), backoff reset, restartPolicy evaluation, OOMKill flow, exit codes, and container states. |
-| [What Happens During a Rolling Update](articles/kubernetes-rolling-update-internals.md) | Deployment controller internals — ReplicaSet creation, pod-template-hash, maxSurge/maxUnavailable math, revision history, rollback, and progressDeadlineSeconds. |
-| [What Happens When a Node Goes NotReady](articles/kubernetes-node-notready-internals.md) | Node health monitoring — Lease heartbeat, node lifecycle controller, 40s grace period, taint-based eviction, rate-limited eviction, and zone-aware behavior. |
-| [How Kubernetes Watches Work — Informers](articles/kubernetes-watches-informers-internals.md) | List-watch pattern, resourceVersion, 410 Gone recovery, informer architecture (Reflector, DeltaFIFO, Indexer), SharedInformerFactory, and level-triggered design. |
-| [How RBAC Evaluation Works](articles/kubernetes-rbac-evaluation-internals.md) | Authorization chain, request attributes, RBAC evaluation algorithm, four RBAC objects, aggregated ClusterRoles, subresources, and escalation prevention. |
-| [How Admission Webhooks Fire](articles/kubernetes-admission-webhooks-internals.md) | Mutating and validating webhooks — AdmissionReview payloads, matching rules, failurePolicy, reinvocation, JSONPatch mutations, and ValidatingAdmissionPolicy (CEL). |
-| [What Happens When You Create a Service](articles/kubernetes-service-creation-internals.md) | ClusterIP allocation, EndpointSlice controller, kube-proxy iptables/IPVS/nftables rules, CoreDNS records, Service types, traffic policies, and headless services. |
-| [What Happens When a Pod Gets an IP](articles/kubernetes-pod-ip-assignment-internals.md) | Generic CNI flow — pod sandbox, CNI binary invocation, veth pairs, IPAM plugins, pod CIDR per node, overlay vs native routing, and plugin chaining. |
-| [What Happens When a Pod is Unschedulable](articles/kubernetes-unschedulable-pod-internals.md) | Scheduler pipeline — filtering, scoring, preemption, scheduling queue (ActiveQ/BackoffQ/UnschedulableQ), framework extension points, and common failure reasons. |
-| [What Happens When You Scale a Deployment](articles/kubernetes-scale-deployment-internals.md) | Deployment → ReplicaSet controller flow, slow-start batch creation, scale-down pod priority, /scale subresource, StatefulSet ordered scaling, and HPA interaction. |
-| [How kubectl Discovers and Resolves API Resources](articles/kubectl-api-discovery-internals.md) | Kubeconfig loading, API discovery endpoints, GVR/GVK mapping, short names, URL construction, version negotiation, discovery cache, and CRD discovery. |
-| [How kubectl exec Works](articles/kubectl-exec-internals.md) | SPDY/WebSocket upgrade, stream multiplexing (stdin/stdout/stderr/resize), API server proxy to kubelet, CRI exec call, TTY allocation, and common hang causes. |
-| [Migrating Streaming from SPDY to WebSockets](articles/kubernetes-spdy-to-websockets.md) | Why exec/attach/cp/port-forward need bidirectional streams, SPDY's deprecation, the WebSocket replacement, version timeline, and proxy/compatibility implications. |
-| [Checking Client vs Server API Support](articles/kubectl-client-vs-server-api-support.md) | Enumerating server APIs via discovery, inferring client support, version skew, diffing clusters, the normalization trap, and target-version scanners. |
-| [How kubectl port-forward Works](articles/kubectl-port-forward-internals.md) | Local TCP listener, portforward subresource, tunnel through API server to kubelet, connection lifecycle, why connections drop, and pod/service/deployment targeting. |
-| [kubectl wait and Condition-Based Scripting](articles/kubectl-wait-condition-scripting.md) | --for=condition/jsonpath/delete, condition types per resource, timeout behavior, CI/CD pipeline patterns, parallel waits, retry loops, and exit codes. |
-| [kubectl debug — Ephemeral Containers and Node Debugging](articles/kubectl-debug-ephemeral-containers.md) | Three debug modes (ephemeral container, pod copy, node debug), --target PID sharing, distroless debugging, debug profiles, nsenter/chroot, and RBAC. |
-| [kubectl Server-Side vs Client-Side Operations](articles/kubectl-server-side-vs-client-side.md) | Dry-run client vs server, client-side vs server-side apply, field managers, kubectl diff, validation modes, patch types, and conflict detection. |
-| [How NetworkPolicies Are Enforced](articles/kubernetes-networkpolicy-enforcement-internals.md) | CNI plugin enforcement, iptables vs eBPF implementation, default deny behavior, selector AND/OR gotcha, egress DNS pitfall, and limitations. |
-| [How Ingress Controllers Work Internally](articles/kubernetes-ingress-controller-internals.md) | Watch-compute-reload loop, config generation, reload vs dynamic update vs xDS, backend resolution to pod IPs, TLS handling, and deployment patterns. |
-| [What Happens When a PV Is Reclaimed](articles/kubernetes-pv-reclaim-internals.md) | PV lifecycle phases, Retain/Delete/Recycle policies, volume detachment, finalizers (pvc-protection, pv-protection), and re-using retained PVs. |
-| [CSI Driver Architecture](articles/kubernetes-csi-driver-architecture.md) | CSI gRPC interfaces, sidecar containers (provisioner, attacher, resizer, snapshotter), two-stage mount, VolumeAttachment, and volume lifecycle flow. |
-| [How ServiceAccount Tokens Work](articles/kubernetes-serviceaccount-tokens-internals.md) | Projected volume tokens, TokenRequest API, JWT claims, bound token invalidation, automatic rotation, OIDC discovery, and legacy token migration. |
-| [How Pod Security Admission Enforces Policies](articles/kubernetes-pod-security-admission-internals.md) | Namespace labels, enforce/audit/warn modes, baseline/restricted profiles, evaluation logic, exemptions, version pinning, and gradual rollout. |
-| [How kubectl drain Works Internally](articles/kubectl-drain-internals.md) | Cordon, Eviction API, PDB enforcement (429 retry), pod filtering, drain order, DaemonSet skip, automation patterns, and stuck drain debugging. |
-| [How etcd Stores and Retrieves Kubernetes Objects](articles/kubernetes-etcd-storage-internals.md) | Key structure, protobuf encoding, resourceVersion, optimistic concurrency, compaction, defrag, Raft consensus, backup/restore, and size limits. |
-| [How the Garbage Collector Works](articles/kubernetes-garbage-collector-internals.md) | ownerReferences, cascading delete modes (background, foreground, orphan), GC controller graph, multi-owner objects, finalizers, and adoption. |
-| [How Leader Election Works in Controllers](articles/kubernetes-leader-election-internals.md) | Lease objects, election algorithm, timing parameters, failover timeline, split-brain prevention, HA patterns, and monitoring. |
-| [Separate Kubeconfig Files for EKS Clusters](articles/eks-separate-kubeconfig-files.md) | Keep each EKS cluster in its own kubeconfig file — --kubeconfig flag, KUBECONFIG merging, shell functions, CI/CD usage, and auto-discovery. |
-| [EKS API Server Throttling and Priority & Fairness](articles/eks-api-priority-fairness.md) | FlowSchemas, PriorityLevelConfigurations, concurrency shares, diagnosing 429s, custom FlowSchemas for controllers, and EKS Provisioned mode. |
-| [EKS Pod Identity vs IRSA — Deep Dive](articles/eks-pod-identity-vs-irsa-deep-dive.md) | Pod Identity Agent architecture, IRSA OIDC flow, trust policy differences, automatic session tags, migration path, and troubleshooting both methods. |
-| [Cross-AZ Traffic in EKS — Patterns, Costs, and Optimization](articles/eks-cross-az-traffic-optimization.md) | All cross-AZ traffic sources, $0.01/GB pricing, topology-aware hints, internalTrafficPolicy, NodeLocal DNSCache, per-AZ NAT, and cost estimation. |
-| [EKS Version Upgrades — Checklist and Process](articles/eks-version-upgrade-checklist.md) | Pre-upgrade validation, control plane upgrade, add-on compatibility, node group rolling updates, rollback limitations, and automation script. |
-| [Upgrading an EKS Control Plane from 1.34 to 1.35](articles/eks-control-plane-upgrade-1.34-to-1.35.md) | Pre-upgrade checklist for 1.35 — cgroup v1 removal, node OS considerations (AL2023, Bottlerocket, Ubuntu, Fargate), deprecated APIs, and validation steps. |
-| [Amazon EKS Cluster Insights](articles/eks-cluster-insights.md) | Built-in upgrade-readiness scanner — deprecated/removed API detection, insight categories, how it works, CLI usage, and its limits vs manifest scanners. |
-| [EKS Add-on Management Guide](articles/eks-addon-management-guide.md) | EKS-managed vs self-managed, resolve-conflicts strategies, configurationValues, field ownership, hidden behaviors, migration, and Terraform integration. |
-| [EKS Node Bootstrap Deep Dive](articles/eks-node-bootstrap-deep-dive.md) | bootstrap.sh (AL2) vs nodeadm (AL2023), parameters, NodeConfig YAML, managed node group behavior, private cluster bootstrap, and troubleshooting join failures. |
-| [EKS: pre_userdata vs additional_userdata](articles/eks-pre-userdata-vs-additional-userdata.md) | Custom node user data before vs after the EKS bootstrap script — timing, use cases, Terraform launch-template wiring, execution order, and AL2023/Bottlerocket/Auto Mode caveats. |
-| [Bottlerocket OS for EKS](articles/bottlerocket-os-eks-guide.md) | Purpose-built container OS — immutable root, A/B updates, TOML settings API, security model, Karpenter/managed node group setup, and comparison with AL2/AL2023. |
-| [TLS/SSL Certificates Explained](articles/tls-ssl-certificates-explained.md) | Chain of trust, CA, CSR, SAN, certificate types, Let's Encrypt ACME flow, cert-manager in Kubernetes, and OpenSSL commands. |
-| [OAuth2 and OIDC Flow Explained](articles/oauth2-oidc-flow-explained.md) | Tokens, scopes, grant types, authorization code flow with PKCE, JWT validation, Kubernetes OIDC integration, and RBAC mapping. |
-| [How kube-proxy Works — iptables vs IPVS vs nftables](articles/kubernetes-kube-proxy-internals.md) | Three proxy modes, packet path, chain structure, IPVS scheduling algorithms, performance at scale, and when to switch modes. |
-| [Kubernetes DNS Deep Dive — CoreDNS Architecture](articles/kubernetes-coredns-deep-dive.md) | Plugin architecture, kubernetes plugin internals, autopath optimization, stub domains, conditional forwarding, ndots, caching, and scaling. |
-| [DNS Policies for Pods in Kubernetes](articles/kubernetes-pod-dns-policies.md) | Per-Pod DNS — the four dnsPolicy values, dnsConfig merge/override rules, resolv.conf generation, the ndots:5 latency trap, hostNetwork gotcha, and debugging. |
-| [GitHub Actions for Kubernetes Deployments](articles/github-actions-kubernetes-deployments.md) | Build, push, deploy patterns — ECR/GHCR, OIDC auth to EKS, Helm/Kustomize/kubectl, multi-environment workflows, rollback, and security best practices. |
-| [Pipeline to Get the Latest Ubuntu EKS AMI](articles/eks-ubuntu-ami-latest-pipeline.md) | Auto-discover latest Ubuntu EKS AMI via SSM parameters, Terraform data sources, GitHub Actions weekly check, and triggering node group rolling updates. |
-| [ConfigMaps and Secrets](articles/kubernetes-configmaps-secrets.md) | Creating ConfigMaps and Secrets, and injecting them into Pods as environment variables. |
-| [Resource Quotas & LimitRanges](articles/kubernetes-resource-quotas-limitranges.md) | ResourceQuota and LimitRange — enforcing namespace limits, default requests/limits, and debugging exceeded quotas. |
-| [Kubeadm Cluster Upgrade](articles/kubeadm-cluster-upgrade.md) | Upgrading kubeadm clusters — semver constraints, per-minor apt/yum repos, automatic etcd backups, and control plane/worker upgrade order. |
-| [HPA with scaleDown Behavior](articles/hpa-scaledown-behavior.md) | Horizontal Pod Autoscaler with autoscaling/v2 — CPU utilization target, custom scaleDown stabilization window, and load testing. |
-| [HPA ScalingLimited (TooManyReplicas)](articles/hpa-scaling-limited-too-many-replicas.md) | Troubleshooting an HPA capped at maxReplicas — diagnosis, risk, resolution options, and the matching Datadog monitor. |
-| [CPU Starvation Diagnostic Guide](articles/cpu-starvation-diagnostic-guide.md) | Diagnosing CPU starvation and CFS throttling — node/pod/container checks, cgroup v1/v2 stats, probe-failure correlation, and mitigations. |
-| [Installing metrics-server](articles/metrics-server-install.md) | Installing metrics-server via Helm or manifest, the --kubelet-insecure-tls gotcha, verifying the metrics APIService, and querying the Metrics API. |
+| Article |
+|---------|
+| [Using jq with kubectl](articles/kubectl-jq-guide.md) |
+| [kubectl JSONPath Guide](articles/kubectl-jsonpath-guide.md) |
+| [kubectl + sed Combinations](articles/kubectl-sed-combinations.md) |
+| [Getting Started with Argo CD](articles/getting-started-argo.md) |
+| [Kubernetes imagePullPolicy](articles/kubernetes-imagepullpolicy.md) |
+| [Kubernetes emptyDir Volumes](articles/kubernetes-emptyDir-volumes.md) |
+| [Kubernetes PriorityClasses Guide](articles/kubernetes-priority-classes-guide.md) |
+| [Kubernetes QoS Classes — Requests and Limits](articles/kubernetes-qos-requests-limits.md) |
+| [Kubernetes Pod Evictions Cheatsheet](articles/kubernetes-evictions-cheatsheet.md) |
+| [Evicting Pods from Nodes: A Practical Guide](articles/kubectl-evict-pods-guide.md) |
+| [Kubernetes PodDisruptionBudgets Guide](articles/kubernetes-pdb-guide.md) |
+| [kubectl run vs kubectl create](articles/kubectl-run-vs-create.md) |
+| [Init Containers vs Regular Containers](articles/kubernetes-init-vs-regular-containers.md) |
+| [Ingress for Kubernetes Dashboard on MicroK8s](articles/ingress-kubernetes-dashboard-microk8s.md) |
+| [Ingress with MetalLB on MicroK8s](articles/ingress-metallb-microk8s-guide.md) |
+| [NFS Storage for MicroK8s](articles/nfs-microk8s-installation.md) |
+| [Dynamic PV/PVC Provisioning with a StorageClass](articles/kubernetes-dynamic-provisioning-storageclass.md) |
+| [Krew: The kubectl Plugin Manager](articles/kubectl-krew-plugin-manager.md) |
+| [crictl Cheatsheet](articles/crictl-cheatsheet.md) |
+| [ctr Cheatsheet (containerd)](articles/ctr-cheatsheet.md) |
+| [Kubernetes Schema Validation](articles/kubernetes-schema-validation.md) |
+| [k9s Cheatsheet](articles/k9s-cheatsheet.md) |
+| [Node Selectors in Kubernetes](articles/kubernetes-node-selectors.md) |
+| [Node Affinity in Kubernetes](articles/kubernetes-node-affinity.md) |
+| [Kubernetes Taints and Tolerations](articles/kubernetes-taints-tolerations.md) |
+| [Taint vs Cordon vs Drain](articles/kubernetes-taint-cordon-drain.md) |
+| [Kubernetes Scheduling Deep Dive](articles/kubernetes-scheduling-deep-dive.md) |
+| [LimitRange and ResourceQuota](articles/kubernetes-limitrange-resourcequota.md) |
+| [Kubernetes Pod Conditions Flow](articles/kubernetes-pod-conditions-flow.md) |
+| [Pod Phases and the Succeeded Phase](articles/kubernetes-pod-phase-succeeded.md) |
+| [Kubernetes Pod Commands](articles/kubernetes-pod-commands.md) |
+| [Fix DaemonSet Scheduling on EKS](articles/eks-daemonset-scheduling-fix.md) |
+| [Kubernetes Control Plane API Commands](articles/kubernetes-api-commands.md) |
+| [kubectl Cheatsheet](articles/kubectl-cheatsheet.md) |
+| [kubectl Client-Side Throttling Explained](articles/kubectl-client-side-throttling.md) |
+| [Kubelet Image-Pull Throttling: "pull QPS exceeded"](articles/kubelet-pull-qps-exceeded.md) |
+| [Kubernetes Field Selectors](articles/kubernetes-field-selectors.md) |
+| [kubectl logs Guide](articles/kubectl-logs-guide.md) |
+| [kubectl logs --previous](articles/kubectl-logs-previous.md) |
+| [kubectl set env](articles/kubectl-set-env.md) |
+| [Kubernetes Log Locations by Distribution](articles/kubernetes-log-locations.md) |
+| [Kubernetes Jobs and CronJobs](articles/kubernetes-jobs-cronjobs.md) |
+| [EKS Port Communication](articles/eks-port-communication.md) |
+| [EKS Node Lifecycle During Updates](articles/eks-node-lifecycle-during-updates.md) |
+| [Kubernetes Cluster Setup with kubeadm](articles/kubeadm-cluster-setup.md) |
+| [How kubeadm Creates a Control Plane (Self-Managed)](articles/kubeadm-control-plane-creation.md) |
+| [Kubernetes Distributions: K3s vs MicroK8s vs Minikube vs kubeadm and Others](articles/kubernetes-distributions-comparison.md) |
+| [HPA with scaleDown Behavior](articles/kubernetes-hpa-scaledown-behavior.md) |
+| [Ingress](articles/kubernetes-ingress-guide.md) |
+| [NodePort Services](articles/kubernetes-nodeport-service.md) |
+| [HAProxy Ingress Dashboard Metrics](articles/haproxy-ingress-dashboard-metrics.md) |
+| [Cron vs CronJob in Kubernetes](articles/kubernetes-cron-vs-cronjob.md) |
+| [Kubernetes CronJob Examples & Reference](articles/kubernetes-cronjob-examples.md) |
+| [Kubernetes Vertical Pod Autoscaler (VPA)](articles/kubernetes-vpa-guide.md) |
+| [In-Place Pod Resize with the VPA](articles/in-place-pod-resize-with-vpa.md) |
+| [EKS Node NotReady with I/O and CPU Spikes](articles/eks-node-notready-io-cpu-spikes.md) |
+| [Kubernetes Node Disk Pressure](articles/kubernetes-node-disk-pressure.md) |
+| [Kubernetes Resource Scheduling & Node Capacity](articles/kubernetes-resource-scheduling-node-capacity.md) |
+| [Troubleshooting CrashLoopBackOff with No Logs](articles/kubernetes-crashloopbackoff-no-logs.md) |
+| [CrashLoopBackOff Explained](articles/kubernetes-crashloopbackoff-explained.md) |
+| [Kubernetes Security Mechanisms](articles/kubernetes-security-mechanisms.md) |
+| [Kubernetes Pod Security Standards (PSS)](articles/kubernetes-pod-security-standards.md) |
+| [Kubernetes Scheduling](articles/kubernetes-scheduling-guide.md) |
+| [Persistent Volumes on EKS with EBS CSI Driver](articles/eks-persistent-volumes-ebs-csi.md) |
+| [EBS Volume Available but PV Still Bound](articles/eks-ebs-available-but-pv-bound.md) |
+| [Check If Deployments Run the Latest Image](articles/kubernetes-check-latest-image-deployments.md) |
+| [Finding the Real Image Version Behind a latest Tag](articles/kubernetes-resolve-running-image-version.md) |
+| [Kubernetes Gateway API Guide](articles/kubernetes-gateway-api-guide.md) |
+| [Kubelet Privilege and Capability Check](articles/kubelet-privilege-check.md) |
+| [Kubernetes Variables Guide](articles/kubernetes-variables-guide.md) |
+| [How to Pause a Pod in Kubernetes](articles/kubernetes-pause-pod.md) |
+| [kubectl run & expose Guide](articles/kubectl-run-expose-guide.md) |
+| [Sidecar Log Agent Pattern](articles/kubernetes-sidecar-log-agent-pattern.md) |
+| [Kubernetes Deployment Strategies](articles/kubernetes-deployment-strategies.md) |
+| [Kubernetes Production Readiness Checklist](articles/kubernetes-production-readiness-checklist.md) |
+| [HAProxy Session Metrics: Frontend vs Backend](articles/haproxy-session-metrics-frontend-backend.md) |
+| [EKS Load Balancers: ALB vs NLB](articles/eks-load-balancer-alb-vs-nlb.md) |
+| [AWS EKS — CIDR Allocation Reference](articles/eks-cidr-allocation-reference.md) |
+| [EKS ENI Allowance Counters (ENA Driver)](articles/eks-ena-allowance-counters.md) |
+| [EC2 Network Burst Bandwidth — r7i.2xlarge](articles/ec2-network-burst-bandwidth.md) |
+| [EKS Node Network Interfaces and Traffic Flow](articles/eks-node-network-interfaces-traffic-flow.md) |
+| [Seeing Network Traffic on EKS Nodes](articles/eks-node-network-traffic-debugging.md) |
+| [Kubernetes Cluster Autoscaler Tuning](articles/kubernetes-cluster-autoscaler-tuning.md) |
+| [Cluster Autoscaler Scale-Up Troubleshooting](articles/kubernetes-cluster-autoscaler-scale-up-troubleshooting.md) |
+| [Cluster Autoscaler Loop: DaemonSets Preempting Overprovisioning Pods](articles/cluster-autoscaler-overprovisioning-daemonset-loop.md) |
+| [EKS Traffic Flow: ALB → HAProxy → Pods](articles/eks-traffic-flow-alb-haproxy-pods.md) |
+| [Maximum Packets Per Second (PPS) Reference](articles/network-max-pps-reference.md) |
+| [Kubernetes allowPrivilegeEscalation Explained](articles/kubernetes-allowprivilegeescalation.md) |
+| [EKS aws-auth ConfigMap Guide](articles/eks-aws-auth-configmap-guide.md) |
+| [Troubleshooting EKS Access: The 401 That Isn't Kubernetes](articles/eks-access-troubleshooting.md) |
+| [ArgoCD Access Methods on EKS](articles/argocd-access-methods-eks.md) |
+| [Cluster Autoscaler vs Karpenter for EKS](articles/eks-cluster-autoscaler-vs-karpenter.md) |
+| [Cluster Autoscaler on EKS](articles/eks-cluster-autoscaler-setup.md) |
+| [Cluster Autoscaler Scale-Down Failures Across EKS Clusters](articles/eks-cluster-autoscaler-scale-down-failures.md) |
+| [Kustomize Cheatsheet](articles/kustomize-cheatsheet.md) |
+| [Fix Cluster Autoscaler on Hetzner Cloud](articles/hetzner-cluster-autoscaler-fix.md) |
+| [EKS Cluster IAM Roles Setup](articles/eks-cluster-iam-roles-setup.md) |
+| [Kubernetes Pods vs Deployments](articles/kubernetes-pods-vs-deployments.md) |
+| [Uncordon Disabled Nodes in Kubernetes](articles/kubernetes-uncordon-disabled-nodes.md) |
+| [VPA and HPA Metrics Collection](articles/kubernetes-vpa-hpa-metrics-collection.md) |
+| [kubectl run with Resource Requests & Limits](articles/kubectl-run-resource-requests-limits.md) |
+| [Why Pod Shows 0/1 Ready Status](articles/kubernetes-pod-0-1-ready-status.md) |
+| [Kubernetes Health Checks: Liveness, Readiness, Startup Probes](articles/kubernetes-health-checks-probes.md) |
+| [Time Required for a Pod to Reach Running/Ready](articles/kubectl-pod-time-to-ready.md) |
+| [Troubleshooting Workloads When No Pod Shows Up](articles/pod-not-showing-any-state.md) |
+| [Troubleshooting a Pending Pod: Insufficient Resources](articles/pod-pending-insufficient-resources.md) |
+| [Why Pods Get Throttled Even When Node Has Available CPU](articles/kubernetes-cpu-throttling-available-cpu.md) |
+| [Burstable vs. Non-Burstable Instances for Kubernetes](articles/burstable-vs-nonburstable-kubernetes.md) |
+| [EKS Node Troubleshooting Guide](articles/eks-node-troubleshooting-guide.md) |
+| [Using systemctl to Debug EKS Nodes](articles/eks-node-systemctl-debugging.md) |
+| [Cleaning Up Kubernetes Clusters from .kube/config](articles/kubeconfig-cleanup-guide.md) |
+| [Fixing k3d TLS Certificate SAN Errors](articles/k3d-tls-san-certificate-fix.md) |
+| [EKS Node Groups Explained](articles/eks-node-groups-explained.md) |
+| [EKS Fargate](articles/eks-fargate-guide.md) |
+| [runAsNonRoot: true](articles/kubernetes-runasnonroot.md) |
+| [CoreDNS on EKS — Cheatsheet](articles/coredns-eks-cheatsheet.md) |
+| [Troubleshooting DNS Resolution Issues on EKS](articles/eks-dns-troubleshooting.md) |
+| [DNS Observability and Troubleshooting in Kubernetes](articles/kubernetes-dns-observability.md) |
+| [Velero: Kubernetes Backup and Disaster Recovery](articles/velero-kubernetes-backup-dr.md) |
+| [ImagePullBackOff Troubleshooting Guide](articles/kubernetes-imagepullbackoff-troubleshooting.md) |
+| [Kubernetes Pod Troubleshooting Guide](articles/kubernetes-pod-troubleshooting-guide.md) |
+| [HAProxy Ingress Setup on EKS](articles/haproxy-ingress-eks-setup.md) |
+| [HAProxy 5xx Errors During EKS Node Drains](articles/haproxy-5xx-eks-node-drains.md) |
+| [Deep Dive: system:masters Group on EKS](articles/eks-system-masters-group.md) |
+| [What Happens When You Run kubectl apply](articles/kubectl-apply-internals.md) |
+| [Kubernetes Objects vs Resources vs Custom Resources](articles/kubernetes-objects-resources-explained.md) |
+| [What Happens When You Run kubectl delete pod](articles/kubectl-delete-pod-internals.md) |
+| [CrashLoopBackOff Internals](articles/kubernetes-crashloopbackoff-internals.md) |
+| [What Happens During a Rolling Update](articles/kubernetes-rolling-update-internals.md) |
+| [What Happens When a Node Goes NotReady](articles/kubernetes-node-notready-internals.md) |
+| [How Kubernetes Watches Work — Informers](articles/kubernetes-watches-informers-internals.md) |
+| [How RBAC Evaluation Works](articles/kubernetes-rbac-evaluation-internals.md) |
+| [How Admission Webhooks Fire](articles/kubernetes-admission-webhooks-internals.md) |
+| [What Happens When You Create a Service](articles/kubernetes-service-creation-internals.md) |
+| [What Happens When a Pod Gets an IP](articles/kubernetes-pod-ip-assignment-internals.md) |
+| [What Happens When a Pod is Unschedulable](articles/kubernetes-unschedulable-pod-internals.md) |
+| [What Happens When You Scale a Deployment](articles/kubernetes-scale-deployment-internals.md) |
+| [How kubectl Discovers and Resolves API Resources](articles/kubectl-api-discovery-internals.md) |
+| [How kubectl exec Works](articles/kubectl-exec-internals.md) |
+| [Migrating Streaming from SPDY to WebSockets](articles/kubernetes-spdy-to-websockets.md) |
+| [Checking Client vs Server API Support](articles/kubectl-client-vs-server-api-support.md) |
+| [How kubectl port-forward Works](articles/kubectl-port-forward-internals.md) |
+| [kubectl wait and Condition-Based Scripting](articles/kubectl-wait-condition-scripting.md) |
+| [kubectl debug — Ephemeral Containers and Node Debugging](articles/kubectl-debug-ephemeral-containers.md) |
+| [kubectl Server-Side vs Client-Side Operations](articles/kubectl-server-side-vs-client-side.md) |
+| [How NetworkPolicies Are Enforced](articles/kubernetes-networkpolicy-enforcement-internals.md) |
+| [How Ingress Controllers Work Internally](articles/kubernetes-ingress-controller-internals.md) |
+| [What Happens When a PV Is Reclaimed](articles/kubernetes-pv-reclaim-internals.md) |
+| [CSI Driver Architecture](articles/kubernetes-csi-driver-architecture.md) |
+| [How ServiceAccount Tokens Work](articles/kubernetes-serviceaccount-tokens-internals.md) |
+| [How Pod Security Admission Enforces Policies](articles/kubernetes-pod-security-admission-internals.md) |
+| [How kubectl drain Works Internally](articles/kubectl-drain-internals.md) |
+| [How etcd Stores and Retrieves Kubernetes Objects](articles/kubernetes-etcd-storage-internals.md) |
+| [How the Garbage Collector Works](articles/kubernetes-garbage-collector-internals.md) |
+| [How Leader Election Works in Controllers](articles/kubernetes-leader-election-internals.md) |
+| [Separate Kubeconfig Files for EKS Clusters](articles/eks-separate-kubeconfig-files.md) |
+| [EKS API Server Throttling and Priority & Fairness](articles/eks-api-priority-fairness.md) |
+| [EKS Pod Identity vs IRSA — Deep Dive](articles/eks-pod-identity-vs-irsa-deep-dive.md) |
+| [Cross-AZ Traffic in EKS — Patterns, Costs, and Optimization](articles/eks-cross-az-traffic-optimization.md) |
+| [EKS Version Upgrades — Checklist and Process](articles/eks-version-upgrade-checklist.md) |
+| [Upgrading an EKS Control Plane from 1.34 to 1.35](articles/eks-control-plane-upgrade-1.34-to-1.35.md) |
+| [Amazon EKS Cluster Insights](articles/eks-cluster-insights.md) |
+| [EKS Add-on Management Guide](articles/eks-addon-management-guide.md) |
+| [EKS Node Bootstrap Deep Dive](articles/eks-node-bootstrap-deep-dive.md) |
+| [EKS: pre_userdata vs additional_userdata](articles/eks-pre-userdata-vs-additional-userdata.md) |
+| [Bottlerocket OS for EKS](articles/bottlerocket-os-eks-guide.md) |
+| [TLS/SSL Certificates Explained](articles/tls-ssl-certificates-explained.md) |
+| [OAuth2 and OIDC Flow Explained](articles/oauth2-oidc-flow-explained.md) |
+| [How kube-proxy Works — iptables vs IPVS vs nftables](articles/kubernetes-kube-proxy-internals.md) |
+| [Kubernetes DNS Deep Dive — CoreDNS Architecture](articles/kubernetes-coredns-deep-dive.md) |
+| [DNS Policies for Pods in Kubernetes](articles/kubernetes-pod-dns-policies.md) |
+| [GitHub Actions for Kubernetes Deployments](articles/github-actions-kubernetes-deployments.md) |
+| [Pipeline to Get the Latest Ubuntu EKS AMI](articles/eks-ubuntu-ami-latest-pipeline.md) |
+| [ConfigMaps and Secrets](articles/kubernetes-configmaps-secrets.md) |
+| [Resource Quotas & LimitRanges](articles/kubernetes-resource-quotas-limitranges.md) |
+| [Kubeadm Cluster Upgrade](articles/kubeadm-cluster-upgrade.md) |
+| [HPA with scaleDown Behavior](articles/hpa-scaledown-behavior.md) |
+| [HPA ScalingLimited (TooManyReplicas)](articles/hpa-scaling-limited-too-many-replicas.md) |
+| [CPU Starvation Diagnostic Guide](articles/cpu-starvation-diagnostic-guide.md) |
+| [Installing metrics-server](articles/metrics-server-install.md) |
 
 ### Helm
 
-| Article | Description |
-|---------|--------------|
-| [Helm Cheatsheet](articles/helm-cheatsheet.md) | Package manager for Kubernetes — repos, installs, upgrades, and rollbacks. |
-| [What's New in Helm 4](articles/helm-4-whats-new.md) | Helm 4 (Nov 2025) — Server-Side Apply, kstatus readiness annotations, Wasm plugin system, OCI digests, renamed CLI flags, a v3-vs-v4 command table, and compatibility notes. |
-| [Kustomize vs Helm](articles/kustomize-vs-helm.md) | Comparison — templating vs patching, release management, array merge gotcha, when to use each, and combining both. |
-| [Installing Helm Charts Without helm repo add](articles/helm-install-without-repo-add.md) | Installing charts without registering a repo — OCI registry URLs, packaged .tgz URLs, the --repo flag, GitHub release assets, and passing --set overrides. |
-| [Replacing an Existing Deployment with a Helm Chart](articles/helm-overwrite-existing-deployment.md) | Migrating a kubectl- or Helm-managed workload to a Helm release — detecting ownership, upgrade vs reinstall, --reset-values/--wait/--atomic, ownership-conflict fixes, and verification. |
+| Article |
+|---------|
+| [Helm Cheatsheet](articles/helm-cheatsheet.md) |
+| [What's New in Helm 4](articles/helm-4-whats-new.md) |
+| [Kustomize vs Helm](articles/kustomize-vs-helm.md) |
+| [Installing Helm Charts Without helm repo add](articles/helm-install-without-repo-add.md) |
+| [Replacing an Existing Deployment with a Helm Chart](articles/helm-overwrite-existing-deployment.md) |
 
 ### EKS Auto Mode
 
-| Article | Description |
-|---------|--------------|
-| [EKS Auto Mode](articles/eks-auto-mode.md) | Fully managed data plane — what AWS handles, Auto vs Standard comparison, node pools, security model, networking, storage, and migration. |
-| [EKS Auto Mode Cheatsheet](articles/eks-auto-mode-cheatsheet.md) | EKS Auto Mode commands — NodePool, NodeClass, NodeClaim, node lifecycle, storage, networking, and troubleshooting. |
-| [EKS Auto Mode Security Deep Dive](articles/eks-auto-mode-security.md) | Security architecture — IMDS lockdown, EBS encryption, minimal IAM, pod networking segregation, SELinux, SCPs, GuardDuty, and node patching. |
-| [Deploy 2048 Game on EKS Auto Mode](articles/eks-auto-mode-2048-game.md) | Quick walkthrough — scale-from-zero, automatic ALB provisioning, Ingress without controllers, topology spreading, and cleanup. |
-| [Troubleshoot DNS in EKS Auto Mode](articles/eks-auto-mode-dns-troubleshooting.md) | DNS troubleshooting — pod resolv.conf checks, CoreDNS log inspection via debug containers, node-level DNS verification, and response code interpretation. |
-| [Troubleshoot Custom NodePool and NodeClass in EKS Auto Mode](articles/eks-auto-mode-nodepool-nodeclass-troubleshooting.md) | NodePool/NodeClass provisioning failures — NotReady states, empty status, label restrictions, IAM permission errors, and access entry fixes. |
+| Article |
+|---------|
+| [EKS Auto Mode](articles/eks-auto-mode.md) |
+| [EKS Auto Mode Cheatsheet](articles/eks-auto-mode-cheatsheet.md) |
+| [EKS Auto Mode Security Deep Dive](articles/eks-auto-mode-security.md) |
+| [Deploy 2048 Game on EKS Auto Mode](articles/eks-auto-mode-2048-game.md) |
+| [Troubleshoot DNS in EKS Auto Mode](articles/eks-auto-mode-dns-troubleshooting.md) |
+| [Troubleshoot Custom NodePool and NodeClass in EKS Auto Mode](articles/eks-auto-mode-nodepool-nodeclass-troubleshooting.md) |
 
 ### Docker
 
-| Article | Description |
-|---------|--------------|
-| [Docker Cheatsheet](articles/docker-cheatsheet.md) | Docker CLI — containers, images, volumes, networks, Dockerfile, and troubleshooting. |
-| [Docker Compose Cheatsheet](articles/docker-compose-cheatsheet.md) | Docker Compose — services, builds, networks, volumes, profiles, overrides, and patterns. |
-| [Docker Compose: ports vs expose](articles/docker-ports-vs-expose.md) | Differences between `ports` and `expose` — when to publish vs keep internal. |
-| [Docker Compose: Running Containers Without Root](articles/docker-compose-non-root.md) | UID/GID mapping, bind mount permissions, image inspection, privileged ports, and security hardening. |
-| [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md) | Mounting Docker config into the runner to avoid rate limiting. |
-| [dbash — Docker Shell Function](articles/docker-dbash-function.md) | Bash function to quickly shell into Docker containers. |
-| [Building Docker Images with Dockerfile](articles/docker-build-image-guide.md) | Dockerfile instructions, build commands, tagging, multi-stage builds, heredoc syntax, CMD vs ENTRYPOINT, and best practices. |
-| [Docker Swarm Cheatsheet](articles/docker-swarm-cheatsheet.md) | Swarm clustering — init, nodes, services, scaling, rolling updates, networks, secrets, configs, stacks, HA, and backups. |
-| [Docker Swarm Storage](articles/docker-swarm-storage.md) | Swarm storage strategies — NFS server/client, GlusterFS, Ceph, Docker NFS volumes, stack examples, backups, and monitoring. |
-| [Docker Overlay2 Storage Driver](articles/docker-overlay2-storage.md) | Overlay2 internals — LowerDir, UpperDir, MergedDir, copy-on-write, layer inspection, disk usage, configuration, and troubleshooting. |
-| [Installing Podman on RHEL 7–10](articles/podman-installation-rhel.md) | Podman installation across RHEL versions — rootless setup, registries, storage, Docker migration, Quadlet, systemd integration, and troubleshooting. |
-| [Fixing Critical Vulnerabilities in Public Docker Images](articles/docker-fix-critical-vulnerabilities.md) | Scanning with Trivy, Grype, and Docker Scout — fixable vs unfixable CVEs, base image updates, distroless, OS/app package patching, runtime mitigation, suppression, and CI gating. |
-| [Docker Management UIs: Portainer vs Dockge vs Dockhand and Others](articles/docker-management-uis-comparison.md) | Comparing self-hosted Docker web UIs — Portainer, Dockge, Dockhand, Arcane, Komodo, Sencho, and Yacht — scope, multi-host, Compose-on-disk, vulnerability scanning, SSO, licensing, and a decision guide. |
+| Article |
+|---------|
+| [Docker Cheatsheet](articles/docker-cheatsheet.md) |
+| [Docker Compose Cheatsheet](articles/docker-compose-cheatsheet.md) |
+| [Docker Compose: ports vs expose](articles/docker-ports-vs-expose.md) |
+| [Docker Compose: Running Containers Without Root](articles/docker-compose-non-root.md) |
+| [Fix Gitea Runner Docker Hub Rate Limits](articles/docker-gitea-runner-fix.md) |
+| [dbash — Docker Shell Function](articles/docker-dbash-function.md) |
+| [Building Docker Images with Dockerfile](articles/docker-build-image-guide.md) |
+| [Docker Swarm Cheatsheet](articles/docker-swarm-cheatsheet.md) |
+| [Docker Swarm Storage](articles/docker-swarm-storage.md) |
+| [Docker Overlay2 Storage Driver](articles/docker-overlay2-storage.md) |
+| [Installing Podman on RHEL 7–10](articles/podman-installation-rhel.md) |
+| [Fixing Critical Vulnerabilities in Public Docker Images](articles/docker-fix-critical-vulnerabilities.md) |
+| [Docker Management UIs: Portainer vs Dockge vs Dockhand and Others](articles/docker-management-uis-comparison.md) |
 
 ### AWS
 
-| Article | Description |
-|---------|--------------|
-| [AWS CLI Installation](articles/aws-cli-install.md) | Install AWS CLI v2 on RHEL, Ubuntu, macOS — configuration, profiles, auto-completion, and Docker. |
-| [How to Use the AWS Free Tier Effectively](articles/aws-free-tier-guide.md) | Legacy vs 2025+ Free Tier (Free/Paid plans, $200 credits), free-tier-eligible EC2/EBS, billing guardrails, common surprise charges, and habits to stay free. |
-| [AWS Login: Simplified Developer Access](articles/aws-login-command.md) | `aws login` command — browser-based auth, temporary credentials, profiles, federated sign-in, remote servers, IAM policies, and CloudTrail logging. |
-| [AWS STS Assume Role with MFA](articles/aws-sts-assume-role.md) | Temporary credentials via AssumeRole — MFA enforcement, session scripts, named profiles, duration, and role chaining. |
-| [Assume an IAM Role via CLI (Step by Step)](articles/aws-assume-role-cli-walkthrough.md) | Full walkthrough — create user, policy, trust policy, role, assume it, export credentials, and named profile alternative. |
-| [AWS AssumeRole Concepts](articles/aws-assume-role-concepts.md) | AssumeRole fundamentals — trust policies, cross-account access, role chaining, session duration, CLI profiles, CloudTrail, and best practices. |
-| [AWS IAM Concepts Guide](articles/aws-iam-concepts-guide.md) | IAM fundamentals — roles, policy types, evaluation logic, Identity Center (SSO), federation, permission boundaries, and root vs admin. |
-| [IAM: Access Keys vs Roles vs Instance Profiles](articles/aws-iam-access-keys-vs-roles-vs-instance-profiles.md) | Comparing the three credential mechanisms — static keys vs temporary role credentials, what an instance profile actually is, how they relate, and choosing per workload. |
-| [AWS IAM CLI Cheatsheet](articles/aws-iam-cheatsheet.md) | All `aws iam` and `aws sts` commands — users, groups, roles, policies, access keys, MFA, simulation, and audit one-liners. |
-| [AWS IAM Role Users Audit](articles/aws-iam-role-users-audit.md) | Find who can assume a role — trust policies, policy scanning, CloudTrail, SAML/LDAP federation, Identity Center, and audit scripts. |
-| [Temporarily Disabling AWS Credentials Safely](articles/aws-credentials-disable-with-trap.md) | Prove role/SSO auth works without static keys — moving ~/.aws/credentials aside, restoring it reliably with trap, and $$ for safe temp naming. |
-| [ECS Cluster Architecture](articles/ecs-architecture-guide.md) | ECS internals — Fargate vs EC2, task definitions, services, networking, auto scaling, capacity providers, ECS Exec, and CLI commands. |
-| [AWS EFS Cheatsheet](articles/aws-efs-cheatsheet.md) | Elastic File System — create, mount, access points, security, performance modes, lifecycle, ECS/EKS/Lambda integration, and monitoring. |
-| [AWS Lightsail Cheatsheet](articles/aws-lightsail-cheatsheet.md) | Simplified compute — instances, static IPs, firewall, snapshots, disks, databases, load balancers, containers, DNS, and export to EC2. |
-| [AWS Load Balancer Cheatsheet](articles/aws-elb-cheatsheet.md) | ALB, NLB, CLB — create, target groups, listeners, routing rules, health checks, SSL, access logs, WAF, and common patterns. |
-| [AWS VPC Cheatsheet](articles/aws-vpc-cheatsheet.md) | VPC — subnets, route tables, IGW, NAT, security groups, NACLs, endpoints, peering, Transit Gateway, and flow logs. |
-| [AWS VPC Design Guide](articles/aws-vpc-design-guide.md) | VPC architecture — CIDR planning, subnet strategies, EKS networking, Transit Gateway, peering, NAT patterns, security design, and cost optimization. |
-| [AWS CloudFormation Cheatsheet](articles/aws-cloudformation-cheatsheet.md) | CloudFormation CLI — create, update, delete stacks, change sets, drift detection, stack sets, imports, policies, deploy, and troubleshooting. |
-| [AWS API Throttling Guide](articles/aws-api-throttling-guide.md) | API rate limits — token bucket algorithm, EC2 limits, error codes, Terraform fixes, CloudTrail detection, Service Quotas, and limit increases. |
-| [AWS Well-Architected Framework](articles/aws-well-architected-framework.md) | Six pillars — operational excellence, security, reliability, performance efficiency, cost optimization, sustainability, reviews, and lenses. |
-| [AWS Migration 7 R's](articles/aws-migration-7rs.md) | Cloud migration strategies — retire, retain, rehost, relocate, repurchase, replatform, refactor, decision flow, and AWS services for each. |
-| [AWS Route 53 Cheatsheet](articles/aws-route53-cheatsheet.md) | DNS — hosted zones, record types, routing policies, health checks, failover, DNSSEC, resolver, and domain registration. |
-| [AWS ECR Cheatsheet](articles/aws-ecr-cheatsheet.md) | Container registry — push/pull, scanning, lifecycle policies, replication, pull-through cache, and repository policies. |
-| [Pulling Images from ECR with ctr and Docker](articles/ecr-pull-with-ctr-docker.md) | ECR authentication — pulling images with ctr, Docker, crictl, nerdctl, token refresh, and troubleshooting. |
-| [EC2 Cheatsheet](articles/aws-ec2-cheatsheet.md) | AWS EC2 — instances, AMIs, security groups, EBS, Elastic IPs, metadata, and CLI patterns. |
-| [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md) | Resize EBS volumes and grow filesystems (XFS, ext4, LVM) — no downtime required. |
-| [EC2 Instance Metadata Service (IMDS)](articles/aws-ec2-metadata.md) | IMDS endpoint, IMDSv1 vs IMDSv2, ec2-metadata script, IAM credentials, tags, spot notices, and configuration. |
-| [EC2 User Data: Serving Instance Metadata on a Web Page](articles/ec2-userdata-instance-metadata-webpage.md) | Bootstrap script that installs Apache and renders instance metadata (ID, type, public/private IPs) — IMDSv1 vs IMDSv2 token flow, public/private detection, AL2 vs AL2023/Ubuntu, attaching via CLI/Terraform/console, security groups, and troubleshooting. |
-| [EC2 vs ELB Health Checks](articles/aws-ec2-vs-elb-health-checks.md) | EC2 status checks vs ELB health checks — what each monitors, how they interact with Auto Scaling, and self-healing patterns. |
-| [EBS Cheatsheet](articles/aws-ebs-cheatsheet.md) | EBS volume types, create/attach/resize, snapshots, DLM lifecycle policies, encryption, multi-attach, performance tuning, and monitoring. |
-| [Benchmarking Amazon EBS Volumes with FIO](articles/aws-ebs-benchmarking-fio.md) | Measuring EBS IOPS and throughput — volume types, FIO sequential/random tests, block-size and concurrency effects, CloudWatch validation, and RAID 0 striping. |
-| [S3 Cheatsheet](articles/aws-s3-cheatsheet.md) | S3 CLI — buckets, objects, sync, presigned URLs, lifecycle, storage classes, versioning, encryption, and performance tuning. |
-| [Unattached EBS Volumes: Detection and Monitoring](articles/aws-ebs-unattached-volumes.md) | Finding orphaned volumes, cost estimation, safe cleanup workflow, CloudWatch idle detection, AWS Config rules, Lambda automation, and prevention. |
-| [EC2 fstab: Why Device Names Change on Nitro](articles/aws-ec2-fstab-labels.md) | NVMe device reordering, using LABEL/UUID in fstab, cloud-init provisioning, and instance store volumes. |
-| [Installing SSM Agent](articles/aws-ssm-agent-install.md) | Install and configure SSM Agent on RHEL, Ubuntu — Session Manager, VPC endpoints, and SSH over SSM. |
-| [JMESPath Query Guide](articles/aws-jmespath-guide.md) | JMESPath query language for AWS CLI — filtering, sorting, functions, and real-world examples. |
-| [AWS CLI Tag Filtering with Variables](articles/aws-cli-tag-filtering-variables.md) | Shell variables in tag filters — substitution, arrays, functions, loops, JMESPath, validation, and debugging. |
-| [EKS Authentication Modes: ConfigMap vs Access Entries](articles/eks-authentication-modes.md) | EKS authentication methods — aws-auth ConfigMap vs API access entries, migration, and best practices. |
-| [Securing Kubernetes Containers: Security Contexts](articles/eks-security-contexts.md) | Linux kernel primitives, security contexts, capabilities, seccomp, AppArmor, and production hardening. |
-| [EKS Node Groups: With and Without Launch Templates](articles/eks-nodegroups-launch-templates.md) | Managed node groups — when you need a launch template, what EKS manages automatically, custom AMIs, and Terraform examples. |
-| [EKS AMI Comparison: Ubuntu vs Ubuntu Pro vs Amazon Linux](articles/eks-ubuntu-ami-comparison.md) | EKS worker node AMIs — Ubuntu EKS, Ubuntu Pro EKS, AL2023, Bottlerocket, feature comparison, security, FIPS, livepatching, and decision guide. |
-| [EKS Architecture Deep Dive](articles/eks-architecture-deep-dive.md) | EKS internals — control plane, etcd, cross-account ENIs, VPC CNI, authentication flow, API endpoint access, add-ons, upgrade process, and limits. |
-| [How the EKS Control Plane Is Created and Reached](articles/eks-control-plane-architecture.md) | What AWS provisions for a managed control plane, how the API server endpoint works, cross-account ENIs, public/private access, and how you talk to it. |
-| [EKS VPC CNI: IPAMD Guide](articles/eks-vpc-cni-ipamd-guide.md) | VPC CNI internals — IPAMD architecture, port 50051 gRPC, health probes, IP pool tuning, metrics, ENI management, and troubleshooting. |
-| [EKS VPC CNI Proxy Configuration](articles/eks-vpc-cni-proxy-configuration.md) | Proxy settings for aws-node — NO_PROXY rules, critical endpoints, private vs public EKS endpoints, Terraform, ConfigMap, and troubleshooting. |
-| [eksctl Cheatsheet](articles/eksctl-cheatsheet.md) | eksctl CLI — cluster lifecycle, node groups, scaling, labels, IAM service accounts, OIDC, add-ons, Fargate, and identity mappings. |
-| [Creating an EKS Cluster with eksctl](articles/eks-cluster-with-eksctl.md) | Step-by-step guide — prerequisites, ClusterConfig YAML, managed node groups, IRSA, add-ons, private clusters, and production-ready examples. |
-| [AWS CLI EKS Commands](articles/aws-eks-cli-cheatsheet.md) | All `aws eks` commands — clusters, node groups, add-ons, access entries, Pod Identity, Fargate, updates, tokens, and waiters. |
-| [EKS Node Not Joining Cluster](articles/eks-node-not-joining-troubleshooting.md) | Troubleshooting nodes that fail to join — IAM, security groups, networking, kubelet, bootstrap, and step-by-step diagnosis. |
-| [EKS Node Monitoring](articles/eks-node-monitoring.md) | Node health monitoring — CloudWatch metrics, node conditions, node-problem-detector, Prometheus, alerts, and capacity planning. |
-| [Why aws-auth Looks Different on Different Clusters](articles/eks-aws-auth-why-different.md) | How aws-auth ConfigMap is created, why fields vary, cluster creator access, Access Entries migration, and common mistakes. |
-| [aws-auth ConfigMap Technical Details](articles/eks-aws-auth-technical-details.md) | How EKS authenticates IAM identities — token format, aws-iam-authenticator webhook, STS flow, edge cases, and debugging. |
-| [Validating cloud-init on EKS Nodes](articles/eks-cloud-init-validation.md) | Verifying cloud-init completion — status checks, log files, bootstrap validation, common failures, and fleet monitoring. |
-| [Cluster Autoscaler Restarts Troubleshooting](articles/eks-cluster-autoscaler-restarts.md) | Diagnosing "Service Unavailable" restarts — API server overload, AWS throttling, probe tuning, and monitoring. |
-| [HAProxy on EKS with NLB](articles/eks-haproxy-nlb.md) | Deploying HAProxy with NLB — architecture, AWS LB Controller, ip target type, TLS options, health checks, and annotations reference. |
-| [EKS Node Health and Auto-Repair](articles/eks-node-health-auto-repair.md) | Node health monitoring, auto-repair mechanisms, Node Problem Detector, NTH, Karpenter disruption, and self-healing patterns. |
-| [EKS vs AKS vs GKE](articles/eks-vs-aks-vs-gke.md) | Managed Kubernetes compared — control plane, networking, IAM, node management, upgrades, security, and when to choose which. |
-| [EKS Node Group Rolling Updates](articles/eks-node-group-rolling-updates.md) | How EKS recycles nodes during managed node group updates — surge-based rolling strategy, launch template versioning, and node replacement sequence. |
-| [EKS EC2 Tags vs Node Selectors](articles/eks-ec2-tags-vs-node-selectors.md) | The two layers of EKS self-managed nodes — EC2 tags vs Kubernetes labels, why draining is instance-based, and bridging AWS and K8s identifiers. |
-| [Karpenter Guide](articles/karpenter-guide.md) | Intelligent node scaling for EKS — cost savings over CA, NodePool/EC2NodeClass config, Spot management, consolidation, GPU, migration, and monitoring. |
+| Article |
+|---------|
+| [AWS CLI Installation](articles/aws-cli-install.md) |
+| [How to Use the AWS Free Tier Effectively](articles/aws-free-tier-guide.md) |
+| [AWS Login: Simplified Developer Access](articles/aws-login-command.md) |
+| [AWS STS Assume Role with MFA](articles/aws-sts-assume-role.md) |
+| [Assume an IAM Role via CLI (Step by Step)](articles/aws-assume-role-cli-walkthrough.md) |
+| [AWS AssumeRole Concepts](articles/aws-assume-role-concepts.md) |
+| [AWS IAM Concepts Guide](articles/aws-iam-concepts-guide.md) |
+| [IAM: Access Keys vs Roles vs Instance Profiles](articles/aws-iam-access-keys-vs-roles-vs-instance-profiles.md) |
+| [AWS IAM CLI Cheatsheet](articles/aws-iam-cheatsheet.md) |
+| [AWS IAM Role Users Audit](articles/aws-iam-role-users-audit.md) |
+| [Temporarily Disabling AWS Credentials Safely](articles/aws-credentials-disable-with-trap.md) |
+| [ECS Cluster Architecture](articles/ecs-architecture-guide.md) |
+| [AWS EFS Cheatsheet](articles/aws-efs-cheatsheet.md) |
+| [AWS Lightsail Cheatsheet](articles/aws-lightsail-cheatsheet.md) |
+| [AWS Load Balancer Cheatsheet](articles/aws-elb-cheatsheet.md) |
+| [AWS VPC Cheatsheet](articles/aws-vpc-cheatsheet.md) |
+| [AWS VPC Design Guide](articles/aws-vpc-design-guide.md) |
+| [AWS CloudFormation Cheatsheet](articles/aws-cloudformation-cheatsheet.md) |
+| [AWS API Throttling Guide](articles/aws-api-throttling-guide.md) |
+| [AWS Well-Architected Framework](articles/aws-well-architected-framework.md) |
+| [AWS Migration 7 R's](articles/aws-migration-7rs.md) |
+| [AWS Route 53 Cheatsheet](articles/aws-route53-cheatsheet.md) |
+| [AWS ECR Cheatsheet](articles/aws-ecr-cheatsheet.md) |
+| [Pulling Images from ECR with ctr and Docker](articles/ecr-pull-with-ctr-docker.md) |
+| [EC2 Cheatsheet](articles/aws-ec2-cheatsheet.md) |
+| [EC2 Extend EBS Volume](articles/aws-ec2-extend-disk.md) |
+| [EC2 Instance Metadata Service (IMDS)](articles/aws-ec2-metadata.md) |
+| [EC2 User Data: Serving Instance Metadata on a Web Page](articles/ec2-userdata-instance-metadata-webpage.md) |
+| [EC2 vs ELB Health Checks](articles/aws-ec2-vs-elb-health-checks.md) |
+| [EBS Cheatsheet](articles/aws-ebs-cheatsheet.md) |
+| [Benchmarking Amazon EBS Volumes with FIO](articles/aws-ebs-benchmarking-fio.md) |
+| [S3 Cheatsheet](articles/aws-s3-cheatsheet.md) |
+| [Unattached EBS Volumes: Detection and Monitoring](articles/aws-ebs-unattached-volumes.md) |
+| [EC2 fstab: Why Device Names Change on Nitro](articles/aws-ec2-fstab-labels.md) |
+| [Installing SSM Agent](articles/aws-ssm-agent-install.md) |
+| [JMESPath Query Guide](articles/aws-jmespath-guide.md) |
+| [AWS CLI Tag Filtering with Variables](articles/aws-cli-tag-filtering-variables.md) |
+| [EKS Authentication Modes: ConfigMap vs Access Entries](articles/eks-authentication-modes.md) |
+| [Securing Kubernetes Containers: Security Contexts](articles/eks-security-contexts.md) |
+| [EKS Node Groups: With and Without Launch Templates](articles/eks-nodegroups-launch-templates.md) |
+| [EKS AMI Comparison: Ubuntu vs Ubuntu Pro vs Amazon Linux](articles/eks-ubuntu-ami-comparison.md) |
+| [EKS Architecture Deep Dive](articles/eks-architecture-deep-dive.md) |
+| [How the EKS Control Plane Is Created and Reached](articles/eks-control-plane-architecture.md) |
+| [EKS VPC CNI: IPAMD Guide](articles/eks-vpc-cni-ipamd-guide.md) |
+| [EKS VPC CNI Proxy Configuration](articles/eks-vpc-cni-proxy-configuration.md) |
+| [eksctl Cheatsheet](articles/eksctl-cheatsheet.md) |
+| [Creating an EKS Cluster with eksctl](articles/eks-cluster-with-eksctl.md) |
+| [AWS CLI EKS Commands](articles/aws-eks-cli-cheatsheet.md) |
+| [EKS Node Not Joining Cluster](articles/eks-node-not-joining-troubleshooting.md) |
+| [EKS Node Monitoring](articles/eks-node-monitoring.md) |
+| [Why aws-auth Looks Different on Different Clusters](articles/eks-aws-auth-why-different.md) |
+| [aws-auth ConfigMap Technical Details](articles/eks-aws-auth-technical-details.md) |
+| [Validating cloud-init on EKS Nodes](articles/eks-cloud-init-validation.md) |
+| [Cluster Autoscaler Restarts Troubleshooting](articles/eks-cluster-autoscaler-restarts.md) |
+| [HAProxy on EKS with NLB](articles/eks-haproxy-nlb.md) |
+| [EKS Node Health and Auto-Repair](articles/eks-node-health-auto-repair.md) |
+| [EKS vs AKS vs GKE](articles/eks-vs-aks-vs-gke.md) |
+| [EKS Node Group Rolling Updates](articles/eks-node-group-rolling-updates.md) |
+| [EKS EC2 Tags vs Node Selectors](articles/eks-ec2-tags-vs-node-selectors.md) |
+| [Karpenter Guide](articles/karpenter-guide.md) |
 
 ### Azure
 
-| Article | Description |
-|---------|--------------|
-| [Azure CLI Cheatsheet](articles/azure-cli-cheatsheet.md) | Azure CLI — installation, authentication, configuration, output formats, JMESPath queries, resource groups, and extensions. |
-| [Azure Resource Groups Cheatsheet](articles/azure-resource-groups-cheatsheet.md) | Resource groups — create, list, tags, locks, RBAC, move resources, export templates, and deployment history. |
-| [Azure Networking Cheatsheet](articles/azure-networking-cheatsheet.md) | Azure networking — VNets, subnets, NSGs, public IPs, NICs, peering, DNS, load balancers, and troubleshooting. |
-| [Azure Storage Cheatsheet](articles/azure-storage-cheatsheet.md) | Azure Storage — blob containers, upload/download, SAS tokens, access tiers, file shares, managed disks, lifecycle policies, and AzCopy. |
-| [Azure VM Management Cheatsheet](articles/azure-vm-cheatsheet.md) | Azure VMs — create, power management, disks, networking, resize, images, run commands, extensions, snapshots, and tags. |
-| [AKS Cheatsheet](articles/azure-aks-cheatsheet.md) | Azure Kubernetes Service — cluster lifecycle, node pools, scaling, autoscaler, ACR integration, addons, RBAC, and troubleshooting. |
-| [Azure Key Vault, Monitoring, IAM, and App Services](articles/azure-keyvault-monitoring-iam-cheatsheet.md) | Key Vault secrets/keys, monitoring metrics/alerts, Log Analytics, cost optimization, RBAC, managed identities, and App Service management. |
-| [Azure VM Instance Types and Free Tier](articles/azure-vm-instance-types-free-tier.md) | Azure VM sizes, free tier eligibility, and instance type selection. |
+| Article |
+|---------|
+| [Azure CLI Cheatsheet](articles/azure-cli-cheatsheet.md) |
+| [Azure Resource Groups Cheatsheet](articles/azure-resource-groups-cheatsheet.md) |
+| [Azure Networking Cheatsheet](articles/azure-networking-cheatsheet.md) |
+| [Azure Storage Cheatsheet](articles/azure-storage-cheatsheet.md) |
+| [Azure VM Management Cheatsheet](articles/azure-vm-cheatsheet.md) |
+| [AKS Cheatsheet](articles/azure-aks-cheatsheet.md) |
+| [Azure Key Vault, Monitoring, IAM, and App Services](articles/azure-keyvault-monitoring-iam-cheatsheet.md) |
+| [Azure VM Instance Types and Free Tier](articles/azure-vm-instance-types-free-tier.md) |
 
 ### GCP
 
-| Article | Description |
-|---------|--------------|
-| [GCP Compute Engine with jq Cheatsheet](articles/gcloud-compute-jq-cheatsheet.md) | gcloud compute instances — create, list, filter, network info, disks, metadata, bulk operations, and advanced jq queries for reporting. |
-| [gcloud CLI Cheatsheet](articles/gcloud-cheatsheet.md) | Google Cloud CLI — auth, projects, compute, storage, Cloud Functions, Cloud Run, GKE, Cloud SQL, IAM, networking, logging, and billing. |
+| Article |
+|---------|
+| [GCP Compute Engine with jq Cheatsheet](articles/gcloud-compute-jq-cheatsheet.md) |
+| [gcloud CLI Cheatsheet](articles/gcloud-cheatsheet.md) |
 
 ### DigitalOcean
 
-| Article | Description |
-|---------|--------------|
-| [doctl Cheatsheet](articles/doctl-cheatsheet.md) | DigitalOcean CLI — Droplets, Kubernetes, databases, networking, volumes, registry, Apps Platform, and scripting. |
-| [HAProxy for Kubernetes on DigitalOcean](articles/haproxy-kubernetes-digitalocean.md) | HAProxy Ingress on DOKS — Helm install, DO Load Balancer annotations, TLS options, PROXY protocol, cert-manager, and multi-service routing. |
-| [DOKS Node Pools](articles/doks-node-pools.md) | Managing DigitalOcean Kubernetes node pools with doctl — list/create/delete, per-pool auto-scaling and taints, kubeconfig save, and how they compare to EKS node groups. |
+| Article |
+|---------|
+| [doctl Cheatsheet](articles/doctl-cheatsheet.md) |
+| [HAProxy for Kubernetes on DigitalOcean](articles/haproxy-kubernetes-digitalocean.md) |
+| [DOKS Node Pools](articles/doks-node-pools.md) |
 
 ### Hetzner
 
-| Article | Description |
-|---------|--------------|
-| [hcloud CLI Cheatsheet](articles/hcloud-cheatsheet.md) | Hetzner Cloud CLI — contexts/tokens, servers, SSH keys, volumes, private networks, firewalls, load balancers, floating/primary IPs, output formatting, and label selectors. |
-| [hetzner-k3s Cheatsheet](articles/hetzner-k3s-cheatsheet.md) | k3s clusters on Hetzner Cloud — install, create/delete/upgrade, run commands on nodes, YAML config (masters/worker pools, autoscaling, ARM, CNI), workflows, instance types, and troubleshooting. |
+| Article |
+|---------|
+| [hcloud CLI Cheatsheet](articles/hcloud-cheatsheet.md) |
+| [hetzner-k3s Cheatsheet](articles/hetzner-k3s-cheatsheet.md) |
 
 ### Virtualization
 
-| Article | Description |
-|---------|--------------|
-| [Vagrant Cheatsheet](articles/vagrant-cheatsheet.md) | VM lifecycle, Vagrantfile, providers, provisioning, networking, multi-machine, plugins, and tips. |
-| [Increasing Vagrant Box Disk Space on Provisioning](articles/vagrant-increase-disk-size-provisioning.md) | Auto-grow an Ubuntu 22.04/24.04 Vagrant box disk at `vagrant up` — vagrant-disksize plugin, Vagrantfile, growpart-based provisioning script, the LVM resize chain (growpart → pvresize → lvextend → resize2fs), ext4/XFS notes, and troubleshooting. |
-| [Adding an SSH Public Key to a Vagrant VM](articles/vagrant-add-ssh-public-key.md) | Four ways to get your public key into a Vagrant box — ssh-copy-id, inline shell provisioner (Ruby File read), file provisioner, and reusing Vagrant's key via ssh-config — with a comparison table, verification, Ansible connectivity check, and troubleshooting. |
-| [Installing KVM](articles/kvm-installation.md) | KVM installation on RHEL 7–10 and Ubuntu 22.04/24.04 — packages, networking, storage, and verification. |
-| [KVM / virsh Cheatsheet](articles/kvm-cheatsheet.md) | virsh commands — VM lifecycle, disks, snapshots, networks, pools, migration, and monitoring. |
-| [Adding a New Disk in KVM](articles/kvm-add-disk.md) | Create, attach, partition, format, mount, resize, and detach disks in KVM guests. |
-| [Enable virsh console](articles/kvm-virsh-console.md) | Configure serial console access for KVM VMs — GRUB, systemd getty, and troubleshooting. |
-| [Running virt-manager Remotely](articles/virt-manager-remote-display.md) | X11 forwarding for virt-manager — PuTTY/Xming, XQuartz, SSH flags, and troubleshooting. |
-| [Installing KVM Guests](articles/kvm-guest-installation.md) | Creating VMs with virt-install — ISO, kickstart, network install, cloud images, PXE, and automation. |
-| [Using Cloud qcow2 Images with KVM](articles/kvm-qcow2-cloud-images.md) | Deploy pre-built cloud images — virt-customize, cloud-init, password changes, SSH keys, and deployment scripts. |
-| [Enable SSH Password Auth in Ubuntu Cloud Images](articles/ubuntu-cloud-image-ssh-password.md) | virt-edit and virt-customize to enable password authentication — Ubuntu 20.04 vs 22.04/24.04 config paths, scripts, and verification. |
-| [Converting VMware VMs to KVM](articles/kvm-convert-vmware-to-kvm.md) | virt-v2v — convert from vCenter, OVA, VMDK, Xen, and Hyper-V to KVM with libvirt. |
-| [KVM libguestfs Tools](articles/kvm-libguestfs-tools.md) | virt-edit, virt-cat, virt-customize, virt-sysprep, guestfish — accessing and modifying VM disk images offline. |
-| [VirtualBox CLI Cheatsheet](articles/virtualbox-cheatsheet.md) | VBoxManage commands — VM lifecycle, storage, networking, port forwarding, snapshots, cloning, import/export, guest control, and shared folders. |
+| Article |
+|---------|
+| [Vagrant Cheatsheet](articles/vagrant-cheatsheet.md) |
+| [Increasing Vagrant Box Disk Space on Provisioning](articles/vagrant-increase-disk-size-provisioning.md) |
+| [Adding an SSH Public Key to a Vagrant VM](articles/vagrant-add-ssh-public-key.md) |
+| [Installing KVM](articles/kvm-installation.md) |
+| [KVM / virsh Cheatsheet](articles/kvm-cheatsheet.md) |
+| [Adding a New Disk in KVM](articles/kvm-add-disk.md) |
+| [Enable virsh console](articles/kvm-virsh-console.md) |
+| [Running virt-manager Remotely](articles/virt-manager-remote-display.md) |
+| [Installing KVM Guests](articles/kvm-guest-installation.md) |
+| [Using Cloud qcow2 Images with KVM](articles/kvm-qcow2-cloud-images.md) |
+| [Enable SSH Password Auth in Ubuntu Cloud Images](articles/ubuntu-cloud-image-ssh-password.md) |
+| [Converting VMware VMs to KVM](articles/kvm-convert-vmware-to-kvm.md) |
+| [KVM libguestfs Tools](articles/kvm-libguestfs-tools.md) |
+| [VirtualBox CLI Cheatsheet](articles/virtualbox-cheatsheet.md) |
 
 ### Proxmox
 
-| Article | Description |
-|---------|--------------|
-| [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md) | Proxmox VE — VM/CT management, storage, networking, clusters, and backups. |
-| [Importing OVA/qcow2 into Proxmox](articles/proxmox-import-ova-qcow2.md) | Import VMware OVA, qcow2, and VMDK into Proxmox — qm importdisk, cloud-init, templates, and UEFI. |
-| [Troubleshooting cloud-init on Proxmox](articles/proxmox-cloud-init-troubleshooting.md) | cloud-init debugging — datasource issues, network config, SSH keys, custom snippets, and template preparation. |
-| [Resize a Partition on Proxmox](articles/proxmox-resize-partition.md) | Growing a VM disk — qm resize, growpart, LVM extend, ext4/XFS expansion, and online resize. |
-| [QEMU Guest Agent on Proxmox](articles/proxmox-qemu-guest-agent.md) | Why the guest agent matters — consistent backups, IP display, remote commands, file transfer, and fstrim. |
-| [Changing the Root Password in Proxmox LXC Containers](articles/proxmox-lxc-change-root-password.md) | Reset LXC root passwords — pct exec, chpasswd, expect automation, batch loops with logging, secure generation, Terraform null_resource, and troubleshooting. |
-| [Setting the LXC Root Password with cloud-init Userdata](articles/proxmox-lxc-cloud-init-root-password.md) | Set the root password at creation via cloud-init — basic/advanced userdata, plain vs hashed passwords, generated YAML, Terraform variables, and troubleshooting. |
-| [Proxmox Two-Node Cluster Quorum](articles/proxmox-two-node-cluster-quorum.md) | Keeping a 2-node cluster usable when a node is offline — votequorum basics, two_node mode, QDevice witness, expected votes, clean node shutdown, and HA/split-brain considerations. |
-| [Why Proxmox Needs libguestfs-tools](articles/proxmox-libguestfs-tools.md) | Why the package is installed for templating — offline image customization with virt-customize/virt-sysprep, baking in qemu-guest-agent, SSH keys, cloud-image prep, and pitfalls. |
-| [Migrating VMs and LXC Containers Between Proxmox Nodes](articles/proxmox-migrate-vms-containers.md) | Live vs offline migration — qm/pct commands, bulk pvesh scripting, local-disk migration, bandwidth limits, backup/restore, pre/post checks, and troubleshooting. |
-| [Proxmox xterm.js Serial Console](articles/proxmox-xtermjs-serial-console.md) | Web serial terminal vs noVNC — adding a serial device, guest kernel/getty setup, showing GRUB on serial, catching the boot menu, console= parameters, and troubleshooting. |
-| [Proxmox ACME SSL with Hetzner DNS](articles/proxmox-acme-hetzner-dns.md) | Trusted Let's Encrypt certs via the DNS-01 challenge — ACME account, Hetzner DNS plugin, node domain assignment, ordering (UI and pvenode CLI), auto-renewal, wildcards, and troubleshooting. |
-| [Setting Up a Brand-New Proxmox Server: First Tools to Install](articles/proxmox-first-tools-to-install.md) | First-boot configuration and essential tools — hardware/sensor monitoring, disk health (smartmontools, nvme-cli), networking (iperf3), UPS (NUT), and post-install setup. |
-| [ProxMenux Monitor: Guide, One-Liners, Tips & Tricks](articles/proxmenux-monitor-guide.md) | ProxMenux Monitor web dashboard — install, port 8008, systemd service commands, one-liners, login/2FA and reverse-proxy security, and troubleshooting. |
+| Article |
+|---------|
+| [Proxmox Cheatsheet](articles/proxmox-cheatsheet.md) |
+| [Importing OVA/qcow2 into Proxmox](articles/proxmox-import-ova-qcow2.md) |
+| [Troubleshooting cloud-init on Proxmox](articles/proxmox-cloud-init-troubleshooting.md) |
+| [Resize a Partition on Proxmox](articles/proxmox-resize-partition.md) |
+| [QEMU Guest Agent on Proxmox](articles/proxmox-qemu-guest-agent.md) |
+| [Changing the Root Password in Proxmox LXC Containers](articles/proxmox-lxc-change-root-password.md) |
+| [Setting the LXC Root Password with cloud-init Userdata](articles/proxmox-lxc-cloud-init-root-password.md) |
+| [Proxmox Two-Node Cluster Quorum](articles/proxmox-two-node-cluster-quorum.md) |
+| [Why Proxmox Needs libguestfs-tools](articles/proxmox-libguestfs-tools.md) |
+| [Migrating VMs and LXC Containers Between Proxmox Nodes](articles/proxmox-migrate-vms-containers.md) |
+| [Proxmox xterm.js Serial Console](articles/proxmox-xtermjs-serial-console.md) |
+| [Proxmox ACME SSL with Hetzner DNS](articles/proxmox-acme-hetzner-dns.md) |
+| [Setting Up a Brand-New Proxmox Server: First Tools to Install](articles/proxmox-first-tools-to-install.md) |
+| [ProxMenux Monitor: Guide, One-Liners, Tips & Tricks](articles/proxmenux-monitor-guide.md) |
 
 ### Terraform
 
-| Article | Description |
-|---------|--------------|
-| [Terraform Cheatsheet](articles/terraform-cheatsheet.md) | IaC tool — core commands, state management, and workspaces. |
-| [Packer Cheatsheet](articles/packer-cheatsheet.md) | Machine image builder — install, HCL2 templates, builders (AWS, Proxmox, QEMU, Docker), provisioners, post-processors, data sources, and CI/CD patterns. |
-| [terraform.tfstate vs .terraform/terraform.tfstate](articles/terraform-tfstate-vs-terraform-directory-state.md) | Difference between `terraform.tfstate` and `.terraform/terraform.tfstate`. |
-| [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md) | How `terraform init -upgrade` works with version constraints. |
-| [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md) | Difference between `terraform get -update` and `terraform init -upgrade`. |
-| [Terraform Lock File Checksums: zh and h1](articles/terraform-lock-file-checksums.md) | How `zh:` and `h1:` hashes in `.terraform.lock.hcl` work. |
-| [Terraform Root Module vs Child Modules](articles/terraform-root-vs-child-modules.md) | Module hierarchy — root vs child, calling modules, inputs/outputs, source types, and best practices. |
-| [EOF Escaping in Userdata, Terraform, and Shell Scripts](articles/eof-escaping-userdata-terraform.md) | Heredoc quoting, `$${` escaping, templatefile(), and multi-layer variable expansion. |
-| [Migrating State Off Terraform Cloud](articles/terraform-migrate-state-off-terraform-cloud.md) | Manual state migration from TFC to local, S3, AzureRM, or GCS backends. |
-| [Where Terraform Can Store State: Backends Guide](articles/terraform-state-storage-backends.md) | State backend options — AWS S3, Azure, GCS, self-hosted/homelab setups, locking, durability, and choosing the right backend. |
-| [Terraform tfvars: Variable Definitions Reference](articles/terraform-tfvars-guide.md) | Complete reference for all variable types in `.tfvars` files — strings, lists, maps, objects, and nested structures. |
-| [Terraform Variables: Declaration, Validation, and Usage](articles/terraform-variables-guide.md) | Variable blocks, type constraints, validation rules, usage patterns, dynamic blocks, and complex examples. |
-| [Importing Existing Infrastructure Into Terraform](articles/terraform-import-guide.md) | Step-by-step import workflow, import blocks (1.5+), config generation, modules, for_each, and bulk import. |
-| [Exporting Datadog Monitors to Terraform](articles/exporting-monitors-to-terraform.md) | Export monitors via console or API, convert to HCL with jq, and import into state. |
-| [Terraform Backend Configuration Changed](articles/terraform-backend-configuration-changed.md) | Understanding -migrate-state vs -reconfigure — when to use each, .terraform/terraform.tfstate explained. |
-| [Terraform Conditional Expressions](articles/terraform-conditional-expressions.md) | Ternary syntax, count/for_each toggles, dynamic blocks, null handling, coalesce, can/try guards, validations, and preconditions. |
-| [Terraform Provisioners Guide](articles/terraform-provisioners-guide.md) | local-exec, remote-exec, file provisioner, connection blocks, null_resource, terraform_data, triggers, destroy-time provisioners, and practical examples. |
-| [Terraform Outputs Guide](articles/terraform-outputs-guide.md) | Output declarations, types, sensitive values, module outputs, remote state, CLI commands, preconditions, and patterns. |
-| [Managing DNS with Terraform and BIND](articles/terraform-bind-dns-management.md) | DNS provider with RFC 2136, TSIG authentication, A/CNAME/PTR/MX/SRV records, VM fleet DNS, Kubernetes services, split DNS, and BIND troubleshooting. |
-| [Terraform JSON, One-Liners, and Tips](articles/terraform-json-tips-tricks.md) | jq recipes, terraform output/show/state one-liners, plan JSON parsing, console, debugging, CI/CD patterns, file generation, and workflow shortcuts. |
-| [Terraform Troubleshooting](articles/terraform-troubleshooting.md) | Common errors and fixes, state lock/drift/recovery, provider issues, debugging, performance, lifecycle gotchas, and emergency commands. |
-| [Terraform Debugging Guide](articles/terraform-debugging-guide.md) | Verbose logging (TF_LOG levels), common error patterns with symptoms and solutions, API tracing, crash logs, and systematic debugging checklist. |
-| [Terraform Heredoc: EOT vs EOF](articles/terraform-heredoc-eot-eof.md) | Heredoc syntax, `<<` vs `<<-` indentation, interpolation, escaping `$${}`, template directives, common patterns, and mistakes to avoid. |
-| [Terraform toset() and for_each Guide](articles/terraform-toset-foreach-guide.md) | toset() deduplication, each.key vs each.value, sets vs maps, practical for_each patterns for SGs, EKS node groups, S3, RDS, and type conversions. |
-| [Escaping $ in Terraform Userdata](articles/terraform-userdata-dollar-escaping.md) | Dollar sign escaping in heredocs (`$$`), templatefile() approach, cloud-init YAML, multipart userdata, debugging, and common patterns. |
-| [Terraform Lifecycle Guide](articles/terraform-lifecycle-guide.md) | create_before_destroy, prevent_destroy, ignore_changes, replace_triggered_by, precondition/postcondition, and common patterns. |
-| [Terraform Config Drift Detection](articles/terraform-drift-detection.md) | Detecting drift with plan/refresh-only, automated CI/CD checks, JSON parsing, resolving strategies, prevention, and scheduled reconciliation. |
-| [Understanding `<=`, `+`, and Other Signs in a Terraform Plan](articles/terraform-plan-symbols.md) | Reading plan action symbols — `+` create, `-` destroy, `~` update, `-/+` replace, and the misunderstood `<=` data-source read — with a full annotated plan, the summary count, and JSON action mapping. |
-| [Terraform UserData Base64 Encoding/Decoding](articles/terraform-userdata-base64.md) | user_data vs user_data_base64, decoding from state/CLI/IMDS, launch templates, multipart MIME, hash behavior, and debugging failures. |
+| Article |
+|---------|
+| [Terraform Cheatsheet](articles/terraform-cheatsheet.md) |
+| [Packer Cheatsheet](articles/packer-cheatsheet.md) |
+| [terraform.tfstate vs .terraform/terraform.tfstate](articles/terraform-tfstate-vs-terraform-directory-state.md) |
+| [terraform init -upgrade and Constraints](articles/terraform-init-upgrade-and-constraints.md) |
+| [terraform get -update vs init -upgrade](articles/terraform-get-update-vs-init-upgrade.md) |
+| [Terraform Lock File Checksums: zh and h1](articles/terraform-lock-file-checksums.md) |
+| [Terraform Root Module vs Child Modules](articles/terraform-root-vs-child-modules.md) |
+| [EOF Escaping in Userdata, Terraform, and Shell Scripts](articles/eof-escaping-userdata-terraform.md) |
+| [Migrating State Off Terraform Cloud](articles/terraform-migrate-state-off-terraform-cloud.md) |
+| [Where Terraform Can Store State: Backends Guide](articles/terraform-state-storage-backends.md) |
+| [Terraform tfvars: Variable Definitions Reference](articles/terraform-tfvars-guide.md) |
+| [Terraform Variables: Declaration, Validation, and Usage](articles/terraform-variables-guide.md) |
+| [Importing Existing Infrastructure Into Terraform](articles/terraform-import-guide.md) |
+| [Exporting Datadog Monitors to Terraform](articles/exporting-monitors-to-terraform.md) |
+| [Terraform Backend Configuration Changed](articles/terraform-backend-configuration-changed.md) |
+| [Terraform Conditional Expressions](articles/terraform-conditional-expressions.md) |
+| [Terraform Provisioners Guide](articles/terraform-provisioners-guide.md) |
+| [Terraform Outputs Guide](articles/terraform-outputs-guide.md) |
+| [Managing DNS with Terraform and BIND](articles/terraform-bind-dns-management.md) |
+| [Terraform JSON, One-Liners, and Tips](articles/terraform-json-tips-tricks.md) |
+| [Terraform Troubleshooting](articles/terraform-troubleshooting.md) |
+| [Terraform Debugging Guide](articles/terraform-debugging-guide.md) |
+| [Terraform Heredoc: EOT vs EOF](articles/terraform-heredoc-eot-eof.md) |
+| [Terraform toset() and for_each Guide](articles/terraform-toset-foreach-guide.md) |
+| [Escaping $ in Terraform Userdata](articles/terraform-userdata-dollar-escaping.md) |
+| [Terraform Lifecycle Guide](articles/terraform-lifecycle-guide.md) |
+| [Terraform Config Drift Detection](articles/terraform-drift-detection.md) |
+| [Understanding `<=`, `+`, and Other Signs in a Terraform Plan](articles/terraform-plan-symbols.md) |
+| [Terraform UserData Base64 Encoding/Decoding](articles/terraform-userdata-base64.md) |
 
 ### Ansible
 
-| Article | Description |
-|---------|--------------|
-| [Ansible Ad-Hoc Commands](articles/ansible-adhoc-cheatsheet.md) | One-off remote execution — modules, patterns, packages, services, files, users, facts, and recipes. |
-| [Ansible Cheatsheet](articles/ansible-cheatsheet.md) | Playbooks, inventory, variables, roles, vault, templates, handlers, loops, and project layout. |
-| [Ansible Inventory Guide](articles/ansible-inventory-guide.md) | INI/YAML formats, groups, ranges, become, SSH, cloud, Windows, environments, and vault integration. |
-| [Ansible Run Command Modules](articles/ansible-shell-command-modules.md) | command vs shell vs raw vs script — when to use each, error handling, and idempotency patterns. |
-| [Ansible Sudo: Ubuntu vs RHEL](articles/ansible-sudo-ubuntu-vs-rhel.md) | Why become fails on RHEL — sudo/wheel groups, timestamp_timeout, passwordless setup, and mixed environments. |
-| [Ansible Vault: Storing Sudo Passwords](articles/ansible-vault-become-pass.md) | Step-by-step vault setup for become_pass — create, reference, directory layout, vault IDs, and troubleshooting. |
-| [Ansible Python Interpreter](articles/ansible-python-interpreter.md) | Fixing Python interpreter discovery warnings and errors — `ansible_python_interpreter`, auto-discovery, and per-host/group configuration. |
-| [Ansible Ad-Hoc Commands vs Playbooks](articles/ansible-adhoc-vs-playbooks.md) | Why ad-hoc is faster, when playbooks win, side-by-side comparison, performance tips, and decision flowchart. |
-| [Ansible: Editing Files and Creating Scripts](articles/ansible-file-editing-creation.md) | copy, template, lineinfile, blockinfile, replace — creating, editing, and deploying files on remote servers. |
-| [Ansible Configuration: ansible.cfg Guide](articles/ansible-cfg-guide.md) | Config file precedence, global vs local, all sections and options, SSH tuning, fact caching, and production examples. |
-| [Ansible Roles Directory Structure](articles/ansible-roles-directory-structure.md) | Role directory layout — tasks, handlers, templates, files, vars, defaults, meta, library, plugins, variable priority, and execution flow. |
-| [ansible-lint Guide](articles/ansible-lint-guide.md) | Linting playbooks — install, profiles (min to production), common rules and fixes, inline skipping, config file, CI/CD integration, and before/after examples. |
+| Article |
+|---------|
+| [Ansible Ad-Hoc Commands](articles/ansible-adhoc-cheatsheet.md) |
+| [Ansible Cheatsheet](articles/ansible-cheatsheet.md) |
+| [Ansible Inventory Guide](articles/ansible-inventory-guide.md) |
+| [Ansible Run Command Modules](articles/ansible-shell-command-modules.md) |
+| [Ansible Sudo: Ubuntu vs RHEL](articles/ansible-sudo-ubuntu-vs-rhel.md) |
+| [Ansible Vault: Storing Sudo Passwords](articles/ansible-vault-become-pass.md) |
+| [Ansible Python Interpreter](articles/ansible-python-interpreter.md) |
+| [Ansible Ad-Hoc Commands vs Playbooks](articles/ansible-adhoc-vs-playbooks.md) |
+| [Ansible: Editing Files and Creating Scripts](articles/ansible-file-editing-creation.md) |
+| [Ansible Configuration: ansible.cfg Guide](articles/ansible-cfg-guide.md) |
+| [Ansible Roles Directory Structure](articles/ansible-roles-directory-structure.md) |
+| [ansible-lint Guide](articles/ansible-lint-guide.md) |
 
 ### Git
 
-| Article | Description |
-|---------|--------------|
-| [Git Cheatsheet](articles/git-cheatsheet.md) | Broad everyday reference — setup/config, cloning, the add/commit/push workflow, branching, remotes, history and diffs, undoing changes, stashing, merging/rebasing, tags, cleanup, aliases, and full feature/hotfix/release workflow examples, with links to deeper Git articles. |
-| [GitHub CLI (gh) Cheatsheet](articles/gh-cli-cheatsheet.md) | The `gh` command-line tool — install/auth, repos, pull requests, issues, GitHub Actions runs and workflows, releases, gists, `gh api` (REST and GraphQL), aliases/extensions, plus scriptable `--json`/`--jq` one-liners. |
-| [Deleting GitHub Deployments with the gh CLI](articles/github-delete-deployments.md) | Cleaning up deployment history via `gh api` — listing deployments with their status, the mandatory inactive-then-delete two-step, a confirmation-prompted bulk-delete script (optionally per environment), the 100-per-page pagination cap, and gotchas. |
-| [Staging Changes in Git: git add . vs -A vs -u](articles/git-add-dot-vs-all.md) | The real difference between the two staging commands — directory scope vs whole-tree, the pre-2.0 deletion myth, how `git add -u` fits in, a side-by-side behavior table, dry-run previews, and a decision guide. |
-| [Deleting Git Branches: Local, Remote, and Cleanup](articles/git-delete-branches.md) | Removing branches safely — `-d` vs `-D`, deleting remote branches, pruning stale remote-tracking refs, bulk-deleting merged branches, renaming, recovering a deleted branch via reflog, and common error fixes. |
-| [Getting the Latest Changes from Master into Your Feature Branch](articles/git-update-feature-branch-from-master.md) | Keeping a feature branch current — direct pull, fetch-then-merge, rebase for linear history, the traditional checkout dance, previewing incoming commits, a merge-vs-rebase comparison, and conflict handling. |
-| [Fixing "Binary files differ" in git diff](articles/git-diff-binary-files-differ.md) | Why Git shows "Binary files differ" with no textual diff — NUL-byte and `.gitattributes` detection, diagnosing with `git check-attr`/`hexdump`, fixing overly broad `* binary` rules with `text=auto eol=lf` and `--renormalize`, cleaning NUL bytes, and line-ending guidance. |
-| [Removing Untracked Files with git clean](articles/git-clean-untracked-files.md) | Safely deleting untracked files — dry-run previews, the `-f`/`-d`/`-x`/`-X` flags, interactive mode, path scoping and `-e` excludes, a `clean` vs `reset` vs `restore` comparison, and why cleaned files aren't recoverable. |
-| [Aborting and Investigating Merge Conflicts](articles/git-abort-investigate-merge-conflicts.md) | Backing out of a conflicted merge with `git merge --abort`, investigating how branches diverged, previewing a merge with `--no-commit --no-ff`, reading the three conflict stages (`:1:`/`:2:`/`:3:`), `--ours`/`--theirs`/`--base` diffs, and resolving in place. |
-| [Showing Commits in Your Branch That Aren't in Master](articles/git-commits-in-branch-not-master.md) | Listing your branch's unique commits with `git log master..HEAD`, the two-dot vs three-dot gotcha (it flips between `log` and `diff`), `git cherry -v` for patch-equivalent detection, ahead/behind counts, and comparing against the remote. |
-| [Git Credential Helpers: Storing Passwords and Tokens](articles/git-credential-helpers.md) | How Git remembers HTTPS credentials — checking the active helper, osxkeychain/manager/libsecret/cache/store types and their security tradeoffs, the get/store/erase protocol, config scopes and per-host rules, and inspecting or clearing stored credentials. |
-| [Detecting and Fixing Whitespace Errors in Git](articles/git-whitespace-errors-check-fix.md) | Finding trailing-whitespace and blank-line issues with `git diff --check`, fixing a range via `git rebase --whitespace=fix`, cleaning just current changes with `git apply --whitespace=fix`, tuning `core.whitespace`, and blocking bad commits with the pre-commit hook. |
-| [Fixing "git apply" Whitespace Errors](articles/git-apply-whitespace-errors.md) | Getting a patch to apply when `git apply` rejects it over trailing whitespace — `--whitespace=fix`/`warn`/`nowarn`, `--ignore-whitespace`, the `apply.whitespace` config, cleaning the patch with `sed`/`tr`, and finding/removing trailing spaces in files and editors. |
-| [Understanding HEAD in Git](articles/git-head-explained.md) | What HEAD points to and where it lives (`.git/HEAD`), attached vs detached state and recovering detached-HEAD work, relative references (`HEAD~` vs `HEAD^`), HEAD vs branch vs commit, and the everyday reset/diff/amend commands that operate relative to it. |
-| [Undoing a Pushed Commit: revert vs reset](articles/git-undo-pushed-commit.md) | Undoing an already-pushed commit — `git revert` for shared branches (incl. ranges and merge commits), `git reset --hard` + force push for private ones, why `--force-with-lease` is safer, the soft/mixed/hard mode table, and recovering via reflog. |
-| [Creating and Applying Git Patch Files](articles/git-create-apply-patches.md) | Capturing changes as portable patches — `git diff` vs `git format-patch`, patches from staged/unstaged/branch/file changes, context/binary/whitespace options, applying with `git apply` and `git am`, `--check` dry runs, and resolving patches that don't apply cleanly. |
-| [git push vs git push origin HEAD](articles/git-push-vs-push-origin-head.md) | How each decides what and where to push — upstream-tracking `git push` vs explicit `git push origin HEAD`, the `push.default` values, setting upstream with `-u`, `push.autoSetupRemote`, and when to use which. |
-| [Viewing Unpushed Commits in Git](articles/git-view-unpushed-commits.md) | Listing commits that exist locally but aren't on the remote — `git log origin/main..HEAD`, the `@{u}` upstream shorthand, why to `git fetch` first, ahead/behind counts, checking across all branches, and saving the log/diff or exporting patches. |
-| [Viewing a File's Change History and Blame](articles/git-file-history-blame.md) | Tracing how a file evolved — `git log` per-file with diffs and custom `--pretty` formats, following renames with `--follow`, filtering by author/date/pickaxe (`-S`/`-G`), and `git blame` with line ranges, move detection (`-M`/`-C`), and ignore-revs. |
-| [Downloading GitHub Release Assets from the CLI](articles/download-github-release-assets.md) | Fetching release binaries and manifests with curl, wget, and `gh release download` — the `latest/download` URL pattern, picking per-platform assets, verifying checksums, a download-extract-install example, and scripting the latest version tag via the API. |
-| [Comparing Your Branch Against Master with git diff](articles/git-diff-branch-against-master.md) | What each diff form actually compares — `git diff master` vs `master..HEAD` vs `master...HEAD`, staged/unstaged variants, name-only/name-status/stat summaries, saving output to a file, reverting files to master's version, and the two-dot vs three-dot gotcha. |
-| [Resetting a Local Branch to Match the Remote](articles/git-reset-local-to-remote.md) | Making a branch identical to the remote — `git fetch` + `git reset --hard origin/master`, adding `git clean -fd` for untracked files, the `@{u}` shorthand, previewing what you'll lose, stash/backup safety nets, reflog recovery, and the soft/mixed/hard modes. |
-| [Removing a Local Commit: reset, revert, and rebase](articles/git-remove-local-commit.md) | Undoing a not-yet-shared commit — soft/mixed/hard `reset` (keep staged, keep unstaged, or discard), `git revert` for shared branches, interactive `rebase -i` for multiple/older commits, a method-comparison table, and reflog recovery. |
-| [Running a Script Directly from a GitHub Gist](articles/run-script-from-github-gist.md) | Executing a shell script from a gist's raw URL — `curl \| bash`, process substitution `bash <(...)` with arguments, the wget equivalent, version-pinning and cache-busting the raw URL, and why to review before running (never blind `\| sudo bash`). |
-| [Git Clone Methods and Options](articles/git-clone-methods.md) | Ways to clone a repo — HTTPS/SSH/local/`git://` transports, shallow (`--depth`) and `--single-branch` clones, submodules (`--recurse-submodules`), custom target directories, bare/mirror clones, PAT/SSH-key/credential-helper auth, and best practices. |
-| [Fixing Shell Script Execute Permissions Across Windows and Linux](articles/git-shell-script-executable-permissions.md) | Making Windows-authored scripts runnable on Linux — recording the executable bit in Git with `git add --chmod=+x`, `core.fileMode`, forcing LF endings via `.gitattributes` and `--renormalize`, verifying with `git ls-files -s`, and a cross-platform best-practice checklist. |
-| [Restoring Files with git restore](articles/git-restore-files.md) | Undoing file changes — discarding uncommitted edits, restoring from a specific commit with `--source`, unstaging with `--staged`, recovering a deleted file via `--diff-filter=D` and `<commit>^`, the working-tree/index targeting flags, and a restore-vs-checkout-vs-reset map. |
-| [Listing Git Branches by Author](articles/git-list-branches-by-author.md) | Filtering branches by the author of their tip commit — `git for-each-ref` with `%(authorname)`/`%(authoremail)`, including remote branches, sorting by date to find stale ones, matching commits beyond the tip, and the caveat that Git records no branch "creator". |
-| [Gitea / Forgejo Actions vs GitHub Actions Compatibility](articles/gitea-forgejo-actions-github-compatibility.md) | How self-hosted forge CI compares to GitHub Actions — shared workflow format, running your own `act_runner`/Forgejo Runner and matching `runs-on` labels, extras (absolute action URLs, Go actions, cron shorthands), ignored syntax (`timeout-minutes`, `continue-on-error`, Problem Matchers), and the `GITEA_TOKEN` permission/behavior differences. |
-| [Setting Up a Gitea Actions Runner (act_runner)](articles/gitea-act-runner-setup.md) | Installing and registering act_runner — enabling Actions, binary vs Docker install, scoped registration tokens, running via CLI/Docker Compose/systemd, label-to-image mapping, ephemeral runners, the `docker.sock` security tradeoff, and troubleshooting queued jobs. |
-| [Editing a Commit Message](articles/git-edit-commit-message.md) | Changing a commit's message — `git commit --amend` for the latest, interactive rebase `reword` for older commits, `--autostash` to carry uncommitted changes through, when a `--force-with-lease` push is needed for already-pushed commits, and rebase abort/reflog recovery. |
-| [Changing a Commit Message After Pushing (No One Has Pulled)](articles/git-change-commit-message-after-push.md) | Safely fixing a pushed commit message in the no-one-pulled-yet case — why it's safe, `git commit --amend` + `git push --force-with-lease` for the latest, `rebase -i` reword for older commits, verifying before/after, and what to do if the force push is rejected. |
-| [Blocking Commits with Trailing Whitespace](articles/git-block-trailing-whitespace-commits.md) | Enforcing no-trailing-whitespace — `core.whitespace`/`apply.whitespace` config, a `pre-commit` hook using `git diff-index --check` (simple and friendly versions), the shareable `pre-commit` framework, cleaning existing files, and trim-on-save editor settings. |
-| [Normalizing Line Endings with .gitattributes](articles/gitattributes-line-endings.md) | Fixing CRLF/LF churn team-wide — why `.gitattributes` beats per-machine `core.autocrlf`, a starter config, what `text=auto`/`eol=lf`/`eol=crlf`/`binary` each do, applying it to an existing repo with `--renormalize`, and verifying with `git check-attr`. |
-| [Git Stash Guide](articles/git-stash-guide.md) | Shelving uncommitted work — saving with messages, including untracked/ignored (`-u`/`-a`), selective and partial stashing (`-p`, `--staged`, `--keep-index`), listing/inspecting, pop vs apply, conflict handling, `stash branch`, exporting as a patch, and recovering a dropped stash via `fsck`. |
-| [Sharing a Branch: Push, Then Fetch vs Pull](articles/git-share-branch-push-fetch-pull.md) | The two-sided handoff — committing and pushing a branch (`-u` on first push), how a teammate retrieves it, the `fetch` vs `pull` distinction (safe download vs fetch-and-merge), inspecting before merging, and a recommended collaboration workflow. |
-| [Undoing Changes in Git: reset vs checkout vs revert](articles/git-undo-reset-checkout-revert.md) | The three undo commands compared — Git's three trees, `reset` modes (soft/mixed/hard), `checkout`/`switch`/`restore` for branches and files, `revert` for safe public undo, real-world scenarios, a decision tree, and the modern-command map. |
-| [git reset Guide: soft, mixed, and hard](articles/git-reset-guide.md) | A deep dive on `git reset` — the three modes and which trees each touches, resetting commits, unstaging (incl. `-p` and pathspec), resetting a file to a commit, use cases (reword/squash/sync/split), the destructive `--hard` warning, safe-reset backups, and reflog recovery. |
-| [Git Hooks Guide](articles/git-hooks-guide.md) | Automating and enforcing policy with Git hooks — how `.git/hooks/` scripts and exit codes work, client-side vs server-side hooks, a common-hooks table, working `pre-commit`/`pre-push`/`prepare-commit-msg`/`post-commit` examples, sharing via `core.hooksPath` or a manager (pre-commit/Husky/Lefthook), and `--no-verify`. |
-| [Git Merge vs Rebase](articles/git-merge-vs-rebase.md) | The two ways to integrate branches compared — visual before/after graphs, a differences table, pros/cons of each, when to use which, the golden rule against rebasing shared history, the rebase-then-merge workflow, and team guidance. |
-| [Git Shell Functions and Aliases](articles/git-shell-functions.md) | Wrapping common Git sequences in shell functions for `~/.bashrc`/`~/.zshrc` — repo setup, add-commit-push helpers, status/log/diff, branch and stash shortcuts, interactive-rebase and fixup helpers, function-vs-git-alias guidance, and name-collision cautions. |
-| [git rebase Guide](articles/git-rebase-guide.md) | A deep dive on `git rebase` — what replaying commits actually does step by step, interactive rebase (reword/squash/edit/drop/reorder), resolving conflicts per commit, `--force-with-lease` after rebasing a pushed branch, and the golden rule against rebasing shared history. |
-| [Restoring a Repository to a Past Commit's State](articles/git-restore-to-past-commit.md) | Getting files or the whole tree back to how a commit looked — `checkout`/`restore` for tracked files, the key gotcha that they leave newer files behind (needing `git clean`), `restore` vs `revert` vs `reset --hard`, a which-deletes-newer-files table, and how to reach an exact past state. |
-| [Syncing a Branch Across Multiple Computers](articles/git-sync-branch-across-computers.md) | The pull-first/push-after habit for working one branch from several machines — why skipping the pull gets your push rejected, `git pull` vs `--rebase` for a clean linear history, when rebase is appropriate, `pull.rebase`, conflict handling, and upstream tracking. |
-| [Git SSH Keys and Credential Storage](articles/git-ssh-keys-credential-storage.md) | Authenticating to a Git host — generating an `ed25519`/RSA key, uploading the public half, `~/.ssh/config` with the port-443 firewall workaround, the ssh-agent, and HTTPS credential storage (URL, `store`, `cache`, OS keychain) with their security tradeoffs. |
-| [Canceling a git revert](articles/git-cancel-revert.md) | Three ways to cancel a revert depending on state — `git revert --abort` mid-conflict, `git reset` to drop an unpushed revert commit (soft/mixed/hard), and reverting the revert when it's already pushed, plus reflog recovery. |
+| Article |
+|---------|
+| [Git Cheatsheet](articles/git-cheatsheet.md) |
+| [GitHub CLI (gh) Cheatsheet](articles/gh-cli-cheatsheet.md) |
+| [Deleting GitHub Deployments with the gh CLI](articles/github-delete-deployments.md) |
+| [Staging Changes in Git: git add . vs -A vs -u](articles/git-add-dot-vs-all.md) |
+| [Deleting Git Branches: Local, Remote, and Cleanup](articles/git-delete-branches.md) |
+| [Getting the Latest Changes from Master into Your Feature Branch](articles/git-update-feature-branch-from-master.md) |
+| [Fixing "Binary files differ" in git diff](articles/git-diff-binary-files-differ.md) |
+| [Removing Untracked Files with git clean](articles/git-clean-untracked-files.md) |
+| [Aborting and Investigating Merge Conflicts](articles/git-abort-investigate-merge-conflicts.md) |
+| [Showing Commits in Your Branch That Aren't in Master](articles/git-commits-in-branch-not-master.md) |
+| [Git Credential Helpers: Storing Passwords and Tokens](articles/git-credential-helpers.md) |
+| [Detecting and Fixing Whitespace Errors in Git](articles/git-whitespace-errors-check-fix.md) |
+| [Fixing "git apply" Whitespace Errors](articles/git-apply-whitespace-errors.md) |
+| [Understanding HEAD in Git](articles/git-head-explained.md) |
+| [Undoing a Pushed Commit: revert vs reset](articles/git-undo-pushed-commit.md) |
+| [Creating and Applying Git Patch Files](articles/git-create-apply-patches.md) |
+| [git push vs git push origin HEAD](articles/git-push-vs-push-origin-head.md) |
+| [Viewing Unpushed Commits in Git](articles/git-view-unpushed-commits.md) |
+| [Viewing a File's Change History and Blame](articles/git-file-history-blame.md) |
+| [Downloading GitHub Release Assets from the CLI](articles/download-github-release-assets.md) |
+| [Comparing Your Branch Against Master with git diff](articles/git-diff-branch-against-master.md) |
+| [Resetting a Local Branch to Match the Remote](articles/git-reset-local-to-remote.md) |
+| [Removing a Local Commit: reset, revert, and rebase](articles/git-remove-local-commit.md) |
+| [Running a Script Directly from a GitHub Gist](articles/run-script-from-github-gist.md) |
+| [Git Clone Methods and Options](articles/git-clone-methods.md) |
+| [Fixing Shell Script Execute Permissions Across Windows and Linux](articles/git-shell-script-executable-permissions.md) |
+| [Restoring Files with git restore](articles/git-restore-files.md) |
+| [Listing Git Branches by Author](articles/git-list-branches-by-author.md) |
+| [Gitea / Forgejo Actions vs GitHub Actions Compatibility](articles/gitea-forgejo-actions-github-compatibility.md) |
+| [Setting Up a Gitea Actions Runner (act_runner)](articles/gitea-act-runner-setup.md) |
+| [Editing a Commit Message](articles/git-edit-commit-message.md) |
+| [Changing a Commit Message After Pushing (No One Has Pulled)](articles/git-change-commit-message-after-push.md) |
+| [Blocking Commits with Trailing Whitespace](articles/git-block-trailing-whitespace-commits.md) |
+| [Normalizing Line Endings with .gitattributes](articles/gitattributes-line-endings.md) |
+| [Git Stash Guide](articles/git-stash-guide.md) |
+| [Sharing a Branch: Push, Then Fetch vs Pull](articles/git-share-branch-push-fetch-pull.md) |
+| [Undoing Changes in Git: reset vs checkout vs revert](articles/git-undo-reset-checkout-revert.md) |
+| [git reset Guide: soft, mixed, and hard](articles/git-reset-guide.md) |
+| [Git Hooks Guide](articles/git-hooks-guide.md) |
+| [Git Merge vs Rebase](articles/git-merge-vs-rebase.md) |
+| [Git Shell Functions and Aliases](articles/git-shell-functions.md) |
+| [git rebase Guide](articles/git-rebase-guide.md) |
+| [Restoring a Repository to a Past Commit's State](articles/git-restore-to-past-commit.md) |
+| [Syncing a Branch Across Multiple Computers](articles/git-sync-branch-across-computers.md) |
+| [Git SSH Keys and Credential Storage](articles/git-ssh-keys-credential-storage.md) |
+| [Canceling a git revert](articles/git-cancel-revert.md) |
 
 ### GitLab and GitHub
 
-| Article | Description |
-|---------|--------------|
-| [GitLab vs GitHub Cheatsheet](articles/gitlab-vs-github-cheatsheet.md) | Side-by-side reference — terminology map, hosting/editions, CI/CD comparison with example pipelines, permissions/roles, git remotes and auth, `gh` vs `glab` CLI, REST API quick reference, webhooks, and features that don't map cleanly. |
-| [Testing a GitLab Runner with a Standalone Pipeline](articles/gitlab-runner-test-pipeline.md) | Safe, no-credentials smoke test for a GitLab Runner — runner-info, basic shell, internet and GitLab reachability checks, running a non-default CI config file, reading results, common failure modes, and YAML validation. |
-| [Switching a GitLab Runner to the Shell Executor](articles/gitlab-runner-shell-executor.md) | Avoiding Docker Hub rate limits by running jobs on the host — converting an existing runner's `config.toml`, registering a new shell runner, tag matching, a test pipeline, troubleshooting, the security tradeoffs of no isolation, and alternatives that keep Docker (auth, registry mirror). |
-| [Canceling GitLab Runner Jobs and Cleaning Up](articles/gitlab-runner-cancel-jobs-cleanup.md) | Stopping stuck jobs and reclaiming space — `gitlab-runner stop`/`kill`, canceling via the GitLab Jobs API (single and looped), clearing `builds/`+`cache/`, pruning Docker leftovers, fully resetting with `unregister`, and the blast-radius cautions for each destructive step. |
-| [Continuously Mirror a GitHub Repository into GitLab (CI/CD)](articles/gitlab-ci-mirror-from-github.md) | Pull-based GitHub-to-GitLab sync on GitLab Free — mirror clone, web import options, a scheduled `git push --mirror` pipeline, access tokens and scopes, empty-target/force-push gotchas, keeping `.gitlab-ci.yml` out of the mirror, and a troubleshooting checklist. |
+| Article |
+|---------|
+| [GitLab vs GitHub Cheatsheet](articles/gitlab-vs-github-cheatsheet.md) |
+| [Testing a GitLab Runner with a Standalone Pipeline](articles/gitlab-runner-test-pipeline.md) |
+| [Switching a GitLab Runner to the Shell Executor](articles/gitlab-runner-shell-executor.md) |
+| [Canceling GitLab Runner Jobs and Cleaning Up](articles/gitlab-runner-cancel-jobs-cleanup.md) |
+| [Continuously Mirror a GitHub Repository into GitLab (CI/CD)](articles/gitlab-ci-mirror-from-github.md) |
 
 ### Bash and Shell
 
-| Article | Description |
-|---------|--------------|
-| [bash Cheatsheet](articles/bash-cheatsheet.md) | GNU Bourne Again SHell — quoting, escaping, variables, loops, and built-ins. |
-| [Korn Shell (ksh) Cheatsheet](articles/ksh-cheatsheet.md) | ksh88/ksh93 — history (fc/r), editing modes, variables, arrays, functions, and differences from bash. |
-| [Bash Essentials Guide](articles/bash-essentials-guide.md) | Shell sessions, environment variables, quoting, history, prompt customization, and shortcuts. |
-| [Bash Pipelines and Redirections](articles/bash-redirection-operators.md) | File descriptors, redirection operators, pipes, here-documents, process substitution, custom file descriptors, and advanced techniques. |
-| [Bash History Guide](articles/bash-history-guide.md) | Command history — event designators, word designators, modifiers, Ctrl+R search, fc, configuration, and sharing across sessions. |
-| [Bash Test Conditions: \[ \] vs \[\[ \]\]](articles/bash-test-conditions-guide.md) | Differences between `test`, `[ ]`, and `[[ ]]` — pattern matching, regex, and file tests. |
-| [Bash Single vs Double Brackets](articles/bash-single-vs-double-brackets.md) | `[ ]` vs `[[ ]]` in depth — word splitting, globbing, pattern matching, regex, logical operators, pitfalls, and best practices. |
-| [Bash Subshells](articles/bash-subshells-guide.md) | How subshells work, the pipeline variable problem, isolation patterns, and performance tips. |
-| [Bash Troubleshooting Guide](articles/bash-troubleshooting-guide.md) | Bash debugging — `set -x`, `set -euo pipefail`, PS4, and tracing. |
-| [sed Replace Line Guide](articles/sed-replace-line-guide.md) | Using `sed` to replace entire lines based on a string match. |
-| [Running Multiple Commands with sudo](articles/sudo-multiple-commands.md) | Subshells, heredocs, logical operators, pipes, and running as a specific user. |
-| [sudoers Guide](articles/sudo-sudoers-guide.md) | Granting access to users, groups, and LDAP; aliases, Defaults, logging, and tips. |
-| [Vim White Spaces](articles/vim-white-spaces.md) | Configuring vim to show white spaces with custom symbols. |
-| [Cron Cheatsheet](articles/cron-cheatsheet.md) | Cron jobs — scheduling syntax, crontab management, environment, logging, locking, email, and scripting patterns. |
-| [Bash Aliases and Functions](articles/bash-aliases-functions.md) | Productivity aliases for git, Docker, Kubernetes, systemd, networking, and utility shell functions (extract, mkcd, backup). |
-| [Bash Read Builtin](articles/bash-read-builtin.md) | `read` command examples — prompts, silent input, timeouts, arrays, file reading patterns, delimiters, validation loops, and process substitution. |
-| [Bash While Loop Examples](articles/bash-while-loops-examples.md) | Practical `while` loop patterns — counters, arithmetic conditions, reading files line by line, IFS field splitting, CSV/here strings, the pipe subshell pitfall vs process substitution, nested loops, and retry logic. |
-| [Bash Loops Guide: for, while, until, select](articles/bash-loops-guide.md) | All Bash loop constructs — `for` (word lists, brace ranges, C-style, command output, arrays), `while`/`until`, the `select` menu, `break`/`continue` including the `N` form, `mapfile`/`readarray`, and choosing the right loop. |
-| [Ignoring Command Errors with \|\| true](articles/bash-ignore-command-errors.md) | Using `\|\| true` (and `\|\| :`) to keep `set -e` scripts running past expected failures — controlling stderr noise, the idempotent check-first alternative, capturing real exit codes, `pipefail` interaction, and when not to use it. |
-| [awk Cheatsheet](articles/awk-cheatsheet.md) | Pattern scanning and text processing — fields, separators, regex, arithmetic, BEGIN/END, and one-liners. |
-| [Print Column Numbers for Any Command Output](articles/awk-print-column-numbers.md) | Generic awk one-liner to identify column positions — examples with iotop, ps, df, ss, free, and top. |
-| [sed Cheatsheet](articles/sed-cheatsheet.md) | Stream editor — substitution, deletion, insertion, addressing, capture groups, hold space, and one-liners. |
-| [Vim Search and Replace](articles/vim-search-replace.md) | Vim substitution — ranges, flags, regex, capture groups, expression replacements, magic modes, and multi-file operations. |
-| [Display Tabs and Whitespace in Files](articles/display-tabs-whitespace.md) | Revealing invisible characters — cat -A, grep, sed, vim :set list, hexdump, expand/unexpand, and conversion one-liners. |
-| [ShellCheck Guide](articles/shellcheck-guide.md) | Static analysis for shell scripts — installation, common warnings with fixes, directives, .shellcheckrc, CI/CD integration, and editor setup. |
-| [Linux Job Control](articles/linux-job-control.md) | Background and foreground processes — &, Ctrl-Z, jobs, bg, fg, disown, nohup, and process monitoring. |
+| Article |
+|---------|
+| [bash Cheatsheet](articles/bash-cheatsheet.md) |
+| [Korn Shell (ksh) Cheatsheet](articles/ksh-cheatsheet.md) |
+| [Bash Essentials Guide](articles/bash-essentials-guide.md) |
+| [Bash Pipelines and Redirections](articles/bash-redirection-operators.md) |
+| [Bash History Guide](articles/bash-history-guide.md) |
+| [Bash Test Conditions: \[ \] vs \[\[ \]\]](articles/bash-test-conditions-guide.md) |
+| [Bash Single vs Double Brackets](articles/bash-single-vs-double-brackets.md) |
+| [Bash Subshells](articles/bash-subshells-guide.md) |
+| [Bash Troubleshooting Guide](articles/bash-troubleshooting-guide.md) |
+| [sed Replace Line Guide](articles/sed-replace-line-guide.md) |
+| [Running Multiple Commands with sudo](articles/sudo-multiple-commands.md) |
+| [sudoers Guide](articles/sudo-sudoers-guide.md) |
+| [Vim White Spaces](articles/vim-white-spaces.md) |
+| [Cron Cheatsheet](articles/cron-cheatsheet.md) |
+| [Bash Aliases and Functions](articles/bash-aliases-functions.md) |
+| [Bash Read Builtin](articles/bash-read-builtin.md) |
+| [Bash While Loop Examples](articles/bash-while-loops-examples.md) |
+| [Bash Loops Guide: for, while, until, select](articles/bash-loops-guide.md) |
+| [Ignoring Command Errors with \|\| true](articles/bash-ignore-command-errors.md) |
+| [awk Cheatsheet](articles/awk-cheatsheet.md) |
+| [Print Column Numbers for Any Command Output](articles/awk-print-column-numbers.md) |
+| [sed Cheatsheet](articles/sed-cheatsheet.md) |
+| [Vim Search and Replace](articles/vim-search-replace.md) |
+| [Display Tabs and Whitespace in Files](articles/display-tabs-whitespace.md) |
+| [ShellCheck Guide](articles/shellcheck-guide.md) |
+| [Linux Job Control](articles/linux-job-control.md) |
 
 ### Linux System Administration
 
-| Article | Description |
-|---------|--------------|
-| [systemd Cheatsheet](articles/systemd-cheatsheet.md) | systemctl commands, unit files, service types, timers, targets, boot analysis, and recipes. |
-| [journalctl Cheatsheet](articles/journalctl-cheatsheet.md) | systemd journal — viewing, filtering, grep, output formats, disk management, and troubleshooting recipes. |
-| [Enable Persistent systemd Journal Logging](articles/systemd-journal-persistent-logging.md) | Persistent journal on RHEL 7–10 — mkdir vs Storage=persistent, journalctl --flush, retention, and rotation. |
-| [dpkg Cheatsheet](articles/dpkg-cheatsheet.md) | Debian package manager — install, remove, query, verify, hold, diversions, alternatives, and .deb creation. |
-| [apt Cheatsheet](articles/apt-cheatsheet.md) | APT package management — install, upgrade, repositories, pinning, cache, proxy, offline installs, and automation. |
-| [apt vs apt-get](articles/apt-vs-apt-get.md) | When to use each — command mapping, behavioral differences, output stability, and scripting guidelines. |
-| [Fixing "Packages Have Been Kept Back" on Ubuntu](articles/apt-packages-kept-back.md) | Why apt holds packages back — new/changed dependencies, kernel meta-packages, phased updates — plus diagnosing with dry-run, full-upgrade, upgrading specific packages, apt-mark hold vs kept-back, and verification. |
-| [Aptitude Cheatsheet](articles/aptitude-cheatsheet.md) | Aptitude package manager — install, search patterns, TUI, dependency resolution, holds, marks, and comparison with apt. |
-| [debsums Cheatsheet](articles/debsums-cheatsheet.md) | Package integrity verification — MD5 checksums, detecting tampered files, security audits, cron jobs, and reinstalling corrupted packages. |
-| [Snap Cheatsheet](articles/snap-cheatsheet.md) | Snap package manager — install, channels, updates, services, interfaces, confinement, disk management, and removing snapd. |
-| [Ubuntu Repositories Guide](articles/ubuntu-repositories-guide.md) | Main, Universe, Restricted, Multiverse — what's in each, security coverage, sources.list, PPAs, ESM, and package pinning. |
-| [Finding Old Package Versions on Ubuntu](articles/ubuntu-old-package-versions.md) | Why repos don't keep all versions, Launchpad archive, archive pool, downloading old .debs, version pinning, and local caching. |
-| [Installing Node.js on Ubuntu 22.04 and 24.04](articles/install-nodejs-ubuntu.md) | Five install methods — apt default repo, NodeSource repository, nvm, fnm, and Docker — with a comparison table, per-LTS default versions, verification, uninstall steps, and LTS/version guidance. |
-| [Fixing apt Lock Held Errors](articles/apt-lock-held-fix.md) | "Could not get lock" troubleshooting — causes, lock file locations, unattended-upgrades, safe removal, prevention, and noninteractive timeout. |
-| [DEBIAN_FRONTEND for Scripts](articles/debian-frontend-noninteractive.md) | Non-interactive installs — debconf frontends, dpkg config options, preseeding, needrestart, Docker, and CI/CD patterns. |
-| [Linux File Permissions Guide](articles/linux-file-permissions.md) | Permissions, ownership, umask, SUID/SGID, sticky bit, and ACLs. |
-| [SELinux Cheatsheet](articles/selinux-cheatsheet.md) | SELinux administration — modes, contexts, booleans, port labels, troubleshooting denials, policy modules, containers, and relabeling. |
-| [OpenSCAP Security Compliance Guide](articles/openscap-guide.md) | OpenSCAP scanning, remediation, profiles (CIS, STIG, PCI-DSS), tailoring, Ansible/Satellite integration, kickstart hardening, and scheduled compliance checks. |
-| [Linux Audit (auditd) Cheatsheet](articles/auditd-cheatsheet.md) | Audit system — auditctl rules, file watches, syscall monitoring, ausearch, aureport, compliance rules (PCI-DSS, CIS), and log management. |
-| [Postfix Gmail SMTP Relay Setup](articles/postfix-gmail-relay.md) | Send-only Postfix relay through Gmail — App Passwords, main.cf directives, SASL credentials, TLS, testing, troubleshooting, and sender rewriting. |
-| [psacct / acct Cheatsheet](articles/psacct-cheatsheet.md) | Process accounting — lastcomm, ac, sa, accton, tracking user commands, login times, resource usage, and security investigations. |
-| [/bin/false vs /sbin/nologin](articles/bin-false-vs-nologin.md) | Login shell differences — behavior, custom messages, /etc/nologin, path variations, and when to use each. |
-| [Linux User Quotas](articles/linux-user-quotas.md) | Disk quotas — ext4/XFS setup, setquota, edquota, grace periods, project quotas, warnquota, and troubleshooting. |
-| [User Administration on RHEL](articles/user-administration.md) | User and group management — UIDs, password hashing, PAM, and chage. |
-| [LDAP Client Configuration](articles/ldap-client-configuration.md) | Configuring LDAP authentication on RHEL 5–10 and Ubuntu 22.04/24.04 — SSSD, authconfig, authselect, TLS, and Active Directory. |
-| [NSCD and SSSD Guide](articles/nscd-sssd-guide.md) | Name service caching — NSCD config, SSSD with AD/LDAP/IPA, realm join, cache management, offline login, PAM, and troubleshooting. |
-| [Configure Samba](articles/samba-configuration.md) | Samba file server on RHEL 6–10 and Ubuntu — anonymous/authenticated shares, SELinux, AD membership, client access, and troubleshooting. |
-| [MySQL LDAP Authentication](articles/mysql-ldap-authentication.md) | MySQL PAM authentication with SSSD and LDAP — tarball install, PAM plugin, SSSD config, TLS certificates, and troubleshooting. |
-| [Installing MediaWiki on RHEL](articles/mediawiki-installation-rhel.md) | MediaWiki with Apache, PHP 7.4, and MariaDB on RHEL 8/9 — packages, database, SELinux, firewall, and deployment. |
-| [Installing DokuWiki on RHEL](articles/dokuwiki-installation-rhel.md) | DokuWiki with Apache and PHP on RHEL 8/9 — packages, mod_rewrite, SELinux, .htaccess, and web installer. |
-| [RHEL LAMP Stack Setup](articles/rhel-lamp-stack-setup.md) | LAMP stack on RHEL 7+ — Apache, MariaDB, PHP installation, systemctl, journalctl, file ownership, SELinux, and Java alternative. |
-| [Protect SSH with fail2ban](articles/fail2ban-ssh-protection.md) | fail2ban on RHEL and Ubuntu — installation, SSH jail, whitelisting, incremental bans, email alerts, and troubleshooting. |
-| [ReaR Backup Guide](articles/rear-backup-guide.md) | Relax-and-Recover — disaster recovery ISOs, NFS/CIFS/USB/rsync targets, incremental backups, recovery process, and scheduling. |
-| [Veeam Agent for Linux](articles/veeam-agent-linux.md) | Veeam backup agent — installation, jobs, volume/file-level restore, NFS server setup, dd+ssh imaging, and command reference. |
-| [Installing MariaDB](articles/mariadb-installation.md) | MariaDB on RHEL 7–10 and Ubuntu — installation, hardening, user management, backup/restore, and troubleshooting. |
-| [RHEL Releases Overview](articles/rhel-releases-overview.md) | RHEL major releases (2.1–10) — features, lifecycle, and upgrade paths. |
-| [Timezone Configuration](articles/timezone-configuration.md) | timedatectl, NTP, hardware clock, per-process TZ, cloud-init, Docker, and troubleshooting. |
-| [subscription-manager Cheatsheet](articles/subscription-manager-cheatsheet.md) | RHEL subscriptions — register, attach, repos, release lock, Satellite, SCA, and troubleshooting. |
-| [dnf / yum Cheatsheet](articles/dnf-yum-cheatsheet.md) | Package management on RHEL 7–10 — install, update, repos, modules, groups, history, versionlock, and troubleshooting. |
-| [RPM Cheatsheet](articles/rpm-cheatsheet.md) | RPM commands — install, query, verify, signatures, custom query formats, database management, and rpm2cpio. |
-| [RPM Building Guide](articles/rpm-building-guide.md) | Building RPM packages — rpmbuild directory structure, spec file anatomy, build stages (-bp/-bc/-bi/-bb/-ba), macros, sub-packages, and debugging. |
-| [RHEL Boot Modes and Troubleshooting](articles/rhel-boot-troubleshooting.md) | Boot modes, rescue/emergency targets, and recovery techniques. |
-| [GRUB2 Cheatsheet](articles/grub-cheatsheet.md) | grubby, grub2-mkconfig, kernel args, default entry, password, BLS, serial console, and rescue. |
-| [initramfs vs initrd](articles/initramfs-vs-initrd.md) | Early boot filesystem — differences, dracut, update-initramfs, inspection, rebuild, and troubleshooting. |
-| [Rebuild initramfs in RHEL](articles/rebuild-initramfs-rhel.md) | Step-by-step rebuild across RHEL 3–10 — dracut, mkinitrd, rescue mode, backups, and verification. |
-| [chroot Guide](articles/chroot-guide.md) | Change root environment — system recovery, virtual mounts, LVM/LUKS rescue, package builds, and escape limitations. |
-| [LUKS Disk Encryption and NBDE (Tang/Clevis)](articles/luks-nbde-encryption.md) | Full-disk encryption with LUKS — cryptsetup, key slots, crypttab/fstab persistence, and automatic unlock at boot via Tang/Clevis with redundant SSS policies. |
-| [Chroot SFTP Setup](articles/chroot-sftp-setup.md) | Restricted SFTP — jail users to directories, sshd Match blocks, directory permissions, SSH keys, logging, SELinux, and troubleshooting. |
-| [Linux Kernel Panics](articles/linux-kernel-panics.md) | Hard panics (Aieee!) and soft panics (Oops) — causes, interpretation, kdump, crash analysis, and prevention. |
-| [Why Processes in D State Can't Be Killed](articles/linux-processes-d-state.md) | Uninterruptible sleep explained — why kill -9 fails, diagnosing stuck processes, NFS hangs, and TASK_KILLABLE. |
-| [Linux Capabilities](articles/linux-capabilities.md) | Breaking root privilege into fine-grained units — getcap, setcap, capability sets, systemd integration, and Docker. |
-| [Linux System Calls](articles/linux-syscalls.md) | Syscall interface — how user programs talk to the kernel, tracing with strace, categories, seccomp, and patterns. |
-| [Linux Kernel Map](articles/linux-kernel-map.md) | Kernel subsystems overview — process, memory, VFS, network, drivers, security, source tree, boot process, and tuning. |
-| [Linux SysRq Guide](articles/linux-sysrq-guide.md) | Magic SysRq Key — REISUB safe reboot, emergency commands, debugging a hung system, and serial console usage. |
-| [Linux ulimit Guide](articles/linux-ulimit-guide.md) | Per-process resource limits, limits.conf, systemd directives, sysctl, and troubleshooting. |
-| [LD_LIBRARY_PATH and Shared Libraries](articles/linux-ld-library-path.md) | Dynamic linker search order, LD_LIBRARY_PATH usage and risks, ldconfig, compiling in $HOME, and best practices. |
-| [sosreport Guide](articles/sosreport-guide.md) | sos utility — generating reports, plugins, targeted collection, sos collect for clusters, obfuscation, xsos analysis, and uploading to Red Hat. |
-| [RHEL Post-Installation Steps](articles/rhel-post-installation.md) | Essential post-install tasks for RHEL 7–10 — registration, networking, SSH, firewall, SELinux, storage, kdump, Insights, and version differences. |
-| [Linux cgroups and Kubernetes](articles/linux-cgroups-kubernetes.md) | How resource requests/limits translate to cgroup v1/v2 settings — cpu.shares, CFS quota, memory.max, OOMKill, QoS class hierarchy, and inspecting cgroups on nodes. |
+| Article |
+|---------|
+| [systemd Cheatsheet](articles/systemd-cheatsheet.md) |
+| [journalctl Cheatsheet](articles/journalctl-cheatsheet.md) |
+| [Enable Persistent systemd Journal Logging](articles/systemd-journal-persistent-logging.md) |
+| [dpkg Cheatsheet](articles/dpkg-cheatsheet.md) |
+| [apt Cheatsheet](articles/apt-cheatsheet.md) |
+| [apt vs apt-get](articles/apt-vs-apt-get.md) |
+| [Fixing "Packages Have Been Kept Back" on Ubuntu](articles/apt-packages-kept-back.md) |
+| [Aptitude Cheatsheet](articles/aptitude-cheatsheet.md) |
+| [debsums Cheatsheet](articles/debsums-cheatsheet.md) |
+| [Snap Cheatsheet](articles/snap-cheatsheet.md) |
+| [Ubuntu Repositories Guide](articles/ubuntu-repositories-guide.md) |
+| [Finding Old Package Versions on Ubuntu](articles/ubuntu-old-package-versions.md) |
+| [Installing Node.js on Ubuntu 22.04 and 24.04](articles/install-nodejs-ubuntu.md) |
+| [Fixing apt Lock Held Errors](articles/apt-lock-held-fix.md) |
+| [DEBIAN_FRONTEND for Scripts](articles/debian-frontend-noninteractive.md) |
+| [Linux File Permissions Guide](articles/linux-file-permissions.md) |
+| [SELinux Cheatsheet](articles/selinux-cheatsheet.md) |
+| [OpenSCAP Security Compliance Guide](articles/openscap-guide.md) |
+| [Linux Audit (auditd) Cheatsheet](articles/auditd-cheatsheet.md) |
+| [Postfix Gmail SMTP Relay Setup](articles/postfix-gmail-relay.md) |
+| [psacct / acct Cheatsheet](articles/psacct-cheatsheet.md) |
+| [/bin/false vs /sbin/nologin](articles/bin-false-vs-nologin.md) |
+| [Linux User Quotas](articles/linux-user-quotas.md) |
+| [User Administration on RHEL](articles/user-administration.md) |
+| [LDAP Client Configuration](articles/ldap-client-configuration.md) |
+| [NSCD and SSSD Guide](articles/nscd-sssd-guide.md) |
+| [Configure Samba](articles/samba-configuration.md) |
+| [MySQL LDAP Authentication](articles/mysql-ldap-authentication.md) |
+| [Installing MediaWiki on RHEL](articles/mediawiki-installation-rhel.md) |
+| [Installing DokuWiki on RHEL](articles/dokuwiki-installation-rhel.md) |
+| [RHEL LAMP Stack Setup](articles/rhel-lamp-stack-setup.md) |
+| [Protect SSH with fail2ban](articles/fail2ban-ssh-protection.md) |
+| [ReaR Backup Guide](articles/rear-backup-guide.md) |
+| [Veeam Agent for Linux](articles/veeam-agent-linux.md) |
+| [Installing MariaDB](articles/mariadb-installation.md) |
+| [RHEL Releases Overview](articles/rhel-releases-overview.md) |
+| [Timezone Configuration](articles/timezone-configuration.md) |
+| [subscription-manager Cheatsheet](articles/subscription-manager-cheatsheet.md) |
+| [dnf / yum Cheatsheet](articles/dnf-yum-cheatsheet.md) |
+| [RPM Cheatsheet](articles/rpm-cheatsheet.md) |
+| [RPM Building Guide](articles/rpm-building-guide.md) |
+| [RHEL Boot Modes and Troubleshooting](articles/rhel-boot-troubleshooting.md) |
+| [GRUB2 Cheatsheet](articles/grub-cheatsheet.md) |
+| [initramfs vs initrd](articles/initramfs-vs-initrd.md) |
+| [Rebuild initramfs in RHEL](articles/rebuild-initramfs-rhel.md) |
+| [chroot Guide](articles/chroot-guide.md) |
+| [LUKS Disk Encryption and NBDE (Tang/Clevis)](articles/luks-nbde-encryption.md) |
+| [Chroot SFTP Setup](articles/chroot-sftp-setup.md) |
+| [Linux Kernel Panics](articles/linux-kernel-panics.md) |
+| [Why Processes in D State Can't Be Killed](articles/linux-processes-d-state.md) |
+| [Linux Capabilities](articles/linux-capabilities.md) |
+| [Linux System Calls](articles/linux-syscalls.md) |
+| [Linux Kernel Map](articles/linux-kernel-map.md) |
+| [Linux SysRq Guide](articles/linux-sysrq-guide.md) |
+| [Linux ulimit Guide](articles/linux-ulimit-guide.md) |
+| [LD_LIBRARY_PATH and Shared Libraries](articles/linux-ld-library-path.md) |
+| [sosreport Guide](articles/sosreport-guide.md) |
+| [RHEL Post-Installation Steps](articles/rhel-post-installation.md) |
+| [Linux cgroups and Kubernetes](articles/linux-cgroups-kubernetes.md) |
 
 ### Server Hardware and BMC
 
-| Article | Description |
-|---------|--------------|
-| [Dell racadm and OMSA Cheatsheet](articles/dell-racadm-omsa-cheatsheet.md) | Managing Dell PowerEdge servers — racadm iDRAC reset/power/SEL/firmware, server power actions, OMSA omreport/omconfig for storage, RAID hot spares, chassis health, logs, firmware extraction, and racadm vs OMSA guidance. |
-| [HP iLO CLI Cheatsheet (SSH / SMASH CLP)](articles/hp-ilo-cli-cheatsheet.md) | Managing HPE servers over SSH — iLO reset (/map1), fixing a stuck virtual serial port (oemhp_vsp1), power control, firmware upgrade via load -source, CLP target tree, troubleshooting, and an iLO vs iDRAC mapping. |
+| Article |
+|---------|
+| [Dell racadm and OMSA Cheatsheet](articles/dell-racadm-omsa-cheatsheet.md) |
+| [HP iLO CLI Cheatsheet (SSH / SMASH CLP)](articles/hp-ilo-cli-cheatsheet.md) |
 
 ### Satellite and Foreman
 
-| Article | Description |
-|---------|--------------|
-| [Hammer CLI Cheatsheet](articles/hammer-cheatsheet.md) | Hammer CLI for Red Hat Satellite/Foreman — hosts, content views, repos, errata, provisioning, and remote execution. |
-| [Installing Foreman with Katello](articles/foreman-katello-installation.md) | Foreman 3.13 + Katello 4.15 on RHEL 9 — prerequisites, installation, content setup, and troubleshooting. |
-| [Installing Satellite from ISO](articles/satellite-installation-iso.md) | Red Hat Satellite 6.16 disconnected install on RHEL 9 — ISO mount, local repos, installer, and content import. |
-| [Foreman Remote Execution Setup](articles/foreman-remote-execution.md) | Setting up REX — SSH key distribution, running jobs, custom templates, Ansible integration, and troubleshooting. |
-| [Content Views and Activation Keys Strategy](articles/foreman-content-views-activation-keys.md) | Designing CVs, CCVs, and activation keys — one CV per product, composing with multiple AKs, and update workflows. |
-| [Registering Hosts in Foreman](articles/foreman-host-registration.md) | Registering RHEL and Ubuntu hosts — global registration, subscription-manager, activation keys, capsules, and troubleshooting. |
-| [Red Hat Insights](articles/red-hat-insights.md) | Insights client — registration, data collection, configuration, proxy, scheduling, tags, Satellite integration, and troubleshooting. |
-| [Satellite Remote Execution Setup](articles/satellite-remote-execution-setup.md) | Configuring content hosts for REX — SSH key distribution, test jobs, package and errata installation via Satellite GUI. |
+| Article |
+|---------|
+| [Hammer CLI Cheatsheet](articles/hammer-cheatsheet.md) |
+| [Installing Foreman with Katello](articles/foreman-katello-installation.md) |
+| [Installing Satellite from ISO](articles/satellite-installation-iso.md) |
+| [Foreman Remote Execution Setup](articles/foreman-remote-execution.md) |
+| [Content Views and Activation Keys Strategy](articles/foreman-content-views-activation-keys.md) |
+| [Registering Hosts in Foreman](articles/foreman-host-registration.md) |
+| [Red Hat Insights](articles/red-hat-insights.md) |
+| [Satellite Remote Execution Setup](articles/satellite-remote-execution-setup.md) |
 
 ### Linux Performance and IO
 
-| Article | Description |
-|---------|--------------|
-| [Linux Load Average](articles/linux-load-average.md) | What load average actually measures on Linux, how to interpret it, and common misconceptions. |
-| [Linux CPU Steal Time](articles/linux-cpu-steal.md) | %steal in VMs — what it means, detection one-liners, RHEL/Ubuntu specifics, causes, cloud/on-prem remediation, and alerting. |
-| [Linux I/O Schedulers](articles/linux-io-schedulers.md) | I/O schedulers (noop, deadline, cfq, mq-deadline, bfq, kyber), tuning, and per-distro defaults. |
-| [Linux Disk I/O Internals](articles/linux-disk-io-internals.md) | Page cache, standard I/O, direct I/O, mmap, block alignment, and write durability. |
-| [blktrace Guide](articles/blktrace-guide.md) | Block layer I/O tracing — capturing events, parsing output, latency analysis with btt, and diagnosing disk performance. |
-| [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md) | Installing and configuring sysstat on Ubuntu with systemd timers. |
-| [sysstat / sar Cheatsheet](articles/sysstat-sar-cheatsheet.md) | System Activity Reporter — CPU, memory, disk, network monitoring, historical analysis, sadf output formats, and alerting. |
-| [Understanding vmstat Output](articles/understanding-vmstat-output.md) | Understanding vmstat output — CPU, memory, I/O, and process scheduling diagnostics. |
-| [iostat Cheatsheet](articles/iostat-cheatsheet.md) | Block device I/O statistics — IOPS, throughput, latency, queue depth, and saturation patterns. |
-| [Understanding iostat -x Output](articles/understanding-iostat-x-output.md) | Extended block device I/O statistics — granular disk performance monitoring. |
-| [iotop Cheatsheet](articles/iotop-cheatsheet.md) | Interactive I/O monitoring — per-process disk read/write usage. |
-| [ps Cheatsheet](articles/ps-cheatsheet.md) | Process status — listing, filtering, and inspecting running processes. |
-| [top Cheatsheet](articles/top-cheatsheet.md) | Interactive process viewer — CPU, memory, sorting, filtering, and batch mode. |
-| [free Cheatsheet](articles/free-cheatsheet.md) | Memory usage — free, top, /proc/meminfo, vmstat, and per-process memory. |
-| [Performance Co-Pilot (PCP) Cheatsheet](articles/pcp-cheatsheet.md) | PCP monitoring framework — installation, PMDAs, live metrics, archives, pmrep, pmval, atop/htop, PMIE alerts, Grafana, and process monitoring. |
-| [tuned-adm Cheatsheet](articles/tuned-adm-cheatsheet.md) | Performance tuning daemon — profiles, custom profile creation with inheritance, THP control, sysctl integration, dynamic tuning, and Ansible integration. |
-| [NUMA Tuning Guide](articles/numa-tuning-guide.md) | NUMA architecture — numactl, numad, numastat, automatic balancing, manual pinning, KVM NUMA alignment, NIC affinity, and diagnostic workflow. |
-| [NUMA Performance Tuning on RHEL 7-10](articles/rhel-numa-performance-tuning.md) | Comprehensive NUMA tuning across RHEL 7–10 — topology, diagnostics, perf c2c, automatic balancing, numad, manual pinning, KVM, containers, NFV, low-latency, and tuned profiles. |
-| [RHEL Performance Analysis and VM Tuning](articles/rhel-performance-analysis-vm-tuning.md) | Memory management internals, page reclaim, swappiness, dirty ratios, hugepages, I/O schedulers, CPU governors, OOM control, and database/JVM tuning for RHEL 7–10. |
-| [Installing Nagios Core from Source](articles/nagios-installation-source.md) | Nagios on RHEL 9 and Ubuntu — prerequisites, compile, plugins, Apache config, firewall, host definitions, HTTPS, upgrades, and troubleshooting. |
-| [Nagios check_by_ssh Guide](articles/nagios-check-by-ssh.md) | Remote checks via SSH — examples, command definitions, SSH options, ControlMaster, sudo wrappers, security, and comparison with NRPE. |
-| [Nagios check_http Guide](articles/nagios-check-http-guide.md) | HTTP/HTTPS monitoring — options, virtual hosts, SNI/Traefik routing, certificate checks, curl fallbacks, and troubleshooting. |
-| [Installing Cacti from Source](articles/cacti-installation-source.md) | Cacti on RHEL 9 and Ubuntu — Apache, MariaDB, PHP, RRDTool, Spine, Composer, SNMP, systemd poller, and troubleshooting. |
+| Article |
+|---------|
+| [Linux Load Average](articles/linux-load-average.md) |
+| [Linux CPU Steal Time](articles/linux-cpu-steal.md) |
+| [Linux I/O Schedulers](articles/linux-io-schedulers.md) |
+| [Linux Disk I/O Internals](articles/linux-disk-io-internals.md) |
+| [blktrace Guide](articles/blktrace-guide.md) |
+| [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md) |
+| [sysstat / sar Cheatsheet](articles/sysstat-sar-cheatsheet.md) |
+| [Understanding vmstat Output](articles/understanding-vmstat-output.md) |
+| [iostat Cheatsheet](articles/iostat-cheatsheet.md) |
+| [Understanding iostat -x Output](articles/understanding-iostat-x-output.md) |
+| [iotop Cheatsheet](articles/iotop-cheatsheet.md) |
+| [ps Cheatsheet](articles/ps-cheatsheet.md) |
+| [top Cheatsheet](articles/top-cheatsheet.md) |
+| [free Cheatsheet](articles/free-cheatsheet.md) |
+| [Performance Co-Pilot (PCP) Cheatsheet](articles/pcp-cheatsheet.md) |
+| [tuned-adm Cheatsheet](articles/tuned-adm-cheatsheet.md) |
+| [NUMA Tuning Guide](articles/numa-tuning-guide.md) |
+| [NUMA Performance Tuning on RHEL 7-10](articles/rhel-numa-performance-tuning.md) |
+| [RHEL Performance Analysis and VM Tuning](articles/rhel-performance-analysis-vm-tuning.md) |
+| [Installing Nagios Core from Source](articles/nagios-installation-source.md) |
+| [Nagios check_by_ssh Guide](articles/nagios-check-by-ssh.md) |
+| [Nagios check_http Guide](articles/nagios-check-http-guide.md) |
+| [Installing Cacti from Source](articles/cacti-installation-source.md) |
 
 ### Linux Memory
 
-| Article | Description |
-|---------|--------------|
-| [Linux Memory: RSS, VSZ, and Why RSS Alone Is Misleading](articles/linux-memory-rss-vsz.md) | Virtual memory, RSS vs VSZ, shared pages, and accurate memory measurement. |
-| [Linux Swap Usage: When Processes Aren't the Culprit](articles/linux-swap-shm-segments.md) | Why per-process swap doesn't add up — SHM segments, `/proc/sysvipc/shm`, and Oracle SGA. |
-| [Linux Swap Management](articles/linux-swap-management.md) | Swap files and partitions — create, resize, swappiness tuning, priority, encryption, monitoring, Btrfs, Kubernetes, and sizing guidelines. |
+| Article |
+|---------|
+| [Linux Memory: RSS, VSZ, and Why RSS Alone Is Misleading](articles/linux-memory-rss-vsz.md) |
+| [Linux Swap Usage: When Processes Aren't the Culprit](articles/linux-swap-shm-segments.md) |
+| [Linux Swap Management](articles/linux-swap-management.md) |
 
 ### Linux Storage and Filesystems
 
-| Article | Description |
-|---------|--------------|
-| [Linux /etc/fstab Guide](articles/linux-fstab-guide.md) | Syntax, device identification, filesystem types, mount options (ext4, XFS, NFS, CIFS, tmpfs, swap), and security hardening. |
-| [iSCSI Cheatsheet](articles/iscsi-cheatsheet.md) | iSCSI initiator and target — discovery, login, CHAP, multipath, targetcli, performance tuning, and troubleshooting. |
-| [Linux NFS Cheatsheet](articles/linux-nfs-cheatsheet.md) | NFS server and client — exports, mounting, fstab, autofs, NFSv4, security, performance tuning, and troubleshooting. |
-| [Linux NFS Troubleshooting](articles/linux-nfs-troubleshooting.md) | NFS error messages, diagnostic procedures, performance bottlenecks, authentication issues, log analysis, and emergency recovery. |
-| [NFS Performance Testing and Monitoring](articles/nfs-performance-testing.md) | NFS read performance testing — dd, iostat, iotop, nfsstat, inotify, iperf3, benchmark scripts, and Docker Swarm considerations. |
-| [Multipath Cheatsheet](articles/multipath-cheatsheet.md) | DM-Multipath — setup, configuration, failover, LVM, troubleshooting, and path management. |
-| [EMC PowerPath Cheatsheet](articles/emc-powerpath-cheatsheet.md) | EMC PowerPath — powermt commands, policies, HBA management, and array-specific configuration. |
-| [SAN Storage Commands](articles/san-storage-commands.md) | SCSI scanning, HBA info, Fibre Channel diagnostics, disk mapping, I/O scheduler, and SAR monitoring. |
-| [Fibre Channel Error Statistics](articles/fc-statistics-guide.md) | FC HBA error counters in sysfs — CRC, tx word, link failure, loss of sync/signal, monitoring scripts, and troubleshooting. |
-| [Linux Storage Stack](articles/linux-storage-stack.md) | VFS, filesystems, page cache, block layer, device mapper, SCSI/NVMe — layers, tools, and tuning. |
-| [fdisk Cheatsheet](articles/fdisk-cheatsheet.md) | Disk partitioning — fdisk, gdisk, parted, sgdisk, sfdisk, mkfs, and LVM setup. |
-| [LVM Cheatsheet](articles/lvm-cheatsheet.md) | Logical Volume Manager — PVs, VGs, LVs, snapshots, thin provisioning, RAID, cache, and troubleshooting. |
-| [fsck Cheatsheet](articles/fsck-cheatsheet.md) | Filesystem check and repair — e2fsck, xfs_repair, badblocks, and SMART. |
-| [Partition Alignment Guide](articles/partition-alignment-guide.md) | Why 1 MiB alignment matters for SSDs, 4Kn HDDs, RAID, LVM, and virtual machines. |
-| [XFS Internals: Superblock and Addressing](articles/xfs-internals-superblock.md) | XFS superblock structure, allocation groups, and block/inode addressing schemes. |
-| [ext4 Journal Modes](articles/ext4-journal-modes.md) | Journal modes (ordered, writeback, journal), configuration, commit intervals, and barriers. |
-| [Extending Partitions with growpart](articles/growpart-extend-partitions.md) | Extend partitions online on cloud/VM instances — AWS, Azure, GCP, LVM, and troubleshooting. |
-| [Extend a SAN LUN Online with Multipath and GFS2](articles/linux-extend-lun-multipath-gfs2.md) | Expanding a SAN-attached LUN on a Linux cluster — SCSI rescan, multipath resize, LVM extend, and GFS2 grow without downtime. |
-| [GFS2 & RHEL Cluster Cheatsheet](articles/gfs2-cluster-cheatsheet.md) | GFS2 and RHEL cluster management — cman, ccs, fencing, DLM, service management, filesystem operations, and troubleshooting. |
-| [Disk Health & Maintenance](articles/disk-health-maintenance.md) | SMART monitoring, bad sectors, performance testing, secure wiping, disk cloning, SSD tuning, and emergency commands. |
+| Article |
+|---------|
+| [Linux /etc/fstab Guide](articles/linux-fstab-guide.md) |
+| [iSCSI Cheatsheet](articles/iscsi-cheatsheet.md) |
+| [Linux NFS Cheatsheet](articles/linux-nfs-cheatsheet.md) |
+| [Linux NFS Troubleshooting](articles/linux-nfs-troubleshooting.md) |
+| [NFS Performance Testing and Monitoring](articles/nfs-performance-testing.md) |
+| [Multipath Cheatsheet](articles/multipath-cheatsheet.md) |
+| [EMC PowerPath Cheatsheet](articles/emc-powerpath-cheatsheet.md) |
+| [SAN Storage Commands](articles/san-storage-commands.md) |
+| [Fibre Channel Error Statistics](articles/fc-statistics-guide.md) |
+| [Linux Storage Stack](articles/linux-storage-stack.md) |
+| [fdisk Cheatsheet](articles/fdisk-cheatsheet.md) |
+| [LVM Cheatsheet](articles/lvm-cheatsheet.md) |
+| [fsck Cheatsheet](articles/fsck-cheatsheet.md) |
+| [Partition Alignment Guide](articles/partition-alignment-guide.md) |
+| [XFS Internals: Superblock and Addressing](articles/xfs-internals-superblock.md) |
+| [ext4 Journal Modes](articles/ext4-journal-modes.md) |
+| [Extending Partitions with growpart](articles/growpart-extend-partitions.md) |
+| [Extend a SAN LUN Online with Multipath and GFS2](articles/linux-extend-lun-multipath-gfs2.md) |
+| [GFS2 & RHEL Cluster Cheatsheet](articles/gfs2-cluster-cheatsheet.md) |
+| [Disk Health & Maintenance](articles/disk-health-maintenance.md) |
 
 ### Networking
 
-| Article | Description |
-|---------|--------------|
-| [DNS Cheatsheet](articles/dns-cheatsheet.md) | DNS lookup tools — dig, host, nslookup, getent, resolvectl, record types, and troubleshooting. |
-| [curl Cheatsheet](articles/curl-cheatsheet.md) | HTTP client — methods, headers, auth, JSON, forms, SSL/TLS, cookies, proxies, timeouts, and debugging with verbose output. |
-| [Setting Up a DNS Server on RHEL 9](articles/dns-server-rhel9.md) | BIND DNS server — installation, forward/reverse zones, caching, split-horizon, secondary servers, and SELinux. |
-| [Cloud DNS Routing Policies Explained](articles/dns-routing-policies.md) | Simple, weighted, failover, latency-based, geolocation, and geoproximity — how each works, when to use it, TTL/resolver gotchas, and cross-provider mapping. |
-| [Elastic Load Balancing Best Practices](articles/elb-best-practices.md) | ELB portfolio (ALB/NLB/GWLB/CLB), availability patterns with Route 53/CloudFront/Global Accelerator, ALB vs NLB target failure behavior, serverless ALB, and production ops. |
-| [resolvectl Cheatsheet](articles/resolvectl-cheatsheet.md) | systemd-resolved CLI — DNS config, caching, DoT, DNSSEC, search domains, routing domains, and resolv.conf modes. |
-| [SSH Cheatsheet](articles/ssh-cheatsheet.md) | OpenSSH client and server — connections, keys, forwarding, tunnels, and troubleshooting. |
-| [SSH ControlMaster](articles/ssh-controlmaster.md) | SSH connection multiplexing — reuse a single TCP connection for multiple sessions. |
-| [SSH ProxyJump vs ProxyCommand](articles/ssh-proxyjump-vs-proxycommand.md) | Differences between ProxyJump and ProxyCommand for reaching hosts behind bastions. |
-| [SSH Managing Multiple Keys](articles/ssh-managing-multiple-keys.md) | Per-service SSH keys for AWS, Proxmox, GitHub, and homelab — config, agent, and rotation. |
-| [SSH Generate Keys](articles/ssh-keygen-guide.md) | Generate Ed25519, RSA, and ECDSA keys — passphrases, options, FIDO2, and security hardening. |
-| [SSH Convert Keys](articles/ssh-convert-keys.md) | Convert between OpenSSH, PuTTY PPK, PEM, PKCS#8, DER, and SSH.com key formats. |
-| [SSH Remote Script Execution](articles/ssh-remote-script-execution.md) | Tools for running scripts on remote hosts — SSH, pssh, pdsh, Ansible, Fabric, and more. |
-| [SSH Remote Sudo Execution](articles/ssh-remote-sudo-execution.md) | Running privileged commands remotely — `sudo -S`, password automation, NOPASSWD, expect, and security practices. |
-| [SSH Heredoc Variable Expansion](articles/ssh-heredoc-variables.md) | Heredocs over SSH — local vs remote expansion, quoted/unquoted EOF, nested heredocs, envsubst, and CI/CD patterns. |
-| [ip Command Cheatsheet](articles/ip-command-cheatsheet.md) | iproute2 ip command — addresses, links, routes, neighbours, multicast, and net-tools migration. |
-| [ss Cheatsheet](articles/ss-cheatsheet.md) | Socket statistics — inspecting TCP/UDP connections and states. |
-| [VNC Cheatsheet](articles/vnc-cheatsheet.md) | TigerVNC on RHEL 6–10 and Ubuntu — installation, configuration, service management, SSH tunnels, one-liners, and troubleshooting. |
-| [tcpdump Cheatsheet](articles/tcpdump-cheatsheet.md) | Packet capture and analysis — filters by host, port, protocol, TCP flags, pcap files, advanced byte offsets, and troubleshooting recipes. |
-| [Diagnosing Packet Loss with mtr](articles/mtr-packet-loss-guide.md) | Passive and active packet loss detection — mtr hop-by-hop analysis, interpreting output, TCP/UDP probes, diagnostic workflow, and complementary tools. |
-| [iperf3 Cheatsheet](articles/iperf3-cheatsheet.md) | Bandwidth benchmarking — server/client model, TCP/UDP tests, parallel streams, reverse/bidirectional, JSON scripting, one-liners, tuning tips, and troubleshooting. |
-| [netstat Cheatsheet](articles/netstat-cheatsheet.md) | Network connections, listening ports, routing tables, interface statistics, connection states, one-liners, automation scripts, and ss migration. |
-| [/proc/net Cheatsheet](articles/proc-net-cheatsheet.md) | Kernel network statistics — sockstat, /proc/net/tcp decoding, SNMP counters, retransmit rates, interface drops, conntrack, ARP, routing, and tuning parameters. |
-| [Ephemeral Ports vs Conntrack Max](articles/ephemeral-ports-vs-conntrack.md) | Two separate connection limits — scope, symptoms, diagnosis, fixes, and why TIME_WAIT monitoring is often misleading. |
-| [/proc/net/sockstat Explained](articles/proc-net-sockstat-explained.md) | Socket summary fields, orphan sockets, TCP memory pressure, "Out of socket memory" diagnosis, kernel shift penalty, and monitoring scripts. |
-| [Monitor Interface Traffic](articles/monitor-interface-traffic.md) | Real-time RX/TX monitoring — sar, ip, ifstat, nload, iftop, vnstat, bmon, ethtool, dstat, and PPS one-liners. |
-| [NetHogs Cheatsheet](articles/nethogs-cheatsheet.md) | Per-process network bandwidth monitoring — interactive keys, tracemode, scripting, filtering, and comparison with iftop/nload. |
-| [nmcli Cheatsheet](articles/nmcli-cheatsheet.md) | NetworkManager CLI — connections, devices, static/DHCP, VLANs, bonds, bridges, Wi-Fi, DNS, routes, keyfiles, and scripting one-liners. |
-| [UFW Cheatsheet](articles/ufw-cheatsheet.md) | Ubuntu firewall — allow/deny/reject rules, rate limiting, logging, application profiles, NAT, common service configs, and troubleshooting. |
-| [FirewallD Cheatsheet](articles/firewalld-cheatsheet.md) | RHEL/CentOS firewall — zones, services, ports, rich rules, port forwarding, masquerading, IPSets, direct rules, and troubleshooting. |
-| [iptables and FirewallD Rules Guide](articles/iptables-firewalld-rules-guide.md) | Firewall rule methods — iptables CLI, save/restore, FirewallD XML, nftables, persistence, scripting, and translation between tools. |
-| [SNI and TLS Certificates Guide](articles/sni-certificates-guide.md) | Server Name Indication — how SNI works, certificate types, Nginx/Apache/Traefik/HAProxy config, Let's Encrypt, testing with openssl, and troubleshooting. |
-| [Nmap Cheatsheet](articles/nmap-cheatsheet.md) | Network scanning — host discovery, port scans, service/OS detection, NSE scripts, timing, evasion, output formats, and practical examples. |
+| Article |
+|---------|
+| [DNS Cheatsheet](articles/dns-cheatsheet.md) |
+| [curl Cheatsheet](articles/curl-cheatsheet.md) |
+| [Setting Up a DNS Server on RHEL 9](articles/dns-server-rhel9.md) |
+| [Cloud DNS Routing Policies Explained](articles/dns-routing-policies.md) |
+| [Elastic Load Balancing Best Practices](articles/elb-best-practices.md) |
+| [resolvectl Cheatsheet](articles/resolvectl-cheatsheet.md) |
+| [SSH Cheatsheet](articles/ssh-cheatsheet.md) |
+| [SSH ControlMaster](articles/ssh-controlmaster.md) |
+| [SSH ProxyJump vs ProxyCommand](articles/ssh-proxyjump-vs-proxycommand.md) |
+| [SSH Managing Multiple Keys](articles/ssh-managing-multiple-keys.md) |
+| [SSH Generate Keys](articles/ssh-keygen-guide.md) |
+| [SSH Convert Keys](articles/ssh-convert-keys.md) |
+| [SSH Remote Script Execution](articles/ssh-remote-script-execution.md) |
+| [SSH Remote Sudo Execution](articles/ssh-remote-sudo-execution.md) |
+| [SSH Heredoc Variable Expansion](articles/ssh-heredoc-variables.md) |
+| [ip Command Cheatsheet](articles/ip-command-cheatsheet.md) |
+| [ss Cheatsheet](articles/ss-cheatsheet.md) |
+| [VNC Cheatsheet](articles/vnc-cheatsheet.md) |
+| [tcpdump Cheatsheet](articles/tcpdump-cheatsheet.md) |
+| [Diagnosing Packet Loss with mtr](articles/mtr-packet-loss-guide.md) |
+| [iperf3 Cheatsheet](articles/iperf3-cheatsheet.md) |
+| [netstat Cheatsheet](articles/netstat-cheatsheet.md) |
+| [/proc/net Cheatsheet](articles/proc-net-cheatsheet.md) |
+| [Ephemeral Ports vs Conntrack Max](articles/ephemeral-ports-vs-conntrack.md) |
+| [/proc/net/sockstat Explained](articles/proc-net-sockstat-explained.md) |
+| [Monitor Interface Traffic](articles/monitor-interface-traffic.md) |
+| [NetHogs Cheatsheet](articles/nethogs-cheatsheet.md) |
+| [nmcli Cheatsheet](articles/nmcli-cheatsheet.md) |
+| [UFW Cheatsheet](articles/ufw-cheatsheet.md) |
+| [FirewallD Cheatsheet](articles/firewalld-cheatsheet.md) |
+| [iptables and FirewallD Rules Guide](articles/iptables-firewalld-rules-guide.md) |
+| [SNI and TLS Certificates Guide](articles/sni-certificates-guide.md) |
+| [Nmap Cheatsheet](articles/nmap-cheatsheet.md) |
 
 ### Cloud-Init
 
-| Article | Description |
-|---------|--------------|
-| [cloud-init Cheatsheet](articles/cloud-init-cheatsheet.md) | Cross-platform cloud instance initialization — user-data, modules, networking, and debugging. |
-| [cloud-init status: Errors and Failure Modes](articles/cloud-init-status-command.md) | Status command, exit codes, critical vs recoverable errors, per-stage diagnostics, and scripting patterns. |
-| [cloud-init: bootcmd vs runcmd](articles/cloud-init-bootcmd-vs-runcmd.md) | Boot stages, execution timing, frequency differences, and common mistakes. |
-| [cloud-init: Why tee Output Doesn't Appear in Logs](articles/cloud-init-tee-output-missing.md) | How cloud-init's output directive interacts with tee, buffering, and pipes. |
-| [cloud-init: User Management and the gecos Field](articles/cloud-init-users-gecos.md) | Users module, gecos history, all user keys, default user, and common patterns. |
-| [cloud-init: Different Ways to Create Files on a Server](articles/cloud-init-write-files.md) | write_files module, runcmd redirects, bootcmd, shell scripts, Jinja templates, and encoding options. |
-| [Cloud-Init Run Modes and Frequencies](articles/cloud-init-run-modes.md) | Module frequencies — per_once, per_instance, per_always, cloud-init-per, semaphores, script directories, and re-running modules. |
-| [Cloud-Init Heredoc and Logging Guide](articles/cloud-init-heredoc-logging-guide.md) | Heredocs in user data, output redirection, structured logging, write_files patterns, debugging, and common YAML pitfalls. |
+| Article |
+|---------|
+| [cloud-init Cheatsheet](articles/cloud-init-cheatsheet.md) |
+| [cloud-init status: Errors and Failure Modes](articles/cloud-init-status-command.md) |
+| [cloud-init: bootcmd vs runcmd](articles/cloud-init-bootcmd-vs-runcmd.md) |
+| [cloud-init: Why tee Output Doesn't Appear in Logs](articles/cloud-init-tee-output-missing.md) |
+| [cloud-init: User Management and the gecos Field](articles/cloud-init-users-gecos.md) |
+| [cloud-init: Different Ways to Create Files on a Server](articles/cloud-init-write-files.md) |
+| [Cloud-Init Run Modes and Frequencies](articles/cloud-init-run-modes.md) |
+| [Cloud-Init Heredoc and Logging Guide](articles/cloud-init-heredoc-logging-guide.md) |
 
 ### Datadog
 
-| Article | Description |
-|---------|--------------|
-| [Datadog Agent Cheatsheet](articles/datadog-agent-cheatsheet.md) | Agent installation, service management, configuration, checks, logs, DogStatsD, APM, and troubleshooting. |
-| [Datadog API Reference](articles/datadog-api-reference.md) | Authentication, client libraries, common endpoints (monitors, dashboards, metrics, events), rate limits, and scripting patterns. |
-| [Datadog Dashboards Guide](articles/datadog-dashboards-guide.md) | Dashboard types, widget selection, query patterns, template variables, layout strategies, and best practices. |
-| [Datadog Monitor Notification Variables](articles/datadog-monitor-notification-variables.md) | Conditional variables, attribute/tag variables, template variables, dynamic handles, and advanced notification formatting. |
-| [Datadog Monitor Tagging Best Practices](articles/datadog-monitor-tagging-best-practices.md) | Tagging strategies for monitors — filtering, downtime scheduling, dashboard widgets, SLO organization, and API usage. |
-| [Datadog Monitors Tips & Tricks](articles/datadog-monitors-tips-and-tricks.md) | Hidden settings, anti-flapping, noise reduction, formulas, composite monitors, notification tricks, and API-only options. |
-| [Monitoring Apache Web Server Performance](articles/monitoring-apache-performance.md) | Apache metrics, MPM internals, mod_status, Datadog integration, log collection, and dashboard setup. |
+| Article |
+|---------|
+| [Datadog Agent Cheatsheet](articles/datadog-agent-cheatsheet.md) |
+| [Datadog API Reference](articles/datadog-api-reference.md) |
+| [Datadog Dashboards Guide](articles/datadog-dashboards-guide.md) |
+| [Datadog Monitor Notification Variables](articles/datadog-monitor-notification-variables.md) |
+| [Datadog Monitor Tagging Best Practices](articles/datadog-monitor-tagging-best-practices.md) |
+| [Datadog Monitors Tips & Tricks](articles/datadog-monitors-tips-and-tricks.md) |
+| [Monitoring Apache Web Server Performance](articles/monitoring-apache-performance.md) |
 
 ### Terminal and Tools
 
-| Article | Description |
-|---------|--------------|
-| [JSON Query Tools: JMESPath vs jq vs JSONPath](articles/json-query-tools.md) | Comparing JMESPath, jq, and JSONPath — syntax, filtering, transformation, and when to use each. |
-| [bat Cheatsheet](articles/bat-cheatsheet.md) | A cat clone with syntax highlighting, git integration, themes, and paging. |
-| [cut Cheatsheet](articles/cut-cheatsheet.md) | Extract fields, characters, or bytes from text — delimiters, ranges, and practical patterns. |
-| [tmux Cheatsheet](articles/tmux-cheatsheet.md) | Terminal multiplexer — sessions, windows, panes, and copy mode. |
-| [Kitty Cheatsheet](articles/kitty-cheatsheet.md) | GPU-accelerated terminal emulator — tabs, windows, and layouts. |
-| [JetBrains Mono Font](articles/jetbrains-mono-font.md) | Free monospaced font designed for terminals and code editors. |
-| [PuTTY Default Settings](articles/putty-default-settings.md) | Font, bell, colors, window size, and scrollback — settings to apply after a fresh Windows install. |
-| [rclone Cheatsheet](articles/rclone-cheatsheet.md) | Cloud storage CLI — copy, sync, mount, encrypt, serve, filtering, backup patterns, and 70+ backends. |
-| [lssh Cheatsheet](articles/lssh-cheatsheet.md) | SSH connection manager — TUI host picker, parallel execution, mux workspaces, file transfer, cloud inventory, and monitoring. |
-| [VS Code Git Actions and Git CLI Equivalents](articles/vscode-git-cli-equivalents.md) | Mapping VS Code Source Control actions to git commands — staging/committing, branches, sync/pull/push, history, stashing, undo, tags, and merge conflicts. |
-| [Kiro CLI Cheatsheet](articles/kiro-cli-cheatsheet.md) | Kiro's terminal AI CLI — install, login/logout, starting and resuming chat sessions, --agent, in-session slash commands (/editor, /save, /load, /settings), and key concepts (agents, MCP, steering, hooks). |
-| [Understanding Context Usage in AI Assistants](articles/ai-context-usage-explained.md) | How the context window works — tokens, what consumes context, truncation and "lost in the middle", compaction/summarization, and practical habits for keeping AI answers accurate. |
-| [Orca: The Agent Development Environment (ADE)](articles/orca-agent-development-environment.md) | Desktop app for running multiple AI coding agents in parallel — one git worktree/terminal/browser per task, bring-your-own agents (Claude Code, Codex, Cursor CLI, etc.), diff review, remote/VPS execution, and how an ADE differs from an IDE. |
-| [Test a Docsify Site Locally](articles/docsify-test-locally.md) | Preview a Docsify docs site before pushing to GitHub Pages — Docsify CLI with live reload, Python http.server, and Node http-server, plus notes on blank pages and file:// pitfalls. |
+| Article |
+|---------|
+| [JSON Query Tools: JMESPath vs jq vs JSONPath](articles/json-query-tools.md) |
+| [bat Cheatsheet](articles/bat-cheatsheet.md) |
+| [cut Cheatsheet](articles/cut-cheatsheet.md) |
+| [tmux Cheatsheet](articles/tmux-cheatsheet.md) |
+| [Kitty Cheatsheet](articles/kitty-cheatsheet.md) |
+| [JetBrains Mono Font](articles/jetbrains-mono-font.md) |
+| [PuTTY Default Settings](articles/putty-default-settings.md) |
+| [rclone Cheatsheet](articles/rclone-cheatsheet.md) |
+| [lssh Cheatsheet](articles/lssh-cheatsheet.md) |
+| [VS Code Git Actions and Git CLI Equivalents](articles/vscode-git-cli-equivalents.md) |
+| [Kiro CLI Cheatsheet](articles/kiro-cli-cheatsheet.md) |
+| [Understanding Context Usage in AI Assistants](articles/ai-context-usage-explained.md) |
+| [Orca: The Agent Development Environment (ADE)](articles/orca-agent-development-environment.md) |
+| [Test a Docsify Site Locally](articles/docsify-test-locally.md) |
 
 ### macOS
 
-| Article | Description |
-|---------|--------------|
-| [Homebrew Cheatsheet](articles/homebrew-cheatsheet.md) | macOS package manager — install, update, services, taps, Brewfile, casks, versions, and cleanup. |
-| [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md) | Installing a newer bash on macOS (ships with outdated 3.2.x). |
-| [Making List View the Default in macOS Finder](articles/macos-finder-default-list-view.md) | Set Finder's default view — global default via Use as Defaults, per-folder persistence, applying to all subfolders with Option → Apply to all, how .DS_Store stores view settings, and troubleshooting. |
-| [Finding and Managing Git Credentials in the macOS Keychain](articles/macos-keychain-git-credentials.md) | Locate and manage HTTPS Git credentials/PATs on macOS — Keychain Access GUI, the security CLI, Git's osxkeychain helper (fill/approve/reject), updating/removing rotated tokens, storing non-interactively, troubleshooting, and security notes. |
-| [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) | Remove and prevent .DS_Store files from being tracked in git. |
+| Article |
+|---------|
+| [Homebrew Cheatsheet](articles/homebrew-cheatsheet.md) |
+| [macOS Bash Upgrade Guide](articles/macos-bash-upgrade-guide.md) |
+| [Making List View the Default in macOS Finder](articles/macos-finder-default-list-view.md) |
+| [Finding and Managing Git Credentials in the macOS Keychain](articles/macos-keychain-git-credentials.md) |
+| [Remove .DS_Store from Git](articles/remove-ds-store-guide.md) |
 
 ### Windows
 
-| Article | Description |
-|---------|--------------|
-| [Windows Battery Report](articles/windows-battery-report.md) | Using the built-in `powercfg` tool to check battery health, usage, and degradation. |
-| [Windows Tips and Commands](articles/windows-tips-commands.md) | Useful commands — perfmon, winsat, diskpart, Test-NetConnection, hosts file, resmon, gpupdate, and Java config. |
-| [Outlook Instant Search Syntax](articles/outlook-search-syntax.md) | Search query syntax — operators, from/to/cc, attachments, dates, size filters, flags, calendar, and contacts. |
+| Article |
+|---------|
+| [Windows Battery Report](articles/windows-battery-report.md) |
+| [Windows Tips and Commands](articles/windows-tips-commands.md) |
+| [Outlook Instant Search Syntax](articles/outlook-search-syntax.md) |
 
 ### Solaris
 
-| Article | Description |
-|---------|--------------|
-| [Solaris Disk and Filesystem Management](articles/solaris-disk-management.md) | Adding and slicing disks on Oracle Solaris — SPARC vs x86 slicing, cCtTdDsS device naming, format/prtvtoc/devfsadm, the new-disk UFS workflow with newfs and /etc/vfstab, preparing a whole disk for ZFS, and default UFS mount options. |
-| [Solaris Zones](articles/solaris-zones.md) | OS-level virtualization (containers) — global vs non-global zones, isolation model, the z* command set, and the full lifecycle: zonecfg configuration, zoneadm install/boot, zlogin modes, removing a zone, and removing a zone network interface. |
-| [Solaris Boot Management: OpenBoot, eeprom, and bootadm](articles/solaris-boot-openboot.md) | Booting Solaris on SPARC and x86 — OpenBoot PROM boot commands (boot -s/-a/-r, cdrom), device tree/aliases (show-devs, devalias), NVRAM parameters via printenv/setenv and eeprom, and the x86 GRUB boot archive with bootadm. |
-| [Solaris SVR4 Package Management](articles/solaris-svr4-package-management.md) | Classic pkgadd/pkgrm/pkginfo/pkgchk tooling (Solaris 10 and earlier) — file system vs data stream formats, the /var/sadm databases, querying/installing/verifying/removing packages, installing from CD/DVD, spool, data stream and HTTP, and an IPS note for Solaris 11. |
-| [Solaris 10 Patch Management](articles/solaris-patch-management.md) | patchadd/patchrm/showrev — checking installed patches, applying/removing individual patches (including -d and IDR patches), patch log locations, and installing a Recommended Patch Cluster with installcluster on Solaris 10 x86. |
-| [Solaris SMF (Service Management Facility) and Cron](articles/solaris-smf-services.md) | Managing services with SMF — svcs/svcadm/svccfg, FMRI identifier categories, instance states (online/offline/maintenance/degraded/...), the repository.db and /var/svc/log, restore_repository, plus Solaris cron access control (cron.allow/deny) and files. |
-| [Solaris System Information and Inventory](articles/solaris-system-information.md) | Identifying a Solaris box — /etc/release, showrev, uname, prtconf memory, prtdiag hardware diagnostics, psrinfo CPU, svcs -o FMRI,DESC, the install CLUSTER metacluster and install_log, and a "what is this box?" snapshot script. |
-| [Solaris Tips and Tricks](articles/solaris-tips-and-tricks.md) | Small everyday fixes — correcting the Backspace/erase character with stty, setting the TERM terminal type per shell (sh/ksh/bash/csh), and installing VirtualBox Guest Additions in a Solaris guest with pkgadd -G. |
-| [Solaris 11 IPS: Local Package Repository and pkg Management](articles/solaris-ips-pkg-repository.md) | Image Packaging System on Solaris 11 — hosting a local IPS repo (ZFS dataset, application/pkg/server depot), client publishers, applying monthly SRUs, updating with or without a network repo (file:// origin), the pkg command set, and IPS vs SVR4. |
-| [Solaris Performance and Resource Monitoring](articles/solaris-performance-monitoring.md) | CPU, memory, and swap monitoring — prstat (per-user/zone/project, sort by RSS), swap -l vs swap -s, psrinfo -pv CPU inventory, ::memstat via mdb, a command reference, and a Linux-to-Solaris tool mapping. |
-| [Solaris Network Configuration Files](articles/solaris-network-configuration.md) | The /etc files that drive networking — hostname.<if>, defaultrouter, netmasks, inet/hosts, resolv.conf, nodename, nsswitch.conf, defaultdomain — plus svcadm restart network/physical, netstat -D, sys-unconfig, wiring a static IPv4 host, and the Solaris 11 ipadm/dladm equivalents. |
-| [Solaris 11: Configure a Static IP with ipadm and dladm](articles/solaris11-static-ip-ipadm.md) | Switching from DHCP/NWAM to a fixed address on Solaris 11 — netadm DefaultFixed profile, dladm/ipadm interface and static address, persistent default route, DNS and nsswitch via svccfg/SMF, verification, and a legacy-vs-ipadm mapping. |
-| [Oracle Solaris 11 Installation Methods](articles/solaris11-installation-methods.md) | Interactive vs automated installs — Live Media (x86), the text installer (x86 and SPARC), the Automated Installer (AI) with manifests and sysconfig profiles, choosing an installer, and the install_log location. |
-| [Solaris User and Password Administration](articles/solaris-user-password-administration.md) | Account and password management — passwd status/lock/unlock/force-change/aging, useradd -D defaults, the /etc account and policy files (shadow, default/passwd, default/login, policy.conf, user_attr), account lockout, and reserved UID ranges. |
+| Article |
+|---------|
+| [Solaris Disk and Filesystem Management](articles/solaris-disk-management.md) |
+| [Solaris Zones](articles/solaris-zones.md) |
+| [Solaris Boot Management: OpenBoot, eeprom, and bootadm](articles/solaris-boot-openboot.md) |
+| [Solaris SVR4 Package Management](articles/solaris-svr4-package-management.md) |
+| [Solaris 10 Patch Management](articles/solaris-patch-management.md) |
+| [Solaris SMF (Service Management Facility) and Cron](articles/solaris-smf-services.md) |
+| [Solaris System Information and Inventory](articles/solaris-system-information.md) |
+| [Solaris Tips and Tricks](articles/solaris-tips-and-tricks.md) |
+| [Solaris 11 IPS: Local Package Repository and pkg Management](articles/solaris-ips-pkg-repository.md) |
+| [Solaris Performance and Resource Monitoring](articles/solaris-performance-monitoring.md) |
+| [Solaris Network Configuration Files](articles/solaris-network-configuration.md) |
+| [Solaris 11: Configure a Static IP with ipadm and dladm](articles/solaris11-static-ip-ipadm.md) |
+| [Oracle Solaris 11 Installation Methods](articles/solaris11-installation-methods.md) |
+| [Solaris User and Password Administration](articles/solaris-user-password-administration.md) |
 
 ### HP-UX
 
-| Article | Description |
-|---------|--------------|
-| [HP-UX History, Versions, and Support Lifecycle](articles/hpux-history-and-versions.md) | The story of HP-UX from 1982 to its end of support on 2025-12-31 — the decimal vs 11i vN numbering schemes, the full version history (1.0 through 11i v3) across Motorola 68000/FOCUS/PA-RISC/Itanium, the B.11.xx release strings, Operating Environments per generation, and the end-of-life dates for every 11i version (v1/v2 in 2015, v3 PA-RISC in 2021, v3 Integrity in 2025). |
-| [HP-UX Boot Process (PA-RISC and Integrity)](articles/hpux-boot-process.md) | Booting and shutting down HP-UX — shutdown/reboot states, the Management Processor (rs/pc/pe/tc), the PA-RISC firmware path (POST/PDC → BCH → ISL/IPL → vmunix) with setboot/lifcp, the Integrity EFI/UEFI path (partitions, efi_ls/efi_cp, idisk, hpux.efi loader), autoboot overrides, vg00 mirroring, and Ignite/dbprofile network boot. |
-| [HP-UX User and Password Administration](articles/hpux-user-password-administration.md) | Users, groups, and password policy — logins/useradd/usermod/groupmod, passwd aging/status/lock, pwconv/pwunconv shadow conversion, finding orphaned files, and Trusted System (TCB) management with getprpw/modprpw including the lockout bit-string. |
-| [HP-UX LVM (Logical Volume Manager)](articles/hpux-lvm.md) | Storage with LVM — on-disk structures (PVRA/VGRA/VGSA/VGDA/BDRA/BBRA), LVM 1.0 vs 2.x versions and limits, pvcreate/vgcreate/lvcreate, mirroring (lvextend -m, lvsplit/lvmerge, sync), vgcfgbackup/restore, vgscan, renaming/modifying VGs, and vg00 boot-disk mirroring/recovery. |
-| [HP-UX Virtual Partitions (vPars)](articles/hpux-vpars.md) | Software partitioning — vPar concepts, vpmon and /stand/vpdb, bound vs unbound processors, creating vPars with vparcreate, making the nPar vPar-aware via mkboot, booting with vparload/vparboot, vparstatus, vparremove/vparreset, and vPars vs nPars. |
-| [HP-UX nPartitions (nPars)](articles/hpux-npars.md) | Hardware partitioning on cell-based servers — the genesis partition, parcreate/parmodify/parremove/parstatus, adding/removing cells, reboot vs shutdown for reconfig, admin tools (Partition Manager/MP/EFI/BCH), supported OSes, and nPars vs vPars. |
-| [HP-UX Management Processor (MP / GSP / iLO)](articles/hpux-management-processor.md) | The out-of-band service processor — MP/GSP/iLO variants, console/VFP/log menus and the CM command menu (lc/uc/so/xd/dc), nPar and vPar console access (co, ^a, parstatus/vparstatus -w), user accounts and access levels, and the rs/tc/pc/pe/ps reset and power commands. |
-| [HP-UX Installation and Ignite-UX](articles/hpux-installation-ignite.md) | Cold installs and golden images (make_sys_image), Operating Environments (11i v1/v2/v3 OEs, update-ux), install-time Bastille security bundles, media kit layout, PA-RISC (BCH) vs Integrity (EFI) install initiation, Ignite-UX menu modes, swverify verification, and post-install tasks (move root home, vgimport, HPSP, make_tape_recovery/drd). |
-| [HP-UX Disaster Recovery (DRD and Ignite-UX)](articles/hpux-disaster-recovery.md) | Boot resilience — mirroring (Mirrordisk/UX, VxVM, SmartArray, SAN), Dynamic Root Disk clones (drd clone/sync/runcmd/activate for patching and kernel tuning the inactive image), and Ignite-UX recovery archives (make_tape_recovery/make_net_recovery, mnr_essentials, archive_content, NFS export setup, interactive vs non-interactive restore, and single-file recovery). |
-| [HP-UX Patch Management](articles/hpux-patch-management.md) | Managing patches with SD-UX and Software Assistant — PHxx_yyyyy naming and CO/KL/NE/SS categories, supersession chains, ratings, patch sources, installing from HPSC/DVD/depot (patch_match_target, autoselect_patches), swlist listing, swremove and committing (patch_commit, save files), rollback rules, patch states, category_tag/ancestor, cleanup, standard QPK bundles, and swa report/get. |
-| [HP-UX Kernel Configuration and Tuning](articles/hpux-kernel-configuration.md) | Building and tuning the kernel — dynamic vs static tunables, the 11i v1 /stand/build rebuild flow (system.SAM, kmupdate, .prev backups, booting a backup kernel from ISL), and the 11i v2/v3 kc* toolset (kconfig, kctune, kcmodule, kcusage, kcalarm, kclog, kcweb), module states, named configurations, and booting a named config from BCH/EFI. |
-| [HP-UX Administration Tips and Recipes](articles/hpux-admin-tips-recipes.md) | Practical recipes — finding an unlinked open file filling a filesystem (lsof +L), shell history and PS1 setup, recovering the root password from single-user mode, renaming/re-importing volume groups via map files, bulk-renaming logical volumes, adding LUNs/external disks (ioscan/insf/pvcreate/vgextend), extending VxFS online with fsadm, and changing VG limits with vgmodify. |
-| [HP-UX Crash Dump Analysis with Q4](articles/hpux-crash-dump-analysis.md) | Analyzing a system crash or hang — how dumps are written to dump devices and saved by savecrash under /var/adm/crash, forcing a dump on a hung system via a console TC, and running the Q4 debugger (/usr/contrib/Q4/bin/q4 -p .) with the Analyze AU and WhatHappened -HANG macros to produce readable analysis files. |
-| [HP-UX Performance Monitoring and Event Management](articles/hpux-performance-monitoring.md) | Watching system health — a vmstat free-memory one-liner, the interactive Glance tool and its shortcut keys, the sar activity reporter (CPU/disk/buffer/swap plus per-HBA -H and per-LUN-path -L), and SFM/EMS event monitoring with evweb (eventviewer, subscribe) and the /var/opt/sfm logs. |
-| [HP-UX System Information and Initial Configuration](articles/hpux-system-information.md) | Identifying and setting up a system — set_parms post-install config (hostname/IP/network/timezone), OS release (uname -r), model, print_manifest/machinfo hardware and memory, CPU count via ioscan, serial/bit-width via getconf, top-memory-process ps, stm diagnostics, and clean man paging. |
-| [HP-UX Startup, Run Levels, and Network Services](articles/hpux-startup-and-services.md) | The init/run-level model, the /sbin/rc*.d + /etc/rc.config.d startup framework, ch_rc, custom startup scripts, and configuring inetd (inetd.sec), AutoFS, CIFS/Samba, NTP (xntpd), SSH, Serviceguard (cm* commands), and SMH. |
-| [HP-UX Device Management (ioscan, scsimgr, DSFs)](articles/hpux-device-management-ioscan.md) | Hardware/storage discovery — HBA and agile-view FC LUN/lunpath addressing, ioscan (-kfN, -m lun/dsf/hwpath, -P health), scsimgr LUN/lunpath WWID/stats and path disable/enable, and device special files with insf/mksf/mknod/rmsf/lssf plus legacy vs agile DSF modes. |
-| [HP-UX Software Distribution (SD-UX): Depots and swinstall](articles/hpux-software-depots-swinstall.md) | Software and patch management with Software Distributor — building/registering depot servers, swcopy/swinstall/swremove/swlist/swreg/swverify, patch depots with enforce_dependencies=false, autoselect_patches/patch_match_target, pull vs push installs, make_depots, and checking installed patches. |
-| [HP-UX Network Configuration](articles/hpux-network-configuration.md) | Networking end to end — interface discovery (lanscan/ioscan), link-layer with lanadmin (11i v1/v2) and nwmgr (11i v3), ifconfig IP setup, IP multiplexing (aliases), routing, ndd tunables, hostname, persistence in /etc/rc.config.d/netconf and nddconf, and troubleshooting (linkloop/nwmgr --diagnose). |
-| [HP-UX SD-UX Software Structure, IPD, and swlist](articles/hpux-swlist-software-structure.md) | The SD-UX object model (fileset/subproduct/product/bundle), the Installed Product Database, the swagentd daemon, and using swlist/swinstall/swremove to list, install, update (match_target), and remove software and patches, plus the key /var/adm/sw files. |
-| [HP-UX Swap and Pseudo-Swap Management](articles/hpux-swap-management.md) | Swap on HP-UX — the pseudo-swap reservation concept (75% of RAM, swapmem_on), device vs filesystem swap, enabling/prioritizing with swapon (-p/-l/-e/-a), swapinfo reporting, /etc/fstab swap/swapfs entries, swapoff, and area-selection guidelines. |
-| [HP-UX Filesystem Management (HFS, JFS/VxFS)](articles/hpux-filesystem-management.md) | HFS vs Base/Online JFS (VxFS), newfs/mkfs, mounting (CDFS/ISO/LOFS), fsadm defrag, fsck repair and lost+found, space reclamation (bdf/df/du/quot), growing/shrinking the VG→LV→FS stack, HFS→JFS conversion (vxfsconvert), and VxFS ioerror policies. |
-| [HP-UX NFS (Server and Client)](articles/hpux-nfs.md) | NFS by release (v2/v3/v4), exporting/sharing — exportfs + /etc/exports (11i v1/v2) vs share + /etc/dfs/dfstab (11i v3), server/client daemons and config, static NFSv4 ports, showmount/rpcinfo/nfsstat, and mounting. |
-| [HP-UX Fibre Channel and SAN Storage](articles/hpux-fibre-channel-san.md) | FC HBAs and SAN LUNs — fcmsutil (enable/disable/stats), scanning for new LUNs (ioscan/insf/powermt config), scsimgr load-balancing policy, iostat -L per-lunpath stats, removing LUNs (powermt remove/release, rmsf -x), and native multipathing vs EMC PowerPath. |
+| Article |
+|---------|
+| [HP-UX History, Versions, and Support Lifecycle](articles/hpux-history-and-versions.md) |
+| [HP-UX Boot Process (PA-RISC and Integrity)](articles/hpux-boot-process.md) |
+| [HP-UX User and Password Administration](articles/hpux-user-password-administration.md) |
+| [HP-UX LVM (Logical Volume Manager)](articles/hpux-lvm.md) |
+| [HP-UX Virtual Partitions (vPars)](articles/hpux-vpars.md) |
+| [HP-UX nPartitions (nPars)](articles/hpux-npars.md) |
+| [HP-UX Management Processor (MP / GSP / iLO)](articles/hpux-management-processor.md) |
+| [HP-UX Installation and Ignite-UX](articles/hpux-installation-ignite.md) |
+| [HP-UX Disaster Recovery (DRD and Ignite-UX)](articles/hpux-disaster-recovery.md) |
+| [HP-UX Patch Management](articles/hpux-patch-management.md) |
+| [HP-UX Kernel Configuration and Tuning](articles/hpux-kernel-configuration.md) |
+| [HP-UX Administration Tips and Recipes](articles/hpux-admin-tips-recipes.md) |
+| [HP-UX Crash Dump Analysis with Q4](articles/hpux-crash-dump-analysis.md) |
+| [HP-UX Performance Monitoring and Event Management](articles/hpux-performance-monitoring.md) |
+| [HP-UX System Information and Initial Configuration](articles/hpux-system-information.md) |
+| [HP-UX Startup, Run Levels, and Network Services](articles/hpux-startup-and-services.md) |
+| [HP-UX Device Management (ioscan, scsimgr, DSFs)](articles/hpux-device-management-ioscan.md) |
+| [HP-UX Software Distribution (SD-UX): Depots and swinstall](articles/hpux-software-depots-swinstall.md) |
+| [HP-UX Network Configuration](articles/hpux-network-configuration.md) |
+| [HP-UX SD-UX Software Structure, IPD, and swlist](articles/hpux-swlist-software-structure.md) |
+| [HP-UX Swap and Pseudo-Swap Management](articles/hpux-swap-management.md) |
+| [HP-UX Filesystem Management (HFS, JFS/VxFS)](articles/hpux-filesystem-management.md) |
+| [HP-UX NFS (Server and Client)](articles/hpux-nfs.md) |
+| [HP-UX Fibre Channel and SAN Storage](articles/hpux-fibre-channel-san.md) |
 
 ### AIX
 
-| Article | Description |
-|---------|--------------|
-| [IBM AIX: An Overview](articles/aix-overview.md) | What AIX is — history from the RT PC to Power Systems, versions and lifecycle, notable firsts (JFS, shared libraries, virtualization), and the SMIT/ODM/LVM management concepts, with links to the AIX cheatsheets. |
-| [AIX Backup and Recovery Cheatsheet](articles/aix-backup-recovery-cheatsheet.md) | System backup and restore on IBM AIX — mksysb, lsmksysb/listvgbackup, savevg/restvg, cpio, tar, backup/restore, bootable media with mkcd/mkdvd, and rootvg cloning with alt_disk_install. |
-| [AIX Boot and Init Cheatsheet](articles/aix-boot-init-cheatsheet.md) | Boot process and init on IBM AIX — bootlist device order, bosboot image rebuild, ipl_varyon, /etc/inittab management (lsitab/mkitab/chitab/rmitab), init/telinit run levels, and savebase/restbase. |
-| [AIX CDE and X Window System Cheatsheet](articles/aix-cde-x11-cheatsheet.md) | Graphical desktop on IBM AIX — enable/disable CDE autostart with dtconfig, start dtlogin manually, and launch X11/CDE sessions with xinit. |
-| [AIX Filesystems Cheatsheet](articles/aix-filesystems-cheatsheet.md) | Filesystems on IBM AIX — default rootvg LV layout, file timestamps and istat, lsfs/chfs (resize, move, noatime, freeze, split-copy), VFS entries, snapshots, du, fuser, and fileplace. |
-| [AIX LVM Cheatsheet](articles/aix-lvm-cheatsheet.md) | Logical Volume Manager on IBM AIX — VG types, VGDA/VGSA/LVCB internals, allocation policies, PV states, and commands for VGs, LVs, PVs, mirroring, snapshots, migration, and common tasks. |
-| [AIX NIM Cheatsheet](articles/aix-nim-cheatsheet.md) | Network Installation Management on IBM AIX — lpp_source/SPOT/mksysb resources, ports and files, master/client commands, setting up a NIM master, defining resources, BOS installs, and nimadm migration. |
-| [AIX SMIT Cheatsheet](articles/aix-smit-cheatsheet.md) | System Management Interface Tool — smit vs smitty, fast paths for common tasks, navigation keys (F4/F6/F8), field markers, and the smit.log/smit.script logs for learning the underlying commands. |
-| [AIX LDAP Cheatsheet](articles/aix-ldap-cheatsheet.md) | LDAP authentication on IBM AIX — mksecldap client setup, secldapclntd daemon (ls/start/stop/flush), directing users/groups to the LDAP registry, IBM Directory Server tools, ldapsearch, and troubleshooting. |
-| [AIX NFS Cheatsheet](articles/aix-nfs-cheatsheet.md) | NFS on IBM AIX — daemons, exporting with mknfsexp/exportfs, mounting with mknfsmnt/mount, client tools (showmount, nfsstat, rpcinfo), NFSv4 domain/idmapd, and troubleshooting. |
-| [AIX VIOS Cheatsheet](articles/aix-vios-cheatsheet.md) | PowerVM Virtual I/O Server — padmin/ioscli, devices, virtual SCSI and NPIV mappings (lsmap/mkvdev/vfcmap), Shared Ethernet Adapters, monitoring (viostat/entstat), updateios, and viosbr/backupios. |
-| [AIX Package Management Cheatsheet](articles/aix-package-management-cheatsheet.md) | Software on IBM AIX — installp/lslpp filesets (apply/commit/reject), lppchk, emgr interim fixes, RPM and dnf/yum from the AIX Toolbox, oslevel/instfix maintenance levels, and SMIT fast paths. |
-| [AIX HMC Cheatsheet](articles/aix-hmc-cheatsheet.md) | Hardware Management Console CLI — lssyscfg managed systems/LPARs, chsysstate power control, mkvterm/vtmenu consoles, chhwres DLPAR, mksyscfg profiles, service events, and HMC backup/updates. |
-| [AIX PowerVM Virtualization Concepts](articles/aix-powervm-virtualization-concepts.md) | I/O virtualization building blocks — virtual SCSI (backing types, client/server model), virtual Ethernet (slots, MTU, MAC/VLAN limits), Shared Ethernet Adapter, and Integrated Virtual Ethernet, and when each needs a VIOS. |
-| [AIX Users and Groups Cheatsheet](articles/aix-users-groups-cheatsheet.md) | User/group management on IBM AIX — mkuser/chuser/lsuser/rmuser, groups, passwords and aging, security files, login controls and limits, chsec, usrck/grpck/pwdck, and RBAC roles. |
-| [AIX ODM Cheatsheet](articles/aix-odm-cheatsheet.md) | Object Data Manager on IBM AIX — repositories and ODMDIR, device/SWVPD object classes (CuDv/CuAt/PdDv/PdAt), odmget/odmadd/odmchange/odmdelete/odmshow, how lsdev/chdev map to the ODM, and repair scenarios. |
-| [AIX Software Updates and Fixes Cheatsheet](articles/aix-software-updates-fixes-cheatsheet.md) | Patching IBM AIX — smitty update_all, install_all_updates flags, Technology Level/Service Pack upgrades (installer-first), emgr interim fixes, and instfix APAR/keyword fixes. |
-| [AIX Devices and Hardware Cheatsheet](articles/aix-devices-hardware-cheatsheet.md) | Hardware inventory on IBM AIX — lsdev classes and parent/child, lscfg VPD and HBA WWNs, getconf/prtconf/bootinfo system parameters, lsslot PCI slots, lsattr/chdev attributes, PVIDs, and fcstat. |
-| [AIX Cron and Job Scheduling Cheatsheet](articles/aix-cron-cheatsheet.md) | Scheduling on IBM AIX — crontab management and format, access control (cron.allow/cron.deny under /var/adm/cron), at/batch one-off jobs, the cron daemon and /var/adm/cron/log, and troubleshooting. |
-| [AIX System Dump and Core File Cheatsheet](articles/aix-system-dump-core-cheatsheet.md) | Crash dumps and process cores on IBM AIX — sysdumpdev dump devices, dumpcheck sizing, autorestart/fullcore, sysdumpstart, analysing vmcore with kdb/crash/mdmprpt, and core files with syscorepath/gencore/snapcore/check_core plus shconf. |
-| [AIX Error Logging and System Logs Cheatsheet](articles/aix-error-logging-cheatsheet.md) | Logging and diagnostics on IBM AIX — alog boot/console logs, errpt reports and filters, errclear cleanup, errlogger, the errdemon/errstop error daemon, diagrpt diagnostics, and the LVM log/trace files. |
-| [AIX Power Systems, LPAR, and Boot Concepts](articles/aix-power-lpar-boot-concepts.md) | Power5/6/7 firmware and edition naming, LPAR CPU/memory sizing rules and ratios, shared vs dedicated processors and SMT, the AIX boot process (BLV, bosboot, rc.boot phases), device states, physical location codes, single-user/maintenance mode recovery, and firmware update commands. |
-| [AIX Performance Monitoring Cheatsheet](articles/aix-performance-monitoring-cheatsheet.md) | Performance analysis on IBM AIX — process memory metrics (SIZE/RSS/TRS, virtual vs physical), topas/nmon monitors and Shared Processor Pools, disk I/O with iostat/sar -d/lvmstat, CPU and process tools (ps/mpstat/svmon/truss/fuser/procfiles), and topasrec/topasout recording. |
-| [AIX Networking Cheatsheet](articles/aix-networking-cheatsheet.md) | TCP/IP networking on IBM AIX — temporary vs persistent interface/IP config (ifconfig vs chdev/ODM), hostnames and /etc/hosts, routing via route and inet0, no tunables, lsdev/lsattr device attributes, entstat/netstat statistics, name resolution, and iptrace/ipreport packet capture. |
-| [AIX Paging Space Cheatsheet](articles/aix-paging-space-cheatsheet.md) | Paging (swap) space on IBM AIX — listing with lsps/swap -l, creating and resizing with mkps/chps, activating and deactivating (swapon/swapoff, swap -a/-d), removing with rmps, /etc/swapspaces, and finding top paging consumers with svmon. |
-| [AIX Login Auditing and Session Tracking Cheatsheet](articles/aix-login-auditing-cheatsheet.md) | Login and session tracking on IBM AIX — failed/successful logins via who and the accounting files (failedlogin, wtmp, utmp), su auditing with sulog, last-login history (last, lastlog), user environment, killing a user's processes, and controlling su-to-root with sugroups. |
-| [AIX / Power Service Processor and ASMI](articles/aix-service-processor-asmi.md) | The IBM Power service processor and Advanced System Management Interface — RAS functions, HMC/network and serial-port connectivity, SPCN power control, launching ASMI (asmmenu / HMC GUI), and the Power5/6/7 firmware naming codes. |
-| [AIX MPIO and Fibre Channel Cheatsheet](articles/aix-mpio-fibre-channel-cheatsheet.md) | Storage multipathing on IBM AIX — FC adapters (lsattr/fcstat/lsdev), MPIO path management (lspath/chpath/rmpath), disk tuning (queue_depth, hcheck_interval, reserve_policy, round_robin), VSCSI error recovery and path priority on VIO clients, and bulk cleanup of missing/failed paths. |
-| [AIX System Resource Controller (SRC) Cheatsheet](articles/aix-src-services-cheatsheet.md) | Managing services on IBM AIX with the SRC — start/stop/refresh subsystems and groups (startsrc/stopsrc/refresh), list status with lssrc, inetd subservers, the srcmstr master, and the tcp.clean TCP/IP daemon helper. |
-| [AIX Storage Provisioning Tasks](articles/aix-storage-provisioning-tasks.md) | Day-to-day storage recipes on IBM AIX — discovering and adding LUNs (cfgmgr/diff, chdev, extendvg, mklv/crfs), spanning filesystems, mapping disks through a VIOS to an LPAR, extending paging, EMC/HDS BCV clone workflows, and copying/swapping logical volumes. |
-| [AIX System Administration Tips Cheatsheet](articles/aix-sysadmin-tips-cheatsheet.md) | A grab-bag of IBM AIX admin commands — device management (mkdev/rmdev), software media/TOC (gencopy/inutoc), filesystem maintenance and superblock recovery (defragfs/lquerypv/dd/fscklog), CD/DVD/ISO mounting, terminal and console control, process inspection (procfiles/procstack), CPU/kernel info, NTP, archiving, and shutdown. |
+| Article |
+|---------|
+| [IBM AIX: An Overview](articles/aix-overview.md) |
+| [AIX Backup and Recovery Cheatsheet](articles/aix-backup-recovery-cheatsheet.md) |
+| [AIX Boot and Init Cheatsheet](articles/aix-boot-init-cheatsheet.md) |
+| [AIX CDE and X Window System Cheatsheet](articles/aix-cde-x11-cheatsheet.md) |
+| [AIX Filesystems Cheatsheet](articles/aix-filesystems-cheatsheet.md) |
+| [AIX LVM Cheatsheet](articles/aix-lvm-cheatsheet.md) |
+| [AIX NIM Cheatsheet](articles/aix-nim-cheatsheet.md) |
+| [AIX SMIT Cheatsheet](articles/aix-smit-cheatsheet.md) |
+| [AIX LDAP Cheatsheet](articles/aix-ldap-cheatsheet.md) |
+| [AIX NFS Cheatsheet](articles/aix-nfs-cheatsheet.md) |
+| [AIX VIOS Cheatsheet](articles/aix-vios-cheatsheet.md) |
+| [AIX Package Management Cheatsheet](articles/aix-package-management-cheatsheet.md) |
+| [AIX HMC Cheatsheet](articles/aix-hmc-cheatsheet.md) |
+| [AIX PowerVM Virtualization Concepts](articles/aix-powervm-virtualization-concepts.md) |
+| [AIX Users and Groups Cheatsheet](articles/aix-users-groups-cheatsheet.md) |
+| [AIX ODM Cheatsheet](articles/aix-odm-cheatsheet.md) |
+| [AIX Software Updates and Fixes Cheatsheet](articles/aix-software-updates-fixes-cheatsheet.md) |
+| [AIX Devices and Hardware Cheatsheet](articles/aix-devices-hardware-cheatsheet.md) |
+| [AIX Cron and Job Scheduling Cheatsheet](articles/aix-cron-cheatsheet.md) |
+| [AIX System Dump and Core File Cheatsheet](articles/aix-system-dump-core-cheatsheet.md) |
+| [AIX Error Logging and System Logs Cheatsheet](articles/aix-error-logging-cheatsheet.md) |
+| [AIX Power Systems, LPAR, and Boot Concepts](articles/aix-power-lpar-boot-concepts.md) |
+| [AIX Performance Monitoring Cheatsheet](articles/aix-performance-monitoring-cheatsheet.md) |
+| [AIX Networking Cheatsheet](articles/aix-networking-cheatsheet.md) |
+| [AIX Paging Space Cheatsheet](articles/aix-paging-space-cheatsheet.md) |
+| [AIX Login Auditing and Session Tracking Cheatsheet](articles/aix-login-auditing-cheatsheet.md) |
+| [AIX / Power Service Processor and ASMI](articles/aix-service-processor-asmi.md) |
+| [AIX MPIO and Fibre Channel Cheatsheet](articles/aix-mpio-fibre-channel-cheatsheet.md) |
+| [AIX System Resource Controller (SRC) Cheatsheet](articles/aix-src-services-cheatsheet.md) |
+| [AIX Storage Provisioning Tasks](articles/aix-storage-provisioning-tasks.md) |
+| [AIX System Administration Tips Cheatsheet](articles/aix-sysadmin-tips-cheatsheet.md) |
 
 ## About
 
