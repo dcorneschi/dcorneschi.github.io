@@ -466,6 +466,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Detecting and Fixing Whitespace Errors in Git](articles/git-whitespace-errors-check-fix.md) |
 | [Fixing "git apply" Whitespace Errors](articles/git-apply-whitespace-errors.md) |
 | [Understanding HEAD in Git](articles/git-head-explained.md) |
+| [Git's Internal Areas: Working Directory, Staging, Commit History](articles/git-internal-areas-explained.md) |
+| [The .git Directory Structure Explained](articles/git-directory-structure-explained.md) |
 | [Undoing a Pushed Commit: revert vs reset](articles/git-undo-pushed-commit.md) |
 | [Creating and Applying Git Patch Files](articles/git-create-apply-patches.md) |
 | [git push vs git push origin HEAD](articles/git-push-vs-push-origin-head.md) |
