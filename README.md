@@ -252,6 +252,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Pin Docker Image Versions Instead of latest](articles/docker-image-version-pinning.md) |
 | [Docker Compose: Bind Mounts vs Named Volumes](articles/docker-compose-volumes-vs-bind-mounts.md) |
 | [Set the Container User (UID/GID) in Docker Compose](articles/docker-compose-set-container-user.md) |
+| [UID vs PUID/PGID in Docker: Volume Permissions](articles/docker-puid-pgid-vs-user.md) |
 | [Defining Variables in Docker Compose](articles/docker-compose-variables-env.md) |
 | [Where to Store Docker Compose Bind-Mount Data on the Host](articles/docker-compose-host-data-layout.md) |
 | [Fixing Docker Bind-Mount Permission Errors](articles/docker-bind-mount-permissions.md) |
