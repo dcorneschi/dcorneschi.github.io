@@ -543,6 +543,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [sed Cheatsheet](articles/sed-cheatsheet.md) |
 | [find Cheatsheet](articles/find-cheatsheet.md) |
 | [xargs Cheatsheet](articles/xargs-cheatsheet.md) |
+| [tar Cheatsheet](articles/tar-cheatsheet.md) |
+| [diff Cheatsheet](articles/diff-cheatsheet.md) |
 | [Deleting Files by Age or Date](articles/delete-files-by-date.md) |
 | [tr Cheatsheet](articles/tr-cheatsheet.md) |
 | [Vim Search and Replace](articles/vim-search-replace.md) |
@@ -610,6 +612,8 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Chroot SFTP Setup](articles/chroot-sftp-setup.md) |
 | [Linux Kernel Panics](articles/linux-kernel-panics.md) |
 | [Configuring kdump on RHEL 6–10](articles/kdump-configuration-rhel.md) |
+| [Automated RHEL Installs with Anaconda and Kickstart](articles/anaconda-kickstart-rhel.md) |
+| [sysctl Cheatsheet](articles/sysctl-cheatsheet.md) |
 | [Why Processes in D State Can't Be Killed](articles/linux-processes-d-state.md) |
 | [fuser Cheatsheet](articles/fuser-cheatsheet.md) |
 | [Linux Capabilities](articles/linux-capabilities.md) |
@@ -651,6 +655,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux I/O Schedulers](articles/linux-io-schedulers.md) |
 | [Linux Disk I/O Internals](articles/linux-disk-io-internals.md) |
 | [blktrace Guide](articles/blktrace-guide.md) |
+| [strace Cheatsheet](articles/strace-cheatsheet.md) |
 | [Configuring sysstat on Ubuntu](articles/configuring-sysstat-ubuntu.md) |
 | [sysstat / sar Cheatsheet](articles/sysstat-sar-cheatsheet.md) |
 | [Understanding vmstat Output](articles/understanding-vmstat-output.md) |
@@ -787,6 +792,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Xshell Word Delimiters for Double-Click Selection](articles/xshell-word-delimiters.md) |
 | [rclone Cheatsheet](articles/rclone-cheatsheet.md) |
 | [SFTP Cheatsheet](articles/sftp-cheatsheet.md) |
+| [rsync Cheatsheet](articles/rsync-cheatsheet.md) |
 | [lssh Cheatsheet](articles/lssh-cheatsheet.md) |
 | [VS Code Git Actions and Git CLI Equivalents](articles/vscode-git-cli-equivalents.md) |
 | [Kiro CLI Cheatsheet](articles/kiro-cli-cheatsheet.md) |

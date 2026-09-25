@@ -63,6 +63,31 @@ tr -cs '[:alnum:]' '\n' < file         # split on any non-alphanumeric run -> on
 echo 'abc123!@#' | tr -cd '[:alpha:]'  # -> abc
 ```
 
+## Locale and Byte Safety
+
+Three facts about how `tr` handles bytes will save you from subtle bugs.
+
+### Force byte order with LC_ALL=C
+
+In a non-C locale, ranges like `A-Z` and some character classes can behave unexpectedly (collation order isn't necessarily ASCII order). For predictable, byte-accurate transforms, prefix the command with `LC_ALL=C`:
+
+```sh
+LC_ALL=C tr 'A-Z' 'a-z'        # ASCII lowercase, locale-independent
+LC_ALL=C tr 'a-z' 'A-Z'        # ASCII uppercase
+```
+
+### tr works on bytes, not characters
+
+`tr` is **not** UTF-8 aware — it processes input one byte at a time. A multibyte character (é, £, emoji) is seen as its individual bytes, so `tr` can corrupt it. For Unicode case-folding, accent stripping, or multibyte translation, use `iconv`, `uconv`, or `awk`/`perl`/`python` instead.
+
+### tr cannot process NUL bytes
+
+Standard `tr` can't handle the NUL byte (`0x00`), so it's not suitable for arbitrary binary data. To strip NULs, reach for perl:
+
+```sh
+perl -pe 's/\x00//g' < binary > out
+```
+
 ## Character Classes
 
 Use POSIX classes instead of spelling out ranges:
@@ -119,6 +144,18 @@ tr -cd '[:print:]\n' < file
 
 # Generate a random password from /dev/urandom
 tr -dc '[:alnum:]' < /dev/urandom | head -c 16; echo
+
+# Normalize all whitespace to single spaces (newlines too)
+tr '\n' ' ' < file | tr -s '[:space:]' ' '
+
+# Replace every non-alphanumeric run with a single underscore
+tr -c '[:alnum:]' '_' < file | tr -s '_'
+
+# Sanitize a filename: keep alnum/._- , turn the rest into single dashes
+echo "My Report (v2).final.txt" | LC_ALL=C tr -cs '[:alnum:]._-' '-' | tr -s '-'
+
+# Strip non-printable bytes but keep TAB, LF, CR (octal escapes)
+LC_ALL=C tr -cd '\11\12\15\40-\176' < file
 ```
 
 ## Notes and Gotchas
@@ -126,17 +163,33 @@ tr -dc '[:alnum:]' < /dev/urandom | head -c 16; echo
 - **stdin only.** `tr` has no filename argument; use `tr ... < file` or a pipe. `tr ... file` will not work.
 - **Single characters, not strings.** `tr` cannot translate a multi-character string to another string — for that use [`sed`](articles/sed-cheatsheet.md) or [`awk`](articles/awk-cheatsheet.md).
 - **`SET2` shorter than `SET1`** repeats `SET2`'s last character to match, unless you pass `-t` to truncate `SET1` instead.
-- **Quote your sets** so the shell doesn't interpret `*`, `[`, or spaces before `tr` sees them.
+- **Quote your sets** so the shell doesn't interpret `*`, `[`, or spaces before `tr` sees them — single quotes also stop some BSD shells from globbing ranges.
+- **Feed special characters with `printf`, not `echo -e`.** `echo -e` isn't portable (some shells print a literal `-e`); `printf` is consistent: `printf 'a\r\nb\r\n' | tr -d '\r'`.
+- **Prefer octal escapes for clarity/portability** in sets: `\012` (LF), `\011` (TAB), `\015` (CR). GNU `tr` treats unknown backslash escapes literally, so octal is unambiguous.
+
+### GNU vs BSD
+
+Both support `-c`, `-d`, `-s`, `-t` and the POSIX character classes, so the examples here are portable. Differences to watch: the repetition syntax `[c*N]` is an extension and may differ between implementations, and BSD shells are pickier about globbing — always single-quote your sets. For byte-accurate behavior on either, use `LC_ALL=C`.
+
+### Debugging: view the bytes
+
+To see exactly what changed, dump octal bytes before and after a transform with `od`:
+
+```sh
+LC_ALL=C od -An -t o1 -v file | head            # before
+tr -d '\r' < file | LC_ALL=C od -An -t o1 -v | head   # after
+```
 
 ## Quick Reference
 
 ```sh
-tr 'a-z' 'A-Z' < file            # translate (lower -> upper)
+LC_ALL=C tr 'a-z' 'A-Z' < file   # translate lower -> upper (byte-accurate)
 tr -d '\r' < file                # delete characters
 tr -s ' ' < file                 # squeeze repeats
 tr -s '[[:space:]]' '\n' < file  # whitespace runs -> single newlines
 tr -cd '[:alnum:]' < file        # keep only alphanumerics (complement + delete)
 tr -cs '[:alnum:]' '\n' < file   # one token per line
+perl -pe 's/\x00//g' < file      # strip NULs (tr can't)
 ```
 
 For related material, see the [sed Cheatsheet](articles/sed-cheatsheet.md), the [awk Cheatsheet](articles/awk-cheatsheet.md), and the [cut Cheatsheet](articles/cut-cheatsheet.md).
