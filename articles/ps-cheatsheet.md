@@ -145,6 +145,14 @@ ps -ef --forest
 ps -afx
 ```
 
+`pstree` has useful variants of its own:
+
+```bash
+pstree -p          # show PIDs alongside names
+pstree -u          # show user transitions (when uid changes)
+pstree -a          # show command-line arguments
+```
+
 ### Find the process ID of a running program
 
 ```bash
@@ -232,6 +240,22 @@ ps -C sshd,nginx -o pid,cmd,%cpu    # multiple commands with custom format
 ps -C httpd -L -o pid,tid,cmd,%cpu  # with threads
 ```
 
+### Select processes by PID (-p)
+
+```bash
+ps -p 1234                          # single PID
+ps -p 1,2,3                         # multiple PIDs
+ps -fp 1234                         # full format for a PID
+ps -fp $(pgrep nginx)               # full format for all matching PIDs
+```
+
+### Select processes by terminal (-t)
+
+```bash
+ps -t pts/0                         # processes on a specific terminal
+ps -t tty1,tty2                     # multiple terminals
+```
+
 ### Show only process name and PID
 
 ```bash
@@ -274,12 +298,35 @@ ps -eo nlwp,pid,cmd | awk '$1 > 1' | sort -rn | head
 ps -efww
 ```
 
+`-w` widens the output; a **second** `-w` (`-ww`) removes the width limit entirely, so long command lines are never truncated:
+
+```bash
+ps -ww -p 1234          # full, untruncated command line for a PID
+ps auxww                # untruncated command line for all processes
+```
+
 ### Suppress headers (useful for scripting)
 
 ```bash
 ps aux --no-headers
 ps -eo pid,cmd --no-headers | wc -l    # count processes
 ps -C apache2 -o pid= --no-headers     # get PIDs only
+```
+
+### Check whether a PID is running (scripting)
+
+```bash
+if ps -p "$PID" > /dev/null; then
+    echo "Process $PID is running"
+else
+    echo "Process $PID is not running"
+fi
+```
+
+### Export process list to CSV
+
+```bash
+ps -eo pid,user,cmd,%cpu,%mem --no-headers | sed 's/ \+/,/g' > processes.csv
 ```
 
 ### Continuous monitoring with watch

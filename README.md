@@ -258,6 +258,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Installing Podman on RHEL 7–10](articles/podman-installation-rhel.md) |
 | [Fixing Critical Vulnerabilities in Public Docker Images](articles/docker-fix-critical-vulnerabilities.md) |
 | [Docker Management UIs: Portainer vs Dockge vs Dockhand and Others](articles/docker-management-uis-comparison.md) |
+| [Preventing Services from Starting Automatically in Docker Compose](articles/docker-compose-prevent-service-autostart.md) |
 
 ### AWS
 
@@ -529,6 +530,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [sed Replace Line Guide](articles/sed-replace-line-guide.md) |
 | [Running Multiple Commands with sudo](articles/sudo-multiple-commands.md) |
 | [sudoers Guide](articles/sudo-sudoers-guide.md) |
+| [Appending Rules to sudoers.d Files Safely](articles/append-sudoers-rules-safely.md) |
 | [Vim White Spaces](articles/vim-white-spaces.md) |
 | [Cron Cheatsheet](articles/cron-cheatsheet.md) |
 | [Bash Aliases and Functions](articles/bash-aliases-functions.md) |
@@ -539,7 +541,12 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [awk Cheatsheet](articles/awk-cheatsheet.md) |
 | [Print Column Numbers for Any Command Output](articles/awk-print-column-numbers.md) |
 | [sed Cheatsheet](articles/sed-cheatsheet.md) |
+| [find Cheatsheet](articles/find-cheatsheet.md) |
+| [xargs Cheatsheet](articles/xargs-cheatsheet.md) |
+| [Deleting Files by Age or Date](articles/delete-files-by-date.md) |
+| [tr Cheatsheet](articles/tr-cheatsheet.md) |
 | [Vim Search and Replace](articles/vim-search-replace.md) |
+| [Installing and Theming vim-airline](articles/vim-airline-setup.md) |
 | [Display Tabs and Whitespace in Files](articles/display-tabs-whitespace.md) |
 | [ShellCheck Guide](articles/shellcheck-guide.md) |
 | [Linux Job Control](articles/linux-job-control.md) |
@@ -570,6 +577,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [OpenSCAP Security Compliance Guide](articles/openscap-guide.md) |
 | [Linux Audit (auditd) Cheatsheet](articles/auditd-cheatsheet.md) |
 | [Postfix Gmail SMTP Relay Setup](articles/postfix-gmail-relay.md) |
+| [Increasing the Postfix Message Size Limit](articles/postfix-message-size-limit.md) |
 | [psacct / acct Cheatsheet](articles/psacct-cheatsheet.md) |
 | [/bin/false vs /sbin/nologin](articles/bin-false-vs-nologin.md) |
 | [Linux User Quotas](articles/linux-user-quotas.md) |
@@ -601,6 +609,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [LUKS Disk Encryption and NBDE (Tang/Clevis)](articles/luks-nbde-encryption.md) |
 | [Chroot SFTP Setup](articles/chroot-sftp-setup.md) |
 | [Linux Kernel Panics](articles/linux-kernel-panics.md) |
+| [Configuring kdump on RHEL 6–10](articles/kdump-configuration-rhel.md) |
 | [Why Processes in D State Can't Be Killed](articles/linux-processes-d-state.md) |
 | [fuser Cheatsheet](articles/fuser-cheatsheet.md) |
 | [Linux Capabilities](articles/linux-capabilities.md) |
@@ -669,6 +678,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Linux Memory: RSS, VSZ, and Why RSS Alone Is Misleading](articles/linux-memory-rss-vsz.md) |
 | [Linux Swap Usage: When Processes Aren't the Culprit](articles/linux-swap-shm-segments.md) |
 | [Linux Swap Management](articles/linux-swap-management.md) |
+| [Triggering and Testing the Linux OOM Killer](articles/linux-oom-killer-testing.md) |
 
 ### Linux Storage and Filesystems
 
@@ -692,6 +702,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [ext4 Journal Modes](articles/ext4-journal-modes.md) |
 | [Extending Partitions with growpart](articles/growpart-extend-partitions.md) |
 | [Extend a SAN LUN Online with Multipath and GFS2](articles/linux-extend-lun-multipath-gfs2.md) |
+| [Extending an LVM Logical Volume by Growing the OS Disk on RHEL](articles/rhel-extend-lvm-os-disk.md) |
 | [GFS2 & RHEL Cluster Cheatsheet](articles/gfs2-cluster-cheatsheet.md) |
 | [Disk Health & Maintenance](articles/disk-health-maintenance.md) |
 
@@ -723,6 +734,7 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [iperf3 Cheatsheet](articles/iperf3-cheatsheet.md) |
 | [Test Network Speed Between Two Hosts](articles/network-speed-testing-guide.md) |
 | [netstat Cheatsheet](articles/netstat-cheatsheet.md) |
+| [lsof Cheatsheet](articles/lsof-cheatsheet.md) |
 | [/proc/net Cheatsheet](articles/proc-net-cheatsheet.md) |
 | [Ephemeral Ports vs Conntrack Max](articles/ephemeral-ports-vs-conntrack.md) |
 | [/proc/net/sockstat Explained](articles/proc-net-sockstat-explained.md) |
@@ -772,7 +784,9 @@ This site is built with [docsify](https://docsify.js.org/) and served via GitHub
 | [Kitty Cheatsheet](articles/kitty-cheatsheet.md) |
 | [JetBrains Mono Font](articles/jetbrains-mono-font.md) |
 | [PuTTY Default Settings](articles/putty-default-settings.md) |
+| [Xshell Word Delimiters for Double-Click Selection](articles/xshell-word-delimiters.md) |
 | [rclone Cheatsheet](articles/rclone-cheatsheet.md) |
+| [SFTP Cheatsheet](articles/sftp-cheatsheet.md) |
 | [lssh Cheatsheet](articles/lssh-cheatsheet.md) |
 | [VS Code Git Actions and Git CLI Equivalents](articles/vscode-git-cli-equivalents.md) |
 | [Kiro CLI Cheatsheet](articles/kiro-cli-cheatsheet.md) |
